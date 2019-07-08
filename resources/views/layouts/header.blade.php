@@ -11,7 +11,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <title>Member</title>
+    <title>대도시 특별 공개증거</title>
 
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="64x64" href="../favicon/favicon-64.png" />
