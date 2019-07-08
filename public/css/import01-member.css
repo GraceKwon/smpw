@@ -1,0 +1,84 @@
+/*
+ Member.
+ style sheet for member pages.
+*/
+
+/* login page */
+/* ------------------------------ */
+
+.login-page .content-section {
+    /*background: url("../img/member/bg-login.png") center no-repeat;*/
+    background: #f6f6fa;
+    background-size: cover;
+
+}
+
+/* login-form-section */
+
+.login-form-section {
+    max-width: 430px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-form-section .logo-wrap {
+    padding: 2rem;
+    text-align: center;
+}
+
+.logo-wrap .logo {
+    height: 100px;
+}
+
+.logo-wrap .typo-area {
+    margin: 1rem 0 0 0;
+    line-height: 1.25;
+}
+
+@media (min-width: 576px) {
+    .login-form-section .logo-wrap {
+        display: flex;
+        display: -ms-flex;
+        align-items: center;
+        text-align: left;
+    }
+
+    .logo-wrap .logo {
+        height: 90px;
+    }
+
+    .logo-wrap .typo-area {
+        margin: 0 0 0 1rem;
+    }
+}
+
+.login-form-wrap {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+    background: rgba(255, 255, 255, .9);
+    padding: 2rem;
+}
+
+.login-form-wrap .input-flex-group+.input-flex-group {
+    margin-top: 1rem;
+}
+
+.login-form-wrap .btn-ask-reset {
+    cursor: pointer;
+    color: #999 !important;
+    font-size: .8rem;
+}
+
+.login-form-wrap .btn-ask-reset:hover {
+    color: #4557a0 !important;
+}
+
+.no-label .input-flex-group label {
+    display: none;
+}
+
+.no-label .input-flex-group+.input-flex-group {
+    margin-top: .5rem !important;
+}
+
+/* jwkys2000@naver.com */
