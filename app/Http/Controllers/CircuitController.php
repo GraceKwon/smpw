@@ -11,7 +11,7 @@ class CircuitController extends Controller
       
     }
 
-    public function view_territory()
+    public function view_zones()
     {
         return view('circuit.zones');
     }

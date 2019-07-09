@@ -14,5 +14,5 @@
 Route::get('/', 'LoginController@try_login');
 
 //순회구관리
-Route::get('zones', 'CircuitController@view_territory');
+Route::get('zones', 'CircuitController@view_zones')->middleware('admin_auth');
 
