@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('home');
 });
+
+//순회구관리
+Route::get('zones', 'CircuitController@view_territory');
+
