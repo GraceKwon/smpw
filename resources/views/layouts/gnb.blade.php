@@ -25,24 +25,22 @@
                     <div class="soc-body">
                         <nav class="nav-wrap">
                             <ul class="nav-depth-one">
+                                @foreach ( session('gnb') as $title => $submenus)
                                 <li class="active">
                                     <a>
-                                        <span>순회구 관리</span>
+                                        <span>{{ $title }}</span>
                                         <i class="fas fa-angle-right"></i>
                                     </a>
                                     <ul class="nav-depth-two">
+                                        @foreach ( $submenus as $path => $name )
                                         <li>
-                                            <a href="#">구역 관리</a>
+                                            <a href="{{ $path }}">{{ $name }}</a>
                                         </li>
-                                        <li>
-                                            <a href="#">사용자 관리</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">보관장소 관리</a>
-                                        </li>
+                                        @endforeach
                                     </ul>
                                 </li>
-                                <li>
+                                @endforeach
+                                <!-- <li>
                                     <a>
                                         <span>봉사자 관리</span>
                                         <i class="fas fa-angle-right"></i>
@@ -146,7 +144,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </nav>
                         <div class="user-info-wrap">
                             <div class="login">

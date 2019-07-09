@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', 'LoginController@try_login');
 
 //순회구관리
 Route::get('zones', 'CircuitController@view_territory');
