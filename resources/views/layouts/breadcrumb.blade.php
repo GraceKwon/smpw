@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1 class="page-title">{{ isset($breadcrumb) ? $breadcrumb[1] : 'Title Area'  }}</h1>
+    <h1 class="page-title">{{ isset($breadcrumb) ? $breadcrumb[count($breadcrumb) - 1] : 'Title Area'  }}</h1>
     
     <div class="route">
         <a href="/home">홈</a>

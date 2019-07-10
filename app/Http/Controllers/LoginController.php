@@ -23,7 +23,10 @@ class LoginController extends Controller
                 if( array_search($AdminRoleID ,$submenus['auth']) !== false ){
                     $gnb[$title][$path] = $submenus['name'];
                     $auth_path[] = $path;
-                    $breadcrumb[$path] = [$title, $submenus['name']];
+                    $breadcrumb[$path] = [ $title, $submenus['name'] ];
+                    if( isset($submenus['subpage']) ){
+                        $breadcrumb[$path][] = $submenus['subpage'];
+                    }
                 };
             }
         }
@@ -31,7 +34,7 @@ class LoginController extends Controller
         session(['auth.path' => $auth_path]);
         session(['gnb' => $gnb]);
         session(['breadcrumb' => $breadcrumb]);
-
+        // dd(session('breadcrumb'));
         return view('/login');
     }
 }
