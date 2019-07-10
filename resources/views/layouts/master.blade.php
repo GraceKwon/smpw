@@ -10,9 +10,28 @@
     <section id="wrapper-body" class="login-page">
         <section class="wrap-box">
             @include('layouts.gnb')
+            <div class="content-section">
+                <!-- start : content section -->
+                <div class="wrap-content">
+                    <div class="container-fluid">
+                        <div class="row main-layout">
+                            <div class="col">
+                                <!-- article section -->
+                                <article class="article">
+                                
+                                    @include('layouts.breadcrumb')
+                                
+                                    @yield('content')
+                                
+                                </article>
+                                <!-- /.article -->
             
-            @yield('content')
-
+                            </div> <!-- /.col -->
+                        </div> <!-- /.row -->
+                    </div> <!-- /.container -->
+                </div> <!-- /.wrap-content -->
+                <!-- end : content section -->
+            </div> <!-- /.content-section -->
             @include('layouts.footer')
             
             @yield('popup')

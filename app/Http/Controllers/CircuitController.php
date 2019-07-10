@@ -17,4 +17,12 @@ class CircuitController extends Controller
             // 'breadcrumb' => $breadcrumb,
         ]);
     }
+
+    public function view_form_zones(Request $request)
+    {
+        $ServiceZoneID = $request->ServiceZoneID;
+        return view( 'circuit.form_zone', [
+            'ServiceZoneID' => $ServiceZoneID,
+        ]);
+    }
 }
