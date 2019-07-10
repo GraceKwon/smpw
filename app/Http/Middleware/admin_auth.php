@@ -15,15 +15,19 @@ class admin_auth
      */
     public function handle($request, Closure $next)
     {
-        $auth_path = session('auth.path');
-        $path = $request->path();
-        $path  = explode('/', $path)[0];
+        $auth_path = session('auth.path'); //권한이 있는 path 목록 (array)
+        $path = $request->path();          //요청된 path
+        $path  = explode('/', $path)[0];   //서브 path 제거
     
-        if( array_search($path, $auth_path) !== false){
+        if( array_search($path, $auth_path) !== false ){ // 요청된 path가 권한이 있는지 확인
+        
+            view()->share( 'breadcrumb', session('breadcrumb')[$path] );//모든 뷰파일에 $breadcrumb 바인딩 
+            $response = $next($request);
+            return $response;
 
-            return $next($request);
         }
-        return redirect('/error' . $auth_path[0]);
+
+        return redirect('/auth_error');
   
     }
 }

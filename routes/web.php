@@ -11,7 +11,11 @@
 |
 */
 
-Route::get('/', 'LoginController@try_login');
+Route::get('/login', 'LoginController@try_login');
+
+Route::get('/errors/auth', function(){
+    return view('errors.auth');
+});
 
 //순회구관리
 Route::get('zones', 'CircuitController@view_zones')->middleware('admin_auth');

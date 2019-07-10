@@ -7,19 +7,9 @@
         <div class="container-fluid">
             <div class="row main-layout">
                 <div class="col">
-
                     <!-- article section -->
                     <article class="article">
-                        @breadcrumb(['title' => '구역 관리'])
-                        <!-- <div class="page-header">
-                            <h1 class="page-title">구역 관리</h1>
-                            <div class="route">
-                                <a>홈</a>
-                                <a>순회구 관리</a>
-                                <a>구역 관리</a>
-                            </div>
-                        </div> -->
-                        @endbreadcrumb
+                        @include('layouts.breadcrumb')
 
                         <section class="section-table-wrap edit-circuits-territory-list">
                             <div class="table-responsive">

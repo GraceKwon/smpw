@@ -13,21 +13,24 @@ class LoginController extends Controller
         $admin_auth = config('admin_auth');
         $gnb = [];
         $auth_path = [];
+        $breadcrumb = [];
 
         foreach ($admin_auth as $key => $main) {
             
             $title = $main['title'];
             
             foreach ($main['submenus'] as $path => $submenus) {
-                if( array_search($AdminRoleID ,$submenus['auth']) !== false){
+                if( array_search($AdminRoleID ,$submenus['auth']) !== false ){
                     $gnb[$title][$path] = $submenus['name'];
                     $auth_path[] = $path;
+                    $breadcrumb[$path] = [$title, $submenus['name']];
                 };
             }
         }
-        
+        //세션 주입
         session(['auth.path' => $auth_path]);
         session(['gnb' => $gnb]);
+        session(['breadcrumb' => $breadcrumb]);
 
         return view('/login');
     }

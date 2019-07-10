@@ -11,8 +11,10 @@ class CircuitController extends Controller
       
     }
 
-    public function view_zones()
+    public function view_zones(Request $request)
     {
-        return view('circuit.zones');
+        return view( 'circuit.zones', [
+            // 'breadcrumb' => $breadcrumb,
+        ]);
     }
 }

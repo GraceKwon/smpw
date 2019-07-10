@@ -25,6 +25,7 @@
                     <div class="soc-body">
                         <nav class="nav-wrap">
                             <ul class="nav-depth-one">
+                            @if( session('gnb') !== null )
                                 @foreach ( session('gnb') as $title => $submenus)
                                 <li class="active">
                                     <a>
@@ -40,6 +41,7 @@
                                     </ul>
                                 </li>
                                 @endforeach
+                            @endif
                                 <!-- <li>
                                     <a>
                                         <span>봉사자 관리</span>
