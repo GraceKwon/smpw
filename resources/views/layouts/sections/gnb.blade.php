@@ -3,7 +3,7 @@
     <section class="first-row">
         <div class="wrap-content">
             <div class="container-fluid">
-                <a class="brand" href="/home">
+                <a class="brand" href="/">
                     <img src="../img/brand/brand-logo.png" class="logo" alt="">
                 </a>
                 <div class="slogan for-desktop">

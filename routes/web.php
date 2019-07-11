@@ -11,7 +11,7 @@
 |
 */
 Route::get('/', function(){
-    return view('circuit.zones');
+    return redirect('/zones');
 });
 Route::get('/login', 'LoginController@try_login');
 
