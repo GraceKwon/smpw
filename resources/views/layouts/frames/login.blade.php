@@ -4,7 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 
-@include('layouts.sections.header')
+<head profile="http://www.w3.org/2005/10/profile">
+    
+    @include('layouts.sections.header')
+    <title>대도시 특별 공개증거</title>
+
+</head>
 
 <body class="body">
     <section id="wrapper-body" class="login-page">

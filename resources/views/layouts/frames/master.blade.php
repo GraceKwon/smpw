@@ -3,9 +3,12 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head profile="http://www.w3.org/2005/10/profile">
+    
+    @include('layouts.sections.header')
+    <title>대도시 특별 공개증거 {{isset($breadcrumb) ? ' - '.$breadcrumb[ count($breadcrumb) - 1 ]['name'] : ''}}</title>
 
-@include('layouts.sections.header')
-
+</head>
 <body class="body">
     <section id="wrapper-body" class="normal">
         <section class="wrap-box">

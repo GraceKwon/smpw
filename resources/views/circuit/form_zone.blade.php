@@ -1,5 +1,4 @@
 @extends('layouts.frames.master')
-
 @section('content')
     <section class="section-register-wrap">
         <div class="register-form-item">

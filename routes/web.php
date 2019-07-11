@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function(){
+    return view('circuit.zones');
+});
 Route::get('/login', 'LoginController@try_login');
 
 Route::get('/errors/auth', function(){

@@ -1,5 +1,4 @@
 @extends('layouts.frames.master')
-
 @section('content')
     <section class="section-table-wrap edit-circuits-territory-list">
         <div class="table-responsive">
