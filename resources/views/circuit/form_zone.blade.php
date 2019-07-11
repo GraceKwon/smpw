@@ -40,8 +40,8 @@
             <label class="label">지도에서 선택</label>
             <div class="register-form-container">
                 <div class="register-map">
-                    <div class="p-3 text-muted font-size-80">
-                        지도 api를 삽입해 주세요
+                    <div id="map" class="p-3 text-muted font-size-80" style="height:400px;">
+                        {{-- <div id="map" style="width:500px;height:400px;"></div> --}}
                     </div>
                 </div>
             </div>
@@ -58,6 +58,7 @@
         </div> <!-- /.register-btn-area -->
     </section>
 @endsection
+
 @section('popup')
     <!-- <section class="modal-layer-container">
         <div class="mx-auto px-3">
@@ -82,4 +83,41 @@
             </div> 
         </div>
     </section> -->
+@endsection
+
+@section('script')
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=10f0647488c1c161a2bb5cbc32269402&libraries=services"></script>
+<script>
+    var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+    var options = { //지도를 생성할 때 필요한 기본 옵션
+        center: new kakao.maps.LatLng(37.00132095369173, 127.19594107057598), //지도의 중심좌표.
+        level: 3 //지도의 레벨(확대, 축소 정도)
+    };
+    var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+    // 지도를 클릭한 위치에 표출할 마커입니다
+    var marker = new kakao.maps.Marker({ 
+        // 지도 중심좌표에 마커를 생성합니다 
+        position: map.getCenter() 
+    }); 
+    // 지도에 마커를 표시합니다
+    marker.setMap(map);
+
+    // 지도에 클릭 이벤트를 등록합니다
+    // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+        
+        // 클릭한 위도, 경도 정보를 가져옵니다 
+        var latlng = mouseEvent.latLng; 
+        
+        // 마커 위치를 클릭한 위치로 옮깁니다
+        marker.setPosition(latlng);
+        
+        var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+        message += '경도는 ' + latlng.getLng() + ' 입니다';
+        
+        console.log(message);
+        
+    });
+</script>
 @endsection
