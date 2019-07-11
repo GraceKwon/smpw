@@ -26,7 +26,7 @@ class admin_auth
             return $response;
 
         }
-        return redirect('/auth_error');
+        return redirect('/errors/auth');
   
     }
 }

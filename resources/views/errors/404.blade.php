@@ -9,11 +9,10 @@
                 <div class="col">
                     <!-- article section -->
                     <article class="article">
-
                         <h1>ERROR</h1>
-                        <h4>권한이 없습니다.</h4>
+                        <h4>404 Not found</h4>
                         <ol>
-                            <li>- 요청하신 페이지는 권한이 없는 페이지 입니다.</li>
+                            <li>- 존재하지 않는 페이지 입니다.</li>
                         </ol>
 
                     </article>
@@ -24,5 +23,6 @@
         </div> <!-- /.container -->
     </div> <!-- /.wrap-content -->
     <!-- end : content section -->
+
 </div> <!-- /.content-section -->
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.loginlayouts')
+@extends('layouts.frames.login')
 
 @section('content')
 

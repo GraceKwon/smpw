@@ -14,7 +14,6 @@ class LoginController extends Controller
         $gnb = [];
         $auth_path = [];
         $breadcrumb = [];
-        // dd($admin_auth);
         foreach ($admin_auth as $key => $main) {
             
             $title = $main['title'];

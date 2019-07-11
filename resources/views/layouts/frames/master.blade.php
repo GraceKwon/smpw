@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 
-@include('layouts.header')
+@include('layouts.sections.header')
 
 <body class="body">
-    <section id="wrapper-body" class="login-page">
+    <section id="wrapper-body" class="normal">
         <section class="wrap-box">
-            @include('layouts.gnb')
+            @include('layouts.sections.gnb')
             <div class="content-section">
                 <!-- start : content section -->
                 <div class="wrap-content">
@@ -19,7 +19,7 @@
                                 <!-- article section -->
                                 <article class="article">
                                 
-                                    @include('layouts.breadcrumb')
+                                    @include('layouts.sections.breadcrumb')
                                 
                                     @yield('content')
                                 
@@ -32,7 +32,7 @@
                 </div> <!-- /.wrap-content -->
                 <!-- end : content section -->
             </div> <!-- /.content-section -->
-            @include('layouts.footer')
+            @include('layouts.sections.footer')
             
             @yield('popup')
         </section>

@@ -4,14 +4,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 
-@include('layouts.header')
+@include('layouts.sections.header')
 
 <body class="body">
     <section id="wrapper-body" class="login-page">
         <section class="wrap-box">
             @yield('content')
 
-            @include('layouts.footer')
+            @include('layouts.sections.footer')
 
             @yield('popup')
         </section>

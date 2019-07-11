@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.frames.master')
 
 @section('content')
     <section class="section-register-wrap">
