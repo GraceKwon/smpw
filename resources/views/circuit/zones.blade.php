@@ -209,15 +209,13 @@
         <div class="btn-area text-right mt-3">
             <button type="button" class="btn btn-primary btn-responsive">구역 등록</button>
         </div>
+        <!--start pagination -->
         <div>
-            <ul class="page">
-                <li class="active"><a>1</a></li>
-                <li><a>2</a></li>
-                <li><a>3</a></li>
-                <li><a>4</a></li>
-                <li><a>5</a></li>
-            </ul>
+            {{ $json->links() }}
         </div>
+        <!-- end pagination -->
+        
+
     </section>
 @endsection
 
