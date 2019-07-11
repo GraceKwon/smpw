@@ -40,9 +40,10 @@
             @yield('popup')
         </section>
     </section>
-
-    <script type="text/javascript" src="../js/function.min.js"></script>
-    <script type="text/javascript" src="../js/function.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/function.min.js"></script>
+    <script type="text/javascript" src="/js/function.js"></script>
+    @yield('script')
 </body>
 
 </html>
