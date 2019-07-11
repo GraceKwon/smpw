@@ -19,5 +19,7 @@ Route::get('/errors/auth', function(){
 
 //순회구관리
 Route::get('zones', 'CircuitController@view_zones')->middleware('admin_auth');
-Route::get('zones/{ServiceZoneID}', 'CircuitController@view_form_zones')->middleware('admin_auth');
+Route::get('zones/{ServiceZoneID}', 'CircuitController@view_form_zones')
+    ->where('ServiceZoneID', '[0-9]+')
+    ->middleware('admin_auth');
 

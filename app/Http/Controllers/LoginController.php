@@ -14,7 +14,7 @@ class LoginController extends Controller
         $gnb = [];
         $auth_path = [];
         $breadcrumb = [];
-
+        // dd($admin_auth);
         foreach ($admin_auth as $key => $main) {
             
             $title = $main['title'];
@@ -23,9 +23,22 @@ class LoginController extends Controller
                 if( array_search($AdminRoleID ,$submenus['auth']) !== false ){
                     $gnb[$title][$path] = $submenus['name'];
                     $auth_path[] = $path;
-                    $breadcrumb[$path] = [ $title, $submenus['name'] ];
+                    
+                    $breadcrumb[$path] = [ 
+                        [ 
+                            'path' => null, 
+                            'name' => $title
+                        ],
+                        [
+                            'path' => $path,
+                            'name' => $submenus['name']
+                        ]
+                    ];
                     if( isset($submenus['subpage']) ){
-                        $breadcrumb[$path][] = $submenus['subpage'];
+                        $breadcrumb[$path][] = [
+                            'path' => null,
+                            'name' => $submenus['subpage']
+                        ];
                     }
                 };
             }
@@ -34,7 +47,6 @@ class LoginController extends Controller
         session(['auth.path' => $auth_path]);
         session(['gnb' => $gnb]);
         session(['breadcrumb' => $breadcrumb]);
-        // dd(session('breadcrumb'));
         return view('/login');
     }
 }

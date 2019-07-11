@@ -7,18 +7,18 @@ return [
         'submenus' => [
             'zones' => [
                 'name' => '구역관리',
-                'subpage' => ['구역등록'],
-                'auth' => [1,2,3,4,5]
+                'auth' => [1,2,3,4,5],
+                'subpage' => ['구역등록','구역상세'],
             ],
             'admins' => [
                 'name' => '사용자관리',
+                'auth' => [1,2],
                 'subpage' => ['사용자등록'],
-                'auth' => [1,2]
             ],
             'storages' => [
                 'name' => '보관장소관리',
+                'auth' => [1,2,3,4,5],
                 'subpage' => ['보관장소등록'],
-                'auth' => [1,2,3,4,5]
             ]
         ]
     ],
@@ -28,8 +28,8 @@ return [
         'submenus' => [
             'publishers' => [
                 'name' => '봉사자관리',
+                'auth' => [1,2,3,4,5],
                 'subpage' => ['봉사자등록'],
-                'auth' => [1,2,3,4,5]
             ]
         ]
     ],
@@ -39,8 +39,8 @@ return [
         'submenus' => [
             'acts' => [
                 'name' => '봉사일정관리',
-                'subpage' => ['상세보기'],
-                'auth' => [1,2,3,4,5]
+                'auth' => [1,2,3,4,5],
+                'subpage' => ['detail' => '상세보기'],
             ],
             'create' => [
                 'name' => '봉사일정생성',
@@ -54,18 +54,18 @@ return [
         'submenus' => [
             'reports' => [
                 'name' => '봉사보고관리',
-                'subpage' => ['상세보기'],
-                'auth' => [1,2,3,4,5]
+                'auth' => [1,2,3,4,5],
+                'subpage' => ['detail' => '상세보기'],
             ],
             'requests' => [
                 'name' => '방문요청관리',
+                'auth' => [1,2,3,4,5],
                 'subpage' => ['방문요청'],
-                'auth' => [1,2,3,4,5]
             ],
             'experiences' => [
                 'name' => '경험담관리',
+                'auth' => [1,2,3],
                 'subpage' => ['경험담보고'],
-                'auth' => [1,2,3]
             ],
         ]
     ],
@@ -79,8 +79,8 @@ return [
             ],
             'orders' => [
                 'name' => '출판물신청관리',
+                'auth' => [1,2,3,4,5],
                 'subpage' => ['출판물신청'],
-                'auth' => [1,2,3,4,5]
             ]
         ]
     ],
@@ -108,8 +108,8 @@ return [
         'submenus' => [
             'notices' => [
                 'name' => '공지사항',
+                'auth' => [1,2,3,4,5],
                 'subpage' => ['신규등록', '공지사항보기'],
-                'auth' => [1,2,3,4,5]
             ]
         ]
     ],
@@ -119,13 +119,13 @@ return [
         'submenus' => [
             'inbox' => [
                 'name' => '받은메세지함',
+                'auth' => [1,2,3,4,5],
                 'subpage' => ['상세보기'],
-                'auth' => [1,2,3,4,5]
             ],
             'sent' => [
                 'name' => '보낸메세지함',
+                'auth' => [1,2,3,4,5],
                 'subpage' => ['글쓰기', '상세보기'],
-                'auth' => [1,2,3,4,5]
             ],
             'pushes' => [
                 'name' => '푸시메세지발송',
