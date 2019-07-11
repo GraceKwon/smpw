@@ -207,11 +207,13 @@
             </table>
         </div>
         <div class="btn-area text-right mt-3">
-            <button type="button" class="btn btn-primary btn-responsive">구역 등록</button>
+            <a href="{{request()->path()}}/0">
+                <button type="button" class="btn btn-primary btn-responsive" id="register">구역 등록</button>
+            </a>
         </div>
         <!--start pagination -->
         <div>
-            {{ $json->links() }}
+            {{-- {{ $json->links() }} --}}
         </div>
         <!-- end pagination -->
         
@@ -244,3 +246,8 @@
         </div>
     </section> -->
 @endsection
+
+{{-- @section('script')
+<script>
+</script>
+@endsection --}}

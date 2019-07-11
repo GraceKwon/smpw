@@ -13,11 +13,8 @@ class CircuitController extends Controller
 
     public function view_zones(Request $request)
     {
-        
         return view( 'circuit.zones', [
-            'json' => DB::table('notices')->where([
-                ])
-                ->paginate(1),
+       
         ]);
     }
 
