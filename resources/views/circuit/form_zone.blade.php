@@ -219,7 +219,7 @@
 
     jQuery.validator.addMethod('selectcheck', function (value) {
         return (value != '0');
-    }, "This field is required.");
+    }, "선택해 주세요.");
 
 </script>
 @endsection
