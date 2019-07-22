@@ -91,7 +91,7 @@
             </div> <!-- /.register-form-item -->
             <div class="register-btn-area">
                 <button type="button" class="btn btn-secondary btn-responsive">취소</button>
-                <button class="btn btn-primary btn-responsive">저장</button>
+                <button type="button" class="btn btn-primary btn-responsive">저장</button>
             </div> <!-- /.register-btn-area -->
         </form>
     </section>
