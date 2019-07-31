@@ -24,5 +24,7 @@ Route::get('zones', 'CircuitController@view_zones')->middleware('admin_auth');
 Route::get('zones/{ServiceZoneID}', 'CircuitController@view_form_zones')
     ->where('ServiceZoneID', '[0-9]+')
     ->middleware('admin_auth');
-Route::post('zones/{ServiceZoneID}', 'CircuitController@put_form_zones');
+Route::post('zones/{ServiceZoneID}', 'CircuitController@put_form_zones')
+    ->where('ServiceZoneID', '[0-9]+')
+    ->middleware('admin_auth');
 
