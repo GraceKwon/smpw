@@ -8,7 +8,7 @@ class CircuitController extends Controller
 {
     public function __construct()
     {
-      
+        $this->middleware('admin_auth');
     }
 
     public function view_zones(Request $request)
@@ -30,5 +30,19 @@ class CircuitController extends Controller
     public function put_form_zones(Request $request)
     {
         dd($request);
+    }
+
+    public function view_admins(Request $request)
+    {
+        return view( 'circuit.admins', [
+       
+        ]);
+    }
+
+    public function view_form_admin(Request $request)
+    {
+        return view( 'circuit.form_admin', [
+       
+        ]);
     }
 }
