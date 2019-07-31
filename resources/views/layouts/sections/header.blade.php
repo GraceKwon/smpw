@@ -18,8 +18,4 @@
 
 <link rel="stylesheet" type="text/css" href="../css/common.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/utility.min.css" />
-
-<link rel="stylesheet" type="text/css" href="../css/color.css" />
-<link rel="stylesheet" type="text/css" href="../css/style.css" />
-<link rel="stylesheet" type="text/css" href="../css/import01-member.css" />
-
+<link rel="stylesheet" type="text/css" href="../css/style.min.css" />
