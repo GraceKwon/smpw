@@ -1,8 +1,8 @@
 @extends('layouts.frames.master')
 @section('content')
-    <section class="section-table-wrap edit-circuits-territory-list">
+    <section class="section-table-section edit-circuits-territory-list">
         <div class="table-responsive">
-            <table class="table table-center table-font-size-90">
+            <table class="table table-center table-hover table-font-size-90">
                 <thead>
                 <tr>
                     <th>
@@ -206,10 +206,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="btn-area text-right mt-3">
-            <a href="{{request()->path()}}/0">
-                <button type="button" class="btn btn-primary btn-responsive" id="register">구역 등록</button>
-            </a>
+        <div class="btn-flex-area justify-content-end mt-3">
+            <button type="button" class="btn btn-primary" onclick="location.href = '/{{request()->path()}}/0'">구역 등록</button>
         </div>
         <!--start pagination -->
         <div>

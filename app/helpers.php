@@ -23,3 +23,8 @@ function set_breadcrumb_array($path_explode) {
 	}
 	return $breadcrumb;
 }
+
+function get_top_path() {
+	return explode('/', request()->path())[0];
+	
+}

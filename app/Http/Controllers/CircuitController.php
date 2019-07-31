@@ -26,4 +26,9 @@ class CircuitController extends Controller
             'ServiceZoneID' => $ServiceZoneID,
         ]);
     }
+
+    public function put_form_zones(Request $request)
+    {
+        dd($request);
+    }
 }

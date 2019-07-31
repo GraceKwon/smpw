@@ -27,7 +27,9 @@
                             <ul class="nav-depth-one">
                             @if( session('gnb') !== null )
                                 @foreach ( session('gnb') as $title => $submenus)
-                                <li class="active">
+                                <li @if(array_key_exists( get_top_path(), $submenus)) 
+                                    class="active" 
+                                @endif>
                                     <a>
                                         <span>{{ $title }}</span>
                                         <i class="fas fa-angle-right"></i>
