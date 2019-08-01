@@ -1,20 +1,17 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
 
 require("./bootstrap");
 
 window.Vue = require("vue");
+import VeeValidate from 'vee-validate';
+import ko from './ko.js'
+import VLabel from './components/VLabel.vue';
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+const config = {
+  locale: 'ko',
+  dictionary: {
+    ko
+  }
+}
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+window.Vue.use(VeeValidate, config);
+Vue.component('v-label', VLabel);

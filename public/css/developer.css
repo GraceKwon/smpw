@@ -2,3 +2,8 @@
     border-color: #ffaf00;
     color: #ffaf00;
 }
+
+label.error {
+    font-size: 0.7rem
+
+}

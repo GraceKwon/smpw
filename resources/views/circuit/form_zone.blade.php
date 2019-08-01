@@ -1,7 +1,7 @@
 @extends('layouts.frames.master')
 @section('content')
 <section class="register-section">
-    <form id="app" method="post"
+    <form id="form" method="post"
     @submit="checkForm" 
     @keydown.enter.prevent>
         @csrf
@@ -14,7 +14,8 @@
                 <td>
                     <div class="inline-responsive">
                         <select class="custom-select"
-                        :class="{ error : errors.OrderNum}" 
+                        :class="{ error : errors.has('OrderNum') }" 
+                        v-validate="'required'"
                         id="OrderNum"
                         name="OrderNum"
                         v-model="OrderNum">
@@ -24,6 +25,7 @@
                             <option value="3">3</option>
                         </select>
                     </div>
+                    <v-label class="error" v-if="errors.has('OrderNum')" :text="errors.first('OrderNum')"></v-label>
                 </td>
                 <th>
                     <label class="label" for="ZoneAlias">구역 약호</label>
@@ -31,11 +33,13 @@
                 <td>
                     <input type="text" 
                     class="form-control min-w-300px-desktop" 
-                    :class="{ error : errors.ZoneAlias}" 
+                    :class="{ error : errors.has('ZoneAlias') }" 
+                    v-validate="'required|alpha_num'"
                     id="ZoneAlias"
                     name="ZoneAlias"
                     v-model="ZoneAlias"
                     placeholder="구역 약호를 입력해 주세요">
+                    <v-label class="error" v-if="errors.has('ZoneAlias')" :text="errors.first('ZoneAlias')"></v-label>
                 </td>
             </tr>
             <tr>
@@ -45,11 +49,13 @@
                 <td colspan="3">
                     <input type="text" 
                     class="form-control min-w-300px-desktop" 
-                    :class="{ error : errors.ZoneName}" 
+                    :class="{ error : errors.has('ZoneName') }" 
+                    v-validate="'required|alpha_spaces'"
                     id="ZoneName"
                     name="ZoneName"
                     v-model="ZoneName"
                     placeholder="구역 명칭을 입력해 주세요">
+                    <v-label class="error" v-if="errors.has('ZoneName')" :text="errors.first('ZoneName')"></v-label>
                 </td>
             </tr>
             <tr>
@@ -60,13 +66,15 @@
                     <div class="register-form-container inline-responsive">
                         <input type="text" 
                         class="form-control min-w-300px-desktop"
-                        :class="{ error : errors.Latitude}" 
+                        :class="{ error : errors.has('Latitude') }" 
+                        v-validate="'required'"
                         id="Latitude" 
                         name="Latitude" 
                         v-model="Latitude" 
                         placeholder="지도에 선택된 구역의 위도가 표시됩니다." 
                         readonly>
                     </div>
+                    <v-label class="error" v-if="errors.has('Latitude')" :text="errors.first('Latitude')"></v-label>
                 </td>
                 <th>
                     <label class="label" for="Longitude">경도</label>
@@ -74,14 +82,16 @@
                 <td>
                     <div class="register-form-container inline-responsive">
                         <input type="text" 
-                            class="form-control min-w-300px-desktop" 
-                            :class="{ error : errors.Longitude}" 
-                            id="Longitude" 
-                            name="Longitude" 
-                            v-model="Longitude" 
-                            placeholder="지도에 선택된 구역의 경도가 표시됩니다." 
-                            readonly>
+                        class="form-control min-w-300px-desktop" 
+                        :class="{ error : errors.has('Longitude') }" 
+                        v-validate="'required'"
+                        id="Longitude" 
+                        name="Longitude" 
+                        v-model="Longitude" 
+                        placeholder="지도에 선택된 구역의 경도가 표시됩니다." 
+                        readonly>
                     </div>
+                    <v-label class="error" v-if="errors.has('Longitude')" :text="errors.first('Longitude')"></v-label>
                 </td>
             </tr>
             <tr>
@@ -104,12 +114,14 @@
                 <td colspan="3">
                     <input type="text" 
                     class="form-control" 
-                    :class="{ error : errors.ZoneAddress}" 
+                    :class="{ error : errors.has('ZoneAddress') }" 
+                    v-validate="'required'"
                     id="ZoneAddress" 
                     name="ZoneAddress" 
                     v-model="ZoneAddress" 
                     placeholder="지도에 선택된 구역의 주소가 표시됩니다." 
                     readonly>
+                    <v-label class="error" v-if="errors.has('ZoneAddress')" :text="errors.first('ZoneAddress')"></v-label>
                 </td>
             </tr>
             </tbody>
@@ -153,16 +165,8 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=10f0647488c1c161a2bb5cbc32269402&libraries=services"></script>
 <script>
     var app = new Vue({
-        el:'#app',
+        el:'#form',
         data:{
-            errors:{
-                OrderNum:false,
-                ZoneAlias:false,
-                ZoneName:false,
-                Latitude:false,
-                Longitude:false,
-                ZoneAddress:false,
-            },
             OrderNum:"",
             ZoneAlias:"",
             ZoneName:"",
@@ -170,85 +174,9 @@
             Longitude:"",
             ZoneAddress:"",
         },
-        watch:{
-            OrderNum:function() {
-                if(this.OrderNum){
-                    this.errors.OrderNum = false;
-                }
-            },
-            ZoneAlias:function() {
-                if(this.ZoneAlias){
-                    this.errors.ZoneAlias = false;
-                }
-            },
-            ZoneName:function() {
-                if(this.ZoneName){
-                    this.errors.ZoneName = false;
-                }
-            },
-            Latitude:function() {
-                if(this.Latitude){
-                    this.errors.Latitude = false;
-                }
-            },
-            Longitude:function() {
-                if(this.Longitude){
-                    this.errors.Longitude = false;
-                }
-            },
-            ZoneAddress:function() {
-                if(this.ZoneAddress){
-                    this.errors.ZoneAddress = false;
-                }
-            },
-        },
         methods:{
             checkForm:function(e) {
-                this.ZoneAlias = this.ZoneAlias.replace(/^\s*|\s*$/g, '');
-                this.ZoneName = this.ZoneName.replace(/^\s*|\s*$/g, '');
-                // this.ZoneName = this.ZoneName.trim();
-                // return false;
-                this.errors = {
-                        OrderNum:false,
-                        ZoneAlias:false,
-                        ZoneName:false,
-                        Latitude:false,
-                        Longitude:false,
-                        ZoneAddress:false,
-                    };
-                if(this.OrderNum 
-                    && this.ZoneAlias
-                    && this.ZoneName
-                    && this.Latitude
-                    && this.Longitude
-                    && this.ZoneAddress)
-                {
-                    return true;
-                } 
-                if(!this.OrderNum){
-                    console.log('OrderNum');
-                    this.errors.OrderNum = true;
-                } 
-                if(!this.ZoneAlias){
-                    console.log('ZoneAlias');
-                    this.errors.ZoneAlias = true;
-                } 
-                if(!this.ZoneName){
-                    console.log('ZoneName');
-                    this.errors.ZoneName = true;
-                }
-                if(!this.Latitude){
-                    console.log('Latitude');
-                    this.errors.Latitude = true;
-                }
-                if(!this.Longitude){
-                    console.log('Longitude');
-                    this.errors.Longitude = true;
-                }
-                if(!this.ZoneAddress){
-                    console.log('ZoneAddress');
-                    this.errors.ZoneAddress = true;
-                } 
+                this.$validator.validateAll()
                 e.preventDefault();
             },
         }
