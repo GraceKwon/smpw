@@ -4,7 +4,7 @@
         <div class="wrap-content">
             <div class="container-fluid">
                 <a class="brand" href="/">
-                    <img src="../img/brand/brand-logo.png" class="logo" alt="">
+                    <img src="/img/brand/brand-logo.png" class="logo" alt="">
                 </a>
                 <div class="slogan for-desktop">
                     여호와의 증인 <span class="font-weight-600">대도시 특별 공개증거</span>

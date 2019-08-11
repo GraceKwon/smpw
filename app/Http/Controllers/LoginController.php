@@ -48,4 +48,14 @@ class LoginController extends Controller
         session(['breadcrumb' => $breadcrumb]);
         return view('/login');
     }
+
+    public function view_reset_pwd()
+    {
+        return view('reset_pwd');
+    }
+
+    public function view_set_pwd()
+    {
+        return view('set_pwd');
+    }
 }

@@ -104,7 +104,7 @@ return [
     ],
 
     'boards' => [
-        'title' => '계시판관리',
+        'title' => '게시판관리',
         'submenus' => [
             'notices' => [
                 'name' => '공지사항',
