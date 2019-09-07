@@ -33,176 +33,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        3
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        4
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        5
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        6
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        7
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        8
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        9
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        10
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        구리역
-                    </td>
-                    <td>
-                        조정 장로
-                    </td>
-                    <td>
-                        2019-03-02
-                    </td>
-                </tr>
+                    @foreach($ZoneList as $Zone)
+                    <tr>
+                        <td>
+                            {{ $Zone->OrderNum }}
+                        </td>
+                        <td>
+                            {{ $Zone->ZoneName }}
+                        </td>
+                        <td>
+                            {{ $Zone->ZoneAlias }}
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            -
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -211,7 +60,7 @@
         </div>
         <!--start pagination -->
         <div>
-            {{-- {{ $json->links() }} --}}
+            {{-- {{ $ZoneList->links() }} --}}
         </div>
         <!-- end pagination -->
         

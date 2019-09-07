@@ -13,8 +13,12 @@ class CircuitController extends Controller
 
     public function view_zones(Request $request)
     {
+        $request->CirCode = '';
+        // return view( 'circuit.zones', [
+        //     'ZoneList' => DB::table('TB_Zone')->paginate(10),
+        // ]);
         return view( 'circuit.zones', [
-       
+            'ZoneList' => DB::select('uspGetStandingServiceZoneList'),
         ]);
     }
 

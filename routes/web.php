@@ -11,7 +11,8 @@
 |
 */
 Route::get('/', 'DashBoardController@view_dashboard');
-Route::get('/login', 'LoginController@try_login');
+Route::get('/login', 'LoginController@view');
+Route::post('/login', 'LoginController@try_login');
 Route::get('/reset_pwd', 'LoginController@view_reset_pwd');
 Route::get('/set_pwd', 'LoginController@view_set_pwd');
 

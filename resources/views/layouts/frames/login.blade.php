@@ -22,8 +22,10 @@
         </section>
     </section>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/function.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/function.min.js"></script>
+    <script type="text/javascript" src="/js/function.js"></script>
+    @yield('script')
 </body>
 
 </html>

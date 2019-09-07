@@ -22,27 +22,43 @@
                                         <div class="font-size-180 font-weight-600">대도시 특별 공개증거</div>
                                     </div>
                                 </div>
+                                @error('fail')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                                 <div class="login-form-wrap no-label">
-                                    <form>
+                                    <form id="form" method="POST" @submit="setCookie">@csrf
                                         <div class="input-area">
                                             <div class="input-flex-group">
-                                                <input type="text" id="user_id" class="form-control" placeholder="아이디를 입력해 주세요">
-                                                <label for="user_id">아이디</label>
+                                                <input type="text" id="Account" name="Account" 
+                                                    ref="Account"
+                                                    class="form-control @error('Account') is-invalid @enderror" 
+                                                    value="{{ old('Account') }}"
+                                                    placeholder="아이디를 입력해 주세요">
+                                                <label for="Account">아이디</label>
                                             </div>
                                             <div class="input-flex-group">
-                                                <input type="password" id="user_pw" class="form-control" placeholder="비밀번호를 입력해 주세요">
-                                                <label for="user_pw">비밀번호</label>
+                                                <input type="password" id="UserPassword" name="UserPassword" 
+                                                    ref="UserPassword"
+                                                    class="form-control @error('UserPassword') is-invalid @enderror" 
+                                                    value="{{ old('UserPassword') }}"
+                                                    placeholder="비밀번호를 입력해 주세요">
+                                                <label for="UserPassword">비밀번호</label>
                                             </div>
                                         </div>
                                         <div class="btn-area mt-3">
-                                            <button type="button" class="btn btn-primary btn-lg btn-block">로그인</button>
+                                            <button class="btn btn-primary btn-lg btn-block">로그인</button>
                                         </div>
                                         <div class="mt-3">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="save_member_info">
+                                                <input type="checkbox" class="custom-control-input" 
+                                                    name="Remember"
+                                                    ref="Remember"
+                                                    {{-- @if(old('Remember')) checked @endif --}}
+                                                    id="save_member_info">
                                                 <label class="custom-control-label" for="save_member_info">
                                                     <span class="text-muted">아이디 / 비밀번호 저장</span>
                                                 </label>
+                                                
                                             </div>
                                             <div class="text-right">
                                                 <a class="btn-ask-reset">
@@ -65,9 +81,47 @@
     </div> <!-- /.wrap-content -->
     <!-- end : content section -->
 </div> <!-- /.content-section -->
+@endsection
+@section('script')
+<script>
+    var app = new Vue({
+    el: '#form',
+        data: {
+        },
+        mounted: function () {
+            if(this.$refs.Account.value === ""){
+                this.$refs.Account.value = this.$cookie.get("Account");
+            }
+            
+            if(this.$refs.UserPassword.value === ""){
+                this.$refs.UserPassword.value = this.$cookie.get("UserPassword");
+            }
+            
+            
+            if(this.$cookie.get("Account")){
+                this.$refs.Remember.checked = true;
+            }
+        },
+        methods: {
+            setCookie: function () {
+                if(this.$refs.Remember.checked){
+                    this.$cookie.set("Account", this.$refs.Account.value);
+                    this.$cookie.set("UserPassword", this.$refs.UserPassword.value);
+                }
+                
+                if(!this.$refs.Remember.checked){
+                    this.$cookie.delete("Account");
+                    this.$cookie.delete("UserPassword");
+                }
+                
+            }
+        }
+    })
+</script>
+@endsection
 
 @section('popup')
-    <!-- <section class="modal-layer-container">
+    {{-- <section class="modal-layer-container">
         <div class="mx-auto px-3">
             <div class="mlp-wrap">
                 <div class="max-w-800px">
@@ -89,8 +143,5 @@
                 </div>
             </div> 
         </div>
-    </section> -->
-@endsection
-
-
+    </section> --}}
 @endsection
