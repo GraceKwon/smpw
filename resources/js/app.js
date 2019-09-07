@@ -3,8 +3,8 @@ require("./bootstrap");
 
 window.Vue = require("vue");
 import VeeValidate from 'vee-validate';
+import VueCookie from 'vue-cookie';
 import ko from './ko.js'
-import VLabel from './components/VLabel.vue';
 
 const config = {
   locale: 'ko',
@@ -14,4 +14,4 @@ const config = {
 }
 
 window.Vue.use(VeeValidate, config);
-Vue.component('v-label', VLabel);
+window.Vue.use(VueCookie);

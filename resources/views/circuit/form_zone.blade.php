@@ -14,7 +14,7 @@
                 <td>
                     <div class="inline-responsive">
                         <select class="custom-select"
-                        :class="{ error : errors.has('OrderNum') }" 
+                        :class="{ 'is-invalid' : errors.has('OrderNum') }" 
                         v-validate="'required'"
                         id="OrderNum"
                         name="OrderNum"
@@ -25,7 +25,7 @@
                             <option value="3">3</option>
                         </select>
                     </div>
-                    <v-label class="error" v-if="errors.has('OrderNum')" :text="errors.first('OrderNum')"></v-label>
+                    <label class="error" v-if="errors.has('OrderNum')" v-html="errors.first('OrderNum')"></label>
                 </td>
                 <th>
                     <label class="label" for="ZoneAlias">구역 약호</label>
@@ -33,13 +33,13 @@
                 <td>
                     <input type="text" 
                     class="form-control min-w-300px-desktop" 
-                    :class="{ error : errors.has('ZoneAlias') }" 
+                    :class="{ 'is-invalid' : errors.has('ZoneAlias') }" 
                     v-validate="'required|alpha_num'"
                     id="ZoneAlias"
                     name="ZoneAlias"
                     v-model="ZoneAlias"
                     placeholder="구역 약호를 입력해 주세요">
-                    <v-label class="error" v-if="errors.has('ZoneAlias')" :text="errors.first('ZoneAlias')"></v-label>
+                    <label class="error" v-if="errors.has('ZoneAlias')" v-html="errors.first('ZoneAlias')"></label>
                 </td>
             </tr>
             <tr>
@@ -49,13 +49,13 @@
                 <td colspan="3">
                     <input type="text" 
                     class="form-control min-w-300px-desktop" 
-                    :class="{ error : errors.has('ZoneName') }" 
+                    :class="{ 'is-invalid' : errors.has('ZoneName') }" 
                     v-validate="'required|alpha_spaces'"
                     id="ZoneName"
                     name="ZoneName"
                     v-model="ZoneName"
                     placeholder="구역 명칭을 입력해 주세요">
-                    <v-label class="error" v-if="errors.has('ZoneName')" :text="errors.first('ZoneName')"></v-label>
+                    <label class="form-check-label" v-if="errors.has('ZoneName')" v-html="errors.first('ZoneName')"></label>
                 </td>
             </tr>
             <tr>
@@ -66,7 +66,7 @@
                     <div class="register-form-container inline-responsive">
                         <input type="text" 
                         class="form-control min-w-300px-desktop"
-                        :class="{ error : errors.has('Latitude') }" 
+                        :class="{ 'is-invalid' : errors.has('Latitude') }" 
                         v-validate="'required'"
                         id="Latitude" 
                         name="Latitude" 
@@ -74,7 +74,7 @@
                         placeholder="지도에 선택된 구역의 위도가 표시됩니다." 
                         readonly>
                     </div>
-                    <v-label class="error" v-if="errors.has('Latitude')" :text="errors.first('Latitude')"></v-label>
+                    <label class="error" v-if="errors.has('Latitude')" v-html="errors.first('Latitude')"></label>
                 </td>
                 <th>
                     <label class="label" for="Longitude">경도</label>
@@ -83,7 +83,7 @@
                     <div class="register-form-container inline-responsive">
                         <input type="text" 
                         class="form-control min-w-300px-desktop" 
-                        :class="{ error : errors.has('Longitude') }" 
+                        :class="{ 'is-invalid' : errors.has('Longitude') }" 
                         v-validate="'required'"
                         id="Longitude" 
                         name="Longitude" 
@@ -91,7 +91,7 @@
                         placeholder="지도에 선택된 구역의 경도가 표시됩니다." 
                         readonly>
                     </div>
-                    <v-label class="error" v-if="errors.has('Longitude')" :text="errors.first('Longitude')"></v-label>
+                    <label class="error" v-if="errors.has('Longitude')" v-html="errors.first('Longitude')"></label>
                 </td>
             </tr>
             <tr>
@@ -114,14 +114,14 @@
                 <td colspan="3">
                     <input type="text" 
                     class="form-control" 
-                    :class="{ error : errors.has('ZoneAddress') }" 
+                    :class="{ 'is-invalid' : errors.has('ZoneAddress') }" 
                     v-validate="'required'"
                     id="ZoneAddress" 
                     name="ZoneAddress" 
                     v-model="ZoneAddress" 
                     placeholder="지도에 선택된 구역의 주소가 표시됩니다." 
                     readonly>
-                    <v-label class="error" v-if="errors.has('ZoneAddress')" :text="errors.first('ZoneAddress')"></v-label>
+                    <label class="error" v-if="errors.has('ZoneAddress')" v-html="errors.first('ZoneAddress')"></label>
                 </td>
             </tr>
             </tbody>
