@@ -23,7 +23,7 @@
                                     </div>
                                 </div>
                                 @error('fail')
-                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    <div class="alert alert-danger">{!! $message !!}</div>
                                 @enderror
                                 <div class="login-form-wrap no-label">
                                     <form id="form" method="POST" @submit="setCookie">@csrf
@@ -35,6 +35,7 @@
                                                     value="{{ old('Account') }}"
                                                     placeholder="아이디를 입력해 주세요">
                                                 <label for="Account">아이디</label>
+                                                <div class="invalid-feedback">아이디를 입력해 주세요</div>
                                             </div>
                                             <div class="input-flex-group">
                                                 <input type="password" id="UserPassword" name="UserPassword" 
@@ -43,6 +44,7 @@
                                                     value="{{ old('UserPassword') }}"
                                                     placeholder="비밀번호를 입력해 주세요">
                                                 <label for="UserPassword">비밀번호</label>
+                                                <div class="invalid-feedback">비밀번호를 입력해 주세요</div>
                                             </div>
                                         </div>
                                         <div class="btn-area mt-3">
@@ -82,11 +84,36 @@
     <!-- end : content section -->
 </div> <!-- /.content-section -->
 @endsection
+
+@section('popup')
+{{-- @error('fail')
+<section class="modal-layer-container" v-if="popup">
+    <div class="mx-auto px-3">
+        <div class="mlp-wrap">
+            <div class="max-w-300px">
+                <div class="mlp-content text-center">
+                    <img src="../img/exclamation.svg" class="w-50px">
+                    <div class="mt-3">
+                        {!! $message !!}
+                    </div>
+                </div>
+                <div class="mlp-footer justify-content-center">
+                    <button class="btn btn-primary btn-sm"
+                        @click="closePopup">확인</button>
+                </div>
+            </div>
+        </div> <!-- /.mlp-wrap -->
+    </div>
+</section>
+@enderror --}}
+@endsection
+
 @section('script')
 <script>
     var app = new Vue({
-    el: '#form',
+    el: '#wrapper-body',
         data: {
+            popup: true
         },
         mounted: function () {
             if(this.$refs.Account.value === ""){
@@ -114,34 +141,14 @@
                     this.$cookie.delete("UserPassword");
                 }
                 
+            },
+            closePopup: function () {
+                this.popup = false;
+                
             }
+
         }
     })
 </script>
 @endsection
 
-@section('popup')
-    {{-- <section class="modal-layer-container">
-        <div class="mx-auto px-3">
-            <div class="mlp-wrap">
-                <div class="max-w-800px">
-                    <div class="mlp-header">
-                        <div class="mlp-title">
-                            <span>Modal layer popup</span>
-                        </div>
-                        <div class="mlp-close">
-                            <i class="fa fa-times"></i>
-                        </div>
-                    </div>
-                    <div class="mlp-content">
-                        점검중입니다
-                    </div>
-                    <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-secondary btn-sm">취소</button>
-                        <button class="btn btn-primary btn-sm">확인</button>
-                    </div>
-                </div>
-            </div> 
-        </div>
-    </section> --}}
-@endsection

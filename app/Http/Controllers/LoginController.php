@@ -23,23 +23,26 @@ class LoginController extends Controller
     }
     public function try_login(Request $request)
     {
+        /* 파라미터 유효성 체크 */
         $request->validate([
             'Account' => 'required',
             'UserPassword' => 'required',
         ]);
-        try {
-            $res = DB::select('uspGetStandingAdminLogIn ?,?',
-                [
-                    $request->Account, 
-                    $request->UserPassword,
-                ]);
-        } catch (Exception $e) {
-                return $e;
-        }
+
+        /*프로시져 호출*/
+        $res = DB::select('uspGetStandingAdminLogIn ?,?',
+            [
+                $request->Account, 
+                $request->UserPassword,
+            ]);
         
+        if($res === []) $fail = '로그인에 실패하였습니다.<br>Caps Lock 키가 꺼져 있는지 확인한 뒤 다시 시도하십시오.';
 
         if($res){
+            $AdminID = $res[0]->AdminID;
+            $AdminName = $res[0]->AdminName;
             $AdminRoleID = $res[0]->AdminRoleID;
+            $TempPassYn = $res[0]->TempPassYn;
             $admin_auth = config('admin_auth');
             $gnb = [];
             $auth_path = [];
@@ -74,19 +77,36 @@ class LoginController extends Controller
             }
             //세션 주입
             session(['auth.path' => $auth_path]);
+            session(['auth.AdminID' => $AdminID]);
+            session(['auth.AdminName' => $AdminName]);
             session(['auth.AdminRoleID' => $AdminRoleID]);
             session(['gnb' => $gnb]);
             session(['breadcrumb' => $breadcrumb]);
         }
-        if(!$res) $ErrorMessage = '로그인에 실패하였습니다. Caps Lock 키가 꺼져 있는지 확인한 뒤 다시 시도하십시오.';
-        
-        if( isset($ErrorMessage) ) 
+     
+        if( isset($fail) ) {
             return back()
                 ->withInput(Input::except('UserPassword'))
-                ->withErrors(['fail' => $ErrorMessage]);
+                ->withErrors(['fail' => $fail]);
+        }else if($TempPassYn === 1){
+            return redirect('/first');
+        }else{
+            return redirect('/');
+        }
         
-        return redirect('/');
-        
+    }
+
+    public function firstSetPwd(Request $request)
+    {
+        $request->validate([
+            'UserPassword' => 'required|confirmed|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/', //8~12자리의 영문, 숫자, 특수문자 포함
+        ]);
+        echo session('auth.AdminID');
+        echo session('auth.AdminName');
+        echo session('auth.AdminRoleID');
+        echo session('auth.TempPassYn');
+        dd($request->UserPassword);
+        // return redirect('/');
     }
 
     public function view_reset_pwd()
@@ -97,5 +117,10 @@ class LoginController extends Controller
     public function view_set_pwd()
     {
         return view('set_pwd');
+    }
+
+    public function viewFirstLogin()
+    {
+        return view('firstLogin');
     }
 }
