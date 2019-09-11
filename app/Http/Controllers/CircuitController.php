@@ -11,27 +11,27 @@ class CircuitController extends Controller
         $this->middleware('admin_auth');
     }
 
-    public function view_zones(Request $request)
+    public function serviceZones(Request $request)
     {
         $request->CirCode = '';
         // return view( 'circuit.zones', [
         //     'ZoneList' => DB::table('TB_Zone')->paginate(10),
         // ]);
-        return view( 'circuit.zones', [
-            'ZoneList' => DB::select('uspGetStandingServiceZoneList'),
+        return view( 'circuit.serviceZones', [
+            'ServiceZoneList' => DB::select('uspGetStandingServiceZoneList'),
         ]);
     }
 
-    public function view_form_zones(Request $request)
+    public function formServiceZones(Request $request)
     {
         $ServiceZoneID = $request->ServiceZoneID;
        
-        return view( 'circuit.form_zone', [
+        return view( 'circuit.formServiceZones', [
             'ServiceZoneID' => $ServiceZoneID,
         ]);
     }
 
-    public function put_form_zones(Request $request)
+    public function putServiceZones(Request $request)
     {
         dd($request);
     }

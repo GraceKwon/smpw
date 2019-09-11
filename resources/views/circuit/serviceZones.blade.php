@@ -33,22 +33,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($ZoneList as $Zone)
+                    @foreach($ServiceZoneList as $ServiceZone)
                     <tr>
                         <td>
-                            {{ $Zone->OrderNum }}
+                            {{ $ServiceZone->OrderNum }}
                         </td>
                         <td>
-                            {{ $Zone->ZoneName }}
+                            {{ $ServiceZone->ZoneName }}
                         </td>
                         <td>
-                            {{ $Zone->ZoneAlias }}
+                            {{ $ServiceZone->ZoneAlias }}
                         </td>
                         <td>
-                            -
+                            {{ $ServiceZone->AdminName }}
                         </td>
                         <td>
-                            -
+                            {{ $ServiceZone->CreateDate }}
                         </td>
                     </tr>
                     @endforeach

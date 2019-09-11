@@ -157,7 +157,7 @@
                                         <img src="../img/common/user-default.png" alt="">
                                     </div>
                                     <div class="user-name">
-                                        <span class="text-primary font-weight-bold">최증인</span>님
+                                        <span class="text-primary font-weight-bold">{{ session('auth.AdminName')}}</span>님
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +167,7 @@
                                         <a>내 정보 수정</a>
                                     </li>
                                     <li class="split">
-                                        <a>로그아웃</a>
+                                        <a href="/logOut">로그아웃</a>
                                     </li>
                                 </ul>
                             </nav>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Input;
 
 class LoginController extends Controller
 {
-    public function view()
+    public function login()
     {
         // DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?',
         //     [
@@ -20,6 +20,12 @@ class LoginController extends Controller
         //         '010-7224-0578' // @Mobile
         //      ]);
         return view('login');
+    }
+    public function logOut()
+    {
+        session()->flush();
+
+        return redirect('/login');
     }
     public function tryLogin(Request $request)
     {
@@ -96,13 +102,14 @@ class LoginController extends Controller
         
     }
 
-    public function viewSetPwd()
+    public function setPwd()
     {
         return view('setPwd');
     }
 
-    public function SetPwd(Request $request)
+    public function putSetPwd(Request $request)
     {
+        // dd($request->UserPassword);
         $request->validate([
             'UserPassword' => 'required|confirmed|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/', //8~12자리의 영문, 숫자, 특수문자 포함
         ]);
@@ -116,9 +123,20 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    public function viewResetPwd()
+    public function resetPwd()
     {
         return view('resetPwd');
+    }
+
+    public function putResetPwd(Request $request)
+    {
+        $res = DB::select('uspSetStandingAdminPasswordReset ?,?',
+            [
+                $request->Account,
+                $request->Mobile,
+            ]);
+        // dd($res);
+        return redirect('/login');
     }
 
 

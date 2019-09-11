@@ -1,9 +1,10 @@
 @extends('layouts.frames.master')
 @section('content')
 <section class="register-section">
-    <form id="form" method="post"
-    @submit="checkForm" 
-    @keydown.enter.prevent>
+    <form id="form" method="POST"
+        @submit="validate" 
+        @keydown.enter.prevent>
+        @method("PUT")
         @csrf
         <table class="table table-register">
             <tbody>
@@ -25,7 +26,8 @@
                             <option value="3">3</option>
                         </select>
                     </div>
-                    <label class="error" v-if="errors.has('OrderNum')" v-html="errors.first('OrderNum')"></label>
+                    {{-- <label class="error" v-if="errors.has('OrderNum')" v-html="errors.first('OrderNum')"></label> --}}
+                    <div class="invalid-feedback" v-html="errors.first('OrderNum')"></div>
                 </td>
                 <th>
                     <label class="label" for="ZoneAlias">구역 약호</label>
@@ -39,7 +41,8 @@
                     name="ZoneAlias"
                     v-model="ZoneAlias"
                     placeholder="구역 약호를 입력해 주세요">
-                    <label class="error" v-if="errors.has('ZoneAlias')" v-html="errors.first('ZoneAlias')"></label>
+                    {{-- <label class="error" v-if="errors.has('ZoneAlias')" v-html="errors.first('ZoneAlias')"></label> --}}
+                    <div class="invalid-feedback" v-html="errors.first('ZoneAlias')"></div>
                 </td>
             </tr>
             <tr>
@@ -55,7 +58,8 @@
                     name="ZoneName"
                     v-model="ZoneName"
                     placeholder="구역 명칭을 입력해 주세요">
-                    <label class="form-check-label" v-if="errors.has('ZoneName')" v-html="errors.first('ZoneName')"></label>
+                    {{-- <label class="form-check-label" v-if="errors.has('ZoneName')" v-html="errors.first('ZoneName')"></label> --}}
+                    <div class="invalid-feedback" v-html="errors.first('ZoneName')"></div>
                 </td>
             </tr>
             <tr>
@@ -73,8 +77,9 @@
                         v-model="Latitude" 
                         placeholder="지도에 선택된 구역의 위도가 표시됩니다." 
                         readonly>
+                        <div class="invalid-feedback" v-html="errors.first('Latitude')"></div>
                     </div>
-                    <label class="error" v-if="errors.has('Latitude')" v-html="errors.first('Latitude')"></label>
+                    {{-- <label class="error" v-if="errors.has('Latitude')" v-html="errors.first('Latitude')"></label> --}}
                 </td>
                 <th>
                     <label class="label" for="Longitude">경도</label>
@@ -90,8 +95,9 @@
                         v-model="Longitude" 
                         placeholder="지도에 선택된 구역의 경도가 표시됩니다." 
                         readonly>
+                        <div class="invalid-feedback" v-html="errors.first('Longitude')"></div>
                     </div>
-                    <label class="error" v-if="errors.has('Longitude')" v-html="errors.first('Longitude')"></label>
+                    {{-- <label class="error" v-if="errors.has('Longitude')" v-html="errors.first('Longitude')"></label> --}}
                 </td>
             </tr>
             <tr>
@@ -121,7 +127,8 @@
                     v-model="ZoneAddress" 
                     placeholder="지도에 선택된 구역의 주소가 표시됩니다." 
                     readonly>
-                    <label class="error" v-if="errors.has('ZoneAddress')" v-html="errors.first('ZoneAddress')"></label>
+                    {{-- <label class="error" v-if="errors.has('ZoneAddress')" v-html="errors.first('ZoneAddress')"></label> --}}
+                    <div class="invalid-feedback" v-html="errors.first('ZoneAddress')"></div>
                 </td>
             </tr>
             </tbody>
@@ -175,10 +182,21 @@
             ZoneAddress:"",
         },
         methods:{
-            checkForm:function(e) {
+            validate: function (e) {
+                // return true;
                 this.$validator.validateAll()
-                e.preventDefault();
-            },
+                .then(function (result) {
+                    console.log(result);
+                    if (!result) {
+                        e.preventDefault();
+                    } 
+                })
+                .catch(function (error) {
+                    e.preventDefault();
+                });
+
+                
+            }
         }
     })
 

@@ -36,8 +36,8 @@
                                 </div>
                             @endif
                             <div class="login-form-wrap">
-                                <form id="form" method="POST"
-                                    @submit="validate">
+                                <form id="form" method="POST" @submit="validate">
+                                    @method("PUT")
                                     @csrf
                                     <div class="text-area">
                                         <div class="font-size-120 text-primary">시스템에 처음 접속하셨습니다.</div>
@@ -48,12 +48,13 @@
                                         <div class="input-flex-group">
                                             <input type="password" 
                                                 ref="UserPassword" 
+                                                id="UserPassword" 
                                                 name="UserPassword" 
                                                 v-model="UserPassword"
                                                 class="form-control" 
                                                 :class="{ 
                                                     'is-invalid' : errors.has('UserPassword'), 
-                                                    'is-valid' : !errors.has('UserPassword') &&  UserPassword
+                                                    'is-valid' : !errors.has('UserPassword') && UserPassword
                                                 }" 
                                                 v-validate="{   
                                                     rules: { 
@@ -68,6 +69,7 @@
                                         </div>
                                         <div class="input-flex-group">
                                             <input type="password" 
+                                                id="UserPassword_confirmation" 
                                                 name="UserPassword_confirmation" 
                                                 v-model="UserPassword_confirmation"
                                                 class="form-control" 
@@ -127,7 +129,6 @@
 
                 
             }
-   
         }
     })
 </script>

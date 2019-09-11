@@ -5,7 +5,7 @@ return [
     'circuits' => [
         'title' => '순회구관리',
         'submenus' => [
-            'zones' => [
+            'ServiceZones' => [
                 'name' => '구역관리',
                 'auth' => [1,2,3,4,5],
                 'subpage' => ['구역등록','구역상세'],

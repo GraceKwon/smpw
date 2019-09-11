@@ -23,25 +23,52 @@
                                     </div>
                                 </div>
                                 <div class="login-form-wrap">
-                                    <form>
+                                    <form id="form" method="POST" @submit="validate">
+                                        @method("PUT")
+                                        @csrf
                                         <div class="text-area">
-                                            <div class="font-size-120 text-primary">비밀번호 초기와를 요청하시겠습니까?</div>
+                                            <div class="font-size-120 text-primary">비밀번호 초기화를 요청하시겠습니까?</div>
                                             <div class="mt-1">아이디와 연락처 번호를 입력해 주십시오. </div>
                                         </div>
                                         <div class="border-top my-4"></div>
                                         <div class="input-area">
                                             <div class="input-flex-group">
-                                                <input type="password" id="user_id" class="form-control" placeholder="사용하실 아이디를 입력해 주세요">
-                                                <label for="user_id">아이디</label>
+                                                <input type="text" 
+                                                    id="Account" 
+                                                    name="Account" 
+                                                    v-model="Account" 
+                                                    class="form-control" 
+                                                    :class="{ 'is-invalid' : errors.has('Account') }" 
+                                                    v-validate="'required'"
+                                                    placeholder="사용하실 아이디를 입력해 주세요">
+                                                <label for="Account">아이디</label>
+                                                <div class="invalid-feedback">아이디를 입력해 주세요.</div>
                                             </div>
                                             <div class="input-flex-group">
-                                                <input type="password" id="user_mobile_num" class="form-control" placeholder="연락처 번호를 입력해 주세요">
-                                                <label for="user_mobile_num">연락처 번호</label>
+                                                <input type="text" 
+                                                    id="Mobile" 
+                                                    name="Mobile" 
+                                                    v-model="Mobile" 
+                                                    class="form-control" 
+                                                    :class="{ 
+                                                        'is-invalid' : errors.has('Mobile'), 
+                                                        'is-valid' : !errors.has('Mobile') && Mobile
+                                                    }" 
+                                                    v-validate="{   
+                                                        rules: { 
+                                                            required: true,
+                                                            regex:/^\d{2,3}-\d{3,4}-\d{4}$/,
+                                                        }
+                                                    }"
+                                                    placeholder="휴대폰 번호를 입력해 주세요">
+                                                <label for="Mobile">휴대폰 번호</label>
+                                                <div class="info-feedback">숫자만 입력 가능합니다.</div>
                                             </div>
                                         </div>
                                         <div class="btn-area text-right mt-3">
-                                            <button type="button" class="btn btn-secondary">취소</button>
-                                            <button type="button" class="btn btn-primary">확인</button>
+                                            <button type="button" class="btn btn-secondary" 
+                                                onclick="location.href='/login'">취소</button>
+                                            <button class="btn btn-primary">확인</button>
                                         </div>
                                     </form>
                                 </div> <!-- /.login-form-wrap -->
@@ -59,31 +86,62 @@
     <!-- end : content section -->
 
 </div> <!-- /.content-section -->
-@section('popup')
-    <!-- <section class="modal-layer-container">
-        <div class="mx-auto px-3">
-            <div class="mlp-wrap">
-                <div class="max-w-800px">
-                    <div class="mlp-header">
-                        <div class="mlp-title">
-                            <span>Modal layer popup</span>
-                        </div>
-                        <div class="mlp-close">
-                            <i class="fa fa-times"></i>
-                        </div>
-                    </div>
-                    <div class="mlp-content">
-                        점검중입니다
-                    </div>
-                    <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-secondary btn-sm">취소</button>
-                        <button class="btn btn-primary btn-sm">확인</button>
-                    </div>
-                </div>
-            </div> 
-        </div>
-    </section> -->
 @endsection
-
-
+@section('script')
+<script>
+    var app = new Vue({
+    el: '#form',
+        data: {
+            Account: '',
+            Mobile: ''
+        },
+        watch: {
+            Mobile: function () {
+                this.Mobile = this.Mobile.replace(/[^0-9]/g, '');
+                var tmp = '';
+                if( this.Mobile.length < 4){
+                    this.Mobile = this.Mobile;
+                }else if(this.Mobile.length < 7){
+                    tmp += this.Mobile.substr(0, 3);
+                    tmp += '-';
+                    tmp += this.Mobile.substr(3);
+                    this.Mobile = tmp;
+                }else if(this.Mobile.length < 11){
+                    tmp += this.Mobile.substr(0, 3);
+                    tmp += '-';
+                    tmp += this.Mobile.substr(3, 3);
+                    tmp += '-';
+                    tmp += this.Mobile.substr(6);
+                    this.Mobile = tmp;
+                }else{
+                    tmp += this.Mobile.substr(0, 3);
+                    tmp += '-';
+                    tmp += this.Mobile.substr(3, 4);
+                    tmp += '-';
+                    tmp += this.Mobile.substr(7);
+                    this.Mobile = tmp;
+                }
+            }
+        },
+        methods: {
+            validate: function (e) {
+                // return true;
+                this.$validator.validateAll()
+                .then(function (result) {
+                    console.log(result);
+                    if (!result) {
+                        e.preventDefault();
+                    } 
+                })
+                .catch(function (error) {
+                    e.preventDefault();
+                });
+                
+            },
+            autoHypenPhone: function(str){
+                
+            }
+        }
+    })
+</script>
 @endsection
