@@ -10,14 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'DashBoardController@view_dashboard');
-Route::get('/login', 'LoginController@view');
-Route::get('/first', 'LoginController@viewFirstLogin');
-Route::post('/first', 'LoginController@firstSetPwd');
-Route::post('/login', 'LoginController@try_login');
-Route::get('/reset_pwd', 'LoginController@view_reset_pwd');
-Route::get('/set_pwd', 'LoginController@view_set_pwd');
+//메인
+Route::get('/', 'DashBoardController@viewDashboard');
 
+//어드민
+    //로그인
+    Route::get('/login', 'LoginController@view');
+    Route::post('/login', 'LoginController@tryLogin');
+    //비밀번호 설정&초기화
+    Route::get('/set-pwd', 'LoginController@viewSetPwd');
+    Route::post('/set-pwd', 'LoginController@SetPwd');
+    Route::get('/reset-pwd', 'LoginController@viewResetPwd');
+
+//에러페이지
 Route::view('/errors/auth', function(){
     return view('errors.auth');
 });

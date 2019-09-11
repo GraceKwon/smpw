@@ -21,7 +21,7 @@ class LoginController extends Controller
         //      ]);
         return view('login');
     }
-    public function try_login(Request $request)
+    public function tryLogin(Request $request)
     {
         /* 파라미터 유효성 체크 */
         $request->validate([
@@ -96,31 +96,30 @@ class LoginController extends Controller
         
     }
 
-    public function firstSetPwd(Request $request)
+    public function viewSetPwd()
+    {
+        return view('setPwd');
+    }
+
+    public function SetPwd(Request $request)
     {
         $request->validate([
             'UserPassword' => 'required|confirmed|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/', //8~12자리의 영문, 숫자, 특수문자 포함
         ]);
-        echo session('auth.AdminID');
-        echo session('auth.AdminName');
-        echo session('auth.AdminRoleID');
-        echo session('auth.TempPassYn');
-        dd($request->UserPassword);
-        // return redirect('/');
+        $res = DB::select('uspSetStandingAdminPasswordUpdate ?,?,?',
+            [
+                session('auth.AdminID'),
+                '11112222',
+                $request->UserPassword,
+            ]);
+        // dd($res);
+        return redirect('/');
     }
 
-    public function view_reset_pwd()
+    public function viewResetPwd()
     {
-        return view('reset_pwd');
+        return view('resetPwd');
     }
 
-    public function view_set_pwd()
-    {
-        return view('set_pwd');
-    }
 
-    public function viewFirstLogin()
-    {
-        return view('firstLogin');
-    }
 }

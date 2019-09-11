@@ -82,7 +82,8 @@
                                         </div>
                                     </div>
                                     <div class="btn-area text-right mt-3">
-                                        <button type="button" class="btn btn-secondary">취소</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="location.href = '/'">취소</button>
                                         <button class="btn btn-primary">확인</button>
                                     </div>
                                 </form>
@@ -112,7 +113,7 @@
         },
         methods: {
             validate: function (e) {
-                return true;
+                // return true;
                 this.$validator.validateAll()
                 .then(function (result) {
                     console.log(result);
