@@ -22,6 +22,9 @@
                                         <div class="font-size-180 font-weight-600">대도시 특별 공개증거</div>
                                     </div>
                                 </div>
+                                @if(session('message'))
+                                    <div class="alert alert-success">{!! session('message') !!}</div>
+                                @endif
                                 @error('fail')
                                     <div class="alert alert-danger">{!! $message !!}</div>
                                 @enderror

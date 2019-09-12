@@ -22,6 +22,9 @@
                                         <div class="font-size-180 font-weight-600">대도시 특별 공개증거</div>
                                     </div>
                                 </div>
+                                @error('fail')
+                                    <div class="alert alert-danger">{!! $message !!}</div>
+                                @enderror
                                 <div class="login-form-wrap">
                                     <form id="form" method="POST" @submit="validate">
                                         @method("PUT")
@@ -60,8 +63,8 @@
                                                             regex:/^\d{2,3}-\d{3,4}-\d{4}$/,
                                                         }
                                                     }"
-                                                    placeholder="휴대폰 번호를 입력해 주세요">
-                                                <label for="Mobile">휴대폰 번호</label>
+                                                    placeholder="연락처 번호를 입력해 주세요">
+                                                <label for="Mobile">연락처 번호</label>
                                                 <div class="info-feedback">숫자만 입력 가능합니다.</div>
                                             </div>
                                         </div>
@@ -98,29 +101,7 @@
         watch: {
             Mobile: function () {
                 this.Mobile = this.Mobile.replace(/[^0-9]/g, '');
-                var tmp = '';
-                if( this.Mobile.length < 4){
-                    this.Mobile = this.Mobile;
-                }else if(this.Mobile.length < 7){
-                    tmp += this.Mobile.substr(0, 3);
-                    tmp += '-';
-                    tmp += this.Mobile.substr(3);
-                    this.Mobile = tmp;
-                }else if(this.Mobile.length < 11){
-                    tmp += this.Mobile.substr(0, 3);
-                    tmp += '-';
-                    tmp += this.Mobile.substr(3, 3);
-                    tmp += '-';
-                    tmp += this.Mobile.substr(6);
-                    this.Mobile = tmp;
-                }else{
-                    tmp += this.Mobile.substr(0, 3);
-                    tmp += '-';
-                    tmp += this.Mobile.substr(3, 4);
-                    tmp += '-';
-                    tmp += this.Mobile.substr(7);
-                    this.Mobile = tmp;
-                }
+                this.Mobile = this.Mobile.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3")
             }
         },
         methods: {

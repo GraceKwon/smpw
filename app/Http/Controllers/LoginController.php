@@ -12,7 +12,7 @@ class LoginController extends Controller
     {
         // DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?',
         //     [
-        //         'developer', // @Account
+        //         'roleID_1', // @Account
         //         '123123', //@UserPassword
         //         '개발자', // @AdminName
         //         1, // @AdminRoleID
@@ -41,7 +41,7 @@ class LoginController extends Controller
                 $request->Account, 
                 $request->UserPassword,
             ]);
-        
+        // dd($request->UserPassword);
         if($res === []) $fail = '로그인에 실패하였습니다.<br>Caps Lock 키가 꺼져 있는지 확인한 뒤 다시 시도하십시오.';
 
         if($res){
@@ -135,8 +135,18 @@ class LoginController extends Controller
                 $request->Account,
                 $request->Mobile,
             ]);
-        // dd($res);
-        return redirect('/login');
+
+        if($res[0]->computed === 0) {
+            $message = '비밀번호 초기화에 실패하였습니다. <br> 아이디 혹은 휴대폰번호를 확인해주세요.';
+            return back()
+                ->withErrors(['fail' => $message]);
+        }
+        if($res[0]->computed === 1) {
+            $message = $request->Account . '(아이디)의 비밀번호가 "11112222"로 변경되었습니다.';
+            return redirect('/login')
+                ->with(['message' => $message]);
+        } 
+        
     }
 
 
