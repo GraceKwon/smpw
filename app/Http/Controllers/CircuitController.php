@@ -9,6 +9,7 @@ class CircuitController extends Controller
     public function __construct()
     {
         $this->middleware('admin_auth');
+        $this->middleware('CheckCircuitID', ['only' => ['putServiceZones']]);
     }
 
     public function serviceZones(Request $request)
@@ -33,7 +34,17 @@ class CircuitController extends Controller
 
     public function putServiceZones(Request $request)
     {
-        dd($request);
+        $res = DB::select('uspSetStandingServiceZoneInsert ?,?,?,?,?,?,?,?', [
+            $request->ZoneName,
+            $request->ZoneAlias,
+            $request->Latitude,
+            $request->Longitude,
+            $request->ZoneAddress,
+            $request->OrderNum,
+            session('auth.AdminID'),
+            session('auth.CircuitID')
+        ]);
+        return redirect('/ServiceZones');
     }
 
     public function view_admins(Request $request)
