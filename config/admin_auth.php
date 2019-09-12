@@ -15,7 +15,7 @@ return [
                 'auth' => [1,2],
                 'subpage' => ['사용자등록'],
             ],
-            'storages' => [
+            'KeepZones' => [
                 'name' => '보관장소관리',
                 'auth' => [1,2,3,4,5],
                 'subpage' => ['보관장소등록'],

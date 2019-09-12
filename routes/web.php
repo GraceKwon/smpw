@@ -40,6 +40,12 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('AdminID', '[0-9]+');
     Route::post('admins/{AdminID}', 'CircuitController@put_form_admins')
         ->where('AdminID', '[0-9]+');
+    //보관장소관리
+    Route::get('KeepZones', 'CircuitController@KeepZones');
+    Route::get('KeepZones/{KeepZoneID}', 'CircuitController@formKeepZones')
+        ->where('KeepZoneID', '[0-9]+');
+    Route::put('KeepZones/{KeepZoneID}', 'CircuitController@putKeepZones')
+        ->where('KeepZoneID', '[0-9]+');
 
 //봉사자관리
     //봉사자관리
