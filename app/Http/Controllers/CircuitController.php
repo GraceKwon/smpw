@@ -60,4 +60,23 @@ class CircuitController extends Controller
        
         ]);
     }
+
+    public function keepZones(Request $request)
+    {
+        $request->CirCode = '';
+        $parameter = [
+            30, //@PageSize
+            1, //@PageNumber
+            1, //@MetroID
+            1, //@CircuitID
+            1, //@CongregationID
+            1, //@AdminName
+        ]
+        // return view( 'circuit.zones', [
+        //     'ZoneList' => DB::table('TB_Zone')->paginate(10),
+        // ]);
+        return view( 'circuit.serviceZones', [
+            'KeepZoneList' => DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?', []),
+        ]);
+    }
 }
