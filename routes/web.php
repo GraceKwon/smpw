@@ -37,7 +37,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::delete('ServiceZones/{ServiceZoneID}', 'CircuitController@deleteServiceZones')
         ->where('ServiceZoneID', '[0-9]+');
     //사용자관리
-    Route::get('admins', 'CircuitController@view_admins');
+    Route::get('admins', 'CircuitController@admins');
     Route::get('admins/{AdminID}', 'CircuitController@view_form_admin')
         ->where('AdminID', '[0-9]+');
     Route::post('admins/{AdminID}', 'CircuitController@put_form_admins')

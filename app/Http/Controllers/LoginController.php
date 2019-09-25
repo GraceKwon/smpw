@@ -10,15 +10,15 @@ class LoginController extends Controller
 {
     public function login()
     {
-        DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?',
-            [
-                'roleID3', // @Account
-                '11112222', //@UserPassword
-                '개발자', // @AdminName
-                3, // @AdminRoleID
-                0, // @TempUseYn
-                '010-7224-0578' // @Mobile
-             ]);
+        // DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?',
+        //     [
+        //         'role5', // @Account
+        //         '11112222', //@UserPassword
+        //         '롤5', // @AdminName
+        //         5, // @AdminRoleID
+        //         1, // @TempUseYn
+        //         '010-7224-0578' // @Mobile
+        //      ]);
         return view('login');
     }
     public function logOut()

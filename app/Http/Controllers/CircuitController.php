@@ -82,10 +82,26 @@ class CircuitController extends Controller
         
     }
 
-    public function view_admins(Request $request)
+    public function admins(Request $request)
     {
+        // $MetroList = DB::select('uspGetStandingSearchMetroList');
+        // $CircuitList = DB::select('uspGetStandingSearchCircuitList ?', []);
+        // $CongregationList = DB::select('uspGetStandingSearchCongregationList ?', []);
+        $AdminList = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?', [
+            3,
+            1,
+            null,
+            null,
+            null,
+            null,
+            null,
+        ]);
+        // dd($AdminList);
         return view( 'circuit.admins', [
-       
+            // 'MetroList' => $MetroList;,
+            // 'CircuitList' => $CircuitList;,
+            // 'CongregationList' => $CongregationList;,
+            'AdminList' => $AdminList,
         ]);
     }
 
