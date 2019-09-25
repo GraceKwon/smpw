@@ -1,9 +1,20 @@
-.error {
-    border-color: #ffaf00;
-    color: #ffaf00;
+.pointer {
+    cursor: pointer;
 }
 
-label.error {
-    font-size: 0.7rem
+.map {
+    height:450px;
+    position:relative;
+    overflow:hidden;
+}
 
+.map + div {
+    position:absolute ;
+    top:0;left:0;
+    margin:20px 0 0px 20px;
+    padding:5px;
+    overflow-y:auto;
+    background:rgba(255, 255, 255, 0.8);
+    z-index: 1;
+    font-size:12px
 }

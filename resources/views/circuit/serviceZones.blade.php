@@ -34,7 +34,8 @@
                 </thead>
                 <tbody>
                     @foreach($ServiceZoneList as $ServiceZone)
-                    <tr>
+                    <tr class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ServiceZone->ServiceZoneID }}'">
                         <td>
                             {{ $ServiceZone->OrderNum }}
                         </td>
@@ -55,9 +56,11 @@
                 </tbody>
             </table>
         </div>
+        @if(session('auth.CircuitID'))
         <div class="btn-flex-area justify-content-end mt-3">
             <button type="button" class="btn btn-primary" onclick="location.href = '/{{request()->path()}}/0'">구역 등록</button>
         </div>
+        @endif
         <!--start pagination -->
         <div>
             {{-- {{ $ZoneList->links() }} --}}

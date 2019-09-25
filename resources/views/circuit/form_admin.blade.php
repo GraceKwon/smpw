@@ -85,7 +85,7 @@
             </tbody>
         </table>
         <div class="btn-flex-area justify-content-end">
-            <button type="button" class="btn btn-secondary" onclick="location.href = '/{{ get_top_path() }}'">취소</button>
+            <button type="button" class="btn btn-secondary" onclick="location.href = '/{{ getTopPath() }}'">취소</button>
             <button type="submit" class="btn btn-primary">저장</button>
         </div> <!-- /.register-btn-area -->
     </form>

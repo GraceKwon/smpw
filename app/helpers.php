@@ -1,5 +1,5 @@
 <?php
-function set_breadcrumb_array($path_explode) {
+function setBreadcrumbArray($path_explode) {
 	$path = $path_explode[0];                    	//서브 path 제거
 	$path_count = count($path_explode);             // path 레벨 확인
 	
@@ -24,7 +24,13 @@ function set_breadcrumb_array($path_explode) {
 	return $breadcrumb;
 }
 
-function get_top_path() {
+function getTopPath() {
 	return explode('/', request()->path())[0];
+	
+}
+
+function getAffectedRows($res) {
+
+	return reset($res)->computed;
 	
 }

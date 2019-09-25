@@ -21,7 +21,7 @@ class admin_auth
         
         if( array_search($path, $auth_path) !== false ){    // 요청된 path가 권한이 있는지 확인
             
-            view()->share( 'breadcrumb', set_breadcrumb_array($path_explode) ); //모든 뷰파일에 $breadcrumb 바인딩 
+            view()->share( 'breadcrumb', setBreadcrumbArray($path_explode) ); //모든 뷰파일에 $breadcrumb 바인딩 
             $response = $next($request);
             return $response;
 

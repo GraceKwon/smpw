@@ -10,15 +10,15 @@ class LoginController extends Controller
 {
     public function login()
     {
-        // DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?',
-        //     [
-        //         'roleID_1', // @Account
-        //         '123123', //@UserPassword
-        //         '개발자', // @AdminName
-        //         1, // @AdminRoleID
-        //         0, // @TempUseYn
-        //         '010-7224-0578' // @Mobile
-        //      ]);
+        DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?',
+            [
+                'roleID3', // @Account
+                '11112222', //@UserPassword
+                '개발자', // @AdminName
+                3, // @AdminRoleID
+                0, // @TempUseYn
+                '010-7224-0578' // @Mobile
+             ]);
         return view('login');
     }
     public function logOut()
@@ -48,6 +48,9 @@ class LoginController extends Controller
             $AdminID = $res[0]->AdminID;
             $AdminName = $res[0]->AdminName;
             $AdminRoleID = $res[0]->AdminRoleID;
+            $MetroID = $res[0]->MetroID;
+            $CircuitID = $res[0]->CircuitID;
+            $CongregationID = $res[0]->CongregationID;
             $TempPassYn = $res[0]->TempPassYn;
             $admin_auth = config('admin_auth');
             $gnb = [];
@@ -86,6 +89,9 @@ class LoginController extends Controller
             session(['auth.AdminID' => $AdminID]);
             session(['auth.AdminName' => $AdminName]);
             session(['auth.AdminRoleID' => $AdminRoleID]);
+            session(['auth.MetroID' => $MetroID]);
+            session(['auth.CircuitID' => $CircuitID]);
+            session(['auth.CongregationID' => $CongregationID]);
             session(['gnb' => $gnb]);
             session(['breadcrumb' => $breadcrumb]);
         }

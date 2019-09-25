@@ -27,7 +27,7 @@
                             <ul class="nav-depth-one">
                             @if( session('gnb') !== null )
                                 @foreach ( session('gnb') as $title => $submenus)
-                                <li @if(array_key_exists( get_top_path(), $submenus)) 
+                                <li @if(array_key_exists( getTopPath(), $submenus)) 
                                     class="active" 
                                 @endif>
                                     <a>
