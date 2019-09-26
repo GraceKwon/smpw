@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CircuitController extends Controller
 {
@@ -15,8 +16,12 @@ class CircuitController extends Controller
 
     public function serviceZones(Request $request)
     {
+        $ServiceZoneList = DB::select('uspGetStandingServiceZoneList ?', [ 
+                session('auth.CircuitID')   
+            ]);
+        
         return view( 'circuit.serviceZones', [
-            'ServiceZoneList' => DB::select('uspGetStandingServiceZoneList'),
+            'ServiceZoneList' => $ServiceZoneList,
         ]);
     }
 
@@ -84,24 +89,31 @@ class CircuitController extends Controller
 
     public function admins(Request $request)
     {
-        // $MetroList = DB::select('uspGetStandingSearchMetroList');
-        // $CircuitList = DB::select('uspGetStandingSearchCircuitList ?', []);
-        // $CongregationList = DB::select('uspGetStandingSearchCongregationList ?', []);
-        $AdminList = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?', [
-            3,
-            1,
-            null,
-            null,
-            null,
-            null,
-            null,
-        ]);
-        // dd($AdminList);
+        $MetroList = DB::select('uspGetStandingSearchMetroList');
+        $CircuitList = DB::select('uspGetStandingSearchCircuitList ?', [$request->input('MetroID', null)]);
+        $CongregationList = DB::select('uspGetStandingSearchCongregationList ?', [$request->input('CircuitID', null)]);
+        
+        $paginate = 2;  
+        $page = $request->input('page', '1');
+    
+        $parameter = [
+                $request->input('MetroID', null),
+                $request->input('CircuitID', null),
+                $request->input('CongregationID', null),
+                $request->input('AdminName', null),
+                $request->input('Gender', null)
+            ];
+
+        $data = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?', 
+            array_merge( [$paginate, $page], $parameter ));
+        $count = DB::select('uspGetStandingAdminListCnt ?,?,?,?,?', $parameter);
+        $AdminList = setPaginator($paginate, $page, $data, $count);
+   
         return view( 'circuit.admins', [
-            // 'MetroList' => $MetroList;,
-            // 'CircuitList' => $CircuitList;,
-            // 'CongregationList' => $CongregationList;,
             'AdminList' => $AdminList,
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList,
+            'CongregationList' => $CongregationList
         ]);
     }
 

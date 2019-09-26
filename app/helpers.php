@@ -34,3 +34,27 @@ function getAffectedRows($res) {
 	return reset($res)->computed;
 	
 }
+
+function getTotalCnt($res) {
+
+	return reset($res)->TotalCnt;
+	
+}
+
+function setPaginator($paginate, $page, $data, $count = null) {
+
+	if(isset($count)){
+		$page = 1;
+		$count = getTotalCnt($count);
+	}else{
+		$count = count($data);
+	}
+
+	$offSet = ($page * $paginate) - $paginate;  
+	$itemsForCurrentPage = array_slice($data, $offSet, $paginate, true);  
+	$AdminList = new Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, $count, $paginate, $page);  
+	$AdminList->setPath(request()->path());
+	
+	return $AdminList;
+	
+}

@@ -8,7 +8,8 @@
             {{-- Array Of Links --}}
             @if (is_array($element))
                 @foreach ($element as $page => $url)
-                    @if ($page == $paginator->currentPage())
+                    {{-- @if ($page == $paginator->currentPage()) --}}
+                    @if ($page == request()->input('page', '1'))
                         <li class="active"><a>{{ $page }}</a></li>
                     @else
                         <li><a href="{{ $url }}">{{ $page }}</a></li>
