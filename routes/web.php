@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/phpinfo', function(){
+    phpinfo();
+});
 //메인
 Route::get('/', 'DashBoardController@viewDashboard');
 
