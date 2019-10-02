@@ -96,15 +96,15 @@ class LoginController extends Controller
             session(['breadcrumb' => $breadcrumb]);
         }
      
-        if( isset($fail) ) {
+        if( isset($fail) ) 
             return back()
                 ->withInput(Input::except('UserPassword'))
                 ->withErrors(['fail' => $fail]);
-        }else if($TempPassYn === 1){
-            return redirect('/first');
-        }else{
+        else if($TempPassYn === 1)
+            return redirect('/setPwd');
+        else
             return redirect('/');
-        }
+        
         
     }
 
@@ -115,7 +115,6 @@ class LoginController extends Controller
 
     public function putSetPwd(Request $request)
     {
-        // dd($request->UserPassword);
         $request->validate([
             'UserPassword' => 'required|confirmed|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/', //8~12자리의 영문, 숫자, 특수문자 포함
         ]);
@@ -125,8 +124,11 @@ class LoginController extends Controller
                 '11112222',
                 $request->UserPassword,
             ]);
-        // dd($res);
-        return redirect('/');
+        if(getAffectedRows($res) === 0) 
+            return back()
+                ->withErrors(['fail' => '비밀번호변경에 실패 했습니다']);
+        else
+            return redirect('/');
     }
 
     public function resetPwd()
@@ -136,22 +138,23 @@ class LoginController extends Controller
 
     public function putResetPwd(Request $request)
     {
+        $request->validate([
+            'Account' => 'required', //8~12자리의 영문, 숫자, 특수문자 포함
+            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+        ]);
+
         $res = DB::select('uspSetStandingAdminPasswordReset ?,?',
             [
                 $request->Account,
                 $request->Mobile,
             ]);
 
-        if($res[0]->computed === 0) {
-            $message = '비밀번호 초기화에 실패하였습니다. <br> 아이디 혹은 휴대폰번호를 확인해주세요.';
+        if(getAffectedRows($res) === 0) 
             return back()
-                ->withErrors(['fail' => $message]);
-        }
-        if($res[0]->computed === 1) {
-            $message = $request->Account . '(아이디)의 비밀번호가 "11112222"로 변경되었습니다.';
+                ->withErrors(['fail' => '비밀번호 초기화에 실패하였습니다. <br> 아이디 혹은 휴대폰번호를 확인해주세요.']);
+        else
             return redirect('/login')
-                ->with(['message' => $message]);
-        } 
+                ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "11112222"로 변경되었습니다.']);
         
     }
 

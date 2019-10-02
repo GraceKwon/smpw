@@ -5,10 +5,10 @@
         <div class="alert alert-danger">{!! $message !!}</div>
     @enderror
     <form method="POST"
-        @submit="_validate" 
-        @keydown.enter.prevent>
-        @method("PUT")
-        @csrf
+    @submit="_validate" 
+    @keydown.enter.prevent>
+    @method("PUT")
+    @csrf
         <table class="table table-register">
             <tbody>
             @if(isset($Admin->AdminID))
@@ -40,7 +40,6 @@
                             v-validate="'required|min:2|max:10'"
                             id="AdminName" 
                             name="AdminName" 
-                            v-model="AdminName" 
                             placeholder="이름을 입력해 주세요">
                         <div class="invalid-feedback" v-html="errors.first('AdminName')"></div>
                     </div>
@@ -54,10 +53,13 @@
                             :class="{ 'is-invalid' : errors.has('AdminRoleID') }" 
                             v-validate="'required'"
                             id="AdminRoleID"
-                            name="AdminRoleID"
-                            v-model="AdminRoleID">
-                            <option selected="">선택</option>
-                            <option>option</option>
+                            name="AdminRoleID">
+                            <option value="">선택</option>
+                            @foreach ($AdminRoleIDList as $AdminRoleID)
+                                <option @if($loop->first) selected @endif
+                                    @if(request('AdminRoleID') == $AdminRoleID->ID ) selected @endif
+                                    value="{{ $AdminRoleID->ID }}">{{ $AdminRoleID->Item }}</option>
+                            @endforeach
                         </select>
                         <div class="invalid-feedback" v-html="errors.first('AdminRoleID')"></div>
                     </div>
@@ -69,14 +71,17 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select" 
+                        <select class="custom-select"
                             :class="{ 'is-invalid' : errors.has('MetroID') }" 
                             v-validate="'required'"
                             id="MetroID"
-                            name="MetroID"
-                            v-model="MetroID">
-                            <option selected="">선택</option>
-                            <option>option</option>
+                            v-model="MetroID"
+                            name="MetroID">
+                            <option value="">선택</option>
+                            @foreach ($MetroList as $Metro)
+                                <option @if(request('MetroID') == $Metro->MetroID ) selected @endif
+                                    value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
+                            @endforeach
                         </select>
                         <div class="invalid-feedback" v-html="errors.first('MetroID')"></div>
                     </div>
@@ -90,10 +95,11 @@
                             :class="{ 'is-invalid' : errors.has('CircuitID') }" 
                             v-validate="'required'"
                             id="CircuitID"
-                            name="CircuitID"
-                            v-model="CircuitID">
-                            <option selected="">선택</option>
-                            <option>option</option>
+                            v-model="CircuitID"
+                            name="CircuitID">
+                            <option value="">선택</option>
+                            <option v-for="Circuit in CircuitList"
+                                :value="Circuit.CircuitID">@{{ Circuit.CircuitName }}</option>
                         </select>
                         <div class="invalid-feedback" v-html="errors.first('CircuitID')"></div>
                     </div>
@@ -109,10 +115,11 @@
                             :class="{ 'is-invalid' : errors.has('CongregationID') }" 
                             v-validate="'required'"
                             id="CongregationID"
-                            name="CongregationID"
-                            v-model="CongregationID">
-                            <option selected="">선택</option>
-                            <option>option</option>
+                            v-model="CongregationID"
+                            name="CongregationID">
+                            <option value="">선택</option>
+                            <option v-for="Congregation in CongregationList"
+                                :value="Congregation.CongregationID">@{{ Congregation.CongregationName }}</option>
                         </select>
                         <div class="invalid-feedback" v-html="errors.first('CongregationID')"></div>
                     </div>
@@ -126,10 +133,11 @@
                             :class="{ 'is-invalid' : errors.has('ServantTypeID') }" 
                             v-validate="'required'"
                             id="ServantTypeID"
-                            name="ServantTypeID"
-                            v-model="ServantTypeID">
-                            <option selected="">선택</option>
-                            <option>option</option>
+                            name="ServantTypeID">
+                            @foreach ($ServantTypeIDList as $ServantTypeID)
+                                <option @if(request('ServantTypeID') == $ServantTypeID->ID ) selected @endif
+                                    value="{{ $ServantTypeID->ID }}">{{ $ServantTypeID->Item }}</option>
+                            @endforeach
                         </select>
                         <div class="invalid-feedback" v-html="errors.first('ServantTypeID')"></div>
                     </div>
@@ -187,16 +195,53 @@
         data:{
             AdminName: "{{ isset($Admin->AdminName) ? $Admin->AdminName : '' }}",
             AdminRoleID: "{{ isset($Admin->AdminRoleID) ? $Admin->AdminRoleID : '' }}",
-            MetroID: "{{ isset($Admin->MetroID) ? $Admin->MetroID : '' }}",
-            CircuitID: "{{ isset($Admin->CircuitID) ? $Admin->CircuitID : '' }}",
-            CongregationID: "{{ isset($Admin->CongregationID) ? $Admin->CongregationID : '' }}",
+            MetroID: "",
+            CircuitID: "",
+            CongregationID: "",
             ServantTypeID: "{{ isset($Admin->ServantTypeID) ? $Admin->ServantTypeID : '' }}",
             Mobile: "{{ isset($Admin->Mobile) ? $Admin->Mobile : '' }}",
+            CircuitList: [],
+            CongregationList: [],
+        },
+        mounted: function(){
+            this.MetroID = "{{ isset($Admin->MetroID) ? $Admin->MetroID : '' }}"
+            this.CircuitID = "{{ isset($Admin->CircuitID) ? $Admin->CircuitID : '' }}"
+            this.CongregationID = "{{ isset($Admin->CongregationID) ? $Admin->CongregationID : '' }}"
         },
         watch: {
             Mobile: function () {
                 this.Mobile = this.Mobile.replace(/[^0-9]/g, '');
                 this.Mobile = this.Mobile.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3")
+            },
+            MetroID: function () {
+                var params = {
+                    params: {
+                        MetroID: this.MetroID 
+                    }
+                };
+                axios.get('/api/getCircuitList', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        this.CircuitList = response.data;
+                    }.bind(this))
+                    .catch(function (error) {
+                        console.log(error.response)
+                    });
+            },
+            CircuitID: function () {
+                var params = {
+                    params: {
+                        CircuitID: this.CircuitID 
+                    }
+                };
+                axios.get('/api/getCongregationList', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        this.CongregationList = response.data;
+                    }.bind(this))
+                    .catch(function (error) {
+                        console.log(error.response)
+                    });
             }
         },
         methods:{

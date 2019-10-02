@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,6 +9,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//공통
 Route::get('/phpinfo', function(){
     phpinfo();
 });
@@ -22,10 +22,10 @@ Route::get('/', 'DashBoardController@viewDashboard');
     Route::post('/login', 'LoginController@tryLogin');
     Route::get('/logOut', 'LoginController@logOut');
     //비밀번호 설정&초기화
-    Route::get('/set-pwd', 'LoginController@SetPwd');
-    Route::put('/set-pwd', 'LoginController@putSetPwd');
-    Route::get('/reset-pwd', 'LoginController@ResetPwd');
-    Route::put('/reset-pwd', 'LoginController@putResetPwd');
+    Route::get('/SetPwd', 'LoginController@SetPwd');
+    Route::put('/SetPwd', 'LoginController@putSetPwd');
+    Route::get('/ResetPwd', 'LoginController@ResetPwd');
+    Route::put('/ResetPwd', 'LoginController@putResetPwd');
 
 //에러페이지
 Route::view('/errors/auth', 'errors.auth');

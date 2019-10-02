@@ -23,18 +23,9 @@
                                     <div class="font-size-180 font-weight-600">대도시 특별 공개증거</div>
                                 </div>
                             </div>
-                            {{-- @error('fail')
+                            @error('fail')
                                 <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror --}}
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                            @enderror
                             <div class="login-form-wrap">
                                 <form id="form" method="POST" @submit="validate">
                                     @method("PUT")
@@ -64,7 +55,6 @@
                                                 }"
                                                 placeholder="사용하실 비밀번호를 입력해 주세요">
                                             <label for="UserPassword">사용자 비밀번호</label>
-                                            {{-- <div class="info-feedback">비밀번호는 8~12자리의 영문, 숫자, 특수문자를 사용하실 수 있습니다.</div> --}}
                                             <div class="invalid-feedback">8~12자리의 영문, 숫자, 특수문자를 사용해 주세요.</div>
                                         </div>
                                         <div class="input-flex-group">

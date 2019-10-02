@@ -37,13 +37,6 @@
             <input type="text" class="form-control" id="name" name="AdminName" placeholder="이름을 입력해 주세요">
         </div> <!-- /.search-form-item -->
         <div class="search-form-item">
-            <label class="label" for="sex">성별</label>
-            <select class="custom-select" id="sex">
-                <option selected>선택</option>
-                <option>option</option>
-            </select>
-        </div> <!-- /.search-form-item -->
-        <div class="search-form-item">
             <label class="label" for="position">신분</label>
             <select class="custom-select" id="position">
                 <option selected>선택</option>

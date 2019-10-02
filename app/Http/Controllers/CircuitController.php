@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Service\CommonService;
 
 class CircuitController extends Controller
 {
-    public function __construct()
+    public function __construct(CommonService $CommonService)
     {
+        $this->CommonService = $CommonService;
         $this->middleware('admin_auth');
         $this->middleware('CheckCircuitID', ['only' => ['putServiceZones']]);
     }
 
-    public function serviceZones(Request $request)
+    public function serviceZones()
     {
         $ServiceZoneList = DB::select('uspGetStandingServiceZoneList ?', [ 
                 session('auth.CircuitID')   
@@ -43,8 +43,8 @@ class CircuitController extends Controller
     public function putServiceZones(Request $request)
     {
         $request->validate([
-            'ZoneName' => 'required|max:10|unique:ServiceZones',
-            'ZoneAlias' => 'required|max:5|unique:ServiceZones',
+            'ZoneName' => 'required|max:10',
+            'ZoneAlias' => 'required|max:5',
             'Latitude' => 'required',
             'Longitude' => 'required',
             'ZoneAddress' => 'required',
@@ -97,9 +97,9 @@ class CircuitController extends Controller
 
     public function admins(Request $request)
     {
-        $MetroList = DB::select('uspGetStandingSearchMetroList');
-        $CircuitList = DB::select('uspGetStandingSearchCircuitList ?', [$request->input('MetroID', null)]);
-        $CongregationList = DB::select('uspGetStandingSearchCongregationList ?', [$request->input('CircuitID', null)]);
+        $MetroList = $this->CommonService->getMetroList();
+        $CircuitList = $this->CommonService->getCircuitList();
+        $CongregationList = $this->CommonService->getCongregationList();
         
         $paginate = 30;  
         $page = $request->input('page', '1');
@@ -125,15 +125,31 @@ class CircuitController extends Controller
         ]);
     }
 
-    public function formAdmins(Request $request)
+    public function formAdmins()
     {
+        $AdminRoleIDList = DB::select('uspGetStandingItemCodeList ?, ?', ['AdminRoleID', null]);
+        $MetroList = $this->CommonService->getMetroList();
+        $ServantTypeIDList = DB::select('uspGetStandingItemCodeList ?, ?', ['ServantTypeID', null]);
+   
         return view( 'circuit.formAdmins', [
-       
+            'AdminRoleIDList' => $AdminRoleIDList,
+            'MetroList' => $MetroList,
+            'ServantTypeIDList' => $ServantTypeIDList,
         ]);
     }
 
     public function putAdmins(Request $request)
     {
+        $request->validate([
+            'AdminName' => 'required|min:2|max:10',
+            'AdminRoleID' => 'required',
+            'MetroID' => 'required',
+            'CircuitID' => 'required',
+            'CongregationID' => 'required',
+            'ServantTypeID' => 'required',
+            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+        ]);
+
         if($request->ServiceZoneID === '0')
             $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
                     $request->Account, //Account

@@ -1,6 +1,5 @@
 <?php
-
-use Illuminate\Http\Request;
+use App\Service\CommonService;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +11,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//공통
+Route::get('/getMetroList', function(CommonService $CommonService){
+    return $CommonService->getMetroList();
+});
+Route::get('/getCircuitList', function(CommonService $CommonService){
+    return $CommonService->getCircuitList();
+});
+Route::get('/getCongregationList', function(CommonService $CommonService){
+    return $CommonService->getCongregationList();
 });
