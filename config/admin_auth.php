@@ -13,7 +13,7 @@ return [
             'admins' => [
                 'name' => '사용자관리',
                 'auth' => [1,2],
-                'subpage' => ['사용자등록'],
+                'subpage' => ['사용자등록','사용자상세'],
             ],
             'KeepZones' => [
                 'name' => '보관장소관리',

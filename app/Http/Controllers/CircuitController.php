@@ -42,6 +42,14 @@ class CircuitController extends Controller
 
     public function putServiceZones(Request $request)
     {
+        $request->validate([
+            'ZoneName' => 'required|max:10|unique:ServiceZones',
+            'ZoneAlias' => 'required|max:5|unique:ServiceZones',
+            'Latitude' => 'required',
+            'Longitude' => 'required',
+            'ZoneAddress' => 'required',
+            'OrderNum' => 'required',
+        ]);
         if($request->ServiceZoneID === '0')
             $res = DB::select('uspSetStandingServiceZoneInsert ?,?,?,?,?,?,?,?', [
                     $request->ZoneName,
@@ -93,7 +101,7 @@ class CircuitController extends Controller
         $CircuitList = DB::select('uspGetStandingSearchCircuitList ?', [$request->input('MetroID', null)]);
         $CongregationList = DB::select('uspGetStandingSearchCongregationList ?', [$request->input('CircuitID', null)]);
         
-        $paginate = 2;  
+        $paginate = 30;  
         $page = $request->input('page', '1');
     
         $parameter = [
@@ -117,11 +125,57 @@ class CircuitController extends Controller
         ]);
     }
 
-    public function view_form_admin(Request $request)
+    public function formAdmins(Request $request)
     {
-        return view( 'circuit.form_admin', [
+        return view( 'circuit.formAdmins', [
        
         ]);
+    }
+
+    public function putAdmins(Request $request)
+    {
+        if($request->ServiceZoneID === '0')
+            $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
+                    $request->Account, //Account
+                    '11112222',// UserPassword
+                    $request->AdminName, //AdminName
+                    $request->AdminRoleID, //AdminRoleID
+                    1, //TempUseYn
+                    $request->Mobile, //Mobile
+                ]);
+        else
+            $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?,?,?', [
+                    $request->ServiceZoneID,
+                    $request->ZoneName,
+                    $request->ZoneAlias,
+                    $request->Latitude,
+                    $request->Longitude,
+                    $request->ZoneAddress,
+                    $request->OrderNum,
+                    session('auth.AdminID'),
+                    session('auth.CircuitID')
+                ]);
+        
+
+        if(getAffectedRows($res) === 0) 
+            return back()->withErrors(['fail' => '저장 실패하였습니다.']);
+        else
+            return redirect('/admins');
+        
+    }
+
+    public function deleteAdmins(Request $request)
+    {
+        $res = DB::select('uspSetStandingAdminDelete ? ?', [
+                $request->AdminID,
+                0
+            ]);
+
+        if( getAffectedRows($res) === 0 ) 
+            return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
+        else
+            return redirect('/admins');
+        
     }
 
     public function keepZones(Request $request)

@@ -119,9 +119,6 @@
                 });
                 
             },
-            autoHypenPhone: function(str){
-                
-            }
         }
     })
 </script>

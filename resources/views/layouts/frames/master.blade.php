@@ -6,6 +6,7 @@
 <head profile="http://www.w3.org/2005/10/profile">
     
     @include('layouts.sections.header')
+    {{-- @php(dd($breadcrumb)) --}}
     <title>대도시 특별 공개증거 {{isset($breadcrumb) ? ' - '.$breadcrumb[ count($breadcrumb) - 1 ]['name'] : ''}}</title>
 
 </head>

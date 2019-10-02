@@ -43398,7 +43398,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
       ZoneName: "구역 명칭",
       Latitude: "위도",
       Longitude: "경도",
-      ZoneAddress: "구역 주소"
+      AdminName: "이름",
+      AdminRoleID: "권한",
+      MetroID: "도시",
+      CircuitID: "순회구(지역)",
+      CongregationID: "회중",
+      ServantTypeID: "신분",
+      Mobile: "연락처"
     }
   };
   return "undefined" != typeof VeeValidate && VeeValidate.Validator.localize(((n = {})[e.name] = e, n)), e;

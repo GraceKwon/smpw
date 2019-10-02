@@ -41,7 +41,7 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('ServiceZoneID', '[0-9]+');
     //사용자관리
     Route::get('admins', 'CircuitController@admins');
-    Route::get('admins/{AdminID}', 'CircuitController@view_form_admin')
+    Route::get('admins/{AdminID}', 'CircuitController@formAdmins')
         ->where('AdminID', '[0-9]+');
     Route::post('admins/{AdminID}', 'CircuitController@put_form_admins')
         ->where('AdminID', '[0-9]+');
