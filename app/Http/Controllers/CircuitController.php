@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Service\CommonService;
 
 class CircuitController extends Controller
@@ -100,6 +101,8 @@ class CircuitController extends Controller
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
         $CongregationList = $this->CommonService->getCongregationList();
+        $AdminRoleList = $this->CommonService->getAdminRoleList();
+        $ServantTypeList = $this->CommonService->getServantTypeList();
         
         $paginate = 30;  
         $page = $request->input('page', '1');
@@ -121,27 +124,34 @@ class CircuitController extends Controller
             'AdminList' => $AdminList,
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
-            'CongregationList' => $CongregationList
+            'CongregationList' => $CongregationList,
+            'AdminRoleList' => $AdminRoleList,
+            'ServantTypeList' => $ServantTypeList
         ]);
     }
 
     public function formAdmins()
     {
-        $AdminRoleIDList = DB::select('uspGetStandingItemCodeList ?, ?', ['AdminRoleID', null]);
+        $AdminRoleList = $this->CommonService->getAdminRoleList();
         $MetroList = $this->CommonService->getMetroList();
-        $ServantTypeIDList = DB::select('uspGetStandingItemCodeList ?, ?', ['ServantTypeID', null]);
+        $ServantTypeList = $this->CommonService->getServantTypeList();
    
         return view( 'circuit.formAdmins', [
-            'AdminRoleIDList' => $AdminRoleIDList,
+            'AdminRoleList' => $AdminRoleList,
             'MetroList' => $MetroList,
-            'ServantTypeIDList' => $ServantTypeIDList,
+            'ServantTypeList' => $ServantTypeList,
         ]);
     }
 
     public function putAdmins(Request $request)
     {
         $request->validate([
-            'AdminName' => 'required|min:2|max:10',
+            'AdminName' => [
+                'required',
+                'min:2',
+                'max:10',
+                Rule::unique('Admins')->ignore($request->AdminID, 'AdminID')->where('UseYn', 1),
+            ],
             'AdminRoleID' => 'required',
             'MetroID' => 'required',
             'CircuitID' => 'required',
@@ -149,34 +159,35 @@ class CircuitController extends Controller
             'ServantTypeID' => 'required',
             'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
         ]);
+   
 
-        if($request->ServiceZoneID === '0')
-            $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
-                    $request->Account, //Account
-                    '11112222',// UserPassword
-                    $request->AdminName, //AdminName
-                    $request->AdminRoleID, //AdminRoleID
-                    1, //TempUseYn
-                    $request->Mobile, //Mobile
-                ]);
-        else
-            $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?,?,?', [
-                    $request->ServiceZoneID,
-                    $request->ZoneName,
-                    $request->ZoneAlias,
-                    $request->Latitude,
-                    $request->Longitude,
-                    $request->ZoneAddress,
-                    $request->OrderNum,
-                    session('auth.AdminID'),
-                    session('auth.CircuitID')
-                ]);
+        // if($request->AdminID === '0')
+        //     $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
+        //             $request->Account, //Account
+        //             '11112222',// UserPassword
+        //             $request->AdminName, //AdminName
+        //             $request->AdminRoleID, //AdminRoleID
+        //             1, //TempUseYn
+        //             $request->Mobile, //Mobile
+        //         ]);
+        // else
+        //     $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?,?,?', [
+        //             $request->ServiceZoneID,
+        //             $request->ZoneName,
+        //             $request->ZoneAlias,
+        //             $request->Latitude,
+        //             $request->Longitude,
+        //             $request->ZoneAddress,
+        //             $request->OrderNum,
+        //             session('auth.AdminID'),
+        //             session('auth.CircuitID')
+        //         ]);
         
 
-        if(getAffectedRows($res) === 0) 
+        // if(getAffectedRows($res) === 0) 
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
-        else
-            return redirect('/admins');
+        // else
+            // return redirect('/admins');
         
     }
 
@@ -196,20 +207,28 @@ class CircuitController extends Controller
 
     public function keepZones(Request $request)
     {
-        $request->CirCode = '';
+        $MetroList = $this->CommonService->getMetroList();
+        $CircuitList = $this->CommonService->getCircuitList();
+        $ServantTypeList = $this->CommonService->getServantTypeList();
+        $paginate = 30;  
+        $page = $request->input('page', '1');
         $parameter = [
-            30, //@PageSize
-            1, //@PageNumber
-            1, //@MetroID
-            1, //@CircuitID
-            1, //@CongregationID
-            1, //@AdminName
+            $request->input('MetroID', null),
+            $request->input('CircuitID', null),
+            $request->input('CongregationID', null),
+            $request->input('AdminName', null),
         ];
-        // return view( 'circuit.zones', [
-        //     'ZoneList' => DB::table('TB_Zone')->paginate(10),
-        // ]);
-        return view( 'circuit.serviceZones', [
-            'KeepZoneList' => DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?', []),
+        $data = DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?', 
+            array_merge( [$paginate, $page], $parameter ));
+        $count = DB::select('uspGetStandingProductKeepZoneListCnt ?,?,?,?', $parameter);
+
+        $KeepZoneList = setPaginator($paginate, $page, $data, $count);
+  
+        return view( 'circuit.keepZones', [
+            'KeepZoneList' => $KeepZoneList,
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList,
+            'ServantTypeList' => $ServantTypeList,
         ]);
     }
 }

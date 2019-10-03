@@ -2,57 +2,21 @@
 @section('content')
 <form method="GET">
     <section class="search-section">
-        <div class="search-form-item">
-            <label class="label" for="city">도시</label>
-            <select class="custom-select" id="city" name="MetroID" onchange="submit()">
-                <option value="">선택</option>
-                @foreach ($MetroList as $Metro)
-                    <option @if(request('MetroID') == $Metro->MetroID ) selected @endif
-                    value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
-                @endforeach
-            </select>
-        </div> <!-- /.search-form-item -->
-        <div class="search-form-item">
-            <label class="label" for="circuits">순회구</label>
-            <select class="custom-select" id="circuits" name="CircuitID" onchange="submit()">
-                <option value="">선택</option>
-                @foreach ($CircuitList as $Circuit)
-                    <option @if(request('CircuitID') == $Circuit->CircuitID ) selected @endif
-                    value="{{ $Circuit->CircuitID }}">{{ $Circuit->CircuitName }}</option>
-                @endforeach
-            </select>
-        </div> <!-- /.search-form-item -->
-        <div class="search-form-item">
-            <label class="label" for="congregation">회중</label>
-            <select class="custom-select" id="congregation" name="CongregationID" onchange="submit()">
-                <option value="">선택</option>
-                @foreach ($CongregationList as $Congregation)
-                    <option @if(request('CongregationID') == $Congregation->CongregationID ) selected @endif
-                    value="{{ $Congregation->CongregationID }}">{{ $Congregation->CongregationName }}</option>
-                @endforeach
-            </select>
-        </div> <!-- /.search-form-item -->
-        <div class="search-form-item">
-            <label class="label" for="name">이름</label>
-            <input type="text" class="form-control" id="name" name="AdminName" placeholder="이름을 입력해 주세요">
-        </div> <!-- /.search-form-item -->
-        <div class="search-form-item">
-            <label class="label" for="position">신분</label>
-            <select class="custom-select" id="position">
-                <option selected>선택</option>
-                <option>option</option>
-            </select>
-        </div> <!-- /.search-form-item -->
-        <div class="search-form-item">
-            <label class="label" for="state">상태</label>
-            <select class="custom-select" id="state">
-                <option selected>선택</option>
-                <option>option</option>
-            </select>
-        </div> <!-- /.search-form-item -->
-        <div class="search-btn-area">
-            <button type="submit" class="btn btn-primary">조회</button>
-        </div> <!-- /.search-btn-area -->
+
+        @include('layouts.sections.selectbox', [
+            'inputText' => [
+                'label' => '이름',
+                'id' =>'AdminName'
+            ],
+            'inputDate' => [
+                'label' => '날짜',
+                'id' =>'Date'
+            ],
+        ])
+
+    <div class="search-btn-area">
+        <button type="submit" class="btn btn-primary">조회</button>
+    </div> <!-- /.search-btn-area -->
     </section>
 </form>
 

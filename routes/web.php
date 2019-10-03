@@ -43,7 +43,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('admins', 'CircuitController@admins');
     Route::get('admins/{AdminID}', 'CircuitController@formAdmins')
         ->where('AdminID', '[0-9]+');
-    Route::post('admins/{AdminID}', 'CircuitController@put_form_admins')
+    Route::put('admins/{AdminID}', 'CircuitController@putAdmins')
         ->where('AdminID', '[0-9]+');
     //보관장소관리
     Route::get('KeepZones', 'CircuitController@KeepZones');

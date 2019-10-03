@@ -35,13 +35,17 @@
                 <td>
                     <div class="inline-responsive">
                         <input type="text" 
-                            class="form-control" 
+                            class="form-control @error('AdminName') is-invalid @enderror" 
                             :class="{ 'is-invalid' : errors.has('AdminName') }" 
                             v-validate="'required|min:2|max:10'"
                             id="AdminName" 
                             name="AdminName" 
+                            v-model="AdminName" 
                             placeholder="이름을 입력해 주세요">
                         <div class="invalid-feedback" v-html="errors.first('AdminName')"></div>
+                        @error('AdminName')
+                        <div class="invalid-feedback">이미 사용중인 이름 입니다.</div>
+                        @enderror
                     </div>
                 </td>
                 <th>
@@ -55,10 +59,10 @@
                             id="AdminRoleID"
                             name="AdminRoleID">
                             <option value="">선택</option>
-                            @foreach ($AdminRoleIDList as $AdminRoleID)
+                            @foreach ($AdminRoleList as $AdminRole)
                                 <option @if($loop->first) selected @endif
-                                    @if(request('AdminRoleID') == $AdminRoleID->ID ) selected @endif
-                                    value="{{ $AdminRoleID->ID }}">{{ $AdminRoleID->Item }}</option>
+                                    @if(request('AdminRoleID') == $AdminRole->ID ) selected @endif
+                                    value="{{ $AdminRole->ID }}">{{ $AdminRole->Item }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback" v-html="errors.first('AdminRoleID')"></div>
@@ -134,9 +138,9 @@
                             v-validate="'required'"
                             id="ServantTypeID"
                             name="ServantTypeID">
-                            @foreach ($ServantTypeIDList as $ServantTypeID)
-                                <option @if(request('ServantTypeID') == $ServantTypeID->ID ) selected @endif
-                                    value="{{ $ServantTypeID->ID }}">{{ $ServantTypeID->Item }}</option>
+                            @foreach ($ServantTypeList as $ServantType)
+                                <option @if(request('ServantTypeID') == $ServantType->ID ) selected @endif
+                                    value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback" v-html="errors.first('ServantTypeID')"></div>
@@ -193,20 +197,20 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
-            AdminName: "{{ isset($Admin->AdminName) ? $Admin->AdminName : '' }}",
-            AdminRoleID: "{{ isset($Admin->AdminRoleID) ? $Admin->AdminRoleID : '' }}",
+            AdminName: "{{ isset($Admin->AdminName) ? $Admin->AdminName :  old('AdminName') }}",
+            AdminRoleID: "{{ isset($Admin->AdminRoleID) ? $Admin->AdminRoleID : old('AdminRoleID') }}",
             MetroID: "",
             CircuitID: "",
             CongregationID: "",
-            ServantTypeID: "{{ isset($Admin->ServantTypeID) ? $Admin->ServantTypeID : '' }}",
-            Mobile: "{{ isset($Admin->Mobile) ? $Admin->Mobile : '' }}",
+            ServantTypeID: "{{ isset($Admin->ServantTypeID) ? $Admin->ServantTypeID : old('ServantTypeID') }}",
+            Mobile: "{{ isset($Admin->Mobile) ? $Admin->Mobile : old('Mobile') }}",
             CircuitList: [],
             CongregationList: [],
         },
         mounted: function(){
-            this.MetroID = "{{ isset($Admin->MetroID) ? $Admin->MetroID : '' }}"
-            this.CircuitID = "{{ isset($Admin->CircuitID) ? $Admin->CircuitID : '' }}"
-            this.CongregationID = "{{ isset($Admin->CongregationID) ? $Admin->CongregationID : '' }}"
+            this.MetroID = "{{ isset($Admin->MetroID) ? $Admin->MetroID : old('MetroID') }}"
+            this.CircuitID = "{{ isset($Admin->CircuitID) ? $Admin->CircuitID : old('CircuitID') }}"
+            this.CongregationID = "{{ isset($Admin->CongregationID) ? $Admin->CongregationID : old('CongregationID') }}"
         },
         watch: {
             Mobile: function () {

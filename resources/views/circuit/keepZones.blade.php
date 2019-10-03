@@ -1,36 +1,18 @@
 @extends('layouts.frames.master')
 @section('content')
-<section class="search-section">
-    <div class="search-form-item">
-        <label class="label" for="city">도시</label>
-        <select class="custom-select" id="city">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="circuits">순회구</label>
-        <select class="custom-select" id="circuits">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="name">이름</label>
-        <input type="text" class="form-control" id="name" placeholder="이름을 입력해 주세요">
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="position">신분</label>
-        <select class="custom-select" id="position">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
-    </div> <!-- /.search-btn-area -->
-</section>
-
+<form method="GET">
+    <section class="search-section">
+        @include('layouts.sections.selectbox')
+        <div class="search-form-item">
+            <label class="label" for="name">이름</label>
+            <input type="text" class="form-control" id="name" placeholder="이름을 입력해 주세요">
+        </div> <!-- /.search-form-item -->
+  
+        <div class="search-btn-area">
+            <button type="button" class="btn btn-primary">조회</button>
+        </div> <!-- /.search-btn-area -->
+    </section>
+</form>
 <section class="section-table-section">
     <div class="table-responsive">
         <table class="table table-center table-font-size-90">

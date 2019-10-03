@@ -1,18 +1,6 @@
 @extends('layouts.frames.master')
 @section('content')
 <section class="register-section">
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-@error('ZoneName')
-    <div class="alert alert-danger">{{ $message }}</div>
-@enderror
     @error('fail')
         <div class="alert alert-danger">{!! $message !!}</div>
     @enderror
