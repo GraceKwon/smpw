@@ -1,23 +1,15 @@
 @extends('layouts.frames.master')
 @section('content')
 <form method="GET">
-    <section class="search-section">
 
-        @include('layouts.sections.selectbox', [
+        @include('layouts.sections.search', [
             'inputText' => [
                 'label' => '이름',
                 'id' =>'AdminName'
-            ],
-            'inputDate' => [
-                'label' => '날짜',
-                'id' =>'Date'
-            ],
+            ]
         ])
 
-    <div class="search-btn-area">
-        <button type="submit" class="btn btn-primary">조회</button>
-    </div> <!-- /.search-btn-area -->
-    </section>
+   
 </form>
 
 <section class="section-table-section">
