@@ -42,7 +42,7 @@
     @if(isset($AdminRoleList))
     <div class="search-form-item">
         <label class="label" for="AdminRoleID">권한</label>
-        <select class="custom-select" id="AdminRoleID">
+        <select class="custom-select" id="AdminRoleID" nanme="AdminRoleID" onchange="submit()">
             <option selected>선택</option>
             @foreach ($AdminRoleList as $AdminRole)
                 <option @if(request('AdminRoleID') == $AdminRole->ID ) selected @endif
@@ -55,7 +55,7 @@
     @if(isset($ServantTypeList))
     <div class="search-form-item">
         <label class="label" for="ServantTypeID">신분</label>
-        <select class="custom-select" id="ServantTypeID">
+        <select class="custom-select" id="ServantTypeID" name="ServantTypeID" onchange="submit()">
             <option selected>선택</option>
             @foreach ($ServantTypeList as $ServantType)
                 <option @if(request('ServantTypeID') == $ServantType->ID ) selected @endif
@@ -98,7 +98,7 @@
     @endif
 
     <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
+        <button type="submit" class="btn btn-primary">조회</button>
     </div> <!-- /.search-btn-area -->
 
 </section>

@@ -15,11 +15,13 @@
                     <label class="label">담당자 이름</label>
                 </th>
                 <td>
+                    {{ isset($KeepZone->AdminName) ? $KeepZone->AdminName : session('auth.AdminName') }}
                 </td>
                 <th>
                     <label class="label">도시</label>
                 </th>
                 <td>
+                    {{ isset($KeepZone->MetroName) ? $KeepZone->MetroName : getMetroName() }}
                 </td>
             </tr>
             <tr>
@@ -27,11 +29,13 @@
                     <label class="label">순회구(지역)</label>
                 </th>
                 <td>
+                    {{ isset($KeepZone->CircuitName) ? $KeepZone->CircuitName : getCircuitName() }}
                 </td>
                 <th>
                     <label class="label">회중</label>
                 </th>
                 <td>
+                    {{ isset($KeepZone->CongregationName) ? $KeepZone->CongregationName : getCongregationName() }}
                 </td>
             </tr>
             <tr>
@@ -44,6 +48,7 @@
                     <label class="label">연럭처</label>
                 </th>
                 <td>
+                    {{ isset($KeepZone->Mobile) ? $KeepZone->Mobile : getMobile() }}
                 </td>
             </tr>
             <tr>
@@ -71,7 +76,8 @@
                     <input type="text" class="form-control" 
                         ref="ZoneAddress" 
                         name="ZoneAddress" 
-                        placeholder="주소">
+                        placeholder="주소"
+                        readonly>
                     <div class="inline-responsive">
                         <input type="text" class="form-control" 
                             ref="ZoneAddressDetail" 

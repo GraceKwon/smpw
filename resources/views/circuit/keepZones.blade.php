@@ -126,9 +126,12 @@
             </tbody>
         </table>
     </div>
-    @include('layouts.sections.registrationButton', [
-        'label' => '보관장소 등록',
-    ])
+    @if(session('auth.CircuitID'))
+        @include('layouts.sections.registrationButton', [
+            'label' => '보관장소 등록',
+        ])
+    @endif
+
 
     {{ $KeepZoneList->appends( request()->all() )->links() }}
 

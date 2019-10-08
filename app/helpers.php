@@ -58,3 +58,23 @@ function setPaginator($paginate, $page, $data, $count = null) {
 	return $AdminList;
 	
 }
+
+function getMetroName()
+{
+	return  DB::table('Metros')->where( 'MetroID', session('auth.MetroID') )->value('MetroName');
+}
+
+function getCircuitName()
+{
+	return  DB::table('Circuits')->where( 'CircuitID', session('auth.CircuitID') )->value('CircuitName');
+}
+
+function getCongregationName()
+{
+	return  DB::table('Congregations')->where( 'CongregationID', session('auth.CongregationID') )->value('CongregationName');
+}
+
+function getMobile()
+{
+	return  DB::table('Admins')->where( 'AdminID', session('auth.AdminID') )->value('Mobile');
+}

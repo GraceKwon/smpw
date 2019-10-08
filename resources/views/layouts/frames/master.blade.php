@@ -7,7 +7,7 @@
     
     @include('layouts.sections.header')
     {{-- @php(dd($breadcrumb)) --}}
-    <title>대도시 특별 공개증거 {{isset($breadcrumb) ? ' - '.$breadcrumb[ count($breadcrumb) - 1 ]['name'] : ''}}</title>
+    <title> {{ isset($breadcrumb) ? $breadcrumb[ count($breadcrumb) - 1 ]['name'] : '대도시 특별 공개증거' }}</title>
 
 </head>
 <body class="body">

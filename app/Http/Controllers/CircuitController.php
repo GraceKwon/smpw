@@ -209,7 +209,8 @@ class CircuitController extends Controller
     {
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
-        $ServantTypeList = $this->CommonService->getServantTypeList();
+        $CongregationList = $this->CommonService->getCongregationList();
+        // $ServantTypeList = $this->CommonService->getServantTypeList();
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
@@ -220,6 +221,7 @@ class CircuitController extends Controller
         ];
         $data = DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
+        // dd($data);
         $count = DB::select('uspGetStandingProductKeepZoneListCnt ?,?,?,?', $parameter);
 
         $KeepZoneList = setPaginator($paginate, $page, $data, $count);
@@ -228,7 +230,7 @@ class CircuitController extends Controller
             'KeepZoneList' => $KeepZoneList,
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
-            'ServantTypeList' => $ServantTypeList,
+            'CongregationList' => $CongregationList,
         ]);
     }
 
@@ -245,5 +247,33 @@ class CircuitController extends Controller
         return view( 'circuit.formKeepZones', [
                 'KeepZone' => isset($KeepZone) ? $KeepZone : null, 
             ]);
+    }
+
+    public function putKeepZones(Request $request)
+    {
+        $request->validate([
+            'ZipCode' => 'required',
+            'ZoneAddress' => 'required'
+        ]);
+
+        if($request->KeepZoneID === '0')
+            $res = DB::select('uspSetStandingProductKeepZoneInsert ?,?,?', [
+                    session('auth.AdminID'),
+                    $request->ZipCode,
+                    $request->ZoneAddress . $request->ZoneAddressDetail
+                ]);
+        else
+            $res = DB::select('uspSetStandingProductKeepZoneUpdate ?,?,?', [
+                    $request->KeepZoneID,
+                    $request->ZipCode,
+                    $request->ZoneAddress . $request->ZoneAddressDetail
+                ]);
+        
+
+        if(getAffectedRows($res) === 0) 
+            return back()->withErrors(['fail' => '저장 실패하였습니다.']);
+        else
+            return redirect('/KeepZones');
+        
     }
 }
