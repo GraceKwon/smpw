@@ -127,20 +127,10 @@
             </tr>
             </tbody>
         </table>
-        <div class="btn-flex-area justify-content-end">
-            <button type="button" class="btn btn-secondary" 
-            onclick="location.href = '/{{ getTopPath() }}'">취소</button>
-            
-            @if(session('auth.CircuitID'))
-                @if(isset($ServiceZone->ServiceZoneID))
-                    <button type="button" class="btn btn-point-sub"
-                        @click="_delete">삭제</button>
-                @endif
-
-                <button type="submit" class="btn btn-primary">
-                    {{ isset($ServiceZone->ServiceZoneID) ? '수정' : '저장' }}</button>
-            @endif
-        </div> <!-- /.register-btn-area -->
+        @include('layouts.sections.formButton', [
+            'id' => isset($ServiceZone->ServiceZoneID) ? true : false,
+        ])
+        
     </form>
     <form ref="formDelete" method="POST">
         @method("DELETE")

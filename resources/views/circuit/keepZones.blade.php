@@ -63,311 +63,75 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    201
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    202
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    203
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    204
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    205
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    206
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    207
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    208
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    209
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    210
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    서울 송파구 문정동 324-942 2층
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
+                {{-- <tr>
+                    <td>
+                        201
+                    </td>
+                    <td>
+                        남양주
+                    </td>
+                    <td>
+                        경기18
+                    </td>
+                    <td>
+                        남양주양지
+                    </td>
+                    <td>
+                        김사랑
+                    </td>
+                    <td>
+                        장로
+                    </td>
+                    <td>
+                        010-1234-5678
+                    </td>
+                    <td>
+                        서울 송파구 문정동 324-942 2층
+                    </td>
+                    <td>
+                        2019-03-23
+                    </td>
+                </tr> --}}
+                @foreach ($KeepZoneList as $KeppZone)
+                <tr>
+                    <td>
+                        {{-- {{ $KeppZone->KeepZoneID }} --}}
+                    </td>
+                    <td>
+                        {{ $KeppZone->MetroName }}
+                    </td>
+                    <td>
+                        {{ $KeppZone->CircuitName }}
+                    </td>
+                    <td>
+                        {{-- {{ $KeppZone->CongregationName }} --}}
+                    </td>
+                    <td>
+                        {{ $KeppZone->AdminName }}
+                    </td>
+                    <td>
+                        장로
+                    </td>
+                    <td>
+                        {{ $KeppZone->Mobile }}
+                    </td>
+                    <td>
+                        {{ $KeppZone->ZoneAddress }}
+                    </td>
+                    <td>
+                        {{ $KeppZone->CreateDate }}
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
-    <div class="btn-flex-area justify-content-end mt-3">
-        <button type="button" class="btn btn-primary">보관장소 등록</button>
-    </div>
-    <div>
-        <ul class="page">
-            <li class="active"><a>1</a></li>
-            <li><a>2</a></li>
-            <li><a>3</a></li>
-            <li><a>4</a></li>
-            <li><a>5</a></li>
-        </ul>
-    </div>
+    @include('layouts.sections.registrationButton', [
+        'label' => '보관장소 등록',
+    ])
+
+    {{ $KeepZoneList->appends( request()->all() )->links() }}
+
 </section>
 @endsection
 

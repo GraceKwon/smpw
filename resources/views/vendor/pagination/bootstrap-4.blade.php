@@ -1,4 +1,5 @@
 @if ($paginator->hasPages())
+<div>
     <ul class="page">
         @foreach ($elements as $element)
             {{-- "Three Dots" Separator --}}
@@ -18,4 +19,5 @@
             @endif
         @endforeach
     </ul>
+</div>
 @endif

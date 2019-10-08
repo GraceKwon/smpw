@@ -57,47 +57,12 @@
             </table>
         </div>
         @if(session('auth.CircuitID'))
-        <div class="btn-flex-area justify-content-end mt-3">
-            <button type="button" class="btn btn-primary" onclick="location.href = '/{{request()->path()}}/0'">구역 등록</button>
-        </div>
+            @include('layouts.sections.registrationButton', [
+                'label' => '구역 등록',
+            ])
         @endif
-        <!--start pagination -->
-        <div>
-            {{-- {{ $ZoneList->links() }} --}}
-        </div>
-        <!-- end pagination -->
+        {{-- {{ $ServiceZoneList->links() }} --}}
         
 
     </section>
 @endsection
-
-@section('popup')
-    <!-- <section class="modal-layer-container">
-        <div class="mx-auto px-3">
-            <div class="mlp-wrap">
-                <div class="max-w-800px">
-                    <div class="mlp-header">
-                        <div class="mlp-title">
-                            <span>Modal layer popup</span>
-                        </div>
-                        <div class="mlp-close">
-                            <i class="fa fa-times"></i>
-                        </div>
-                    </div>
-                    <div class="mlp-content">
-                        점검중입니다
-                    </div>
-                    <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-secondary btn-sm">취소</button>
-                        <button class="btn btn-primary btn-sm">확인</button>
-                    </div>
-                </div>
-            </div> 
-        </div>
-    </section> -->
-@endsection
-
-{{-- @section('script')
-<script>
-</script>
-@endsection --}}

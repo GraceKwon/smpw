@@ -2,8 +2,8 @@
 
     @if(isset($MetroList))
     <div class="search-form-item">
-        <label class="label" for="city">도시</label>
-        <select class="custom-select" id="city" name="MetroID" onchange="submit()">
+        <label class="label" for="MetroID">도시</label>
+        <select class="custom-select" id="MetroID" name="MetroID" onchange="submit()">
             <option value="">선택</option>
             @foreach ($MetroList as $Metro)
                 <option @if(request('MetroID') == $Metro->MetroID ) selected @endif

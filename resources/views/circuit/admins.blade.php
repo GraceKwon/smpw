@@ -128,26 +128,11 @@
             </tbody>
         </table>
     </div>
-    <div class="btn-flex-area justify-content-end mt-3">
-        <button type="button" class="btn btn-primary" onclick="location.href = '/{{request()->path()}}/0'">사용자 등록</button>
-    </div>
-    {{ $AdminList->appends( request()->all() )->links() }}
-    {{-- @include('layouts.sections.pagination', [
-        'limit' => 10,
-        'totalRows' => 3,
-        'lastPage' => 1,
-        'currentPage' => 3,
-        ]) --}}
+    @include('layouts.sections.registrationButton', [
+        'label' => '사용자 등록',
+    ])
 
-    {{-- <div>
-        <ul class="page">
-            <li class="active"><a>1</a></li>
-            <li><a>2</a></li>
-            <li><a>3</a></li>
-            <li><a>4</a></li>
-            <li><a>5</a></li>
-        </ul>
-    </div> --}}
+    {{ $AdminList->appends( request()->all() )->links() }}
 </section>
 @endsection
 

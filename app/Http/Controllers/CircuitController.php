@@ -231,4 +231,19 @@ class CircuitController extends Controller
             'ServantTypeList' => $ServantTypeList,
         ]);
     }
+
+    public function formKeepZones(Request $request)
+    {
+        // if( $request->KeepZoneID !== '0' ) {
+
+        //     $res = DB::select( 'uspGetStandingKeepZoneDetail ?', [ $request->KeepZoneID ] );
+        //     $KeepZone = reset($res); /* reset( [] ) === false */
+        //     if( empty($KeepZone) || $KeepZone->UseYn === 0 ) abort(404); /* empty( false ) === true */
+
+        // }
+
+        return view( 'circuit.formKeepZones', [
+                'KeepZone' => isset($KeepZone) ? $KeepZone : null, 
+            ]);
+    }
 }
