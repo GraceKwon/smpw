@@ -78,3 +78,20 @@ function getMobile()
 {
 	return  DB::table('Admins')->where( 'AdminID', session('auth.AdminID') )->value('Mobile');
 }
+
+// License: Public Domain
+//
+// 마지막 글자에 받침이 있으면 0보다 큰 정수를 반환하고
+// 받침이 없으면 0을 반환한다.
+//
+// 예:
+// $word = '깃허브';
+// echo $word . (has_batchim($word) ? '을' : '를');
+function has_batchim($str, $charset = 'UTF-8') {
+	dd($str);
+    $str = mb_convert_encoding($str, 'UTF-16BE', $charset);
+    $str = str_split(substr($str, strlen($str) - 2));
+    $code_point = (ord($str[0]) * 256) + ord($str[1]);
+    if ($code_point < 44032 || $code_point > 55203) return 0;
+    return ($code_point - 44032) % 28;
+}

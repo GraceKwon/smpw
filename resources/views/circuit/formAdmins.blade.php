@@ -5,7 +5,7 @@
         <div class="alert alert-danger">{!! $message !!}</div>
     @enderror
     <form method="POST"
-    @submit="_validate" 
+    @submit="_confirm"
     @keydown.enter.prevent>
     @method("PUT")
     @csrf
@@ -36,15 +36,12 @@
                     <div class="inline-responsive">
                         <input type="text" 
                             class="form-control @error('AdminName') is-invalid @enderror" 
-                            :class="{ 'is-invalid' : errors.has('AdminName') }" 
-                            v-validate="'required|min:2|max:10'"
                             id="AdminName" 
                             name="AdminName" 
-                            v-model="AdminName" 
+                            v-model="AdminName"
                             placeholder="이름을 입력해 주세요">
-                        <div class="invalid-feedback" v-html="errors.first('AdminName')"></div>
                         @error('AdminName')
-                        <div class="invalid-feedback">이미 사용중인 이름 입니다.</div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                 </td>
@@ -53,19 +50,18 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select" 
-                            :class="{ 'is-invalid' : errors.has('AdminRoleID') }" 
-                            v-validate="'required'"
+                        <select class="custom-select @error('AdminRoleID') is-invalid @enderror"  
                             id="AdminRoleID"
-                            name="AdminRoleID">
+                            name="AdminRoleID"
+                            v-model="AdminRoleID">
                             <option value="">선택</option>
                             @foreach ($AdminRoleList as $AdminRole)
-                                <option @if($loop->first) selected @endif
-                                    @if(request('AdminRoleID') == $AdminRole->ID ) selected @endif
-                                    value="{{ $AdminRole->ID }}">{{ $AdminRole->Item }}</option>
+                                <option value="{{ $AdminRole->ID }}">{{ $AdminRole->Item }}</option>
                             @endforeach
                         </select>
-                        <div class="invalid-feedback" v-html="errors.first('AdminRoleID')"></div>
+                        @error('AdminRoleID')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </td>
             </tr>
@@ -75,19 +71,18 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select"
-                            :class="{ 'is-invalid' : errors.has('MetroID') }" 
-                            v-validate="'required'"
+                        <select class="custom-select @error('MetroID') is-invalid @enderror"
                             id="MetroID"
-                            v-model="MetroID"
-                            name="MetroID">
+                            name="MetroID"
+                            v-model="MetroID">
                             <option value="">선택</option>
                             @foreach ($MetroList as $Metro)
-                                <option @if(request('MetroID') == $Metro->MetroID ) selected @endif
-                                    value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
+                                <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
                             @endforeach
                         </select>
-                        <div class="invalid-feedback" v-html="errors.first('MetroID')"></div>
+                        @error('MetroID')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </td>
                 <th>
@@ -95,17 +90,17 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select" 
-                            :class="{ 'is-invalid' : errors.has('CircuitID') }" 
-                            v-validate="'required'"
+                        <select class="custom-select @error('CircuitID') is-invalid @enderror"
                             id="CircuitID"
-                            v-model="CircuitID"
-                            name="CircuitID">
+                            name="CircuitID"
+                            v-model="CircuitID">
                             <option value="">선택</option>
                             <option v-for="Circuit in CircuitList"
                                 :value="Circuit.CircuitID">@{{ Circuit.CircuitName }}</option>
                         </select>
-                        <div class="invalid-feedback" v-html="errors.first('CircuitID')"></div>
+                        @error('CircuitID')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </td>
             </tr>
@@ -115,17 +110,17 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select" 
-                            :class="{ 'is-invalid' : errors.has('CongregationID') }" 
-                            v-validate="'required'"
+                        <select class="custom-select @error('CongregationID') is-invalid @enderror"
                             id="CongregationID"
-                            v-model="CongregationID"
-                            name="CongregationID">
+                            name="CongregationID"
+                            v-model="CongregationID">
                             <option value="">선택</option>
                             <option v-for="Congregation in CongregationList"
                                 :value="Congregation.CongregationID">@{{ Congregation.CongregationName }}</option>
                         </select>
-                        <div class="invalid-feedback" v-html="errors.first('CongregationID')"></div>
+                        @error('CongregationID')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </td>
                 <th>
@@ -133,17 +128,18 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select" 
-                            :class="{ 'is-invalid' : errors.has('ServantTypeID') }" 
-                            v-validate="'required'"
+                        <select class="custom-select @error('ServantTypeID') is-invalid @enderror" 
                             id="ServantTypeID"
-                            name="ServantTypeID">
+                            name="ServantTypeID"
+                            v-model="ServantTypeID">
+                            <option value="">선택</option>
                             @foreach ($ServantTypeList as $ServantType)
-                                <option @if(request('ServantTypeID') == $ServantType->ID ) selected @endif
-                                    value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
+                                <option value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
                             @endforeach
                         </select>
-                        <div class="invalid-feedback" v-html="errors.first('ServantTypeID')"></div>
+                        @error('ServantTypeID')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror                    
                     </div>
                 </td>
             </tr>
@@ -154,9 +150,8 @@
                 <td colspan="3">
                     <div class="inline-responsive">
                         <input type="text" 
-                            class="form-control" 
+                            class="form-control @error('Mobile') is-invalid @enderror" 
                             :class="{ 
-                                'is-invalid' : errors.has('Mobile'), 
                                 'is-valid' : !errors.has('Mobile') && Mobile
                             }" 
                             id="Mobile" 
@@ -164,12 +159,13 @@
                             v-model="Mobile" 
                             v-validate="{   
                                 rules: { 
-                                    required: true,
                                     regex:/^\d{2,3}-\d{3,4}-\d{4}$/,
                                 }
                             }"
                             placeholder="연락처 번호를 입력해 주세요">
-                        <div class="invalid-feedback" v-html="errors.first('Mobile')"></div>
+                            @error('Mobile')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror  
                     </div>
                 </td>
             </tr>
@@ -179,7 +175,7 @@
         @include('layouts.sections.formButton', [
             'id' => isset($Admin->AdminID) ? true : false,
         ])
-        
+
     </form>
     <form ref="formDelete" method="POST">
         @method("DELETE")
@@ -193,20 +189,19 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
-            AdminName: "{{ isset($Admin->AdminName) ? $Admin->AdminName :  old('AdminName') }}",
-            AdminRoleID: "{{ isset($Admin->AdminRoleID) ? $Admin->AdminRoleID : old('AdminRoleID') }}",
+            AdminName: "{{ old('AdminName') ?? $Admin->AdminName ?? '' }}",
+            AdminRoleID: "{{ old('AdminRoleID') ?? $Admin->AdminRoleID ?? '' }}",
             MetroID: "",
             CircuitID: "",
-            CongregationID: "",
-            ServantTypeID: "{{ isset($Admin->ServantTypeID) ? $Admin->ServantTypeID : old('ServantTypeID') }}",
-            Mobile: "{{ isset($Admin->Mobile) ? $Admin->Mobile : old('Mobile') }}",
+            ServantTypeID: "{{ old('ServantTypeID') ?? $Admin->ServantTypeID ?? '' }}",
+            CongregationID: "{{ old('CongregationID') ?? $Admin->CongregationID ?? '' }}",
+            Mobile: "{{ old('Mobile') ?? $Admin->Mobile ?? '' }}",
             CircuitList: [],
             CongregationList: [],
         },
         mounted: function(){
-            this.MetroID = "{{ isset($Admin->MetroID) ? $Admin->MetroID : old('MetroID') }}"
-            this.CircuitID = "{{ isset($Admin->CircuitID) ? $Admin->CircuitID : old('CircuitID') }}"
-            this.CongregationID = "{{ isset($Admin->CongregationID) ? $Admin->CongregationID : old('CongregationID') }}"
+            this.MetroID = "{{ old('MetroID') ?? $Admin->MetroID ?? '' }}";
+            this.CircuitID = "{{ old('CircuitID') ?? $Admin->CircuitID ?? '' }}";
         },
         watch: {
             Mobile: function () {
@@ -245,23 +240,11 @@
             }
         },
         methods:{
-            _validate: function (e) {
+            _confirm: function (e) {
                 var res = confirm('{{ isset($Admin->AdminID) ? '수정' : '저장' }} 하시겠습니까?');
                 if(!res){
                     e.preventDefault();
-                    console.log(res);
                 }
-                // return true;
-                this.$validator.validateAll()
-                .then(function (result) {
-                    console.log(result);
-                    if (!result) {
-                        e.preventDefault();
-                    } 
-                })
-                .catch(function (error) {
-                    e.preventDefault();
-                });
                 
             },
             _delete: function () {
