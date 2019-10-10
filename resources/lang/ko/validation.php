@@ -152,7 +152,12 @@ return [
         'CircuitID' => '순회구(지역)',
         'CongregationID' => '회중',
         'ServantTypeID' => '신분',
-        'Mobile' => '연락처',
+        'OrderNum' => '우선순위',
+        'ZoneAlias' => '구역약호',
+        'ZoneName' => '구역명칭',
+        'Latitude' => '위도',
+        'Longitude' => '경도',
+        'ZoneAddress' => '구역주소',
   
     ],
 

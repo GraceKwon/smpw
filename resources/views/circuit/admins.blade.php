@@ -8,8 +8,6 @@
         ]
     ])
 
-   
-
     <section class="section-table-section">
         <div class="table-responsive">
             <table class="table table-center table-font-size-90">

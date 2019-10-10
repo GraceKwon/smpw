@@ -5,7 +5,7 @@
         <div class="alert alert-danger">{!! $message !!}</div>
     @enderror
     <form method="POST"
-        @submit="_validate" 
+        @submit="_confirm" 
         @keydown.enter.prevent>
         @method("PUT")
         @csrf
@@ -17,31 +17,33 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select"
-                        :class="{ 'is-invalid' : errors.has('OrderNum') }" 
-                        v-validate="'required'"
-                        name="OrderNum"
-                        v-model="OrderNum">
+                        <select class="custom-select @error('OrderNum') is-invalid @enderror" 
+                            id="OrderNum"
+                            name="OrderNum"
+                            v-model="OrderNum">
                             <option value="" selected>선택해 주세요</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                         </select>
+                        @error('OrderNum')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="invalid-feedback" v-html="errors.first('OrderNum')"></div>
                 </td>
                 <th>
                     <label class="label" for="ZoneAlias">구역 약호</label>
                 </th>
                 <td>
                     <input type="text" 
-                    class="form-control min-w-300px-desktop" 
-                    :class="{ 'is-invalid' : errors.has('ZoneAlias') }" 
-                    v-validate="'required|max:5'"
-                    name="ZoneAlias"
-                    v-model="ZoneAlias"
-                    placeholder="구역 약호를 입력해 주세요">
-                    <div class="invalid-feedback" v-html="errors.first('ZoneAlias')"></div>
+                        class="form-control min-w-300px-desktop @error('ZoneAlias') is-invalid @enderror" 
+                        id="ZoneAlias"
+                        name="ZoneAlias"
+                        v-model="ZoneAlias"
+                        placeholder="구역 약호를 입력해 주세요">
+                    @error('ZoneAlias')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </td>
             </tr>
             <tr>
@@ -50,13 +52,14 @@
                 </th>
                 <td colspan="3">
                     <input type="text" 
-                    class="form-control min-w-300px-desktop" 
-                    :class="{ 'is-invalid' : errors.has('ZoneName') }" 
-                    v-validate="'required|max:10'"
-                    name="ZoneName"
-                    v-model="ZoneName"
-                    placeholder="구역 명칭을 입력해 주세요">
-                    <div class="invalid-feedback" v-html="errors.first('ZoneName')"></div>
+                        class="form-control min-w-300px-desktop  @error('ZoneName') is-invalid @enderror" 
+                        id="ZoneName"
+                        name="ZoneName"
+                        v-model="ZoneName"
+                        placeholder="구역명칭을 입력해 주세요">
+                    @error('ZoneName')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </td>
             </tr>
             <tr>
@@ -66,14 +69,15 @@
                 <td>
                     <div class="register-form-container inline-responsive">
                         <input type="text" 
-                        class="form-control min-w-300px-desktop"
-                        :class="{ 'is-invalid' : errors.has('Latitude') }" 
-                        v-validate="'required'"
-                        name="Latitude" 
-                        v-model="Latitude" 
-                        placeholder="지도에 선택된 구역의 위도가 표시됩니다." 
-                        readonly>
-                        <div class="invalid-feedback" v-html="errors.first('Latitude')"></div>
+                            class="form-control min-w-300px-desktop  @error('Latitude') is-invalid @enderror" 
+                            id="Latitude" 
+                            name="Latitude" 
+                            v-model="Latitude" 
+                            placeholder="지도에 선택된 구역의 위도가 표시됩니다." 
+                            readonly>
+                        @error('Latitude')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </td>
                 <th>
@@ -82,14 +86,15 @@
                 <td>
                     <div class="register-form-container inline-responsive">
                         <input type="text" 
-                        class="form-control min-w-300px-desktop" 
-                        :class="{ 'is-invalid' : errors.has('Longitude') }" 
-                        v-validate="'required'"
-                        name="Longitude" 
-                        v-model="Longitude" 
-                        placeholder="지도에 선택된 구역의 경도가 표시됩니다." 
-                        readonly>
-                        <div class="invalid-feedback" v-html="errors.first('Longitude')"></div>
+                            class="form-control min-w-300px-desktop  @error('Longitude') is-invalid @enderror" 
+                            id="Longitude" 
+                            name="Longitude" 
+                            v-model="Longitude" 
+                            placeholder="지도에 선택된 구역의 경도가 표시됩니다." 
+                            readonly>
+                        @error('Longitude')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </td>
             </tr>
@@ -115,14 +120,15 @@
                 </th>
                 <td colspan="3">
                     <input type="text" 
-                    class="form-control" 
-                    :class="{ 'is-invalid' : errors.has('ZoneAddress') }" 
-                    v-validate="'required'"
-                    name="ZoneAddress" 
-                    v-model="ZoneAddress" 
-                    placeholder="지도에 선택된 구역의 주소가 표시됩니다." 
-                    readonly>
-                    <div class="invalid-feedback" v-html="errors.first('ZoneAddress')"></div>
+                        class="form-control @error('ZoneAddress') is-invalid @enderror" 
+                        id="ZoneAddress" 
+                        name="ZoneAddress" 
+                        v-model="ZoneAddress" 
+                        placeholder="지도에 선택된 구역의 주소가 표시됩니다." 
+                        readonly>
+                    @error('ZoneAddress')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </td>
             </tr>
             </tbody>
@@ -151,12 +157,12 @@
             marker: null,
             search: '',
             alertMessage: '',
-            OrderNum:"{{ isset($ServiceZone->OrderNum) ? $ServiceZone->OrderNum : '' }}",
-            ZoneAlias:"{{ isset($ServiceZone->ZoneAlias) ? $ServiceZone->ZoneAlias : '' }}",
-            ZoneName:"{{ isset($ServiceZone->ZoneName) ? $ServiceZone->ZoneName : '' }}",
-            Latitude:"{{ isset($ServiceZone->Latitude) ? $ServiceZone->Latitude : '' }}",
-            Longitude:"{{ isset($ServiceZone->Longitude) ? $ServiceZone->Longitude : '' }}",
-            ZoneAddress:"{{ isset($ServiceZone->ZoneAddress) ? $ServiceZone->ZoneAddress : '' }}",
+            OrderNum: "{{ old('OrderNum') ?? $ServiceZone->OrderNum ?? '' }}",
+            ZoneAlias: "{{ old('ZoneAlias') ?? $ServiceZone->ZoneAlias ?? '' }}",
+            ZoneName: "{{ old('ZoneName') ?? $ServiceZone->ZoneName ?? '' }}",
+            Latitude: "{{ old('Latitude') ?? $ServiceZone->Latitude ?? '' }}",
+            Longitude: "{{ old('Longitude') ?? $ServiceZone->Longitude ?? '' }}",
+            ZoneAddress: "{{ old('ZoneAddress') ?? $ServiceZone->ZoneAddress ?? '' }}",
         },
         mounted: function () {
             this._loadKakaoMap()
@@ -233,23 +239,11 @@
                         this.alertMessage = alertMessage;
                     }.bind(this));  
             },
-            _validate: function (e) {
+            _confirm: function (e) {
                 var res = confirm('{{ isset($ServiceZone->ServiceZoneID) ? '수정' : '저장' }} 하시겠습니까?');
                 if(!res){
                     e.preventDefault();
-                    console.log(res);
                 }
-                return true;
-                this.$validator.validateAll()
-                .then(function (result) {
-                    console.log(result);
-                    if (!result) {
-                        e.preventDefault();
-                    } 
-                })
-                .catch(function (error) {
-                    e.preventDefault();
-                });
                 
             },
             _delete: function () {

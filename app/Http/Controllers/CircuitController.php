@@ -45,12 +45,25 @@ class CircuitController extends Controller
     public function putServiceZones(Request $request)
     {
         $request->validate([
-            'ZoneName' => 'required|max:10',
-            'ZoneAlias' => 'required|max:5',
+            'ZoneName' => [
+                'required',
+                'max:10',
+                Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')->where('UseYn', 1),
+            ],
+            'ZoneAlias' => [
+                'required',
+                'max:5',
+                Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')->where('UseYn', 1),
+            ],
             'Latitude' => 'required',
             'Longitude' => 'required',
             'ZoneAddress' => 'required',
-            'OrderNum' => 'required',
+            'OrderNum' => [
+                'required',
+                Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')
+                    ->where('UseYn', 1)
+                    ->where('CircuitID', session('auth.CircuitID')),
+            ]
         ]);
         if($request->ServiceZoneID === '0')
             $res = DB::select('uspSetStandingServiceZoneInsert ?,?,?,?,?,?,?,?', [
