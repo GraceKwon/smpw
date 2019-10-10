@@ -5,17 +5,21 @@
         <tbody>
         <tr>
             <th>
-                <label class="label" for="register01">아이디</label>
+                <label class="label" for="Account">아이디</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <input type="text" class="form-control" id="register01" placeholder="자동으로 생성됩니다" disabled>
+                    <input type="text" 
+                        class="form-control" 
+                        id="Account" 
+                        placeholder="자동으로 생성됩니다" 
+                        readonly>
                 </div>
             </td>
-            <th rowspan="5">
-                <label class="label" for="register01">사진</label>
+            <th rowspan="{{ 5 + ( isset($Publisher->PublisherID) ? 1 : 0 ) }}">
+                <label class="label">사진</label>
             </th>
-            <td rowspan="5">
+            <td rowspan="{{ 5 + ( isset($Publisher->PublisherID) ? 1 : 0 ) }}">
                 <div class="photo-container">
                     <div class="photo-wrap">
                         <img src="../img/demo/demo-profile-thumbnail.png" class="thumbnail">
@@ -23,6 +27,18 @@
                 </div>
             </td>
         </tr>
+        @if(isset($Publisher->PublisherID))
+        <tr>
+            <th>
+                <label class="label" for="register02">비밀번호초기화</label>
+            </th>
+            <td>
+                <div class="inline-responsive">
+                    <button type="button" class="btn btn-primary">비밀번호초기화</button>
+                </div>
+            </td>
+        </tr>
+        @endif
         <tr>
             <th>
                 <label class="label" for="register02">이름</label>
