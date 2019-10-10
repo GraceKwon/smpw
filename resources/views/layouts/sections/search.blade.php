@@ -4,10 +4,13 @@
         @if(isset($MetroList))
         <div class="search-form-item">
             <label class="label" for="MetroID">도시</label>
-            <select class="custom-select" id="MetroID" name="MetroID" onchange="submit()">
+            <select class="custom-select" 
+                @if(session('auth.MetroID')) disabled  @endif
+                id="MetroID" name="MetroID" 
+                onchange="submit()">
                 <option value="">선택</option>
                 @foreach ($MetroList as $Metro)
-                    <option @if(request('MetroID') == $Metro->MetroID ) selected @endif
+                    <option @if(session('auth.MetroID') ==  $Metro->MetroID || request('MetroID') == $Metro->MetroID ) selected @endif
                     value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
                 @endforeach
             </select>
@@ -17,10 +20,13 @@
         @if(isset($CircuitList))
         <div class="search-form-item">
             <label class="label" for="CircuitID">순회구</label>
-            <select class="custom-select" id="CircuitID" name="CircuitID" onchange="submit()">
+            <select class="custom-select" 
+                @if(session('auth.MetroID')) disabled  @endif
+                id="CircuitID" name="CircuitID" 
+                onchange="submit()">
                 <option value="">선택</option>
                 @foreach ($CircuitList as $Circuit)
-                    <option @if(request('CircuitID') == $Circuit->CircuitID ) selected @endif
+                    <option @if(session('auth.CircuitID') ==  $Circuit->CircuitID || request('CircuitID') == $Circuit->CircuitID ) selected @endif
                     value="{{ $Circuit->CircuitID }}">{{ $Circuit->CircuitName }}</option>
                 @endforeach
             </select>

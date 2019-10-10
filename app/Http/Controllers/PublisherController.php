@@ -24,20 +24,20 @@ class PublisherController extends Controller
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
-            $request->input('MetroID', null),
-            $request->input('CircuitID', null),
-            $request->input('CongregationID', null),
-            $request->input('PublisherName', null),
-            $request->input('Gender', null),
-            $request->input('ServantTypeID', null),
-            $request->input('EndYn', null),
+            ( session('auth.MetroID') ?? $request->MetroID ),
+            ( session('auth.CircuitID') ?? $request->CircuitID ),
+            $request->CongregationID,
+            $request->PublisherName,
+            $request->Gender,
+            $request->ServantTypeID,
+            $request->EndYn,
         ];
         $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingPublisherListCnt ?,?,?,?,?,?,?', $parameter);
 
         $PublisherList = setPaginator($paginate, $page, $data, $count);
-        
+
         return view( 'publisher.publishers', [
             'PublisherList' => $PublisherList,
             'MetroList' => $MetroList,

@@ -122,11 +122,11 @@ class CircuitController extends Controller
         $page = $request->input('page', '1');
     
         $parameter = [
-                $request->input('MetroID', null),
-                $request->input('CircuitID', null),
-                $request->input('CongregationID', null),
-                $request->input('AdminName', null),
-                $request->input('Gender', null)
+                ( session('auth.MetroID') ?? $request->MetroID ),
+                ( session('auth.CircuitID') ?? $request->CircuitID ),
+                $request->CongregationID,
+                $request->AdminName,
+                $request->Gender,
             ];
 
         $data = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?', 
@@ -228,10 +228,10 @@ class CircuitController extends Controller
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
-            $request->input('MetroID', null),
-            $request->input('CircuitID', null),
-            $request->input('CongregationID', null),
-            $request->input('AdminName', null),
+            ( session('auth.MetroID') ?? $request->MetroID ),
+            ( session('auth.CircuitID') ?? $request->CircuitID ),
+            $request->CongregationID,
+            $request->AdminName,
         ];
         $data = DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));

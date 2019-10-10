@@ -17,13 +17,13 @@ class CommonService
     public function getCircuitList()
     {
         return DB::select('uspGetStandingSearchCircuitList ?', 
-            [request()->input('MetroID', null)]);
+            [ ( session('auth.MetroID') ?? request()->MetroID ) ]);
     }
 
     public function getCongregationList()
     {
         return  DB::select('uspGetStandingSearchCongregationList ?', 
-            [request()->input('CircuitID', null)]);
+            [ ( session('auth.CircuitID') ?? request()->CircuitID ) ]);
     }
 
     public function getAdminRoleList()
