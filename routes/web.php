@@ -54,8 +54,8 @@ Route::view('/errors/auth', 'errors.auth');
 
 //봉사자관리
     //봉사자관리
-    Route::get('publishers', 'PublisherController@view_publishers');
-    Route::get('publishers/{PublisherID}', 'PublisherController@view_form_publishers')
+    Route::get('publishers', 'PublisherController@publishers');
+    Route::get('publishers/{PublisherID}', 'PublisherController@formPublishers')
         ->where('PublisherID', '[0-9]+');
 
 //봉사일정관리

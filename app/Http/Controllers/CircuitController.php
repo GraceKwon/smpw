@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -221,7 +222,6 @@ class CircuitController extends Controller
         ];
         $data = DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
-        // dd($data);
         $count = DB::select('uspGetStandingProductKeepZoneListCnt ?,?,?,?', $parameter);
 
         $KeepZoneList = setPaginator($paginate, $page, $data, $count);

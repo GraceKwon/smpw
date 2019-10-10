@@ -1,56 +1,43 @@
 @extends('layouts.frames.master')
 @section('content')
-<section class="search-section">
-    <div class="search-form-item">
-        <label class="label" for="city">도시</label>
-        <select class="custom-select" id="city">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="circuits">순회구</label>
-        <select class="custom-select" id="circuits">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="congregation">회중</label>
-        <select class="custom-select" id="congregation">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="name">이름</label>
-        <input type="text" class="form-control" id="name" placeholder="이름을 입력해 주세요">
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="sex">성별</label>
-        <select class="custom-select" id="sex">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="position">신분</label>
-        <select class="custom-select" id="position">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="state">상태</label>
-        <select class="custom-select" id="state">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
-    </div> <!-- /.search-btn-area -->
-</section>
+
+    @include('layouts.sections.search', [
+        'inputText' => [
+            'label' => '이름',
+            'id' =>'PublisherName'
+        ],
+        'selectBoxs' => [
+            [ 
+                'label' => '성별',
+                'id' => 'Gender',
+                'options' => [
+                    [
+                        'label' => '형제',
+                        'value' => 'M',
+                    ],
+                    [
+                        'label' => '자매',
+                        'value' => 'F',
+                    ]
+                ] 
+            ],
+            [ 
+                'label' => '상태',
+                'id' => 'EndYn',
+                'options' => [
+                    [
+                        'label' => '봉사중',
+                        'value' => '0',
+                    ],
+                    [
+                        'label' => '중단',
+                        'value' => '1',
+                    ]
+                ] 
+            ],
+        ]
+    ])
+
 
 <section class="section-table-section">
     <div class="table-responsive">
@@ -110,341 +97,83 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    201
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    202
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    203
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    204
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    205
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    206
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    207
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    208
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    209
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    210
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    장로
-                </td>
-                <td>
-                    봉사중
-                </td>
-                <td>
-                    010-1234-5678
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
+                {{-- <tr>
+                    <td>
+                        201
+                    </td>
+                    <td>
+                        남양주
+                    </td>
+                    <td>
+                        경기18
+                    </td>
+                    <td>
+                        남양주양지
+                    </td>
+                    <td>
+                        김사랑
+                    </td>
+                    <td>
+                        형제
+                    </td>
+                    <td>
+                        장로
+                    </td>
+                    <td>
+                        봉사중
+                    </td>
+                    <td>
+                        010-1234-5678
+                    </td>
+                    <td>
+                        2019-03-23
+                    </td>
+                </tr> --}}
+                @foreach ($PublisherList as $Publisher)
+                <tr>
+                    <td>
+                        {{ $Publisher->PublisherID }}
+                    </td>
+                    <td>
+                        {{ $Publisher->MetroName }}
+                    </td>
+                    <td>
+                        {{ $Publisher->CircuitName }}
+                    </td>
+                    <td>
+                        {{-- {{ $Publisher->CongregationName }} --}}
+                    </td>
+                    <td>
+                        {{ $Publisher->PublisherName }}
+                    </td>
+                    <td>
+                        {{-- {{ $Publisher->Gender }} --}}
+                    </td>
+                    <td>
+                        {{ $Publisher->ServantType }}
+                    </td>
+                    <td>
+                        {{ $Publisher->EndKind }}
+                    </td>
+                    <td>
+                        {{ $Publisher->Mobile }}
+                    </td>
+                    <td>
+                        {{ $Publisher->CreateDate }}
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
-    <div class="btn-flex-area justify-content-end mt-3">
-        <button type="button" class="btn btn-primary">봉사자 등록</button>
-    </div>
-    <div>
-        <ul class="page">
-            <li class="active"><a>1</a></li>
-            <li><a>2</a></li>
-            <li><a>3</a></li>
-            <li><a>4</a></li>
-            <li><a>5</a></li>
-        </ul>
-    </div>
+    @if(session('auth.CircuitID'))
+        @include('layouts.sections.registrationButton', [
+            'label' => '봉사자 등록',
+        ])
+    @endif
+
+    {{ $PublisherList->appends( request()->all() )->links() }}
+
 </section>
 @endsection
 
