@@ -7,24 +7,29 @@
     <!-- start : common elements wrap -->
     <div class="select-date-wrap">
         <div class="day-area">
-            <button class="arrow">
+            <button class="arrow" @click="_prevDate">
                 <i class="fas fa-angle-left"></i>
             </button>
-            <div class="year">2019</div>
-            <div class="month">05</div>
-            <div class="day">31</div>
-            <div class="weekday">월요일</div>
-            <button class="arrow">
+            <div class="year">@{{ year }}</div>
+            <div class="month">@{{ month }}</div>
+            <div class="day">@{{ day }}</div>
+            <div class="weekday">@{{ weekday }}</div>
+            <button class="arrow" @click="_nextDate">
                 <i class="fas fa-angle-right"></i>
             </button>
         </div>
         <div class="btn-area">
-            <button class="btn btn-outline-secondary btn-today btn-sm">
+            {{-- <button class="btn btn-outline-secondary btn-today btn-sm">
                 <i class="far fa-calendar-check"></i>
+            </button> --}}
+            <input type="date" class="form-control" :value="yyyymmdd" @change="_changeDate" placeholder="날자를 선택해 주세요">
+            <button class="btn btn-outline-secondary btn-today btn-sm"
+                @click="_today">
+                오늘
             </button>
-            <button class="btn btn-outline-secondary btn-select btn-sm">
+            {{-- <button class="btn btn-outline-secondary btn-select btn-sm">
                 <i class="far fa-calendar-alt"></i>
-            </button>
+            </button> --}}
         </div>
     </div>
     <!-- end : common elements wrap -->
@@ -2255,10 +2260,51 @@
 </section>
 @endsection
 
-@section('popup')
-@endsection
-
-{{-- @section('script')
+@section('script')
 <script>
-</script>
-@endsection --}}
+        var app = new Vue({
+            el:'#wrapper-body',
+            data:{
+                today: new Date(),
+                week: ['일', '월', '화', '수', '목', '금', '토']
+            },
+            computed:{
+                year: function(){
+                    return this.today.getFullYear();
+                },
+                month: function(){
+                    return this.today.getMonth() + 1;  
+                },
+                day: function(){
+                    return this.today.getDate();  
+                },
+                weekday: function(){
+                    return this.week[this.today.getDay()];  
+                },
+                yyyymmdd:function(){
+                    var yyyy = this.today.getFullYear();
+                    var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
+                    var dd = ('0' + this.today.getDate()).slice(-2);
+                    return yyyy + '-' + mm + '-' + dd;
+                }
+            },
+            mounted: function(){
+            },
+            methods:{
+                _prevDate:function () {
+                    this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 1);
+                },
+                _nextDate:function () {
+                    this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1);
+                },
+                _today:function () {
+                    this.today = new Date();
+                },
+                _changeDate:function (e) {
+                    if(e.target.value) this.today = new Date(e.target.value);
+                }
+            }
+        })
+    
+    </script>
+@endsection

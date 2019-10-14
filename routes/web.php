@@ -60,10 +60,10 @@ Route::view('/errors/auth', 'errors.auth');
 
 //봉사일정관리
     //봉사일정관리
-    Route::get('acts', 'ActController@view_acts');
-    Route::get('acts/{id}', 'ActController@view_detail_acts');
+    Route::get('acts', 'ActController@acts');
+    Route::get('acts/{id}', 'ActController@detailActs');
     //봉사일정생성
-    Route::get('create', 'ActController@view_create');
+    Route::get('create', 'ActController@create');
 
 //봉사보고관리
     //봉사보고관리

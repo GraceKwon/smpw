@@ -55,11 +55,12 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select" id="register03">
-                        <option selected>선택</option>
-                        <option>서울 북부 회중</option>
-                        <option>서울 중부 회중</option>
-                        <option>서울 남부 회중</option>
+                    <select class="custom-select" id="CongregationID" name="CongregationID" onchange="submit()">
+                        <option value="">선택</option>
+                        @foreach ($CongregationList as $Congregation)
+                            <option @if(request('CongregationID') == $Congregation->CongregationID ) selected @endif
+                            value="{{ $Congregation->CongregationID }}">{{ $Congregation->CongregationName }}</option>
+                        @endforeach
                     </select>
                 </div>
             </td>

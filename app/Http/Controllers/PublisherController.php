@@ -47,8 +47,17 @@ class PublisherController extends Controller
         ]);
     }
 
-    public function formPublishers()
+    public function formPublishers(Request $request)
     {
-        return view('publisher.formPublisher');
+        $CongregationList = $this->CommonService->getCongregationList();
+        // $ServiceTimeList = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
+        //         session('auth.CircuitID'),
+        //         $request->ServiceYoil,
+        //     ] );
+
+        return view('publisher.formPublisher', [
+            'CongregationList' => $CongregationList,
+            // 'ServiceTimeList' => $ServiceTimeList,
+        ]);
     }
 }

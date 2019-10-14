@@ -6,17 +6,17 @@ use Illuminate\Http\Request;
 
 class ActController extends Controller
 {
-    public function view_acts()
+    public function Acts()
     {
         return view('act.acts');
     }
 
-    public function view_detail_acts()
+    public function detailActs()
     {
-        return view('act.detail_acts');
+        return view('act.detailActs');
     }
 
-    public function view_create()
+    public function create()
     {
         return view('act.create');
     }
