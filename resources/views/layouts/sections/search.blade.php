@@ -46,6 +46,19 @@
         </div> <!-- /.search-form-item -->
         @endif
 
+        @if(isset($ServiceZoneList))
+        <div class="search-form-item">
+            <label class="label" for="CongregationID">회중</label>
+            <select class="custom-select" id="CongregationID" name="CongregationID" onchange="submit()">
+                <option value="">선택</option>
+                @foreach ($ServiceZoneList as $ServiceZone)
+                    <option @if(request('CongregationID') == $ServiceZone->ServiceZoneID ) selected @endif
+                    value="{{ $ServiceZone->ServiceZoneID }}">{{ $ServiceZone->ZoneName }}</option>
+                @endforeach
+            </select>
+        </div> <!-- /.search-form-item -->
+        @endif
+
         @if(isset($AdminRoleList))
         <div class="search-form-item">
             <label class="label" for="AdminRoleID">권한</label>
@@ -119,6 +132,7 @@
         </div> <!-- /.search-form-item -->
         @endif
 
+        @stack('slot')
         <div class="search-btn-area">
             <button type="submit" class="btn btn-primary">조회</button>
         </div> <!-- /.search-btn-area -->

@@ -1,6 +1,36 @@
 @extends('layouts.frames.master')
 @section('content')
-<section class="search-section">
+    @push('slot')
+        <div class="search-form-date">
+            <!-- start : common elements wrap -->
+            <div class="select-date-wrap">
+                <div class="day-area">
+                    <button class="arrow">
+                        <i class="fas fa-angle-left"></i>
+                    </button>
+                    <div class="year">2019</div>
+                    <div class="month">05</div>
+                    <div class="day">31</div>
+                    <div class="weekday">월요일</div>
+                    <button class="arrow">
+                        <i class="fas fa-angle-right"></i>
+                    </button>
+                </div>
+                <div class="btn-area">
+                    <button class="btn btn-outline-secondary btn-today btn-sm">
+                        <i class="far fa-calendar-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-select btn-sm">
+                        <i class="far fa-calendar-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- end : common elements wrap -->
+        </div> <!-- /.search-form-item -->
+    @endpush
+    @include('layouts.sections.search', [])
+        
+{{-- <section class="search-section">
     <div class="search-form-item">
         <label class="label" for="city">도시</label>
         <select class="custom-select" id="city">
@@ -51,7 +81,7 @@
     <div class="search-btn-area">
         <button type="button" class="btn btn-primary">조회</button>
     </div> <!-- /.search-btn-area -->
-</section>
+</section> --}}
 
 <section class="section-table-section">
     <div class="table-responsive">
@@ -380,6 +410,9 @@
     </div>
 </section>
 
+@endsection
+
+{{-- @section('popup')
 <section class="modal-layer-container">
     <div class="mx-auto px-3">
         <div class="mlp-wrap">
@@ -452,10 +485,7 @@
         </div> <!-- /.mlp-wrap -->
     </div>
 </section>
-@endsection
-
-@section('popup')
-@endsection
+@endsection --}}
 
 {{-- @section('script')
 <script>

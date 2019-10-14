@@ -67,8 +67,8 @@ Route::view('/errors/auth', 'errors.auth');
 
 //봉사보고관리
     //봉사보고관리
-    Route::get('reports', 'ReportController@view_reports');
-    Route::get('reports/{id}', 'ReportController@view_detail_reports');
+    Route::get('reports', 'ReportController@reports');
+    Route::get('reports/{id}', 'ReportController@detailReports');
     //방문요청관리
     Route::get('requests', 'ReportController@view_requests');
     Route::get('requests/{id}', 'ReportController@view_detail_requests');

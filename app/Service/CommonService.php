@@ -26,6 +26,12 @@ class CommonService
             [ ( session('auth.CircuitID') ?? request()->CircuitID ) ]);
     }
 
+    public function getServiceZoneList()
+    {
+        return  DB::select('uspGetStandingServiceZoneList ?', 
+            [ ( session('auth.CircuitID') ?? request()->CircuitID ) ]);
+    }
+
     public function getAdminRoleList()
     {
         return  DB::select('uspGetStandingItemCodeList ?, ?', ['AdminRoleID', null]);

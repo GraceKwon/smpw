@@ -3,17 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Service\CommonService;
 
 class ReportController extends Controller
 {
-    public function view_reports()
+    public function __construct(CommonService $CommonService)
+    {
+        $this->CommonService = $CommonService;
+    }
+
+    public function reports()
     {
         return view('report.reports');
     }
 
-    public function view_detail_reports()
+    public function detailReports()
     {
-        return view('report.detail_reports');
+        $MetroList = $this->CommonService->getMetroList();
+        $CircuitList = $this->CommonService->getCircuitList();
+        $ServiceZoneList = $this->CommonService->getServiceZoneList();
+      
+        return view('report.detailReports', [
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList,
+            'ServiceZoneList' => $ServiceZoneList,
+        ]);
     }
 
     public function view_requests()
