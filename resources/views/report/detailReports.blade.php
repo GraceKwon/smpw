@@ -8,16 +8,28 @@
                     <button class="arrow">
                         <i class="fas fa-angle-left"></i>
                     </button>
-                    <div class="year">2019</div>
-                    <div class="month">05</div>
-                    <div class="day">31</div>
-                    <div class="weekday">월요일</div>
+                    <div class="year">@{{year}}</div>
+                    <div class="month">@{{month}}</div>
+                    <div class="day">@{{day}}</div>
+                    <div class="weekday">@{{weekday}}</div>
                     <button class="arrow">
                         <i class="fas fa-angle-right"></i>
                     </button>
                 </div>
                 <div class="btn-area">
-                    <button class="btn btn-outline-secondary btn-today btn-sm">
+                    <date-picker v-model="today" 
+                        width="1"
+                        value-type="date" 
+                        ref="datepicker" 
+                        :clearable="false"
+                        :input-class="'hide'" 
+                        :lang="lang" 
+                        {{-- :range="true" --}}
+                        >
+                    </date-picker>
+                    <button class="btn btn-outline-secondary btn-today btn-sm"
+                        type="button"
+                        @click="popupVisible = !popupVisible">
                         <i class="far fa-calendar-check"></i>
                     </button>
                     <button class="btn btn-outline-secondary btn-select btn-sm">
@@ -412,82 +424,71 @@
 
 @endsection
 
-{{-- @section('popup')
-<section class="modal-layer-container">
-    <div class="mx-auto px-3">
-        <div class="mlp-wrap">
-            <div class="max-w-auto">
-                <div class="mlp-header">
-                    <div class="mlp-title">
-                        보고된 출판물 목록
-                    </div>
-                    <div class="mlp-close">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="mlp-content text-center">
-                    <div class="table-area">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <th>도시</th>
-                                <td>남양주</td>
-                                <th>순회구</th>
-                                <td>경기18</td>
-                            </tr>
-                            <tr>
-                                <th>담당자</th>
-                                <td>김사랑</td>
-                                <th>회중</th>
-                                <td>남양주양지</td>
-                            </tr>
-                            <tr>
-                                <th>연락처</th>
-                                <td>010-2342-3948</td>
-                                <th>신청일자</th>
-                                <td>2019-04-30</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-area mt-3">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>도시</th>
-                                <th>순회구</th>
-                                <th>언어</th>
-                                <th>출판물분류</th>
-                                <th>출판물이름</th>
-                                <th>수량</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>서울</td>
-                                <td>서울1</td>
-                                <td>한국어</td>
-                                <td>서적</td>
-                                <td>청소년은 묻는다 – 질문과 효과있는 대답 1권
-                                </td>
-                                <td>1</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm">닫기</button>
-                </div>
-            </div>
-        </div> <!-- /.mlp-wrap -->
-    </div>
-</section>
-@endsection --}}
-
-{{-- @section('script')
+@section('script')
+{{-- <script src="https://cdn.jsdelivr.net/npm/vue2-datepicker@2.13.0/lib/index.min.js"></script> --}}
 <script>
+// Vue.use(DatePicker.default);
+    var app = new Vue({
+        el:'#wrapper-body',
+        data:{
+            value1: '',
+            lang: {
+                days: ['일', '월', '화', '수', '목', '금', '토'],
+                months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                pickers: ['다음 7일', '다음 30일', '이전 7일', '이전 30일'],
+                placeholder: {
+                    date: '날짜를 선택해주세요',
+                    dateRange: '기간을 선택해주세요'
+                }
+            },
+            popupVisible: false,
+            today: new Date(),
+            week: ['일', '월', '화', '수', '목', '금', '토']
+        },
+        watch:{
+            popupVisible: function(){
+                if(this.popupVisible){
+                    this.$refs.datepicker.showPopup();
+                }else{
+                    this.$refs.datepicker.closePopup();
+                }
+            },
+        },
+        computed:{
+            year: function(){
+                return this.today.getFullYear();
+            },
+            month: function(){
+                return this.today.getMonth() + 1;  
+            },
+            day: function(){
+                return this.today.getDate();  
+            },
+            weekday: function(){
+                return this.week[this.today.getDay()];  
+            },
+            yyyymmdd:function(){
+                var yyyy = this.today.getFullYear();
+                var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
+                var dd = ('0' + this.today.getDate()).slice(-2);
+                return yyyy + '-' + mm + '-' + dd;
+            }
+        },
+        methods:{
+            _prevDate:function () {
+                this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 1);
+            },
+            _nextDate:function () {
+                this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1);
+            },
+            _today:function () {
+                this.today = new Date();
+            },
+            _changeDate:function (e) {
+                if(e.target.value) this.today = new Date(e.target.value);
+            },
+        }
+    })
+
 </script>
-@endsection --}}
+@endsection

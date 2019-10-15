@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "vee-validate": "^2.2.13",
-        "vue-cookie": "^1.1.4"
+        "vue-cookie": "^1.1.4",
+        "vue2-datepicker": "^2.13.0"
     }
 }

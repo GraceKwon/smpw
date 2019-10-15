@@ -4,6 +4,7 @@ require("./bootstrap");
 window.Vue = require("vue");
 import VeeValidate from 'vee-validate';
 import VueCookie from 'vue-cookie';
+import DatePicker from 'vue2-datepicker'
 import ko from './ko.js'
 
 const config = {
@@ -15,3 +16,4 @@ const config = {
 
 window.Vue.use(VeeValidate, config);
 window.Vue.use(VueCookie);
+window.Vue.use(DatePicker);
