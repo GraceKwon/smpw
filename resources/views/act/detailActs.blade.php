@@ -2288,8 +2288,6 @@
                     return yyyy + '-' + mm + '-' + dd;
                 }
             },
-            mounted: function(){
-            },
             methods:{
                 _prevDate:function () {
                     this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 1);
