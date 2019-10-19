@@ -5,14 +5,14 @@
             <!-- start : common elements wrap -->
             <div class="select-date-wrap">
                 <div class="day-area">
-                    <button class="arrow">
+                    <button type="button" class="arrow">
                         <i class="fas fa-angle-left"></i>
                     </button>
                     <div class="year">@{{year}}</div>
                     <div class="month">@{{month}}</div>
                     <div class="day">@{{day}}</div>
                     <div class="weekday">@{{weekday}}</div>
-                    <button class="arrow">
+                    <button type="button" class="arrow">
                         <i class="fas fa-angle-right"></i>
                     </button>
                 </div>
@@ -30,11 +30,11 @@
                     <button class="btn btn-outline-secondary btn-today btn-sm"
                         type="button"
                         @click="popupVisible = !popupVisible">
-                        <i class="far fa-calendar-check"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary btn-select btn-sm">
                         <i class="far fa-calendar-alt"></i>
                     </button>
+                    {{-- <button class="btn btn-outline-secondary btn-select btn-sm">
+                        <i class="far fa-calendar-check"></i>
+                    </button> --}}
                 </div>
             </div>
             <!-- end : common elements wrap -->
@@ -447,11 +447,16 @@
         },
         watch:{
             popupVisible: function(){
-                if(this.popupVisible){
+                console.log(this.$refs.datepicker.popupVisible);
+                // if(this.popupVisible){
                     this.$refs.datepicker.showPopup();
-                }else{
-                    this.$refs.datepicker.closePopup();
-                }
+                // }else{
+                    // console.log(this.$refs.datepicker.popupVisible);
+                    // if(!this.$refs.datepicker.popupVisible) 
+                    //     this.$refs.datepicker.showPopup();
+                    // else
+                    //     this.$refs.datepicker.closePopup();
+                // }
             },
         },
         computed:{

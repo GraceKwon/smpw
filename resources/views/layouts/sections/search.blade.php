@@ -48,7 +48,7 @@
 
         @if(isset($ServiceZoneList))
         <div class="search-form-item">
-            <label class="label" for="CongregationID">회중</label>
+            <label class="label" for="CongregationID">구역선택</label>
             <select class="custom-select" id="CongregationID" name="CongregationID" onchange="submit()">
                 <option value="">선택</option>
                 @foreach ($ServiceZoneList as $ServiceZone)

@@ -130,7 +130,8 @@
                     </td>
                 </tr> --}}
                 @foreach ($PublisherList as $Publisher)
-                <tr>
+                <tr class="pointer"
+                    onclick="location.href = '/{{request()->path()}}/{{ $Publisher->PublisherID }}'">
                     <td>
                         {{ $Publisher->PublisherID }}
                     </td>

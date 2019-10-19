@@ -1,6 +1,14 @@
 @extends('layouts.frames.master')
 @section('content')
 <section class="register-section">
+    @error('fail')
+        <div class="alert alert-danger">{!! $message !!}</div>
+    @enderror
+    <form method="POST"
+    @submit="_confirm" 
+    @keydown.enter.prevent>
+    @method("PUT")
+    @csrf
     <table class="table table-register">
         <tbody>
         <tr>
@@ -10,10 +18,15 @@
             <td>
                 <div class="inline-responsive">
                     <input type="text" 
-                        class="form-control" 
+                        class="form-control @error('Account') is-invalid @enderror" 
                         id="Account" 
+                        name="Account" 
+                        v-model="Account" 
                         placeholder="자동으로 생성됩니다" 
                         readonly>
+                        @error('Account')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                 </div>
             </td>
             <th rowspan="{{ 5 + ( isset($Publisher->PublisherID) ? 1 : 0 ) }}">
@@ -23,6 +36,7 @@
                 <div class="photo-container">
                     <div class="photo-wrap">
                         <img src="../img/demo/demo-profile-thumbnail.png" class="thumbnail">
+                        <input type="hidden" name="PhotoFilePath" v-model="PhotoFilePath">
                     </div>
                 </div>
             </td>
@@ -41,27 +55,40 @@
         @endif
         <tr>
             <th>
-                <label class="label" for="register02">이름</label>
+                <label class="label" for="PublisherName">이름</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <input type="text" class="form-control" id="register02" placeholder="이름을 입력해 주세요">
+                    <input type="text" 
+                        class="form-control @error('PublisherName') is-invalid @enderror" 
+                        id="PublisherName" 
+                        name="PublisherName" 
+                        v-model="PublisherName" 
+                        placeholder="이름을 입력해 주세요">
+                        @error('PublisherName')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                 </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label" for="register03">회중</label>
+                <label class="label" for="CongregationID">회중</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select" id="CongregationID" name="CongregationID" onchange="submit()">
+                    <select class="custom-select @error('CongregationID') is-invalid @enderror" 
+                        id="CongregationID" 
+                        v-model="CongregationID" 
+                        name="CongregationID">
                         <option value="">선택</option>
                         @foreach ($CongregationList as $Congregation)
-                            <option @if(request('CongregationID') == $Congregation->CongregationID ) selected @endif
-                            value="{{ $Congregation->CongregationID }}">{{ $Congregation->CongregationName }}</option>
+                            <option value="{{ $Congregation->CongregationID }}">{{ $Congregation->CongregationName }}</option>
                         @endforeach
                     </select>
+                    @error('CongregationID')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </td>
         </tr>
@@ -72,23 +99,41 @@
             <td>
                 <div class="inline-responsive">
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="radio0101" class="custom-control-input" name="radio01">
-                        <label class="custom-control-label" for="radio0101">형제</label>
+                        <input type="radio" 
+                            class="custom-control-input @error('Gender') is-invalid @enderror"
+                            id="M" 
+                            value="M" 
+                            v-model="Gender" 
+                            name="Gender">
+                        <label class="custom-control-label" for="M">형제</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="radio0102" class="custom-control-input" name="radio01">
-                        <label class="custom-control-label" for="radio0102">자매</label>
+                        <input type="radio" 
+                            class="custom-control-input @error('Gender') is-invalid @enderror" 
+                            id="F" 
+                            value="F" 
+                            v-model="Gender" 
+                            name="Gender">
+                        <label class="custom-control-label" for="F">자매</label>
                     </div>
                 </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label" for="register04">연락처</label>
+                <label class="label" for="Mobile">연락처</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <input type="text" class="form-control" id="register04" placeholder="연락처를 입력해 주세요">
+                    <input type="text" 
+                        class="form-control @error('CongregationID') is-invalid @enderror"
+                        id="Mobile" 
+                        name="Mobile" 
+                        v-model="Mobile" 
+                        placeholder="연락처를 입력해 주세요">
+                    @error('Mobile')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </td>
         </tr>
@@ -98,25 +143,37 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select" id="register05">
-                        <option selected>선택</option>
-                        <option>장로</option>
-                        <option>봉사의종</option>
-                        <option>전도인</option>
+                    <select class="custom-select @error('ServantTypeID') is-invalid @enderror" 
+                        id="ServantTypeID"
+                        name="ServantTypeID"
+                        v-model="ServantTypeID">
+                        <option value="">선택</option>
+                        @foreach ($ServantTypeList as $ServantType)
+                            <option value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
+                        @endforeach
                     </select>
+                    @error('ServantTypeID')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror 
                 </div>
             </td>
             <th>
-                <label class="label" for="register06">봉사자 특권</label>
+                <label class="label" for="PioneerTypeID">봉사자 특권</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select" id="register06">
-                        <option selected>선택</option>
-                        <option>정규 파이오니아</option>
-                        <option>특별 파이오니아</option>
-                        <option>순회감독자</option>
+                    <select class="custom-select @error('PioneerTypeID') is-invalid @enderror" 
+                        id="PioneerTypeID"
+                        name="PioneerTypeID"
+                        v-model="PioneerTypeID">
+                        <option value="">선택</option>
+                        @foreach ($PioneerTypeList as $PioneerType)
+                            <option value="{{ $PioneerType->ID }}">{{ $PioneerType->Item }}</option>
+                        @endforeach
                     </select>
+                    @error('PioneerTypeID')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror 
                 </div>
             </td>
         </tr>
@@ -127,12 +184,22 @@
             <td>
                 <div class="inline-responsive">
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="radio0201" class="custom-control-input" name="radio02">
-                        <label class="custom-control-label" for="radio0201">봉사중</label>
+                        <input type="radio" 
+                            class="custom-control-input @error('TempPassYn') is-invalid @enderror" 
+                            v-model="TempPassYn" 
+                            id="TempPassN" 
+                            value="0"
+                            name="TempPassYn">
+                        <label class="custom-control-label" for="TempPassN">봉사중</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="radio0202" class="custom-control-input" name="radio02">
-                        <label class="custom-control-label" for="radio0202">일시중단</label>
+                        <input type="radio" 
+                            class="custom-control-input @error('TempPassYn') is-invalid @enderror" 
+                            v-model="TempPassYn" 
+                            id="TempPassY" 
+                            value="1"
+                            name="TempPassYn">
+                        <label class="custom-control-label" for="TempPassY">일시중단</label>
                     </div>
                 </div>
             </td>
@@ -143,13 +210,22 @@
                 <div class="inline-responsive">
                     <div class="check-group inline-responsive">
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="radio0301" class="custom-control-input" name="radio03">
-                            <label class="custom-control-label" for="radio0301">가능</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="radio0302" class="custom-control-input" name="radio03">
-                            <label class="custom-control-label" for="radio0302">불가능</label>
-                        </div>
+                        <input type="radio" 
+                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
+                            v-model="SupportYn" 
+                            id="SupportY" 
+                            value="1"
+                            name="SupportYn">
+                        <label class="custom-control-label" for="SupportY">가능</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" 
+                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
+                            v-model="SupportYn" 
+                            id="SupportN" 
+                            value="0"
+                            name="SupportYn">
+                        <label class="custom-control-label" for="SupportN">불가능</label>
                     </div>
                 </div>
             </td>
@@ -160,23 +236,41 @@
             </th>
             <td colspan="3">
                 <div class="inline-responsive">
-                    <textarea type="text" class="form-control w-100" id="register07" rows="5" placeholder="메모를 입력해 주세요."></textarea>
+                    <textarea type="text" 
+                        class="form-control w-100 @error('Memo') is-invalid @enderror"  
+                        id="Memo" 
+                        name="Memo" 
+                        v-model="Memo" 
+                        rows="5" 
+                        placeholder="메모를 입력해 주세요."></textarea>
+                    @error('Memo')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror 
                 </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label" for="register08">계정중단일</label>
+                <label class="label" for="EndDate">계정중단일</label>
             </th>
             <td>
                 <div class="inline-responsive">
                     <div class="input-group max-w-250px-desktop">
-                        <input type="date" class="form-control" id="register08" placeholder="날자를 선택해 주세요">
-                        <div class="input-group-append">
+                        <input type="date" 
+                            class="form-control @error('EndDate') is-invalid @enderror" 
+                            id="EndDate" 
+                            name="EndDate" 
+                            v-model="EndDate" 
+                            :disabled="TempPassYn === '0'"
+                            placeholder="날자를 선택해 주세요">
+                        {{-- <div class="input-group-append">
                             <div class="input-group-text">
                                 <i class="far fa-calendar-alt"></i>
                             </div>
-                        </div>
+                        </div> --}}
+                        @error('EndDate')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror 
                     </div>
                 </div>
             </td>
@@ -185,23 +279,32 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select" id="register09">
-                        <option selected>선택</option>
-                        <option>본인중단</option>
-                        <option>자격상실</option>
-                        <option>이사</option>
-                        <option>사망</option>
-                        <option>기타</option>
+                    <select class="custom-select @error('EndTypeID') is-invalid @enderror" 
+                        id="EndTypeID"
+                        name="EndTypeID"
+                        :disabled="TempPassYn === '0'"
+                        v-model="EndTypeID">
+                        <option value="">선택</option>
+                        @foreach ($EndTypeIDList as $EndTypeID)
+                            <option value="{{ $EndTypeID->ID }}">{{ $EndTypeID->Item }}</option>
+                        @endforeach
                     </select>
+                    @error('EndTypeID')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror 
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
-    <div class="btn-flex-area justify-content-end">
-        <button type="button" class="btn btn-secondary">취소</button>
-        <button type="button" class="btn btn-primary">저장</button>
-    </div> <!-- /.register-btn-area -->
+    @include('layouts.sections.formButton', [
+            'id' => isset($Publisher->PublisherID) ? true : false,
+        ])
+    </form>
+    <form ref="formDelete" method="POST">
+        @method("DELETE")
+        @csrf
+    </form>
 </section>
 
 <section class="table-section mt-6">
@@ -564,10 +667,45 @@
 </section>
 @endsection
 
-@section('popup')
-@endsection
-
-{{-- @section('script')
+@section('script')
 <script>
+    var app = new Vue({
+        el:'#wrapper-body',
+        data:{
+            Account: "{{ old('Account') ?? $Publisher->Account ?? '' }}",
+            PublisherName: "{{ old('PublisherName') ?? $Publisher->PublisherName ?? '' }}",
+            CongregationID: "{{ old('CongregationID') ?? $Publisher->CongregationID ?? '' }}",
+            Gender: "{{ old('Gender') ?? $Publisher->Gender ?? 'M' }}",
+            Mobile: "{{ old('Mobile') ?? $Publisher->Mobile ?? '' }}",
+            MobileOsKindID: "{{ old('MobileOsKindID') ?? $Publisher->MobileOsKindID ?? '' }}",
+            PhotoFilePath: "{{ old('PhotoFilePath') ?? $Publisher->PhotoFilePath ?? '' }}",
+            PioneerTypeID: "{{ old('PioneerTypeID') ?? $Publisher->PioneerTypeID ?? '' }}",
+            ServantTypeID: "{{ old('ServantTypeID') ?? $Publisher->ServantTypeID ?? '' }}",
+            TempPassYn: "{{ old('TempPassYn') ?? $Publisher->TempPassYn ?? '0' }}",
+            SupportYn: "{{ old('SupportYn') ?? $Publisher->SupportYn ?? '1' }}",
+            Memo: "{{ old('Memo') ?? $Publisher->Memo ?? '' }}",
+            EndDate: "{{ old('EndDate') ?? $Publisher->EndDate ?? '' }}",
+            EndTypeID: "{{ old('EndTypeID') ?? $Publisher->EndTypeID ?? '' }}",
+        },
+        watch: {
+            Mobile: function () {
+                this.Mobile = this.Mobile.replace(/[^0-9]/g, '');
+                this.Mobile = this.Mobile.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3")
+            },
+        },
+        methods:{
+            _confirm: function (e) {
+                var res = confirm('{{ isset($ServiceZone->ServiceZoneID) ? '수정' : '저장' }} 하시겠습니까?');
+                if(!res){
+                    e.preventDefault();
+                }
+                
+            },
+            _delete: function () {
+                this.$refs.formDelete.submit()
+            }
+        }
+    })
+
 </script>
-@endsection --}}
+@endsection

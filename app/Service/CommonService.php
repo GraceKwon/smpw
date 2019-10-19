@@ -42,4 +42,14 @@ class CommonService
         return  DB::select('uspGetStandingItemCodeList ?, ?', ['ServantTypeID', null]);
     }
 
+    public function getPioneerTypeList()
+    {
+        return  DB::select('uspGetStandingItemCodeList ?, ?', ['PioneerTypeID', null]);
+    }
+
+    public function getEndTypeList()
+    {
+        return  DB::select('uspGetStandingItemCodeList ?, ?', ['EndTypeID', null]);
+    }
+
 }
