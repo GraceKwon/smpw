@@ -310,16 +310,17 @@
 <section class="table-section mt-6">
     <h4 class="text-primary">봉사 타임 지정</h4>
     <div class="info-area form-inline mt-3">
-        <select class="custom-select">
-            <option selected>월요일</option>
-            <option>화요일</option>
-            <option>수요일</option>
-            <option>목요일</option>
-            <option>금요일</option>
-            <option>토요일</option>
-            <option>일요일</option>
+        <select class="custom-select"
+            name="ServiceYoil">
+            <option value="월">월요일</option>
+            <option value="화">화요일</option>
+            <option value="수">수요일</option>
+            <option value="목">목요일</option>
+            <option value="금">금요일</option>
+            <option value="토">토요일</option>
+            <option value="일">일요일</option>
         </select>
-        <div class="form-control bg-primary border-primary text-white mt-1 mt-sm-0 ml-sm-2">2타임 배정</div>
+        {{-- <div class="form-control bg-primary border-primary text-white mt-1 mt-sm-0 ml-sm-2">2타임 배정</div> --}}
     </div>
     <div class="table-area table-responsive mt-2">
         <table class="table table-bordered table-center font-size-90">
@@ -328,7 +329,14 @@
                 <th>
                     <label class="label">봉사타임</label>
                 </th>
+                @foreach ($ServiceZoneList as $ServiceZone)
                 <th>
+                    <div class="min-w-100px">
+                    <label class="label">{{ $ServiceZone->ZoneName }}</label>
+                    </div>
+                </th>
+                @endforeach
+                {{-- <th>
                     <div class="min-w-100px">
                         <label class="label">구역명1</label>
                     </div>
@@ -342,313 +350,337 @@
                     <div class="min-w-100px">
                         <label class="label">구역명3</label>
                     </div>
-                </th>
+                </th> --}}
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th>
-                    <label class="label">06:00~07:00</label>
-                </th>
-                <td class="state-publisher-wait">
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option>미지정</option>
-                            <option selected>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td class="state-publisher-set">
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option>미지정</option>
-                            <option>대기자</option>
-                            <option selected>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td class="state-publisher-leader">
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option selected>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label class="label">07:00~08:00</label>
-                </th>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label class="label">08:00~09:00</label>
-                </th>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label class="label">09:00~10:00</label>
-                </th>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label class="label">10:00~11:00</label>
-                </th>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label class="label">11:00~12:00</label>
-                </th>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label class="label">12:00~13:00</label>
-                </th>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>  <tr>
-                <th>
-                    <label class="label">13:00~14:00</label>
-                </th>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-                <td>
-                    <div class="form-inline">
-                        <select class="custom-select mx-auto">
-                            <option selected>미지정</option>
-                            <option>대기자</option>
-                            <option>봉사자</option>
-                            <option>인도자</option>
-                        </select>
-                    </div>
-                    <div class="mt-1 font-size-80">[0/6]</div>
-                </td>
-            </tr>
+                @foreach ($ServiceTimeList as $time => $ServiceTimes)
+                <tr>
+                    <th>
+                        <label class="label">{{ sprintfServiceTime($time) }}</label>
+                    </th>
+                    @foreach ($ServiceTimes as $ServiceTime)
+                    <td>
+                        @if( !empty($ServiceTime) )
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option>
+                                    {{ $ServiceTime['ServiceTimeID'] }}
+                                    {{-- 미지정 --}}
+                                </option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[{{ $ServiceTime['PublisherCnt'] }}/0]</div>
+                        @endif
+                    </td>  
+                    @endforeach
+                </tr>
+                @endforeach
+                {{-- <tr>
+                    <th>
+                        <label class="label">06:00~07:00</label>
+                    </th>
+                    <td class="state-publisher-wait">
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option>미지정</option>
+                                <option selected>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td class="state-publisher-set">
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option>미지정</option>
+                                <option>대기자</option>
+                                <option selected>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td class="state-publisher-leader">
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option selected>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                <tr>
+                    <th>
+                        <label class="label">07:00~08:00</label>
+                    </th>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label class="label">08:00~09:00</label>
+                    </th>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label class="label">09:00~10:00</label>
+                    </th>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label class="label">10:00~11:00</label>
+                    </th>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label class="label">11:00~12:00</label>
+                    </th>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label class="label">12:00~13:00</label>
+                    </th>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                </tr>  <tr>
+                    <th>
+                        <label class="label">13:00~14:00</label>
+                    </th>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                    <td>
+                        <div class="form-inline">
+                            <select class="custom-select mx-auto">
+                                <option selected>미지정</option>
+                                <option>대기자</option>
+                                <option>봉사자</option>
+                                <option>인도자</option>
+                            </select>
+                        </div>
+                        <div class="mt-1 font-size-80">[0/6]</div>
+                    </td>
+                </tr> --}}
             </tbody>
         </table>
     </div>

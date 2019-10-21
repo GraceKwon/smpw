@@ -111,27 +111,64 @@ class PublisherController extends Controller
         $ServantTypeList = $this->CommonService->getServantTypeList();
         $PioneerTypeList = $this->CommonService->getPioneerTypeList();
         $EndTypeIDList = $this->CommonService->getEndTypeList();
-
+        $ServiceZoneList = $this->CommonService->getServiceZoneList();
+        $ArrayServiceTimeID = DB::table('ServiceTimes')
+            ->where('ServiceYoil', '월')
+            ->get();
+        foreach ($ArrayServiceTimeID as $key => $value) {
+            $res[$value->ServiceZoneID][$value->ServiceTime] = $value->ServiceTimeID;
+        }
+        // dd($res);
         if( $request->PublisherID !== '0' ) {
-
-            $Publisher = DB::table('Publishers')->select('*')->where('PublisherID' , $request->PublisherID)->first();
+            $res = DB::select( 'uspGetStandingPublisherDetail ?', [
+                    $request->PublisherID
+                ]);
+            // $Publisher = DB::table('Publishers')->select('*')->where('PublisherID' , $request->PublisherID)->first();
             // dd($res);
-            // $Publisher = reset($res); /* reset( [] ) === false */
-            if( empty($Publisher) || $Publisher->UseYn === 0 ) abort(404); /* empty( false ) === true */
+            $Publisher = reset($res); /* reset( [] ) === false */
+            if( empty($Publisher) ) abort(404); /* empty( false ) === true */
 
         }
-        // $ServiceTimeList = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
-        //         session('auth.CircuitID'),
-        //         '화',
-        //     ] );
+        $ServiceTimeList = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
+                session('auth.CircuitID'),
+                '월',
+                // $request->ServiceYoil,
+            ] );
+        foreach ((array) $ServiceTimeList as $key => $value) {
+            $sort[$key] = $value->ServiceTime;
+        }
+        array_multisort($sort, SORT_ASC, $ServiceTimeList);
 
+        foreach ( $ServiceTimeList as $key => $ServiceTime) {
+            $index = $ServiceTime->ServiceTime;
+
+            foreach ( $ServiceZoneList as $key => $ServiceZone) {
+                // if($key === array_key_first($ServiceZoneList)) $array[$index]['time'] = $ServiceTime->ServiceTime;
+                if($ServiceZone->ServiceZoneID === $ServiceTime->ServiceZoneID){
+                    $array[$index][$ServiceZone->ServiceZoneID] = [
+                        'ServiceZoneID' => $ServiceZone->ServiceZoneID,
+                        'PublisherCnt' => $ServiceTime->PublisherCnt,
+                        'ServiceTimeID' => $res[$ServiceZone->ServiceZoneID][$index],
+                    ];
+                }
+
+                if(empty($array[$index][$ServiceZone->ServiceZoneID]))
+                    $array[$index][$ServiceZone->ServiceZoneID] = [];
+ 
+                
+            }
+        }
+        $ServiceTimeList = $array;
+        // dd($ServiceTimeList);
+    
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
             'PioneerTypeList' => $PioneerTypeList,
             'EndTypeIDList' => $EndTypeIDList,
-            'Publisher' => $Publisher,
-            // 'ServiceTimeList' => $ServiceTimeList,
+            'Publisher' => isset($Publisher) ? $Publisher : null,
+            'ServiceTimeList' => $ServiceTimeList,
+            'ServiceZoneList' => $ServiceZoneList,
         ]);
     }
 
