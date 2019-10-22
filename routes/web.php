@@ -59,6 +59,8 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('PublisherID', '[0-9]+');
     Route::put('publishers/{PublisherID}', 'PublisherController@putPublishers')
         ->where('PublisherID', '[0-9]+');
+    Route::patch('publishers/{PublisherID}', 'PublisherController@putServiceTimePublieher')
+        ->where('PublisherID', '[0-9]+');
     Route::delete('publishers/{PublisherID}', 'PublisherController@deletePublishers')
         ->where('PublisherID', '[0-9]+');
 
