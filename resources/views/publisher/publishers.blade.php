@@ -142,13 +142,14 @@
                         {{ $Publisher->CircuitName }}
                     </td>
                     <td>
-                        {{-- {{ $Publisher->CongregationName }} --}}
+                        {{ $Publisher->CongregationName }}
                     </td>
                     <td>
                         {{ $Publisher->PublisherName }}
                     </td>
                     <td>
-                        {{-- {{ $Publisher->Gender }} --}}
+                        @if($Publisher->Gender === 'M') 형제
+                        @elseif($Publisher->Gender === 'F') 자매 @endif
                     </td>
                     <td>
                         {{ $Publisher->ServantType }}

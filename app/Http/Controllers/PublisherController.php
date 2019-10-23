@@ -87,7 +87,6 @@ class PublisherController extends Controller
             'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
             'PioneerTypeID' => 'required',
             'ServantTypeID' => 'required',
-            'TempPassYn' => 'required',
             'SupportYn' => 'required',
             'EndDate' => 'date',
             'EndTypeID' => 'numeric',
@@ -113,7 +112,7 @@ class PublisherController extends Controller
         else
             $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
-                    $request->TempPassYn,
+                    0,//$request->TempPassYn,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
@@ -131,7 +130,7 @@ class PublisherController extends Controller
         if(getAffectedRows($res) === 0) 
             return back()->withErrors(['fail' => '저장 실패하였습니다.'])->withInput();
         else
-            return redirect('/publishers/' . $request->PublisherID);
+            return redirect('/publishers');
 
     }
 
@@ -154,7 +153,8 @@ class PublisherController extends Controller
         $res = DB::table('Publishers')
             ->where('PublisherID', $request->PublisherID)
             ->update([
-                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', '11112222')")
+                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', '11112222')"),
+                'TempPassYn' => 1,
             ]);
         // if( getAffectedRows($res) === 0 ) 
         if( $res === 0 ) 

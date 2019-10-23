@@ -39,11 +39,6 @@
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>신분</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="min-width">
                             <span>연락처</span>
                         </div>
                     </th>
@@ -90,9 +85,10 @@
                         </td>
                     </tr> --}}
                     @foreach ($KeepZoneList as $KeppZone)
-                    <tr>
+                    <tr class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $KeppZone->KeepZoneID }}'">
                         <td>
-                            {{-- {{ $KeppZone->KeepZoneID }} --}}
+                            {{ $KeppZone->KeepZoneID }}
                         </td>
                         <td>
                             {{ $KeppZone->MetroName }}
@@ -101,13 +97,10 @@
                             {{ $KeppZone->CircuitName }}
                         </td>
                         <td>
-                            {{-- {{ $KeppZone->CongregationName }} --}}
+                            {{ $KeppZone->CongregationName }}
                         </td>
                         <td>
                             {{ $KeppZone->AdminName }}
-                        </td>
-                        <td>
-                            장로
                         </td>
                         <td>
                             {{ $KeppZone->Mobile }}

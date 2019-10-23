@@ -224,7 +224,6 @@ class CircuitController extends Controller
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
         $CongregationList = $this->CommonService->getCongregationList();
-        // $ServantTypeList = $this->CommonService->getServantTypeList();
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
@@ -249,13 +248,13 @@ class CircuitController extends Controller
 
     public function formKeepZones(Request $request)
     {
-        // if( $request->KeepZoneID !== '0' ) {
+        if( $request->KeepZoneID !== '0' ) {
 
-        //     $res = DB::select( 'uspGetStandingKeepZoneDetail ?', [ $request->KeepZoneID ] );
-        //     $KeepZone = reset($res); /* reset( [] ) === false */
-        //     if( empty($KeepZone) || $KeepZone->UseYn === 0 ) abort(404); /* empty( false ) === true */
+            $res = DB::select( 'uspGetStandingProductKeepZoneDetail ?', [ $request->KeepZoneID ] );
+            $KeepZone = reset($res); /* reset( [] ) === false */
+            if( empty($KeepZone) || $KeepZone->UseYn === 0 ) abort(404); /* empty( false ) === true */
 
-        // }
+        }
 
         return view( 'circuit.formKeepZones', [
                 'KeepZone' => isset($KeepZone) ? $KeepZone : null, 

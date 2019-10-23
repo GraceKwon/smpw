@@ -15,13 +15,13 @@
                     <label class="label">담당자 이름</label>
                 </th>
                 <td>
-                    {{ isset($KeepZone->AdminName) ? $KeepZone->AdminName : session('auth.AdminName') }}
+                    {{ $KeepZone->AdminName ?? session('auth.AdminName') }}
                 </td>
                 <th>
                     <label class="label">도시</label>
                 </th>
                 <td>
-                    {{ isset($KeepZone->MetroName) ? $KeepZone->MetroName : getMetroName() }}
+                    {{ $KeepZone->MetroName ?? getMetroName() }}
                 </td>
             </tr>
             <tr>
@@ -29,26 +29,26 @@
                     <label class="label">순회구(지역)</label>
                 </th>
                 <td>
-                    {{ isset($KeepZone->CircuitName) ? $KeepZone->CircuitName : getCircuitName() }}
+                    {{ $KeepZone->CircuitName ?? getCircuitName() }}
                 </td>
                 <th>
                     <label class="label">회중</label>
                 </th>
                 <td>
-                    {{ isset($KeepZone->CongregationName) ? $KeepZone->CongregationName : getCongregationName() }}
+                    {{ $KeepZone->CongregationName ?? getCongregationName() }}
                 </td>
             </tr>
             <tr>
-                <th>
+                {{-- <th>
                     <label class="label">신분</label>
                 </th>
                 <td>
-                </td>
+                </td> --}}
                 <th>
                     <label class="label">연럭처</label>
                 </th>
                 <td>
-                    {{ isset($KeepZone->Mobile) ? $KeepZone->Mobile : getMobile() }}
+                    {{ $KeepZone->Mobile ?? getMobile() }}
                 </td>
             </tr>
             <tr>
@@ -61,6 +61,7 @@
                             <input type="text" class="form-control" 
                                 ref="ZipCode" 
                                 name="ZipCode" 
+                                value="{{ $KeepZone->ZipCode ?? '' }}" 
                                 placeholder="우편번호"
                                 @click="_execDaumPostcode"
                                 readonly>
@@ -76,12 +77,14 @@
                     <input type="text" class="form-control" 
                         ref="ZoneAddress" 
                         name="ZoneAddress" 
+                        value="{{ $KeepZone->ZoneAddress ?? '' }}" 
                         placeholder="주소"
                         readonly>
                     <div class="inline-responsive">
                         <input type="text" class="form-control" 
                             ref="ZoneAddressDetail" 
                             name="ZoneAddressDetail" 
+                            value="{{ $KeepZone->ZoneAddressDetail ?? '' }}" 
                             placeholder="상세주소">
                     </div>
                 </td>

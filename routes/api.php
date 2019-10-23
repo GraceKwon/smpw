@@ -1,5 +1,6 @@
 <?php
 use App\Service\CommonService;
+use App\Service\ReportService;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,9 @@ Route::get('/getCircuitList', function(CommonService $CommonService){
 Route::get('/getCongregationList', function(CommonService $CommonService){
     return $CommonService->getCongregationList();
 });
+
+//봉사보고관리
+    //봉사보고관리
+    Route::get('reports', function(ReportService $ReportService){
+        return $ReportService->getDailyServiceReportCnt();
+    });

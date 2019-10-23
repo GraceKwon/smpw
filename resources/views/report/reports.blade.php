@@ -658,6 +658,12 @@
         el:'#wrapper-body',
         data:{
             today: new Date(),
+            ServiceReportCnt: [],
+        },
+        watch: {
+            today: function(){
+                this.getDailyServiceReportCnt();
+            }
         },
         computed:{
             year: function(){
@@ -668,9 +674,26 @@
             },
         },
         mounted: function(){
-            this._buildCalendar();
+            this.getDailyServiceReportCnt();
+            // this._buildCalendar();
         },
         methods:{
+            getDailyServiceReportCnt: function () {
+                var params = {
+                    params: {
+                        SetMonth: this.today 
+                    }
+                };
+                axios.get('/api/reports', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        this.ServiceReportCnt = response.data;
+                        this._buildCalendar();
+                    }.bind(this))
+                    .catch(function (error) {
+                        console.log(error.response)
+                    });
+            },
             _buildCalendar: function() {
                 var nMonth = new Date(this.today.getFullYear(), this.today.getMonth(), 1);  // 이번 달의 첫째 날
                 var lastDate = new Date(this.today.getFullYear(), this.today.getMonth()+1, 0); // 이번 달의 마지막 날
@@ -700,30 +723,22 @@
                         divClass = 'day sat';
                     }
 
-                    // for (var index = 0; index < this.LoginLog.day.length; index++) {
-                    //     if(this.LoginLog.day[index] == i){
-                    //         cell.innerHTML =
-                    //             `<div class="label">
-                    //                 <div>출석</div>
-                    //                 <small>${this.LoginLog.time[index]}</small>
-                    //             </div>`
-                    //     }
-                    // }
                     var html = '<div class="' + divClass + '">' + i + '</div>'
+                    // var html = '<div class="' + divClass + '">' + this.ServiceReportCnt[i-1].YMD + '</div>'
                     html += '<div class="cal-item">'
                     html += '<div class="cal-label">출판물</div>'
                     html += '<i class="fas fa-book"></i>'
-                    html += '<div class="cal-value">' + 123 + '</div>'
+                    html += '<div class="cal-value">' + this.ServiceReportCnt[i-1].PlacementQty + '</div>'
                     html += '</div>'
                     html += '<div class="cal-item">'
                     html += '<div class="cal-label">동영상</div>'
                     html += '<i class="fas fa-video"></i>'
-                    html += '<div class="cal-value">' + 123 + '</div>'
+                    html += '<div class="cal-value">' + this.ServiceReportCnt[i-1].VideoShowQty + '</div>'
                     html += '</div>'
                     html += '<div class="cal-item">'
                     html += '<div class="cal-label">방문요청</div>'
                     html += '<i class="fas fa-edit"></i>'
-                    html += '<div class="cal-value">' + 123 + '</div>'
+                    html += '<div class="cal-value">' + this.ServiceReportCnt[i-1].VisitRequestQty + '</div>'
                     html += '</div>'
           
                     cell.innerHTML = html;
@@ -737,15 +752,12 @@
             },
             _prevCalendar:function () {
                 this.today = new Date(this.today.getFullYear(), this.today.getMonth() - 1, this.today.getDate());
-                this._buildCalendar();
             },
             _nextCalendar:function () {
                 this.today = new Date(this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate());
-                this._buildCalendar();
             },
             _today:function () {
                 this.today = new Date();
-                this._buildCalendar();
             }
         }
     })

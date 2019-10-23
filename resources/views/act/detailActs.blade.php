@@ -7,25 +7,42 @@
     <!-- start : common elements wrap -->
     <div class="select-date-wrap">
         <div class="day-area">
-            <button class="arrow" @click="_prevDate">
+            {{-- <button class="arrow" @click="_prevDate">
                 <i class="fas fa-angle-left"></i>
             </button>
             <div class="year">@{{ year }}</div>
             <div class="month">@{{ month }}</div>
-            <div class="day">@{{ day }}</div>
-            <div class="weekday">@{{ weekday }}</div>
-            <button class="arrow" @click="_nextDate">
+            <div class="day">@{{ day }}</div> --}}
+            {{-- <div class="weekday">@{{ weekday }}</div> --}}
+            {{-- <button class="arrow" @click="_nextDate">
                 <i class="fas fa-angle-right"></i>
-            </button>
+            </button> --}}
         </div>
         <div class="btn-area">
             {{-- <button class="btn btn-outline-secondary btn-today btn-sm">
                 <i class="far fa-calendar-check"></i>
             </button> --}}
-            <input type="date" class="form-control" :value="yyyymmdd" @change="_changeDate" placeholder="날자를 선택해 주세요">
+            <button class="arrow" @click="_prevDate">
+                <i class="fas fa-angle-left"></i>
+            </button>
+            {{-- <input type="date" class="form-control" :value="yyyymmdd" @change="_changeDate" placeholder="날자를 선택해 주세요"> --}}
+            <date-picker v-model="today" 
+                        width="180"
+                        value-type="date" 
+                        :clearable="false"
+                        input-class="form-control"
+                        :format="'YYYY. MM. DD ' + weekday"
+                        :lang="lang" 
+                        :icon-day="day"
+                        {{-- :range="true" --}}
+                        >
+            </date-picker>
             <button class="btn btn-outline-secondary btn-today btn-sm"
                 @click="_today">
                 오늘
+            </button>
+            <button class="arrow" @click="_nextDate">
+                <i class="fas fa-angle-right"></i>
             </button>
             {{-- <button class="btn btn-outline-secondary btn-select btn-sm">
                 <i class="far fa-calendar-alt"></i>
@@ -2266,7 +2283,16 @@
             el:'#wrapper-body',
             data:{
                 today: new Date(),
-                week: ['일', '월', '화', '수', '목', '금', '토']
+                week: ['일', '월', '화', '수', '목', '금', '토'],
+                lang: {
+                    days: ['일', '월', '화', '수', '목', '금', '토'],
+                    months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                    pickers: ['다음 7일', '다음 30일', '이전 7일', '이전 30일'],
+                    placeholder: {
+                        date: '날짜를 선택해주세요',
+                        dateRange: '기간을 선택해주세요'
+                    }
+                },
             },
             computed:{
                 year: function(){
