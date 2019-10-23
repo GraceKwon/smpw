@@ -48,7 +48,8 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <button type="button" class="btn btn-primary">비밀번호초기화</button>
+                    <button type="button" class="btn btn-primary" 
+                        @click="_resetPwd">비밀번호초기화</button>
                 </div>
             </td>
         </tr>
@@ -185,21 +186,21 @@
                 <div class="inline-responsive">
                     <div class="custom-control custom-radio">
                         <input type="radio" 
-                            class="custom-control-input @error('TempPassYn') is-invalid @enderror" 
-                            v-model="TempPassYn" 
-                            id="TempPassN" 
+                            class="custom-control-input"
+                            v-model="StopYn" 
+                            id="StopN" 
                             value="0"
-                            name="TempPassYn">
-                        <label class="custom-control-label" for="TempPassN">봉사중</label>
+                            name="StopYn">
+                        <label class="custom-control-label" for="StopN">봉사중</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input type="radio" 
-                            class="custom-control-input @error('TempPassYn') is-invalid @enderror" 
-                            v-model="TempPassYn" 
-                            id="TempPassY" 
+                            class="custom-control-input" 
+                            v-model="StopYn" 
+                            id="StopY" 
                             value="1"
-                            name="TempPassYn">
-                        <label class="custom-control-label" for="TempPassY">일시중단</label>
+                            name="StopYn">
+                        <label class="custom-control-label" for="StopY">봉사중단</label>
                     </div>
                 </div>
             </td>
@@ -261,7 +262,7 @@
                             id="EndDate" 
                             name="EndDate" 
                             v-model="EndDate" 
-                            :disabled="TempPassYn === '0'"
+                            :disabled="StopYn === '0'"
                             placeholder="날자를 선택해 주세요">
                         {{-- <div class="input-group-append">
                             <div class="input-group-text">
@@ -282,7 +283,7 @@
                     <select class="custom-select @error('EndTypeID') is-invalid @enderror" 
                         id="EndTypeID"
                         name="EndTypeID"
-                        :disabled="TempPassYn === '0'"
+                        :disabled="StopYn === '0'"
                         v-model="EndTypeID">
                         <option value="">선택</option>
                         @foreach ($EndTypeIDList as $EndTypeID)
@@ -303,6 +304,9 @@
     </form>
     <form ref="formDelete" method="POST">
         @method("DELETE")
+        @csrf
+    </form>
+    <form ref="formResetPwd" method="POST">
         @csrf
     </form>
 </section>
@@ -450,7 +454,7 @@
             PhotoFilePath: "{{ old('PhotoFilePath') ?? $Publisher->PhotoFilePath ?? '' }}",
             PioneerTypeID: "{{ old('PioneerTypeID') ?? $Publisher->PioneerTypeID ?? '' }}",
             ServantTypeID: "{{ old('ServantTypeID') ?? $Publisher->ServantTypeID ?? '' }}",
-            TempPassYn: "{{ old('TempPassYn') ?? $Publisher->TempPassYn ?? '0' }}",
+            StopYn: "{{ old('StopYn') ?? isset($Publisher->EndDate) ? '1' : '0' }}",
             SupportYn: "{{ old('SupportYn') ?? $Publisher->SupportYn ?? '1' }}",
             Memo: "{{ old('Memo') ?? $Publisher->Memo ?? '' }}",
             EndDate: "{{ old('EndDate') ?? $Publisher->EndDate ?? '' }}",
@@ -473,7 +477,10 @@
                 
             },
             _delete: function () {
-                this.$refs.formDelete.submit()
+                if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()
+            },
+            _resetPwd: function () {
+                if( confirm('비밀번호를 초기화 하시겠습니까?') ) this.$refs.formResetPwd.submit()
             }
         }
     })

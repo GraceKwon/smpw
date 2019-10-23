@@ -95,8 +95,8 @@ class PublisherController extends Controller
         if($request->PublisherID === '0')
             $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     'AAAA0002',//$request->Account,
-                    $request->PublisherName,
                     '11112222',//$request->UserPassword,
+                    $request->PublisherName,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
@@ -111,9 +111,8 @@ class PublisherController extends Controller
                     $request->EndTypeID,
                 ]);
         else
-            $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
+            $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
-                    '11112222',//$request->UserPassword,
                     $request->TempPassYn,
                     $request->CongregationID,
                     $request->Gender,
@@ -147,6 +146,21 @@ class PublisherController extends Controller
             return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
         else
             return redirect('/publishers');
+        
+    }
+
+    public function resetPwd(Request $request)
+    {
+        $res = DB::table('Publishers')
+            ->where('PublisherID', $request->PublisherID)
+            ->update([
+                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', '11112222')")
+            ]);
+        // if( getAffectedRows($res) === 0 ) 
+        if( $res === 0 ) 
+            return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
+        else
+            return redirect('/publishers/' . $request->PublisherID);
         
     }
 

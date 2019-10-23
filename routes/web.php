@@ -63,6 +63,8 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('PublisherID', '[0-9]+');
     Route::delete('publishers/{PublisherID}', 'PublisherController@deletePublishers')
         ->where('PublisherID', '[0-9]+');
+    Route::post('publishers/{PublisherID}', 'PublisherController@resetPwd')
+        ->where('PublisherID', '[0-9]+');
 
 //봉사일정관리
     //봉사일정관리
