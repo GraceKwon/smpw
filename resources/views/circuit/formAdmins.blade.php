@@ -4,6 +4,11 @@
     @error('fail')
         <div class="alert alert-danger">{!! $message !!}</div>
     @enderror
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <form method="POST"
     @submit="_confirm"
     @keydown.enter.prevent>
@@ -11,23 +16,33 @@
     @csrf
         <table class="table table-register">
             <tbody>
-            @if(isset($Admin->AdminID))
-            <tr>
-                <th>
-                    <label class="label" for="Account">아이디</label>
-                </th>
-                <td>
-                </td>
+                <tr>
+                    <th>
+                        <label class="label" for="Account">아이디</label>
+                    </th>
+                    <td colspan="{{ ( isset($Admin->AdminID) ? 0 : 3 ) }}">
+                        <div class="inline-responsive">
+                            <input type="text" 
+                            class="form-control"
+                            id="Account" 
+                            name="Account" 
+                            v-model="Account" 
+                            placeholder="자동으로 생성됩니다" 
+                            disabled>
+                        </div>
+                    </td>
+                @if(isset($Admin->AdminID))
                 <th>
                     <label class="label" for="nameSearch">비밀번호초기화</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <button type="button" class="btn btn-primary">초기화</button>
+                        <button type="button" class="btn btn-primary"
+                            @click="_resetPwd">비밀번호초기화</button>
                     </div>
                 </td>
+                @endif
             </tr>
-            @endif
             <tr>
                 <th>
                     <label class="label" for="AdminName">이름</label>
@@ -172,13 +187,23 @@
             </tbody>
         </table>
 
-        @include('layouts.sections.formButton', [
-            'id' => isset($Admin->AdminID) ? true : false,
-        ])
+        <div class="btn-flex-area justify-content-end">
+            <button type="button" class="btn btn-secondary" 
+                onclick="location.href = '/{{ getTopPath() }}'">취소</button>
+            @if(isset($Admin->AdminID))
+                <button type="button" class="btn btn-point-sub"
+                    @click="_delete">삭제</button>
+            @endif
+                <button type="submit" class="btn btn-primary">
+                    {{ isset($Admin->AdminID) ? '수정' : '저장' }}</button>
+        </div>
 
     </form>
     <form ref="formDelete" method="POST">
         @method("DELETE")
+        @csrf
+    </form>
+    <form ref="formResetPwd" method="POST">
         @csrf
     </form>
 </section>
@@ -189,10 +214,11 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
+            Account: "{{ $Admin->Account ?? '' }}",
             AdminName: "{{ old('AdminName') ?? $Admin->AdminName ?? '' }}",
             AdminRoleID: "{{ old('AdminRoleID') ?? $Admin->AdminRoleID ?? '' }}",
-            MetroID: "",
-            CircuitID: "",
+            MetroID: "{{ old('MetroID') ?? $Admin->MetroID ?? '' }}",
+            CircuitID: "{{ old('CircuitID') ?? $Admin->CircuitID ?? '' }}",
             ServantTypeID: "{{ old('ServantTypeID') ?? $Admin->ServantTypeID ?? '' }}",
             CongregationID: "{{ old('CongregationID') ?? $Admin->CongregationID ?? '' }}",
             Mobile: "{{ old('Mobile') ?? $Admin->Mobile ?? '' }}",
@@ -200,8 +226,8 @@
             CongregationList: [],
         },
         mounted: function(){
-            this.MetroID = "{{ old('MetroID') ?? $Admin->MetroID ?? '' }}";
-            this.CircuitID = "{{ old('CircuitID') ?? $Admin->CircuitID ?? '' }}";
+            this._getCircuitList();
+            this._getCongregationList();
         },
         watch: {
             Mobile: function () {
@@ -209,6 +235,16 @@
                 this.Mobile = this.Mobile.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3")
             },
             MetroID: function () {
+                this.CircuitID = '';
+                this._getCircuitList();
+            },
+            CircuitID: function () {
+                this.CongregationID = '';
+                this._getCongregationList();
+            }
+        },
+        methods:{
+            _getCircuitList: function () {
                 var params = {
                     params: {
                         MetroID: this.MetroID 
@@ -223,7 +259,7 @@
                         console.log(error.response)
                     });
             },
-            CircuitID: function () {
+            _getCongregationList: function () {
                 var params = {
                     params: {
                         CircuitID: this.CircuitID 
@@ -237,9 +273,7 @@
                     .catch(function (error) {
                         console.log(error.response)
                     });
-            }
-        },
-        methods:{
+            },
             _confirm: function (e) {
                 var res = confirm('{{ isset($Admin->AdminID) ? '수정' : '저장' }} 하시겠습니까?');
                 if(!res){
@@ -248,8 +282,10 @@
                 
             },
             _delete: function () {
-                console.log(this.$refs.formRemove);
-                this.$refs.formDelete.submit()
+                if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()
+            },
+            _resetPwd: function () {
+                if( confirm('비밀번호를 초기화 하시겠습니까?') ) this.$refs.formResetPwd.submit()
             }
         }
     })

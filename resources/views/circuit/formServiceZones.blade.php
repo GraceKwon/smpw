@@ -133,8 +133,9 @@
             </tr>
             </tbody>
         </table>
+
         @include('layouts.sections.formButton', [
-            'id' => isset($ServiceZone->ServiceZoneID) ? true : false,
+            'id' => isset($ServiceZone->ServiceZoneID),
         ])
         
     </form>

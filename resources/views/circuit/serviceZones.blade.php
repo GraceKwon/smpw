@@ -1,5 +1,7 @@
 @extends('layouts.frames.master')
 @section('content')
+    @include('layouts.sections.search')
+
     <section class="section-table-section edit-circuits-territory-list">
         <div class="table-responsive">
             <table class="table table-center table-hover table-font-size-90">
@@ -33,7 +35,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($ServiceZoneList as $ServiceZone)
+                    @foreach($ServiceZones as $ServiceZone)
                     <tr class="pointer"
                         onclick="location.href = '/{{request()->path()}}/{{ $ServiceZone->ServiceZoneID }}'">
                         <td>

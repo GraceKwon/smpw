@@ -16,14 +16,19 @@ class CircuitController extends Controller
         $this->middleware('CheckCircuitID', ['only' => ['putServiceZones']]);
     }
 
-    public function serviceZones()
+    public function serviceZones(Request $request)
     {
-        $ServiceZoneList = DB::select('uspGetStandingServiceZoneList ?', [ 
-                session('auth.CircuitID')   
+        $MetroList = $this->CommonService->getMetroList();
+        $CircuitList = $this->CommonService->getCircuitList();
+        
+        $ServiceZones = DB::select('uspGetStandingServiceZoneList ?', [ 
+                session('auth.CircuitID') ?? $request->CircuitID
             ]);
         
         return view( 'circuit.serviceZones', [
-            'ServiceZoneList' => $ServiceZoneList,
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList,
+            'ServiceZones' => $ServiceZones,
         ]);
     }
 
@@ -144,13 +149,23 @@ class CircuitController extends Controller
         ]);
     }
 
-    public function formAdmins()
+    public function formAdmins(Request $request)
     {
         $AdminRoleList = $this->CommonService->getAdminRoleList();
         $MetroList = $this->CommonService->getMetroList();
         $ServantTypeList = $this->CommonService->getServantTypeList();
-   
+        
+        if( $request->AdminID !== '0' ) {
+            $res = DB::select( 'uspGetStandingAdminDetail ?', [
+                    $request->AdminID
+                ]);
+                $Admin = reset($res); /* reset( [] ) === false */
+                if( empty($Admin) ) abort(404); /* empty( false ) === true */
+                else if($Admin->UseYn === 0) abort(404);
+        }
+
         return view( 'circuit.formAdmins', [
+            'Admin' => $Admin ?? null,
             'AdminRoleList' => $AdminRoleList,
             'MetroList' => $MetroList,
             'ServantTypeList' => $ServantTypeList,
@@ -219,6 +234,21 @@ class CircuitController extends Controller
         
     }
 
+    public function resetPwdAdmins(Request $request)
+    {
+        $res = DB::table('Admins')
+            ->where('AdminID', $request->AdminID)
+            ->update([
+                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', '11112222')"),
+                'TempPassYn' => 1,
+            ]);
+        if( $res === 0 ) 
+            return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
+        else
+            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다.']);
+        
+    }
+
     public function keepZones(Request $request)
     {
         $MetroList = $this->CommonService->getMetroList();
@@ -269,16 +299,18 @@ class CircuitController extends Controller
         ]);
 
         if($request->KeepZoneID === '0')
-            $res = DB::select('uspSetStandingProductKeepZoneInsert ?,?,?', [
+            $res = DB::select('uspSetStandingProductKeepZoneInsert ?,?,?,?', [
                     session('auth.AdminID'),
                     $request->ZipCode,
-                    $request->ZoneAddress . $request->ZoneAddressDetail
+                    $request->ZoneAddress,
+                    $request->ZoneAddressDetail,
                 ]);
         else
-            $res = DB::select('uspSetStandingProductKeepZoneUpdate ?,?,?', [
+            $res = DB::select('uspSetStandingProductKeepZoneUpdate ?,?,?,?', [
                     $request->KeepZoneID,
                     $request->ZipCode,
-                    $request->ZoneAddress . $request->ZoneAddressDetail
+                    $request->ZoneAddress,
+                    $request->ZoneAddressDetail,
                 ]);
         
 

@@ -59,9 +59,8 @@
                     <div class="inline-responsive">
                         <div class="search-form flex">
                             <input type="text" class="form-control" 
-                                ref="ZipCode" 
                                 name="ZipCode" 
-                                value="{{ $KeepZone->ZipCode ?? '' }}" 
+                                v-model="ZipCode" 
                                 placeholder="우편번호"
                                 @click="_execDaumPostcode"
                                 readonly>
@@ -75,16 +74,15 @@
             <tr>
                 <td class="pt-0-mobile" colspan="3">
                     <input type="text" class="form-control" 
-                        ref="ZoneAddress" 
                         name="ZoneAddress" 
-                        value="{{ $KeepZone->ZoneAddress ?? '' }}" 
+                        v-model="ZoneAddress" 
                         placeholder="주소"
                         readonly>
                     <div class="inline-responsive">
                         <input type="text" class="form-control" 
                             ref="ZoneAddressDetail" 
                             name="ZoneAddressDetail" 
-                            value="{{ $KeepZone->ZoneAddressDetail ?? '' }}" 
+                            v-model="ZoneAddressDetail" 
                             placeholder="상세주소">
                     </div>
                 </td>
@@ -116,6 +114,9 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
+            ZipCode: "{{ old('ZipCode') ?? $KeepZone->ZipCode ?? '' }}",
+            ZoneAddress: "{{ old('ZoneAddress') ?? $KeepZone->ZoneAddress ?? '' }}",
+            ZoneAddressDetail: "{{ old('ZoneAddressDetail') ?? $KeepZone->ZoneAddressDetail ?? '' }}",
             layer: null,
             width:320, //우편번호서비스가 들어갈 element의 width
             height: 400, //우편번호서비스가 들어갈 element의 height
@@ -161,8 +162,8 @@
                         }
 
                         // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                        this.$refs.ZipCode.value = data.zonecode;
-                        this.$refs.ZoneAddress.value = addr + ' ' + extraAddr;
+                        this.ZipCode = data.zonecode;
+                        this.ZoneAddress = addr + ' ' + extraAddr;
                         // 커서를 상세주소 필드로 이동한다.
                         this.$refs.ZoneAddressDetail.focus();
 
