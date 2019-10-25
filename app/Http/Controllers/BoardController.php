@@ -20,4 +20,19 @@ class BoardController extends Controller
     {
         return view('board.form_notices');
     }
+
+    public function postForm($id, Request $request)
+    {   
+        return  $request->all();
+        // return count($request->Files);
+        // $request->Files->store('files');
+        // return $request->input('Files[]');
+        $request->validate([
+            'Title' => 'required'
+        ]);
+        for ($i=0; $i < count( $request->Files ); $i++) { 
+            $request->Files[$i]->store('files');
+        }
+
+    }
 }

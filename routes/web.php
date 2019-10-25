@@ -107,6 +107,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('notices', 'BoardController@view_notices');
     Route::get('notices/{id}', 'BoardController@view_detail_notices');
     Route::get('notices/{id}/form', 'BoardController@view_form_notices');
+    Route::post('notices/{id}/form', 'BoardController@postForm');
 
 //메세지함
     //받음메세지함
