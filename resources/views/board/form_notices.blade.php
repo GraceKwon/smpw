@@ -99,13 +99,14 @@
                 var drop = document.getElementById('drop-zone');
                 drop.ondragover = function(e) {
                     e.preventDefault();
-                    e.target.style.backgroundColor = '#cac7c7'
+                    drop.style.backgroundColor = '#cac7c7'
                 };
                 drop.ondragleave = function(e) {
-                    e.target.style.backgroundColor = '#fafafa'
+                    drop.style.backgroundColor = '#fafafa'
                 }
                 drop.ondrop = function(e) {
                     e.preventDefault();
+                    drop.style.backgroundColor = '#fafafa'
                     var data = e.dataTransfer;
                     if (data.items) {
                         for (var i = 0; i < data.items.length; i++) {
