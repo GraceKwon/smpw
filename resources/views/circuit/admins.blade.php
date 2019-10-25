@@ -61,37 +61,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {{-- <tr>
-                        <td>
-                            201
-                        </td>
-                        <td>
-                            남양주
-                        </td>
-                        <td>
-                            경기18
-                        </td>
-                        <td>
-                            남양주양지
-                        </td>
-                        <td>
-                            김사랑
-                        </td>
-                        <td>
-                            장로
-                        </td>
-                        <td>
-                            010-1234-5678
-                        </td>
-                        <td>
-                            보조자
-                        </td>
-                        <td>
-                            2019-03-23
-                        </td>
-                    </tr> --}}
                     @foreach ($AdminList as $Admin)
-                    <tr>
+                    <tr class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $Admin->AdminID }}'">
                         <td>
                             {{ $Admin->AdminID }}
                         </td>

@@ -72,7 +72,7 @@ class PublisherController extends Controller
             'ServantTypeList' => $ServantTypeList,
             'PioneerTypeList' => $PioneerTypeList,
             'EndTypeIDList' => $EndTypeIDList,
-            'Publisher' => isset($Publisher) ? $Publisher : null,
+            'Publisher' => $Publisher ?? null,
             'ServiceZoneList' => $ServiceZoneList,
             'ServiceTimeList' => $ServiceTimeList,
         ]);
@@ -148,7 +148,7 @@ class PublisherController extends Controller
         
     }
 
-    public function resetPwd(Request $request)
+    public function resetPwdPublishers(Request $request)
     {
         $res = DB::table('Publishers')
             ->where('PublisherID', $request->PublisherID)

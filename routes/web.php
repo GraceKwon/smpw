@@ -45,6 +45,10 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('AdminID', '[0-9]+');
     Route::put('admins/{AdminID}', 'CircuitController@putAdmins')
         ->where('AdminID', '[0-9]+');
+    Route::delete('admins/{AdminID}', 'CircuitController@deleteAdmins')
+        ->where('AdminID', '[0-9]+');
+    Route::post('admins/{AdminID}', 'CircuitController@resetPwdAdmins')
+        ->where('AdminID', '[0-9]+');
     //보관장소관리
     Route::get('KeepZones', 'CircuitController@KeepZones');
     Route::get('KeepZones/{KeepZoneID}', 'CircuitController@formKeepZones')
@@ -63,7 +67,7 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('PublisherID', '[0-9]+');
     Route::delete('publishers/{PublisherID}', 'PublisherController@deletePublishers')
         ->where('PublisherID', '[0-9]+');
-    Route::post('publishers/{PublisherID}', 'PublisherController@resetPwd')
+    Route::post('publishers/{PublisherID}', 'PublisherController@resetPwdPublishers')
         ->where('PublisherID', '[0-9]+');
 
 //봉사일정관리

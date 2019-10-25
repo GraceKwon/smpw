@@ -18,15 +18,12 @@
             <td>
                 <div class="inline-responsive">
                     <input type="text" 
-                        class="form-control @error('Account') is-invalid @enderror" 
+                        class="form-control"
                         id="Account" 
                         name="Account" 
                         v-model="Account" 
                         placeholder="자동으로 생성됩니다" 
-                        readonly>
-                        @error('Account')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        disabled>
                 </div>
             </td>
             <th rowspan="{{ 5 + ( isset($Publisher->PublisherID) ? 1 : 0 ) }}">
@@ -383,44 +380,6 @@
                         @endforeach
                     </tr>
                     @endforeach
-                    {{-- <tr>
-                        <th>
-                            <label class="label">06:00~07:00</label>
-                        </th>
-                        <td class="state-publisher-wait">
-                            <div class="form-inline">
-                                <select class="custom-select mx-auto">
-                                    <option>미지정</option>
-                                    <option selected>대기자</option>
-                                    <option>봉사자</option>
-                                    <option>인도자</option>
-                                </select>
-                            </div>
-                            <div class="mt-1 font-size-80">[0/6]</div>
-                        </td>
-                        <td class="state-publisher-set">
-                            <div class="form-inline">
-                                <select class="custom-select mx-auto">
-                                    <option>미지정</option>
-                                    <option>대기자</option>
-                                    <option selected>봉사자</option>
-                                    <option>인도자</option>
-                                </select>
-                            </div>
-                            <div class="mt-1 font-size-80">[0/6]</div>
-                        </td>
-                        <td class="state-publisher-leader">
-                            <div class="form-inline">
-                                <select class="custom-select mx-auto">
-                                    <option>미지정</option>
-                                    <option>대기자</option>
-                                    <option>봉사자</option>
-                                    <option selected>인도자</option>
-                                </select>
-                            </div>
-                            <div class="mt-1 font-size-80">[0/6]</div>
-                        </td>
-                    </tr> --}}
                 </tbody>
             </table>
         </div>
@@ -445,7 +404,7 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
-            Account: "{{ old('Account') ?? $Publisher->Account ?? '' }}",
+            Account: "{{ $Publisher->Account ?? '' }}",
             PublisherName: "{{ old('PublisherName') ?? $Publisher->PublisherName ?? '' }}",
             CongregationID: "{{ old('CongregationID') ?? $Publisher->CongregationID ?? '' }}",
             Gender: "{{ old('Gender') ?? $Publisher->Gender ?? 'M' }}",
