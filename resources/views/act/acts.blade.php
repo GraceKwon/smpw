@@ -658,6 +658,12 @@
         el:'#wrapper-body',
         data:{
             today: new Date(),
+            ServicePlanCnt: [],
+        },
+        watch: {
+            today: function(){
+                this.getDailyServicePlanCnt();
+            }
         },
         computed:{
             year: function(){
@@ -668,9 +674,24 @@
             },
         },
         mounted: function(){
-            this._buildCalendar();
+            this.getDailyServicePlanCnt();
         },
         methods:{
+            getDailyServicePlanCnt: function () {
+                var params = {
+                    params: {
+                        SetMonth: this.today 
+                    }
+                };
+                axios.get('/api/acts', params)
+                    .then(function (response) {
+                        this.ServicePlanCnt = response.data;
+                        this._buildCalendar();
+                    }.bind(this))
+                    .catch(function (error) {
+                        console.log(error.response)
+                    });
+            },
             _buildCalendar: function() {
                 var nMonth = new Date(this.today.getFullYear(), this.today.getMonth(), 1);  // 이번 달의 첫째 날
                 var lastDate = new Date(this.today.getFullYear(), this.today.getMonth()+1, 0); // 이번 달의 마지막 날
@@ -700,30 +721,21 @@
                         divClass = 'day sat';
                     }
 
-                    // for (var index = 0; index < this.LoginLog.day.length; index++) {
-                    //     if(this.LoginLog.day[index] == i){
-                    //         cell.innerHTML =
-                    //             `<div class="label">
-                    //                 <div>출석</div>
-                    //                 <small>${this.LoginLog.time[index]}</small>
-                    //             </div>`
-                    //     }
-                    // }
                     var html = '<div class="' + divClass + '">' + i + '</div>'
                     html += '<div class="cal-item">'
                     html += '<div class="cal-label">구역 수</div>'
                     html += '<i class="fas fa-map-marked-alt"></i>'
-                    html += '<div class="cal-value">' + 123 + '</div>'
+                    html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[i] !== 'undefined' ? this.ServicePlanCnt[i].ServiceZoneCnt : 0) + '</div>'
                     html += '</div>'
                     html += '<div class="cal-item">'
                     html += '<div class="cal-label">봉사자 수</div>'
                     html += '<i class="fas fa-user-friends"></i>'
-                    html += '<div class="cal-value">' + 123 + '</div>'
+                    html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[i] !== 'undefined' ? this.ServicePlanCnt[i].PublisherCnt : 0) + '</div>'
                     html += '</div>'
                     html += '<div class="cal-item">'
                     html += '<div class="cal-label">인도자</div>'
                     html += '<i class="fas fa-user-tie"></i>'
-                    html += '<div class="cal-value">' + 123 + '</div>'
+                    html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[i] !== 'undefined' ? this.ServicePlanCnt[i].LeaderCnt : 0) + '</div>'
                     html += '</div>'
                     cell.innerHTML = html;
 

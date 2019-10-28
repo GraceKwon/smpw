@@ -41,16 +41,15 @@ class PublisherService
         $ArrayServiceTimeID = $this->getArrayServiceTimeID();
         $ArrayServiceTimePublisher = $this->getArrayServiceTimePublisher();
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
-
         $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
-                session('auth.CircuitID'),
+                session('auth.CircuitID') ?? request()->CircuitID,
                 request()->ServiceYoil ?? '월',
             ]);
         
         foreach ((array) $res as $key => $ServiceTime) {
             $sort[$key] = $ServiceTime->ServiceTime;
         }
-        array_multisort($sort, SORT_ASC, $res);
+        if($res) array_multisort($sort, SORT_ASC, $res);
 
         foreach ( $res as $ServiceTime) {
             $key = $ServiceTime->ServiceTime;
@@ -74,7 +73,7 @@ class PublisherService
  
             }
         }
-        return $array;
+        return $array ?? [];
     }
 
 }

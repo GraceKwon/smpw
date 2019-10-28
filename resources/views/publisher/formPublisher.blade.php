@@ -386,7 +386,10 @@
         <div class="form-inline align-items-center mt-3">
             <div class="min-w-140px text-primary">스케줄 변경 시작일</div>
             <div class="input-group mt-2 mt-md-0">
-                <input type="date" class="form-control" placeholder="날자를 선택해 주세요">
+                <input type="date" class="form-control" 
+                    name="SetStartDate"
+                    v-model="SetStartDate"
+                    placeholder="날자를 선택해 주세요">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
@@ -420,6 +423,7 @@
             EndTypeID: "{{ old('EndTypeID') ?? $Publisher->EndTypeID ?? '' }}",
             ServiceYoil: "{{ request('ServiceYoil') ?? '월' }}",
             ServiceSetType: "{{ request('ServiceYoil') ?? '월' }}",
+            SetStartDate: "{{ date('Y-m-d') }}",
         },
         watch: {
             Mobile: function () {

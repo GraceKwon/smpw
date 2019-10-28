@@ -54,17 +54,17 @@ class PublisherController extends Controller
         $ServantTypeList = $this->CommonService->getServantTypeList();
         $PioneerTypeList = $this->CommonService->getPioneerTypeList();
         $EndTypeIDList = $this->CommonService->getEndTypeList();
-        $ServiceZoneList = $this->CommonService->getServiceZoneList();
         
         if( $request->PublisherID !== '0' ) {
             $res = DB::select( 'uspGetStandingPublisherDetail ?', [
-                    $request->PublisherID
+                $request->PublisherID
                 ]);
                 $Publisher = reset($res); /* reset( [] ) === false */
                 if( empty($Publisher) ) abort(404); /* empty( false ) === true */
-            
-        }
-            
+                
+                $request->CircuitID = $Publisher->CircuitID;
+            }
+            $ServiceZoneList = $this->CommonService->getServiceZoneList();
         $ServiceTimeList = $PublisherService->getServiceTimeList();
         // dd($ServiceTimeList);
         return view('publisher.formPublisher', [
@@ -168,32 +168,35 @@ class PublisherController extends Controller
     {
         $ServiceSetType = $request->ServiceSetType;
         $PublisherID = $request->PublisherID;
-        DB::transaction(function() use ($ServiceSetType, $PublisherID)
+        $SetStartDate = $request->SetStartDate;
+        // dd($SetStartDate);
+        DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
         {
             foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
-                if($ServiceSetType === '미지정') 
+                // if($ServiceSetType === '미지정') 
                 DB::select('uspSetStandingServiceTimePublieherDelete ?,?', [
                     $PublisherID,
                     $ServiceTimeID,
                     ]);
-                else{
-
-                    $res = DB::select('uspSetStandingServiceTimePublieherUpdate ?,?,?,?', [
-                        $PublisherID,
-                        $ServiceTimeID,
-                        ($ServiceSetType ==='인도자') ? 1 : 0,
-                        ($ServiceSetType ==='대기') ? 1 : 0,
-                        ]);
-
-                    if(getAffectedRows($res) === 0)
-                        $res = DB::select('uspSetStandingServiceTimePublieherInsert ?,?,?,?', [
-                            $PublisherID,
-                            $ServiceTimeID,
-                            ($ServiceSetType ==='인도자') ? 1 : 0,
-                            ($ServiceSetType ==='대기') ? 1 : 0,
+                // else{
+                    if($ServiceSetType !== '미지정') 
+                    // $res = DB::select('uspSetStandingServiceTimePublieherUpdate ?,?,?,?', [
+                    //         $PublisherID,
+                    //         $ServiceTimeID,
+                    //         ($ServiceSetType ==='인도자') ? 1 : 0,
+                    //         ($ServiceSetType ==='대기') ? 1 : 0,
+                    //     ]);
+                    // dd($res);
+                    // if(getAffectedRows($res) === 0)
+                        $res = DB::select('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
+                                $PublisherID,
+                                $ServiceTimeID,
+                                ($ServiceSetType ==='인도자') ? 1 : 0,
+                                ($ServiceSetType ==='대기') ? 1 : 0,
+                                $SetStartDate,
                             ]);
                             
-                }
+                // }
             }
         });
 

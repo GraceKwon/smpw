@@ -3,20 +3,19 @@
 namespace App\Service;
 use Illuminate\Support\Facades\DB;
 
-class ReportService
+class ActService
 {
     public function __construct()
     {
     }
 
-    public function getDailyServiceReportCnt()
+    public function getDailyServicePlanCnt()
     {
-        // return request()->SetMonth;
-        $res = DB::select('uspGetStandingDailyServiceReportCnt ?', [
+        $res = DB::select('uspGetStandingDailyServicePlanCnt ?', [
             date('Y-m-01', strtotime( request()->SetMonth )),
         ]);
         foreach($res as $object){
-            $array[date('j', strtotime($object->YMD))] = $object;
+            $array[date('j', strtotime($object->ServiceDate))] = $object;
         }
         return $array;
     }
