@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Service\CommonService;
 
 
 class ActController extends Controller
 {
+    public function __construct(CommonService $CommonService)
+    {
+        $this->CommonService = $CommonService;
+    }
+
     public function Acts()
     {
         return view('act.acts');
@@ -15,6 +21,8 @@ class ActController extends Controller
 
     public function detailActs(Request $request)
     {
+        $CancelTypeList = $this->CommonService->getCancelTypeList();
+        // dd($CancelTypeList);
         $res = DB::select('uspGetStandingDailyServicePlanDetail ?', [
             $request->ServiceDate,
         ]);
@@ -28,6 +36,7 @@ class ActController extends Controller
                 'LeaderYn' => $object->LeaderYn,
             ];
         }
+        // dd($res);
         if(isset($arrayServiceTime))
             $ServiceTime = [
                 'min' => min($arrayServiceTime), //가장 이른 시간
@@ -37,6 +46,7 @@ class ActController extends Controller
         return view('act.detailActs', [
             'DailyServicePlanList' => $DailyServicePlanList ?? [],
             'ServiceTime' => $ServiceTime ?? null,
+            'CancelTypeList' => $CancelTypeList ?? null,
         ]);
     }
 

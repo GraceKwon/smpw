@@ -61,8 +61,12 @@
             <thead>
             <tr>
                 <th class="text-center">
-                    <div class="min-width sun">
-                        <span>봉사타임</span>
+                    <div class="min-width">
+                        @if(isset($ServiceTime))
+                            <span>봉사타임</span>
+                        @else
+                            <span v-html="dateToString + '봉사일정이 없습니다.'"></span>
+                        @endif
                     </div>
                 </th>
                 @if(isset($ServiceTime))
@@ -84,12 +88,20 @@
                         {{ $ZoneName }}
                     </div>
                     <div class="btn-area">
-                        <button class="btn btn-outline-danger btn-block btn-sm">
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            @foreach ($CancelTypeList as $CancelType)
+                            <a class="dropdown-row" href="{{$CancelType->ID}}">{{$CancelType->Item}}</a></a>
+                            @endforeach
+                        </div>
+                        <button class="btn btn-outline-danger btn-block btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             구역봉사취소
                         </button>
                         <button class="btn btn-outline-primary btn-block btn-sm">
                             지원요청하기
                         </button>
+                        {{-- <button class="btn btn-outline-danger btn-block btn-sm">
+                            구역봉사취소
+                        </button> --}}
                     </div>
                 </td>
                 @for ($time = $ServiceTime['min'] ; $time <= $ServiceTime['max'] ; $time ++)
@@ -125,7 +137,69 @@
     </div>
 </section>
 @endsection
-
+{{-- @section('popup')
+<section class="modal-layer-container">
+    <div class="mx-auto px-3">
+        <div class="mlp-wrap">
+            <div class="max-w-auto">
+                <div class="mlp-header">
+                    <div class="mlp-title">
+                        임의 배정
+                    </div>
+                    <div class="mlp-close">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+                <div class="search-section">
+                    <div class="search-form-item">
+                        <label class="label" for="PublisherName">이름</label>
+                        <input type="text" class="form-control" id="PublisherName" name="PublisherName" value="" placeholder="입력해 주세요">
+                    </div> <!-- /.search-form-item -->
+                    <div class="search-btn-area">
+                        <button type="submit" class="btn btn-primary">조회</button>
+                    </div> <!-- /.search-btn-area -->
+                </div>
+                <div class="mlp-content text-center">
+                    <div class="table-area">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>도시</th>
+                                <th>순회구</th>
+                                <th>담당자</th>
+                                <th>회중</th>
+                                <th>연락처</th>
+                                <th>신청일자</th>
+                                <th>송장번호 입력</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>남양주</td>
+                                <td>경기18</td>
+                                <td>홍길동</td>
+                                <td>남양주양지</td>
+                                <td>010-1423-3232</td>
+                                <td>2019-04-30</td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm max-w-250px">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mlp-footer justify-content-end">
+                    <button class="btn btn-outline-secondary btn-sm">닫기</button>
+                    <button class="btn btn-primary btn-sm">확인</button>
+                </div>
+            </div> <!-- /.mlp-wrap -->
+        </div>
+    </div>
+</section>
+@endsection --}}
 @section('script')
 <script>
         var app = new Vue({
@@ -167,6 +241,12 @@
                     var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
                     var dd = ('0' + this.today.getDate()).slice(-2);
                     return yyyy + '-' + mm + '-' + dd;
+                },
+                dateToString:function(){
+                    var yyyy = this.today.getFullYear();
+                    var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
+                    var dd = ('0' + this.today.getDate()).slice(-2);
+                    return yyyy + '년 ' + mm + '월 ' + dd + '일 ';
                 }
             },
             methods:{
@@ -181,7 +261,7 @@
                 },
                 _changeDate:function (e) {
                     if(e.target.value) this.today = new Date(e.target.value);
-                }
+                },
             }
         })
     

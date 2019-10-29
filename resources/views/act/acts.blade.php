@@ -721,7 +721,7 @@
                 for (this.day = 1; this.day <= lastDate.getDate(); this.day++) { 
                     cell = row.insertCell();
 
-                    var divClass = 'pointer day';
+                    var divClass = 'day';
                     if(cnt % 7 == 0){ //일요일
                         divClass += ' sun';
                     }
@@ -730,23 +730,25 @@
                     }
 
                     var html = '<div class="' + divClass + '">' + this.day + '</div>'
-                    html += '<div class="cal-item">'
-                    html += '<div class="cal-label">구역 수</div>'
-                    html += '<i class="fas fa-map-marked-alt"></i>'
-                    html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[this.day] !== 'undefined' ? this.ServicePlanCnt[this.day].ServiceZoneCnt : 0) + '</div>'
-                    html += '</div>'
-                    html += '<div class="cal-item">'
-                    html += '<div class="cal-label">봉사자 수</div>'
-                    html += '<i class="fas fa-user-friends"></i>'
-                    html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[this.day] !== 'undefined' ? this.ServicePlanCnt[this.day].PublisherCnt : 0) + '</div>'
-                    html += '</div>'
-                    html += '<div class="cal-item">'
-                    html += '<div class="cal-label">인도자</div>'
-                    html += '<i class="fas fa-user-tie"></i>'
-                    html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[this.day] !== 'undefined' ? this.ServicePlanCnt[this.day].LeaderCnt : 0) + '</div>'
-                    html += '</div>'
+                        html += '<div class="cal-item">'
+                        html += '<div class="cal-label">구역 수</div>'
+                        html += '<i class="fas fa-map-marked-alt"></i>'
+                        html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[this.day] !== 'undefined' ? this.ServicePlanCnt[this.day].ServiceZoneCnt : 0) + '</div>'
+                        html += '</div>'
+                        html += '<div class="cal-item">'
+                        html += '<div class="cal-label">봉사자 수</div>'
+                        html += '<i class="fas fa-user-friends"></i>'
+                        html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[this.day] !== 'undefined' ? this.ServicePlanCnt[this.day].PublisherCnt : 0) + '</div>'
+                        html += '</div>'
+                        html += '<div class="cal-item">'
+                        html += '<div class="cal-label">인도자</div>'
+                        html += '<i class="fas fa-user-tie"></i>'
+                        html += '<div class="cal-value">' + (typeof this.ServicePlanCnt[this.day] !== 'undefined' ? this.ServicePlanCnt[this.day].LeaderCnt : 0) + '</div>'
+                        html += '</div>'
+
                     cell.innerHTML = html;
-                    cell.setAttribute("onclick","window.document.location='/acts/"+ this.yyyymmdd + "'");
+                    cell.className = 'pointer';
+                    cell.setAttribute("onclick","window.document.location='{{ request()->path() }}/" + this.yyyymmdd + "'");
 
                     cnt = cnt + 1;
                     if (cnt%7 == 0 && this.day < lastDate.getDate()){

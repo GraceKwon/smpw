@@ -170,8 +170,7 @@
 </section>
 @endsection
 
-@section('popup')
-@endsection
+
 
 {{-- @section('script')
 <script>

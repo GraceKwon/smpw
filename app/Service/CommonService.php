@@ -52,4 +52,9 @@ class CommonService
         return  DB::select('uspGetStandingItemCodeList ?, ?', ['EndTypeID', null]);
     }
 
+    public function getCancelTypeList()
+    {
+        return  DB::select('uspGetStandingItemCodeList ?, ?', ['CancelTypeID', null]);
+    }
+
 }
