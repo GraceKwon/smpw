@@ -101,7 +101,7 @@ class LoginController extends Controller
                 ->withInput(Input::except('UserPassword'))
                 ->withErrors(['fail' => $fail]);
         else if($TempPassYn === 1)
-            return redirect('/setPwd');
+            return redirect('/SetPwd');
         else
             return redirect('/');
         
