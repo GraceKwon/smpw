@@ -73,7 +73,7 @@ class PublisherService
  
             }
         }
-        return $array ?? [];
+        return $array ?? null;
     }
 
 }

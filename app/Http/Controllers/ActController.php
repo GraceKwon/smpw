@@ -13,20 +13,30 @@ class ActController extends Controller
         return view('act.acts');
     }
 
-    public function detailActs()
+    public function detailActs(Request $request)
     {
         $res = DB::select('uspGetStandingDailyServicePlanDetail ?', [
-            date('Y-m-d'),
+            $request->ServiceDate,
         ]);
+
         foreach($res as $object){
+            //모든 ServiceTime을 arrayServiceTime에 담는다
+            $arrayServiceTime[] = $object->ServiceTime;
+
             $DailyServicePlanList[$object->ZoneName][$object->ServiceTime][] = [
                 'PublisherName' => $object->PublisherName,
                 'LeaderYn' => $object->LeaderYn,
             ];
         }
-        dd($DailyServicePlanList);
+        if(isset($arrayServiceTime))
+            $ServiceTime = [
+                'min' => min($arrayServiceTime), //가장 이른 시간
+                'max' => max($arrayServiceTime), //가장 늦은 시간
+            ];
+        // dd($DailyServicePlanList);
         return view('act.detailActs', [
-            'DailyServicePlanList' => $DailyServicePlanList,
+            'DailyServicePlanList' => $DailyServicePlanList ?? [],
+            'ServiceTime' => $ServiceTime ?? null,
         ]);
     }
 

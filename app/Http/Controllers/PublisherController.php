@@ -50,11 +50,6 @@ class PublisherController extends Controller
 
     public function formPublishers(Request $request, PublisherService $PublisherService)
     {
-        $CongregationList = $this->CommonService->getCongregationList();
-        $ServantTypeList = $this->CommonService->getServantTypeList();
-        $PioneerTypeList = $this->CommonService->getPioneerTypeList();
-        $EndTypeIDList = $this->CommonService->getEndTypeList();
-        
         if( $request->PublisherID !== '0' ) {
             $res = DB::select( 'uspGetStandingPublisherDetail ?', [
                 $request->PublisherID
@@ -64,9 +59,13 @@ class PublisherController extends Controller
                 
                 $request->CircuitID = $Publisher->CircuitID;
             }
-            $ServiceZoneList = $this->CommonService->getServiceZoneList();
+        $CongregationList = $this->CommonService->getCongregationList();
+        $ServantTypeList = $this->CommonService->getServantTypeList();
+        $PioneerTypeList = $this->CommonService->getPioneerTypeList();
+        $EndTypeIDList = $this->CommonService->getEndTypeList();
+        
+        $ServiceZoneList = $this->CommonService->getServiceZoneList();
         $ServiceTimeList = $PublisherService->getServiceTimeList();
-        // dd($ServiceTimeList);
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
@@ -88,12 +87,12 @@ class PublisherController extends Controller
             'PioneerTypeID' => 'required',
             'ServantTypeID' => 'required',
             'SupportYn' => 'required',
-            'EndDate' => 'date',
-            'EndTypeID' => 'numeric',
+            'EndDate' => $request->StopYn === '1' ? 'required' : '' . '|date',
+            'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
         ]);
         if($request->PublisherID === '0')
             $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
-                    'AAAA0002',//$request->Account,
+                    'AAAA0003',//$request->Account,
                     '11112222',//$request->UserPassword,
                     $request->PublisherName,
                     $request->CongregationID,

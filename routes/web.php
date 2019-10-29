@@ -73,7 +73,7 @@ Route::view('/errors/auth', 'errors.auth');
 //봉사일정관리
     //봉사일정관리
     Route::get('acts', 'ActController@acts');
-    Route::get('acts/{id}', 'ActController@detailActs');
+    Route::get('acts/{ServiceDate}', 'ActController@detailActs');
     //봉사일정생성
     Route::get('create', 'ActController@create');
 

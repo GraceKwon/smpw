@@ -32,7 +32,7 @@
             <td rowspan="{{ 5 + ( isset($Publisher->PublisherID) ? 1 : 0 ) }}">
                 <div class="photo-container">
                     <div class="photo-wrap">
-                        <img src="../img/demo/demo-profile-thumbnail.png" class="thumbnail">
+                        <img :src="PhotoFilePath || '../img/demo/demo-profile-thumbnail.png'" class="thumbnail">
                         <input type="hidden" name="PhotoFilePath" v-model="PhotoFilePath">
                     </div>
                 </div>
@@ -186,6 +186,7 @@
                             class="custom-control-input"
                             v-model="StopYn" 
                             id="StopN" 
+                            name="StopYn" 
                             value="0"
                             name="StopYn">
                         <label class="custom-control-label" for="StopN">봉사중</label>
@@ -195,6 +196,7 @@
                             class="custom-control-input" 
                             v-model="StopYn" 
                             id="StopY" 
+                            name="StopYn" 
                             value="1"
                             name="StopYn">
                         <label class="custom-control-label" for="StopY">봉사중단</label>
@@ -296,7 +298,7 @@
         </tbody>
     </table>
     @include('layouts.sections.formButton', [
-            'id' => isset($Publisher->PublisherID) ? true : false,
+            'id' => isset($Publisher->PublisherID),
         ])
     </form>
     <form ref="formDelete" method="POST">
@@ -308,6 +310,7 @@
     </form>
 </section>
 
+@if(isset($ServiceTimeList) && isset($Publisher->PublisherID))
 <section class="table-section mt-6">
     <h4 class="text-primary">봉사 타임 지정</h4>
     <div class="info-area form-inline mt-3">
@@ -400,6 +403,7 @@
         </div>
     </form>
 </section>
+@endif
 @endsection
 
 @section('script')
