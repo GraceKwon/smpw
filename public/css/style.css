@@ -657,7 +657,7 @@ button:focus {
     }
 
     li .nav-depth-two>li>a:hover {
-        color: #fff;
+        color: #fff !important;
         background: #4b5aaa;
     }
 
@@ -2694,11 +2694,5 @@ a.file {
         display: block;
     }
 }
-
-/* jwkys2000@naver.com */
-
-
-
-
 
 /* jwkys2000@naver.com */
