@@ -33,3 +33,9 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     Route::get('reports', function(ReportService $ReportService){
         return $ReportService->getDailyServiceReportCnt();
     });
+
+//봉사일정관리
+    //봉사일정관리
+    Route::put('popupPublisherSet', function(ActService $ActService){
+        return $ActService->setPublisherServicePlanInsert();
+    });

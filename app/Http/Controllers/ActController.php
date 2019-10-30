@@ -31,10 +31,9 @@ class ActController extends Controller
             //모든 ServiceTime을 arrayServiceTime에 담는다
             $arrayServiceTime[] = $object->ServiceTime;
 
-            $DailyServicePlanList[$object->ZoneName][$object->ServiceTime][] = [
-                'PublisherName' => $object->PublisherName,
-                'LeaderYn' => $object->LeaderYn,
-            ];
+            // $DailyServicePlanList[$object->ZoneName][$object->ServiceTime][] = $object;
+            $DailyServicePlanList[$object->ZoneName]['ServiceZoneID'] = $object->ServiceZoneID;
+            $DailyServicePlanList[$object->ZoneName][$object->ServiceTime][] = $object;
         }
         // dd($res);
         if(isset($arrayServiceTime))

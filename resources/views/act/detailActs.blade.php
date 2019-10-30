@@ -2,7 +2,8 @@
 @section('content')
 <section class="calender-section justify-content-between">
     <div>
-        <button class="btn btn-primary btn-sm">요일봉사취소</button>
+        <button class="btn btn-danger btn-sm"
+            @click="_showPopup('popupCancel')">요일봉사취소</button>
     </div>
     <!-- start : common elements wrap -->
     <div class="select-date-wrap">
@@ -51,7 +52,7 @@
     </div>
     <!-- end : common elements wrap -->
     <div>
-        <button class="btn btn-primary btn-sm">지원요청하기</button>
+        <button class="btn btn-primary btn-sm" @click="_showPopup('popupPublisherSet')">지원요청하기</button>
     </div>
 </section>
 
@@ -88,43 +89,43 @@
                         {{ $ZoneName }}
                     </div>
                     <div class="btn-area">
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            @foreach ($CancelTypeList as $CancelType)
-                            <a class="dropdown-row" href="{{$CancelType->ID}}">{{$CancelType->Item}}</a></a>
-                            @endforeach
-                        </div>
-                        <button class="btn btn-outline-danger btn-block btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-outline-danger btn-block btn-sm" @click="_showPopup('popupCancel')">
                             구역봉사취소
                         </button>
-                        <button class="btn btn-outline-primary btn-block btn-sm">
+                        <button class="btn btn-outline-primary btn-block btn-sm" @click="_showPopup('popupPublisherSet')">
                             지원요청하기
                         </button>
-                        {{-- <button class="btn btn-outline-danger btn-block btn-sm">
-                            구역봉사취소
-                        </button> --}}
                     </div>
                 </td>
-                @for ($time = $ServiceTime['min'] ; $time <= $ServiceTime['max'] ; $time ++)
+                @for($time = $ServiceTime['min'] ; $time <= $ServiceTime['max'] ; $time ++)
                 <td>
                     <div class="publisher-area">
-                        <ul>
                         @if(isset($ServicePlanList[$time]))
+                        <ul>
                             @foreach($ServicePlanList[$time] as $Publisher)
                             <li>
-                                <div class="name @if($Publisher['LeaderYn']) introducer @endif">{{  $Publisher['PublisherName'] }}</div>
-                                <div class="del">
+                                <div class="name @if($Publisher->LeaderYn) introducer @endif">
+                                    {{  $Publisher->PublisherName }}
+                                </div>
+                                <div class="del" @click="_showPopup('popupCancelPublisher')">
                                     <i class="fas fa-times"></i>
                                 </div>
                             </li>
                             @endforeach
-                        @endif
                         </ul>
+                        @endif
                     </div>
                     <div class="btn-area">
-                        <button class="btn btn-outline-secondary btn-block btn-sm">
+                        <button class="btn btn-outline-secondary btn-block btn-sm" 
+                            @click="_showPopup('popupPublisherSet');
+                                _setParams('popupPublisherSet',{
+                                    ServiceTime: '{{$time}}',
+                                    ServiceZoneID: '{{$ServicePlanList["ServiceZoneID"]}}',
+                                })">
                             임의배정
                         </button>
-                        <button class="btn btn-outline-danger btn-block btn-sm">
+                        <button class="btn btn-outline-danger btn-block btn-sm" 
+                            @click="_showPopup('popupCancel')">
                             봉사취소
                         </button>
                     </div>
@@ -137,74 +138,23 @@
     </div>
 </section>
 @endsection
-{{-- @section('popup')
-<section class="modal-layer-container">
-    <div class="mx-auto px-3">
-        <div class="mlp-wrap">
-            <div class="max-w-auto">
-                <div class="mlp-header">
-                    <div class="mlp-title">
-                        임의 배정
-                    </div>
-                    <div class="mlp-close">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="search-section">
-                    <div class="search-form-item">
-                        <label class="label" for="PublisherName">이름</label>
-                        <input type="text" class="form-control" id="PublisherName" name="PublisherName" value="" placeholder="입력해 주세요">
-                    </div> <!-- /.search-form-item -->
-                    <div class="search-btn-area">
-                        <button type="submit" class="btn btn-primary">조회</button>
-                    </div> <!-- /.search-btn-area -->
-                </div>
-                <div class="mlp-content text-center">
-                    <div class="table-area">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>도시</th>
-                                <th>순회구</th>
-                                <th>담당자</th>
-                                <th>회중</th>
-                                <th>연락처</th>
-                                <th>신청일자</th>
-                                <th>송장번호 입력</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>남양주</td>
-                                <td>경기18</td>
-                                <td>홍길동</td>
-                                <td>남양주양지</td>
-                                <td>010-1423-3232</td>
-                                <td>2019-04-30</td>
-                                <td>
-                                    <input type="text" class="form-control form-control-sm max-w-250px">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm">닫기</button>
-                    <button class="btn btn-primary btn-sm">확인</button>
-                </div>
-            </div> <!-- /.mlp-wrap -->
-        </div>
-    </div>
-</section>
-@endsection --}}
+@section('popup')
+    @include('layouts.sections.popupCancel')
+    @include('layouts.sections.popupCancelPublisher')
+    @include('layouts.sections.popupPush')
+    @include('layouts.sections.popupPublisherSet')
+@endsection
 @section('script')
 <script>
         var app = new Vue({
             el:'#wrapper-body',
             data:{
+                DEFAULT_VALUES:{
+                    ServiceZoneID: null,
+                    ServiceTime: null,
+                    PublisherID: null,
+                    LeaderYn: '0',
+                },
                 today: new Date('{{ request()->ServiceDate }}'),
                 week: ['일', '월', '화', '수', '목', '금', '토'],
                 lang: {
@@ -216,6 +166,13 @@
                         dateRange: '기간을 선택해주세요'
                     }
                 },
+                popupPublisherSet: {
+                    ServiceZoneID: null,
+                    ServiceTime: null,
+                    PublisherID: null,
+                    LeaderYn: '0',
+                }
+            
             },
             watch: {
                 today: function(){
@@ -261,6 +218,44 @@
                 },
                 _changeDate:function (e) {
                     if(e.target.value) this.today = new Date(e.target.value);
+                },
+                _showPopup:function (popupName) {
+                    // this[popup] =true;
+                    this.$refs[popupName].style.display = 'flex';
+                },
+                _closePopup:function (popupName) {
+                    // this[popup] =false;
+                    this.$refs[popupName].style.display = 'none';
+                    this._retsetParams(popupName)
+                },
+                _submit:function (popupName) {
+                    var formData = {
+                        ServiceDate: this.yyyymmdd,
+                    }
+                    Object.assign(formData, this[popupName]);
+                    axios.put('/api/' + popupName, formData)
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                _setParams:function (popupName,params){
+                    Object.assign(this[popupName], params);
+                    // this.params[popupName] = params
+                },
+                _retsetParams:function (popupName){
+           
+                    for (var key in this.DEFAULT_VALUES) {
+                        if (this[popupName].hasOwnProperty(key)) {
+                            console.log(key,this[popupName][key]);
+                             this[popupName][key] = this.DEFAULT_VALUES[key];
+                            console.log(key,this[popupName][key]);
+
+                        }
+                    }
+                    // this.params[popupName] = params
                 },
             }
         })

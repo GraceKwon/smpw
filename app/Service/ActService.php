@@ -20,6 +20,14 @@ class ActService
         return $array;
     }
 
+    public function setPublisherServicePlanInsert()
+    {
+        return request();
+        // $res = DB::select('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
+        //     ,
+        // ]);
+    }
+
 
 
 }
