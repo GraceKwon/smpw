@@ -4,6 +4,11 @@
     @error('fail')
         <div class="alert alert-danger">{!! $message !!}</div>
     @enderror
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <form method="POST"
     @submit="_confirm" 
     @keydown.enter.prevent>
@@ -372,12 +377,16 @@
                                     <option value="미지정" @if( $ServiceTime['ServiceSetType'] === '미지정' ) selected @endif>
                                         미지정
                                     </option>
+                                    @if($ServiceTime['PublisherCnt'] < 6)
                                     <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>대기</option>
                                     <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>봉사자</option>
                                     <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>인도자</option>
+                                    @elseif($ServiceTime['ServiceSetType'] !== '미지정')
+                                    <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
+                                    @endif
                                 </select>
                             </div>
-                            <div class="mt-1 font-size-80">[{{ $ServiceTime['PublisherCnt'] }}/0]</div>
+                            <div class="mt-1 font-size-80">[{{ $ServiceTime['PublisherCnt'] }}/6]</div>
                         </td>  
                         @endif
                         @endforeach
@@ -389,15 +398,18 @@
         <div class="form-inline align-items-center mt-3">
             <div class="min-w-140px text-primary">스케줄 변경 시작일</div>
             <div class="input-group mt-2 mt-md-0">
-                <input type="date" class="form-control" 
+                <input type="date" class="form-control @error('SetStartDate') is-invalid @enderror"  
                     name="SetStartDate"
                     v-model="SetStartDate"
                     placeholder="날자를 선택해 주세요">
-                <div class="input-group-append">
+                    @error('SetStartDate')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror 
+                {{-- <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <button class="btn btn-primary mt-2 mt-md-0 ml-md-2">스케쥴 변경</button>
         </div>

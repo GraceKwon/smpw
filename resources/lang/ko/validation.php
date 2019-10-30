@@ -158,6 +158,9 @@ return [
         'Latitude' => '위도',
         'Longitude' => '경도',
         'ZoneAddress' => '구역주소',
+        'EndDate' => '계정중단일',
+        'EndTypeID' => '계정중단사유',
+        'SetStartDate' => '스케줄변경 시작일',
   
     ],
 

@@ -93,8 +93,8 @@ class PublisherController extends Controller
         if($request->PublisherID === '0')
             $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     'AAAA0003',//$request->Account,
-                    '11112222',//$request->UserPassword,
                     $request->PublisherName,
+                    '11112222',//$request->UserPassword,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
@@ -111,7 +111,7 @@ class PublisherController extends Controller
         else
             $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
-                    0,//$request->TempPassYn,
+                    $request->PublisherName,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
@@ -159,12 +159,16 @@ class PublisherController extends Controller
         if( $res === 0 ) 
             return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
         else
-            return redirect('/publishers/' . $request->PublisherID);
+            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다.']);
+
         
     }
 
     public function putServiceTimePublieher(Request $request)
     {
+        $request->validate([
+            'SetStartDate' => 'required|date',
+        ]);
         $ServiceSetType = $request->ServiceSetType;
         $PublisherID = $request->PublisherID;
         $SetStartDate = $request->SetStartDate;
