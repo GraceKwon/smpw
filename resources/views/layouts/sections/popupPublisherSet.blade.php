@@ -1,4 +1,6 @@
-<section class="modal-layer-container hide" ref="popupPublisherSet">
+<script type="text/x-template" id="modal-template">
+
+<section class="modal-layer-container" ref="popupPublisherSet">
     <div class="mx-auto px-3">
         <div class="mlp-wrap">
             <div class="max-w-auto">
@@ -52,12 +54,12 @@
                                 <td>남양주</td>
                                 <td>임의배정 가능</td>
                             </tr>
-                            {{-- <tr>
+                            <tr>
                                 <td>2</td>
                                 <td>김사랑</td>
                                 <td>남양주</td>
                                 <td>임의배정 가능</td>
-                            </tr> --}}
+                            </tr> 
                             </tbody>
                         </table>
                     </div>
@@ -68,8 +70,8 @@
                                 <small class="text-muted">(남양주)</small>
                             </div>
                             <div class="inline-responsive">
-                                <select class="custom-select custom-select-sm" v-model="popupPublisherSet.LeaderYn">
-                                    <option value="0">봉사자</option>
+                                <select class="custom-select custom-select-sm" v-model="LeaderYn">
+                                    <option value="0" selected>봉사자</option>
                                     <option value="1">인도자</option>
                                 </select>
                             </div>
@@ -77,10 +79,11 @@
                     </div>
                 </div>
                 <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm" @click="_closePopup('popupPublisherSet')">닫기</button>
+                    <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
                     <button class="btn btn-primary btn-sm" @click="_submit('popupPublisherSet')">임의 배정</button>
                 </div>
             </div> <!-- /.mlp-wrap -->
         </div>
     </div>
 </section> <!-- /.modal-layer-container -->
+</script>

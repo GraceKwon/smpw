@@ -168,7 +168,6 @@
         mounted: function () {
             this._loadKakaoMap()
         
-            @if(session('auth.CircuitID'))
             // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
             kakao.maps.event.addListener(this.map, 'click', 
                 function(mouseEvent) {        
@@ -197,7 +196,6 @@
                     
                 }.bind(this));
 
-            @endif
         },
         methods:{
             _loadKakaoMap: function (e) {

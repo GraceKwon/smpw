@@ -117,11 +117,12 @@
                     </div>
                     <div class="btn-area">
                         <button class="btn btn-outline-secondary btn-block btn-sm" 
-                            @click="_showPopup('popupPublisherSet');
-                                _setParams('popupPublisherSet',{
+                            @click="_setParams('popupPublisherSet',{
                                     ServiceTime: '{{$time}}',
                                     ServiceZoneID: '{{$ServicePlanList["ServiceZoneID"]}}',
-                                })">
+                                });
+                                _showPopup('popupPublisherSet');
+                                    ">
                             임의배정
                         </button>
                         <button class="btn btn-outline-danger btn-block btn-sm" 
@@ -139,19 +140,27 @@
 </section>
 @endsection
 @section('popup')
-    @include('layouts.sections.popupCancel')
-    @include('layouts.sections.popupCancelPublisher')
-    @include('layouts.sections.popupPush')
-    @include('layouts.sections.popupPublisherSet')
+<modal v-if="showpop" @close="showpop = false"></modal>
+{{-- @include('layouts.sections.popupCancel')
+@include('layouts.sections.popupCancelPublisher')
+@include('layouts.sections.popupPush') --}}
+@include('layouts.sections.popupPublisherSet')
 @endsection
 @section('script')
 <script>
+        Vue.component('modal', {
+            template: '#modal-template',
+            props: {
+                LeaderYn: {
+                    default: '0'
+                }
+            },
+        })
+
         var app = new Vue({
             el:'#wrapper-body',
             data:{
                 DEFAULT_VALUES:{
-                    ServiceZoneID: null,
-                    ServiceTime: null,
                     PublisherID: null,
                     LeaderYn: '0',
                 },
@@ -167,11 +176,9 @@
                     }
                 },
                 popupPublisherSet: {
-                    ServiceZoneID: null,
-                    ServiceTime: null,
-                    PublisherID: null,
-                    LeaderYn: '0',
-                }
+                    // LeaderYn: '0',
+                },
+                showpop: false
             
             },
             watch: {
@@ -220,13 +227,12 @@
                     if(e.target.value) this.today = new Date(e.target.value);
                 },
                 _showPopup:function (popupName) {
-                    // this[popup] =true;
-                    this.$refs[popupName].style.display = 'flex';
+                    this.showpop = true;
+                    // this.$refs[popupName].style.display = 'flex';
                 },
                 _closePopup:function (popupName) {
                     // this[popup] =false;
                     this.$refs[popupName].style.display = 'none';
-                    this._retsetParams(popupName)
                 },
                 _submit:function (popupName) {
                     var formData = {
@@ -241,22 +247,25 @@
                             console.log(error);
                         });
                 },
-                _setParams:function (popupName,params){
-                    Object.assign(this[popupName], params);
-                    // this.params[popupName] = params
+                _setParams:function (popupName, params){
+                    // console.log(this.$data[popupName]);
+                    // // this['popupPublisherSet'].LeaderYn = this.DEFAULT_VALUES.LeaderYn;
+                    // Object.assign(this.$data[popupName], this.DEFAULT_VALUES);
+                    // Object.assign(this.$data[popupName], params);
+                    // console.log(this.$data[popupName]);
+                    // console.log(this.DEFAULT_VALUES);
                 },
-                _retsetParams:function (popupName){
+                // _retsetParams:function (popupName){
            
-                    for (var key in this.DEFAULT_VALUES) {
-                        if (this[popupName].hasOwnProperty(key)) {
-                            console.log(key,this[popupName][key]);
-                             this[popupName][key] = this.DEFAULT_VALUES[key];
-                            console.log(key,this[popupName][key]);
-
-                        }
-                    }
-                    // this.params[popupName] = params
-                },
+                //     for (var key in this.DEFAULT_VALUES) {
+                //         if (this[popupName].hasOwnProperty(key)) {
+                //             console.log(key,this[popupName][key]);
+                //             this[popupName][key] = this.DEFAULT_VALUES[key];
+                //             console.log(key,this[popupName][key]);
+                //         }
+                //     }
+                //     // this.params[popupName] = params
+                // },
             }
         })
     

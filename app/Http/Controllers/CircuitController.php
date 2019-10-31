@@ -13,7 +13,7 @@ class CircuitController extends Controller
     {
         $this->CommonService = $CommonService;
         $this->middleware('admin_auth');
-        $this->middleware('CheckCircuitID', ['only' => ['putServiceZones']]);
+        // $this->middleware('CheckCircuitID', ['only' => ['putServiceZones']]);
     }
 
     public function serviceZones(Request $request)
@@ -82,7 +82,7 @@ class CircuitController extends Controller
                     session('auth.CircuitID')
                 ]);
         else
-            $res = DB::select('uspSetStandingServiceZoneUpdate ?,?,?,?,?,?,?,?,?', [
+            $res = DB::select('uspSetStandingServiceZoneUpdate ?,?,?,?,?,?,?,?', [
                     $request->ServiceZoneID,
                     $request->ZoneName,
                     $request->ZoneAlias,
@@ -91,7 +91,7 @@ class CircuitController extends Controller
                     $request->ZoneAddress,
                     $request->OrderNum,
                     session('auth.AdminID'),
-                    session('auth.CircuitID')
+                    // session('auth.CircuitID')
                 ]);
         
 
