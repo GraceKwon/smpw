@@ -168,6 +168,20 @@
                 LeaderYn: '0'
             }
         },
+        computed: {
+            selectedName: function () {
+                var res = this.PublisherList.find(function (el) {
+                    return el.PublisherID = this.PublisherID;
+                }.bind(this))
+                return (typeof res !== 'undefined') ? res.PublisherName : '';
+            },
+            selectedCong: function () {
+                var res = this.PublisherList.find(function (el) {
+                    return el.PublisherID = this.PublisherID;
+                }.bind(this))
+                return (typeof res !== 'undefined') ? res.CongregationName : '';
+            }
+        },
         methods:{
             _submit: function(){
  
@@ -189,13 +203,13 @@
             },
             _search: function(){
                 var formData = {
-                        PublisherName: this.PublisherName,
+                    PublisherName: this.PublisherName,
                 };
                 axios.put('/api/modalPublisherSet/search', formData)
                     .then(function (response) {
                         this.PublisherList = response.data;
-                        console.log(response);
-                    })
+                        console.log(this.PublisherList);
+                    }.bind(this))
                     .catch(function (error) {
                         console.log(error);
                     });

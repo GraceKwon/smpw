@@ -22,6 +22,7 @@
                                     <div class="d-flex justify-content-between">
                                         <input class="form-control form-control-sm mr-1" 
                                             v-model="PublisherName"
+                                            @keyup.enter="_search"
                                             placeholder="이름 입력">
                                         <button class="btn btn-outline-secondary btn-sm"
                                             @click="_search">
@@ -51,26 +52,20 @@
                                     </div>
                                 </td> 
                             </tr>-->
-                            <tr >
-                                <td>1</td>
-                                <td>김사랑</td>
-                                <td>남양주</td>
-                                <td>임의배정 가능</td>
+                            <tr v-for="Publisher in PublisherList" >
+                                <td>@{{ Publisher.PublisherID }}</td>
+                                <td class="pointer" @click="PublisherID = Publisher.PublisherID">@{{ Publisher.PublisherName }}</td>
+                                <td>@{{ Publisher.CongregationName }}</td>
+                                <td>@{{ Publisher.SupportYn ? '임의배정가능' : '임의배정불가' }}</td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>김사랑</td>
-                                <td>남양주</td>
-                                <td>임의배정 가능</td>
-                            </tr> 
                             </tbody>
                         </table>
                     </div>
                     <div class="result-area border p-2 mt-3">
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="mr-3">
-                                <span class="text-primary">김사랑</span>
-                                <small class="text-muted">(남양주)</small>
+                                <span class="text-primary">@{{selectedName}}</span>
+                                <small class="text-muted">@{{selectedCong}}</small>
                             </div>
                             <div class="inline-responsive">
                                 <select class="custom-select custom-select-sm" v-model="LeaderYn">

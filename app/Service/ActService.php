@@ -30,12 +30,25 @@ class ActService
 
     public function modalPublisherSearch()
     {
-        // return request();
-        return DB::table('Publishers')->select('PublisherName', 'PublisherID')->where('PublisherName' ,'like', '%' . request()->PublisherName . '%')->get();
-        // return DB::table('Publishers')->where('PublisherName' ,request()->PublisherName)->get();
-        // $res = DB::select('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
-        //     ,
-        // ]);
+        if ( request()->PublisherName ) 
+            return DB::table('Publishers')
+                ->select(
+                    'Publishers.PublisherName',
+                    // 'Publishers.publisherid',
+                    'Publishers.PublisherName',
+                    'Publishers.SupportYn',
+                    'Congregations.CongregationName'
+                    )
+                ->where('PublisherName' ,'like', '%' . request()->PublisherName . '%')
+                ->where([
+                    ['Publishers.UseYn', 1],
+                    ['Publishers.EndDate', null],
+                    ])
+                ->leftjoin('Congregations', 'Congregations.CongregationID', 'Publishers.CongregationID')
+                ->get();
+        else
+            return [];
+    
     }
 
 
