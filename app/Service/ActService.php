@@ -28,6 +28,16 @@ class ActService
         // ]);
     }
 
+    public function modalPublisherSearch()
+    {
+        // return request();
+        return DB::table('Publishers')->select('PublisherName', 'PublisherID')->where('PublisherName' ,'like', '%' . request()->PublisherName . '%')->get();
+        // return DB::table('Publishers')->where('PublisherName' ,request()->PublisherName)->get();
+        // $res = DB::select('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
+        //     ,
+        // ]);
+    }
+
 
 
 }

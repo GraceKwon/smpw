@@ -36,6 +36,9 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
 
 //봉사일정관리
     //봉사일정관리
-    Route::put('popupPublisherSet', function(ActService $ActService){
+    Route::put('modalPublisherSet', function(ActService $ActService){
         return $ActService->setPublisherServicePlanInsert();
+    });
+    Route::put('modalPublisherSet/search', function(ActService $ActService){
+        return $ActService->modalPublisherSearch();
     });

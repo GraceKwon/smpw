@@ -1,6 +1,6 @@
-<script type="text/x-template" id="modal-template">
+<script type="text/x-template" id="modalPublisherSet">
 
-<section class="modal-layer-container" ref="popupPublisherSet">
+<section class="modal-layer-container" ref="modalPublisherSet">
     <div class="mx-auto px-3">
         <div class="mlp-wrap">
             <div class="max-w-auto">
@@ -8,7 +8,7 @@
                     <div class="mlp-title">
                         임의 배정
                     </div>
-                    <div class="mlp-close" @click="_closePopup('popupPublisherSet')">
+                    <div class="mlp-close" @click="$emit('close')">
                         <i class="fas fa-times"></i>
                     </div>
                 </div>
@@ -20,8 +20,11 @@
                                 <th>봉사자 조회</th>
                                 <td>
                                     <div class="d-flex justify-content-between">
-                                        <input class="form-control form-control-sm mr-1" placeholder="이름 입력">
-                                        <button class="btn btn-outline-secondary btn-sm">
+                                        <input class="form-control form-control-sm mr-1" 
+                                            v-model="PublisherName"
+                                            placeholder="이름 입력">
+                                        <button class="btn btn-outline-secondary btn-sm"
+                                            @click="_search">
                                             검색
                                         </button>
                                     </div>
@@ -41,14 +44,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            <!--<tr>
                                 <td colspan="4">
                                     <div class="text-muted text-center">
                                         검색 결과가 없습니다.
                                     </div>
-                                </td>
-                            </tr>
-                            <tr @click="popupPublisherSet.PublisherID = 1">
+                                </td> 
+                            </tr>-->
+                            <tr >
                                 <td>1</td>
                                 <td>김사랑</td>
                                 <td>남양주</td>
@@ -80,7 +83,7 @@
                 </div>
                 <div class="mlp-footer justify-content-end">
                     <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
-                    <button class="btn btn-primary btn-sm" @click="_submit('popupPublisherSet')">임의 배정</button>
+                    <button class="btn btn-primary btn-sm" @click="_submit()">임의 배정</button>
                 </div>
             </div> <!-- /.mlp-wrap -->
         </div>
