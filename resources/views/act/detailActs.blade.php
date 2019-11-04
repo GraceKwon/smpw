@@ -145,78 +145,15 @@
     :service-date="yyyymmdd" 
     :service-time-id="ServiceTimeID" 
     :service-zone-id="ServiceZoneID"
-    @close="showModal = ''" ></modal-publisher-set>
+    @close="showModal = ''" >
+</modal-publisher-set>
 {{-- @include('layouts.sections.modalCancel')
 @include('layouts.sections.modalCancelPublisher')
 @include('layouts.sections.modalPush') --}}
 @endsection
 @section('script')
-@include('layouts.sections.modalPublisherSet')
+@include('act.modalPublisherSet')
 <script>
-    Vue.component('modal-publisher-set', {
-        template: '#modalPublisherSet',
-        props: [
-            'ServiceDate',
-            'ServiceTimeId',
-            'ServiceZoneId',
-        ],
-        data: function(){
-            return {
-                PublisherName: '',
-                PublisherList: [],
-                PublisherID: null,
-                LeaderYn: '0'
-            }
-        },
-        computed: {
-            selectedName: function () {
-                var res = this.PublisherList.find(function (el) {
-                    return el.PublisherID = this.PublisherID;
-                }.bind(this))
-                return (typeof res !== 'undefined') ? res.PublisherName : '';
-            },
-            selectedCong: function () {
-                var res = this.PublisherList.find(function (el) {
-                    return el.PublisherID = this.PublisherID;
-                }.bind(this))
-                return (typeof res !== 'undefined') ? res.CongregationName : '';
-            }
-        },
-        methods:{
-            _submit: function(){
- 
-                var formData = {
-                    ServiceZoneID: this.ServiceZoneId,
-                    ServiceTimeID: this.ServiceTimeId,
-                    PublisherID: this.PublisherID,
-                    LeaderYn: this.LeaderYn,
-                    WaitingYn: 0,
-                    ServiceDate: this.ServiceDate,
-                }
-                axios.put('/api/modalPublisherSet', formData)
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
-            _search: function(){
-                var formData = {
-                    PublisherName: this.PublisherName,
-                };
-                axios.put('/api/modalPublisherSet/search', formData)
-                    .then(function (response) {
-                        this.PublisherList = response.data;
-                        console.log(this.PublisherList);
-                    }.bind(this))
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                }
-        },
-    })
-
     var app = new Vue({
         el:'#wrapper-body',
         data:{
@@ -260,6 +197,11 @@
                 var dd = ('0' + this.today.getDate()).slice(-2);
                 return yyyy + '-' + mm + '-' + dd;
             },
+            yyyymm:function(){
+                var yyyy = this.today.getFullYear();
+                var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
+                return yyyy + '-' + mm;
+            },
             dateToString:function(){
                 var yyyy = this.today.getFullYear();
                 var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
@@ -282,7 +224,6 @@
             },
             _showModal:function (modalName) {
                 this.showModal = modalName;
-                // this.$refs[popupName].style.display = 'flex';
             },
             _closeModal:function (popupName) {
                 // this[popup] =false;
@@ -304,23 +245,8 @@
             _setParams:function (popupName, params){
                 this.ServiceTimeID = params.ServiceTimeID;
                 this.ServiceZoneID = params.ServiceZoneID;
-                // // this['modalPublisherSet'].LeaderYn = this.DEFAULT_VALUES.LeaderYn;
-                // Object.assign(this.$data[popupName], this.DEFAULT_VALUES);
-                // Object.assign(this.$data[popupName], params);
-                // console.log(this.$data[popupName]);
-                // console.log(this.DEFAULT_VALUES);
+ 
             },
-            // _retsetParams:function (popupName){
-        
-            //     for (var key in this.DEFAULT_VALUES) {
-            //         if (this[popupName].hasOwnProperty(key)) {
-            //             console.log(key,this[popupName][key]);
-            //             this[popupName][key] = this.DEFAULT_VALUES[key];
-            //             console.log(key,this[popupName][key]);
-            //         }
-            //     }
-            //     // this.params[popupName] = params
-            // },
         }
     })
     

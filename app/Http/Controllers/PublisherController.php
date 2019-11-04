@@ -38,7 +38,7 @@ class PublisherController extends Controller
         $count = DB::select('uspGetStandingPublisherListCnt ?,?,?,?,?,?,?', $parameter);
 
         $PublisherList = setPaginator($paginate, $page, $data, $count);
-
+        // dd($PublisherList);
         return view( 'publisher.publishers', [
             'PublisherList' => $PublisherList,
             'MetroList' => $MetroList,
