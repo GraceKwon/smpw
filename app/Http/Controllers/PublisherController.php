@@ -38,7 +38,7 @@ class PublisherController extends Controller
         $count = DB::select('uspGetStandingPublisherListCnt ?,?,?,?,?,?,?', $parameter);
 
         $PublisherList = setPaginator($paginate, $page, $data, $count);
-
+        // dd($PublisherList);
         return view( 'publisher.publishers', [
             'PublisherList' => $PublisherList,
             'MetroList' => $MetroList,
@@ -172,38 +172,27 @@ class PublisherController extends Controller
         $ServiceSetType = $request->ServiceSetType;
         $PublisherID = $request->PublisherID;
         $SetStartDate = $request->SetStartDate;
-        // dd($SetStartDate);
+        // dd($ServiceSetType);
         DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
         {
             foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
-                // if($ServiceSetType === '미지정') 
                 DB::select('uspSetStandingServiceTimePublieherDelete ?,?', [
                     $PublisherID,
                     $ServiceTimeID,
                     ]);
-                // else{
-                    if($ServiceSetType !== '미지정') 
-                    // $res = DB::select('uspSetStandingServiceTimePublieherUpdate ?,?,?,?', [
-                    //         $PublisherID,
-                    //         $ServiceTimeID,
-                    //         ($ServiceSetType ==='인도자') ? 1 : 0,
-                    //         ($ServiceSetType ==='대기') ? 1 : 0,
-                    //     ]);
-                    // dd($res);
-                    // if(getAffectedRows($res) === 0)
-                        $res = DB::select('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
-                                $PublisherID,
-                                $ServiceTimeID,
-                                ($ServiceSetType ==='인도자') ? 1 : 0,
-                                ($ServiceSetType ==='대기') ? 1 : 0,
-                                $SetStartDate,
-                            ]);
-                            
-                // }
+
+                if($ServiceSetType !== '미지정')
+                    DB::select('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
+                        $PublisherID,
+                        $ServiceTimeID,
+                        ($ServiceSetType ==='인도자') ? 1 : 0,
+                        ($ServiceSetType ==='대기') ? 1 : 0,
+                        $SetStartDate,
+                    ]);
             }
         });
 
-        return redirect('/publishers/' . $PublisherID);
+        return back();
         
     }
 

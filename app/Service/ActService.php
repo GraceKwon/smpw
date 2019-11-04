@@ -17,37 +17,52 @@ class ActService
         foreach($res as $object){
             $array[date('j', strtotime($object->ServiceDate))] = $object;
         }
-        return $array;
+        return $array ?? [];
     }
 
     public function setPublisherServicePlanInsert()
     {
-        return request();
-        // $res = DB::select('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
-        //     ,
-        // ]);
+ 
+        DB::select('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
+            request()->ServiceZoneID,
+            request()->ServiceTimeID,
+            request()->PublisherID,
+            request()->LeaderYn,
+            request()->WaitingYn,
+            request()->ServiceDate,
+        ]);
     }
 
     public function modalPublisherSearch()
     {
-        if ( request()->PublisherName ) 
-            return DB::table('Publishers')
-                ->select(
-                    'Publishers.PublisherName',
-                    // 'Publishers.publisherid',
-                    'Publishers.PublisherName',
-                    'Publishers.SupportYn',
-                    'Congregations.CongregationName'
-                    )
-                ->where('PublisherName' ,'like', '%' . request()->PublisherName . '%')
-                ->where([
-                    ['Publishers.UseYn', 1],
-                    ['Publishers.EndDate', null],
-                    ])
-                ->leftjoin('Congregations', 'Congregations.CongregationID', 'Publishers.CongregationID')
-                ->get();
+        if ( request()->PublisherName ) {
+
+            $CircuitID = DB::table('ServiceZones')->where('ServiceZoneID', request()->ServiceZoneID)->value('CircuitID');
+            $paginate = 5;  
+            $page = request()->input('page', '1');
+            $parameter = [
+                null,
+                $CircuitID,
+                null,
+                request()->PublisherName,
+                null,
+                null,
+                0,
+            ];
+
+            $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?', 
+                array_merge( [$paginate, $page], $parameter ));
+            $count = DB::select('uspGetStandingPublisherListCnt ?,?,?,?,?,?,?', $parameter);
+            $count = getTotalCnt($count);
+            $lastPage = ceil($count / $paginate);
+  
+            return [
+                'data' => $data,
+                'lastPage' => $lastPage,
+            ];
+        } 
         else
-            return [];
+            return ['data' => []];
     
     }
 
