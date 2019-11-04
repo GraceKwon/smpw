@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Service\CommonService;
+use DB;
 
 class BoardController extends Controller
 {
@@ -16,22 +19,61 @@ class BoardController extends Controller
         return view('board.detail_notices');
     }
 
-    public function view_form_notices()
+    public function view_form_notices(CommonService $common)
     {
-        return view('board.form_notices');
+        $MetroList = $common->getMetroList();
+        $ReceiveGroupList = $common->getReceiveGroupList();
+        return view('board.form_notices', [
+            'MetroList' => $MetroList,
+            'ReceiveGroupList' => $ReceiveGroupList
+        ]);
     }
 
     public function postForm($id, Request $request)
     {   
-        return  $request->all();
-        // return count($request->Files);
-        // $request->Files->store('files');
-        // return $request->input('Files[]');
         $request->validate([
-            'Title' => 'required'
+            'ReceiveGroupID' => 'required',
+            'Title' => 'required|max:500',
+            'Contents' => 'required',
+            'Files' => 'file'
         ]);
+        $files = [];
         for ($i=0; $i < count( $request->Files ); $i++) { 
-            $request->Files[$i]->store('files');
+            $files[] = [
+                'path' => $request->Files[$i]->store('files'),
+                'name' => $request->Files[$i]->getClientOriginalName()
+            ];
+        }
+        // return storage_path();
+        /*
+        @MetroID int 
+        @CircuitID int
+        @ReceiveGroupID int
+        @Title nvarchar(500) 
+        @Contents nvarchar(max)
+        @DisplayYn bit 
+        @AdminID int 
+        @ReadCnt int 
+        */
+        $res = DB::select('uspSetStandingNoticeInsert ?,?,?,?,?,?,?,?', [
+            $request->MetroID,
+            $request->CircuitID,
+            $request->ReceiveGroupID,
+            $request->Title,
+            $request->Contents,
+            $request->DisplayYn,
+            session('auth.AdminID'),
+            0
+        ]);
+        $ID = $res[0]->computed;
+
+        foreach($files as $file)
+        {
+            Storage::move($file['path'], 'notice/'.$ID.'/'.$file['name']);
+            DB::select('uspSetStandingNoticeFileInsert ?,?', [
+                $ID,
+                $file['name']
+            ]);
         }
 
     }

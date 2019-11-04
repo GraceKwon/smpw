@@ -352,7 +352,7 @@
         </table>
     </div>
     <div class="btn-flex-area justify-content-end mt-3">
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" onclick="location.href='/notices/0/form'">
             공지사항 등록
         </button>
     </div>

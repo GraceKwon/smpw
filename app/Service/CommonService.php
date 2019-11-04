@@ -57,4 +57,9 @@ class CommonService
         return  DB::select('uspGetStandingItemCodeList ?, ?', ['CancelTypeID', null]);
     }
 
+    public function getReceiveGroupList()
+    {
+        return  DB::select('uspGetStandingItemCodeList ?, ?', ['ReceiveGroupID', null]);
+    }
+
 }

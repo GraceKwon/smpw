@@ -5,25 +5,76 @@
         <tbody>
         <tr>
             <th>
-                <label class="label">지역선택</label>
+                <label class="label">도시</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select">
-                        <option selected="">선택</option>
-                        <option>option</option>
+                    <select class="custom-select @error('MetroID') is-invalid @enderror"
+                            id="MetroID"
+                            name="MetroID"
+                            v-model="form.MetroID">
+                            <option value="">전체</option>
+                            @foreach ($MetroList as $Metro)
+                                <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
+                            @endforeach
                     </select>
                 </div>
             </td>
+            <th>
+                <label class="label">지역(순회구)</label>
+            </th>
+            <td>
+                <div class="inline-responsive">
+                    <select class="custom-select @error('CircuitID') is-invalid @enderror"
+                        id="CircuitID"
+                        name="CircuitID"
+                        v-model="form.CircuitID">
+                        <option value="">전체</option>
+                        <option v-for="Circuit in CircuitList"
+                            :value="Circuit.CircuitID">@{{ Circuit.CircuitName }}</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
             <th>
                 <label class="label">열람대상선택</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select">
-                        <option selected="">선택</option>
-                        <option>option</option>
+                    <select class="custom-select"
+                        v-model="form.ReceiveGroupID">
+                        <option value="">선택</option>
+                        @foreach ($ReceiveGroupList as $ReceiveGroup)
+                            <option value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
+                        @endforeach
                     </select>
+                </div>
+            </td>
+            <th>
+                <label class="label">화면표시여부</label>
+            </th>
+            <td>
+            <div class="inline-responsive">
+                <div class="check-group inline-responsive">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" 
+                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
+                            v-model="form.DisplayYn" 
+                            id="DisplayY" 
+                            value="1"
+                            name="DisplayYn">
+                        <label class="custom-control-label" for="DisplayY">표시함</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" 
+                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
+                            v-model="form.DisplayYn" 
+                            id="DisplayN" 
+                            value="0"
+                            name="DisplayYn">
+                        <label class="custom-control-label" for="DisplayN">표시 안 함</label>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -32,14 +83,15 @@
                 <label class="label">제목</label>
             </th>
             <td colspan="3">
-                <input type="text" class="form-control" id="register02" placeholder="제목을 입력해 주세요">
+                <input type="text" class="form-control" v-model="form.Title" placeholder="제목을 입력해 주세요">
             </td>
+            
         </tr>
         <tr>
             <th>
                 <label class="label">첨부파일</label>
             </th>
-            <td colspan="3">
+            <td colspan="3">    
                 <div id="drop-zone">
                     <div v-for="(file, index) in form.Files">
                         <span style="font-size: 15px; color:#4b5aaa">@{{ file.name }}</span> 
@@ -51,7 +103,9 @@
                         여기에 파일을 올려 놓으세요
                     </div>
                 </div>
-                <input type="file" id="input-file" multiple>
+                <button type="button" class="btn-primary mt-2" @click="selFile">파일선택</button>
+
+                <input type="file" class="hide" ref="inputFile" multiple>
             </td>
         </tr>
         <tr>
@@ -82,13 +136,33 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
+            CircuitList: [],
             form: {
                 MetroID: "",
+                CircuitID: "",
                 ReceiveGroupID: "",
+                DisplayYn: 1,
                 Title: "",
-                Contents: "asdf",
+                Contents: "",
                 Files: []
             }
+        },
+        computed: {
+            // 계산된 getter
+            fileSize: function () {
+                var size = 0
+                for (let index = 0; index < this.form.Files .length; index++) {
+                    size += this.form.Files [index].size;
+                }
+                return size
+                
+            }
+        },
+        watch: {
+            'form.MetroID': function () {
+                this.CircuitID = '';
+                this._getCircuitList();
+            },
         },
         mounted: function () {
             this.$nextTick(function () {
@@ -112,34 +186,72 @@
                         for (var i = 0; i < data.items.length; i++) {
                             if (data.items[i].kind == "file") {
                                 var file = data.items[i].getAsFile();
-                                app.$data.form.Files.push(file)
+                                console.log(file)
+                                app.pushFile(file)    
                             }
                         }
                     } else {
                         for (var i = 0; i < data.files.length; i++) {
-                        alert(data.files[i].name);
+                            alert(data.files[i].name);
                         }
                     }
                 };
 
-                var file = document.querySelector('#input-file');
+                var file = app.$refs.inputFile;
                 file.onchange = function () {
                     var fileList = file.files;
                     for (var i = 0; i < fileList.length; i++) {
-                        app.$data.form.Files.push(fileList[i])              
+                        app.pushFile(fileList[i])         
                     }
                 };
             
             })
         },
         methods:{
+            _getCircuitList: function () {
+                var params = {
+                    params: {
+                        MetroID: this.form.MetroID 
+                    }
+                };
+                axios.get('/api/getCircuitList', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        this.CircuitList = response.data;
+                    }.bind(this))
+                    .catch(function (error) {
+                        console.log(error.response)
+                    });
+            },
+            pushFile: function(file) {
+                if (this.fileSize >= 20000000) {
+                    alert('용량이 초과 되었습니다.')
+                    return false
+                }
+                if (this.form.Files.length >= 20) {
+                    alert('더이상 등록할 수 없습니다.')
+                    return false
+                }
+                for (let index = 0; index < this.form.Files.length; index++) {
+                    if (this.form.Files[index].name == file.name) {
+                        alert('이미 등록된 파일입니다.')
+                        return false                                            
+                    }
+                }
+                this.form.Files.push(file)
+            },
             delFile: function(index) {
                 this.form.Files.splice(index, 1)
+            },
+            selFile: function() {
+                this.$refs.inputFile.click()
             },
             trySubmit: function() {
                 var formData = new FormData();
                 formData.append('MetroID', this.form.MetroID);
+                formData.append('CircuitID', this.form.CircuitID);
                 formData.append('ReceiveGroupID', this.form.ReceiveGroupID);
+                formData.append('DisplayYn', this.form.DisplayYn);
                 formData.append('Title', this.form.Title);
                 formData.append('Contents', CKEDITOR.instances['notice-board'].getData());
                 for (var i = 0; i < this.form.Files.length; i++) {
@@ -152,7 +264,7 @@
                     console.log(response);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log(error.response);
                 });
             }
         }
