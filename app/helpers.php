@@ -30,13 +30,14 @@ function getTopPath() {
 }
 
 function getAffectedRows($res) {
-
-	return reset($res)->computed;
+	
+	foreach( reset($res) as $value){
+		return $value;
+	}
 	
 }
 
 function getTotalCnt($res) {
-
 	return reset($res)->TotalCnt;
 	
 }
@@ -87,5 +88,12 @@ function sprintfServiceTime($ServiceTime)
 function getItemID($Item, $Separate) {
 
 	return DB::table('ItemCodes')->where([['Item', $Item],['Separate', $Separate]])->value('ID');
+
+ }
+
+ function getWeekName($w) {
+
+	$weeks = ['일', '월', '화', '수', '목', '금', '토'];  
+	return $weeks[$w];
 
  }
