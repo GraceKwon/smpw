@@ -40,7 +40,7 @@ return [
             'acts' => [
                 'name' => '봉사일정관리',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['detail' => '상세보기'],
+                'subpage' => '상세보기',
             ],
             'create' => [
                 'name' => '봉사일정생성',

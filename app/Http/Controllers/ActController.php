@@ -14,51 +14,43 @@ class ActController extends Controller
     {
         $this->CommonService = $CommonService;
         $this->ActService = $ActService;
+        $this->middleware('admin_auth');
     }
 
     public function Acts(Request $request)
     {
-    
-        $lastDay = date('t', strtotime($request->SetMonth));
-        $firstWeek = date('w', strtotime($request->SetMonth));
-        $dailyServicePlanCnt = $this->ActService->getDailyServicePlanCnt();
-        // dd($dailyServicePlanCnt);
+        if($request->SetMonth === null) $request->SetMonth = date('Y-m');
+
+        if($request->MetroID === null 
+            && session('auth.MetroID') == null){
+            $request->MetroID = $this->CommonService->getMetroList()[0]->MetroID ?? '';
+        }
+
+        if($request->CircuitID === null 
+            && session('auth.CircuitID') === null){
+            $request->CircuitID = $this->CommonService->getCircuitList()[0]->CircuitID ?? '';
+        }
+        
         return view('act.acts', [
+            'MetroList' => $this->CommonService->getMetroList(),
+            'CircuitList' => $this->CommonService->getCircuitList(),
+            'dailyServicePlanCnt' => $this->ActService->getDailyServicePlanCnt(),
             'SetMonth' => $request->SetMonth,
-            'dailyServicePlanCnt' => $dailyServicePlanCnt,
-            'lastDay' => $lastDay,
-            'firstWeek' => $firstWeek,
+            'lastDay' => date('t', strtotime($request->SetMonth)),
+            'firstWeek' => date('w', strtotime($request->SetMonth)),
         ]);
     }
 
     public function detailActs(Request $request)
     {
-        $CancelTypeList = $this->CommonService->getCancelTypeList();
-        // dd($CancelTypeList);
-        // $ServiceDate = $request->SetMonth . '-' . sprintf("%02d", $request->day );
-        $res = DB::select('uspGetStandingDailyServicePlanDetail ?', [
-            $request->ServiceDate,
-        ]);
-
-        foreach($res as $object){
-            //모든 ServiceTime을 arrayServiceTime에 담는다
-            $arrayServiceTime[] = $object->ServiceTime;
-
-            // $DailyServicePlanList[$object->ZoneName][$object->ServiceTime][] = $object;
-            $DailyServicePlanList[$object->ZoneName]['ServiceZoneID'] = $object->ServiceZoneID;
-            $DailyServicePlanList[$object->ZoneName][$object->ServiceTime][] = $object;
-        }
-        // dd($res);
-        if(isset($arrayServiceTime))
-            $ServiceTime = [
-                'min' => min($arrayServiceTime), //가장 이른 시간
-                'max' => max($arrayServiceTime), //가장 늦은 시간
-            ];
-        // dd($DailyServicePlanList);
+        $getArrayServiceTime = $this->ActService->getArrayServiceTime();
+        
         return view('act.detailActs', [
-            'DailyServicePlanList' => $DailyServicePlanList ?? [],
-            'ServiceTime' => $ServiceTime ?? null,
-            'CancelTypeList' => $CancelTypeList ?? null,
+            'max' => $getArrayServiceTime['max'],
+            'min' => $getArrayServiceTime['min'],
+            'arrayServiceTimeID' => $getArrayServiceTime['arrayServiceTimeID'],
+            'dailyServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
+            'CancelTypeList' => $this->CommonService->getCancelTypeList(),
         ]);
     }
 

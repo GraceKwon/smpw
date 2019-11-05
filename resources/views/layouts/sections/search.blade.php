@@ -7,10 +7,13 @@
             <select class="custom-select" 
                 @if(session('auth.MetroID')) disabled  @endif
                 id="MetroID" name="MetroID" 
-                onchange="submit()">
+                onchange="document.getElementById('CircuitID').value = '';
+                    if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
+                    submit()"
+                    >
                 <option value="">선택</option>
                 @foreach ($MetroList as $Metro)
-                    <option @if(session('auth.MetroID') ==  $Metro->MetroID || request('MetroID') == $Metro->MetroID ) selected @endif
+                    <option @if(session('auth.MetroID') ==  $Metro->MetroID || request()->MetroID == $Metro->MetroID ) selected @endif
                     value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
                 @endforeach
             </select>
@@ -23,10 +26,11 @@
             <select class="custom-select" 
                 @if(session('auth.MetroID')) disabled  @endif
                 id="CircuitID" name="CircuitID" 
-                onchange="submit()">
+                onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
+                    submit()">
                 <option value="">선택</option>
                 @foreach ($CircuitList as $Circuit)
-                    <option @if(session('auth.CircuitID') ==  $Circuit->CircuitID || request('CircuitID') == $Circuit->CircuitID ) selected @endif
+                    <option @if(session('auth.CircuitID') ==  $Circuit->CircuitID || request()->CircuitID == $Circuit->CircuitID ) selected @endif
                     value="{{ $Circuit->CircuitID }}">{{ $Circuit->CircuitName }}</option>
                 @endforeach
             </select>
@@ -36,10 +40,10 @@
         @if(isset($CongregationList))
         <div class="search-form-item">
             <label class="label" for="CongregationID">회중</label>
-            <select class="custom-select" id="CongregationID" name="CongregationID" onchange="submit()">
+            <select class="custom-select" id="CongregationID" name="CongregationID" onchange=";submit()">
                 <option value="">선택</option>
                 @foreach ($CongregationList as $Congregation)
-                    <option @if(request('CongregationID') == $Congregation->CongregationID ) selected @endif
+                    <option @if(request()->CongregationID == $Congregation->CongregationID ) selected @endif
                     value="{{ $Congregation->CongregationID }}">{{ $Congregation->CongregationName }}</option>
                 @endforeach
             </select>
@@ -48,11 +52,11 @@
 
         @if(isset($ServiceZoneList))
         <div class="search-form-item">
-            <label class="label" for="CongregationID">구역선택</label>
-            <select class="custom-select" id="CongregationID" name="CongregationID" onchange="submit()">
+            <label class="label" for="ServiceZoneID">구역선택</label>
+            <select class="custom-select" id="ServiceZoneID" name="ServiceZoneID" onchange="submit()">
                 <option value="">선택</option>
                 @foreach ($ServiceZoneList as $ServiceZone)
-                    <option @if(request('CongregationID') == $ServiceZone->ServiceZoneID ) selected @endif
+                    <option @if(request()->ServiceZoneID == $ServiceZone->ServiceZoneID ) selected @endif
                     value="{{ $ServiceZone->ServiceZoneID }}">{{ $ServiceZone->ZoneName }}</option>
                 @endforeach
             </select>
@@ -62,10 +66,10 @@
         @if(isset($AdminRoleList))
         <div class="search-form-item">
             <label class="label" for="AdminRoleID">권한</label>
-            <select class="custom-select" id="AdminRoleID" nanme="AdminRoleID" onchange="submit()">
+            <select class="custom-select" id="AdminRoleID" name="AdminRoleID" onchange="submit()">
                 <option selected>선택</option>
                 @foreach ($AdminRoleList as $AdminRole)
-                    <option @if(request('AdminRoleID') == $AdminRole->ID ) selected @endif
+                    <option @if(request()->AdminRoleID == $AdminRole->ID ) selected @endif
                         value="{{ $AdminRole->ID }}">{{ $AdminRole->Item }}</option>
                 @endforeach
             </select>
@@ -78,7 +82,7 @@
             <select class="custom-select" id="ServantTypeID" name="ServantTypeID" onchange="submit()">
                 <option value="">선택</option>
                 @foreach ($ServantTypeList as $ServantType)
-                    <option @if(request('ServantTypeID') == $ServantType->ID ) selected @endif
+                    <option @if(request()->ServantTypeID == $ServantType->ID ) selected @endif
                         value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
                 @endforeach
             </select>

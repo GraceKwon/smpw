@@ -1,100 +1,101 @@
 <script type="text/x-template" id="modalPublisherSet">
-<section class="modal-layer-container" ref="modalPublisherSet">
-    <div class="mx-auto px-3">
-        <div class="mlp-wrap">
-            <div class="max-w-auto">
-                <div class="mlp-header">
-                    <div class="mlp-title">
-                        임의 배정
+    <section class="modal-layer-container" ref="modalPublisherSet">
+        <div class="mx-auto px-3">
+            <div class="mlp-wrap">
+                <div class="max-w-auto">
+                    <div class="mlp-header">
+                        <div class="mlp-title">
+                            임의 배정
+                        </div>
+                        <div class="mlp-close" @click="$emit('close')">
+                            <i class="fas fa-times"></i>
+                        </div>
                     </div>
-                    <div class="mlp-close" @click="$emit('close')">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="mlp-content text-center">
-                    <div class="table-area mb-3">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <th>봉사자 조회</th>
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <input class="form-control form-control-sm mr-1" 
-                                            v-model="PublisherName"
-                                            @keypress.enter="_search"
-                                            placeholder="이름 입력">
-                                        <button class="btn btn-outline-secondary btn-sm"
-                                            @click="_search">
-                                            검색
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-area">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>성명</th>
-                                <th>회중</th>
-                                <th>조회결과</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-if="!PublisherList.length">
-                                <td colspan="4">
-                                    <div class="text-muted text-center">
-                                        검색 결과가 없습니다.
-                                    </div>
-                                </td> 
-                            </tr>
-                            <tr v-for="Publisher in PublisherList" >
-                                <td>@{{ Publisher.PublisherID }}</td>
-                                <td class="pointer" @click="PublisherID = Publisher.PublisherID">@{{ Publisher.PublisherName }}</td>
-                                <td>@{{ Publisher.CongregationName }}</td>
-                                <td>@{{ Publisher.SupportYn ? '임의배정가능' : '임의배정불가' }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <span class="pointer">
-                            <i class="fas fa-angle-left" @click="_prevPage"></i>
-                        </span>
-                        <span class="pointer">
-                            <i class="fas fa-angle-right" @click="_nextPage"></i>
-                        </span>
-                    </div>
-                    
-                    <div class="result-area border p-2 mt-3">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <div class="mr-3">
-                                <span class="text-primary">@{{selectedName}}</span>
-                                <small class="text-muted">@{{selectedCong}}</small>
-                            </div>
-                            <div class="inline-responsive">
-                                <select class="custom-select custom-select-sm" v-model="LeaderYn">
-                                    <option value="0" selected>봉사자</option>
-                                    <option value="1">인도자</option>
-                                </select>
+                    <div class="mlp-content text-center">
+                        <div class="table-area mb-3">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th>봉사자 조회</th>
+                                    <td>
+                                        <div class="d-flex justify-content-between">
+                                            <input class="form-control form-control-sm mr-1" 
+                                                v-model="PublisherName"
+                                                @keypress.enter="_search"
+                                                placeholder="이름 입력">
+                                            <button class="btn btn-outline-secondary btn-sm"
+                                                @click="_search">
+                                                검색
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-area">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>성명</th>
+                                    <th>회중</th>
+                                    <th>조회결과</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-if="!PublisherList.length">
+                                    <td colspan="4">
+                                        <div class="text-muted text-center">
+                                            검색 결과가 없습니다.
+                                        </div>
+                                    </td> 
+                                </tr>
+                                <tr v-for="Publisher in PublisherList" >
+                                    <td>@{{ Publisher.PublisherID }}</td>
+                                    <td class="pointer" @click="PublisherID = Publisher.PublisherID">@{{ Publisher.PublisherName }}</td>
+                                    <td>@{{ Publisher.CongregationName }}</td>
+                                    <td>@{{ Publisher.SupportYn ? '임의배정가능' : '임의배정불가' }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <span class="pointer">
+                                <i class="fas fa-angle-left" @click="_prevPage"></i>
+                            </span>
+                            <span class="pointer">
+                                <i class="fas fa-angle-right" @click="_nextPage"></i>
+                            </span>
+                        </div>
+                        
+                        <div class="result-area border p-2 mt-3">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="mr-3">
+                                    <span class="text-primary">@{{selectedName}}</span>
+                                    <small class="text-muted">@{{selectedCong}}</small>
+                                </div>
+                                <div class="inline-responsive">
+                                    <select class="custom-select custom-select-sm" v-model="LeaderYn">
+                                        <option value="0" selected>봉사자</option>
+                                        <option value="1">인도자</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
-                    <button class="btn btn-primary btn-sm" @click="_submit()">임의 배정</button>
-                </div>
-            </div> <!-- /.mlp-wrap -->
+                    <div class="mlp-footer justify-content-end">
+                        <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
+                        <button class="btn btn-primary btn-sm" @click="_submit()">임의 배정</button>
+                    </div>
+                </div> <!-- /.mlp-wrap -->
+            </div>
         </div>
-    </div>
-</section> <!-- /.modal-layer-container -->
+    </section> <!-- /.modal-layer-container -->
 </script>
 <script>
     Vue.component('modal-publisher-set', {
         template: '#modalPublisherSet',
         props: [
+            'CircuitId',
             'ServiceDate',
             'ServiceTimeId',
             'ServiceZoneId',
@@ -148,6 +149,7 @@
             },
             _getList: function(){
                 var formData = {
+                    CircuitID: this.CircuitId,
                     ServiceZoneID: this.ServiceZoneId,
                     PublisherName: this.PublisherName,
                     page: this.page,

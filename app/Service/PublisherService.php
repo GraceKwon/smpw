@@ -11,19 +11,6 @@ class PublisherService
         $this->CommonService = $CommonService;
     }
 
-    public function getArrayServiceTimeID()
-    {
-        $res = DB::table('ServiceTimes')
-            ->where('ServiceYoil', request()->ServiceYoil ?? '월' )
-            ->get();
-            
-        foreach ($res as $row) {
-            $array[$row->ServiceZoneID][$row->ServiceTime] = $row->ServiceTimeID;
-        }
-        
-        return $array;
-    }
-
     public function getArrayServiceTimePublisher()
     {
         $res = DB::select( 'uspGetStandingServiceTimePublisher ?', [
@@ -38,7 +25,6 @@ class PublisherService
     public function getServiceTimeList()
     {
         $ServiceYoil = request()->ServiceYoil ?? '월';
-        $ArrayServiceTimeID = $this->getArrayServiceTimeID();
         $ArrayServiceTimePublisher = $this->getArrayServiceTimePublisher();
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
         $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
@@ -60,7 +46,7 @@ class PublisherService
                     $array[$key][$ServiceZone->ServiceZoneID] = [
                         'ServiceZoneID' => $ServiceZone->ServiceZoneID,
                         'PublisherCnt' => $ServiceTime->PublisherCnt,
-                        'ServiceTimeID' => $ArrayServiceTimeID[$ServiceZone->ServiceZoneID][$key],
+                        'ServiceTimeID' => $ServiceTime->ServiceTimeID,
                         'ServiceSetType' => 
                             isset( $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key] )
                             ? $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key]

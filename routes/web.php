@@ -72,11 +72,11 @@ Route::view('/errors/auth', 'errors.auth');
 
 //봉사일정관리
     //봉사일정관리
-    Route::get('acts', function(){
-        return redirect('/acts/' . date('Y-m'));
-    });
-    Route::get('acts/{SetMonth}', 'ActController@acts');
-    Route::get('acts/detail/{ServiceDate}', 'ActController@detailActs');
+    // Route::get('acts', function(){
+    //     return redirect('/acts?SetMonth=' . date('Y-m'));
+    // });
+    Route::get('acts', 'ActController@acts');
+    Route::get('acts/{CircuitID}', 'ActController@detailActs');
     //봉사일정생성
     Route::get('create', 'ActController@create');
 

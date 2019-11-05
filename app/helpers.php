@@ -15,9 +15,9 @@ function setBreadcrumbArray($path_explode) {
 	// $breadcrumb = [ ['path'=>null,'name'=>'메뉴'], ['path'=>'path','name'=>'서브메뉴'], ['path'=>null,'name'=>['서브페이지']]]
 	$breadcrumb = session('breadcrumb')[$path];    
 	$breadcrumb = array_splice($breadcrumb, 0, $path_count + 1); 
-	
 	if( isset($breadcrumb[2]) ){
-		if( isset($breadcrumb[2]['name'][$subpage_index])){
+
+		if( gettype( $breadcrumb[2]['name'] ) === 'array'){
 			$breadcrumb[2]['name'] = $breadcrumb[2]['name'][$subpage_index];
 		}
 	}
@@ -83,3 +83,9 @@ function sprintfServiceTime($ServiceTime)
 {
 	return  sprintf ("%02d", $ServiceTime ) . ':00~' . sprintf("%02d", ($ServiceTime+1) ) . ':00' ;
 }
+
+function getItemID($Item, $Separate) {
+
+	return DB::table('ItemCodes')->where([['Item', $Item],['Separate', $Separate]])->value('ID');
+
+ }

@@ -1,5 +1,7 @@
 @extends('layouts.frames.master')
 @section('content')
+@include('layouts.sections.search')
+{{-- {{ dd(request('CircuitID')) }} --}}
 <section class="calender-section justify-content-center">
     <!-- start : common elements wrap -->
     <div class="select-date-wrap no-btn-select">
@@ -30,7 +32,6 @@
     </div>
     <!-- end : common elements wrap -->
 </section>
-
 <section class="section-table-section schedule-overview">
     <div class="table-responsive">
         <table class="table table-bordered table-font-size-90" ref="calendar">
@@ -80,7 +81,7 @@
                 @endfor
                 @for ($day = 1 ; $day <= $lastDay ; $day ++)
                     @if( $i % 7 === 0 ) <tr> @endif
-                    <td onclick="location.href='detail/{{ $SetMonth . '-' . sprintf ('%02d', $day ) }}'">
+                    <td onclick="location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate={{ $SetMonth . '-' . sprintf ('%02d', $day ) }}'">
                         <div class="day 
                             @if( $i % 7 === 0 ) sun @endif
                             @if( ($i+1) % 7 === 0 ) sat @endif">
@@ -120,7 +121,7 @@
         },
         watch: {
             today: function(){
-                location.href = this.yyyymm;
+                location.href = '?SetMonth=' + this.yyyymm;
             }
         },
         computed:{

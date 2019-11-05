@@ -3,7 +3,13 @@
 <section class="calender-section justify-content-between">
     <div>
         <button class="btn btn-danger btn-sm"
-            @click="_showModal('modalCancel')">요일봉사취소</button>
+            @if(count($dailyServicePlanDetail) == 0)
+                disabled
+            @endif
+            @click="_setParams({
+                CancelRange: 'today',
+            });_showModal('modalCancel')">
+            요일봉사취소</button>
     </div>
     <!-- start : common elements wrap -->
     <div class="select-date-wrap">
@@ -60,36 +66,40 @@
     <div class="table-responsive">
         <table class="table table-bordered table-striped-even table-font-size-90">
             <thead>
-            <tr>
-                <th class="text-center">
-                    <div class="min-width">
-                        @if(isset($ServiceTime))
+                <tr>
+                @if(count($dailyServicePlanDetail))
+                    <th class="text-center">
+                        <div class="min-width">
                             <span>봉사타임</span>
-                        @else
-                            <span v-html="dateToString + '봉사일정이 없습니다.'"></span>
-                        @endif
-                    </div>
-                </th>
-                @if(isset($ServiceTime))
-                    @for ($time = $ServiceTime['min'] ; $time <= $ServiceTime['max'] ; $time ++)
+                        </div>
+                    </th>
+                    @for ($time = $min ; $time <= $max ; $time ++)
                     <th class="text-center">
                         <div class="min-width">
                             <span>{{ sprintfServiceTime($time) }}</span>
                         </div>
                     </th>
                     @endfor
+                @else
+                <td class="text-center">
+                    <span v-html="dateToString + '봉사일정이 없습니다.'"></span>
+                </td>
                 @endif
-            </tr>
+                </tr>
             </thead>
             <tbody>
-            @foreach($DailyServicePlanList as $ZoneName => $ServicePlanList)
+            @foreach($dailyServicePlanDetail as $ZoneName => $ServicePlanList)
             <tr>
                 <td>
                     <div class="territory-name">
                         {{ $ZoneName }}
                     </div>
                     <div class="btn-area">
-                        <button class="btn btn-outline-danger btn-block btn-sm" @click="_showModal('modalCancel')">
+                        <button class="btn btn-outline-danger btn-block btn-sm" 
+                            @click="_setParams({
+                                ServiceZoneID: '{{$ServicePlanList["ServiceZoneID"]}}',
+                                CancelRange: 'zone',
+                            });_showModal('modalCancel')">
                             구역봉사취소
                         </button>
                         <button class="btn btn-outline-primary btn-block btn-sm" @click="_showModal('modalPublisherSet')">
@@ -97,40 +107,48 @@
                         </button>
                     </div>
                 </td>
-                @for($time = $ServiceTime['min'] ; $time <= $ServiceTime['max'] ; $time ++)
+                @for($time = $min ; $time <= $max ; $time ++)
                 <td>
-                    @if(isset($ServicePlanList[$time]))
                     <div class="publisher-area">
+                    @if(isset($ServicePlanList[$time]))
                         <ul>
                             @foreach($ServicePlanList[$time] as $Publisher)
                             <li>
                                 <div class="name @if($Publisher->LeaderYn) introducer @endif">
                                     {{  $Publisher->PublisherName }}
                                 </div>
-                                <div class="del" @click="_showModal('modalCancelPublisher')">
+                                <div class="del" @click="_setParams({
+                                        ServiceZoneID: '{{ $ServicePlanList["ServiceZoneID"] }}',
+                                        ServiceTimeID: '{{ $Publisher->ServiceTimeID }}',
+                                        PublisherID: '{{ $Publisher->PublisherID }}',
+                                    });
+                                    _showModal('modalPublisherCancel')">
                                     <i class="fas fa-times"></i>
                                 </div>
                             </li>
                             @endforeach
                         </ul>
+                    @endif
                     </div>
                     <div class="btn-area">
                         <button class="btn btn-outline-secondary btn-block btn-sm" 
-                            @click="_setParams('modalPublisherSet',{
-                                {{-- ServiceTime: '{{$time}}', --}}
-                                ServiceZoneID: '{{$ServicePlanList["ServiceZoneID"]}}',
-                                ServiceTimeID: '{{$ServicePlanList[$time][0]->ServiceTimeID}}',
+                            @click="_setParams({
+                                ServiceZoneID: '{{ $ServicePlanList["ServiceZoneID"] }}',
+                                ServiceTimeID: '{{ $arrayServiceTimeID[$ServicePlanList["ServiceZoneID"]][$time] }}',
                             });
                             _showModal('modalPublisherSet');
                             ">
                             임의배정
                         </button>
                         <button class="btn btn-outline-danger btn-block btn-sm" 
-                            @click="_showModal('modalCancel')">
+                            @click="_setParams({
+                                ServiceZoneID: '{{$ServicePlanList["ServiceZoneID"]}}',
+                                ServiceTimeID: '{{ $arrayServiceTimeID[$ServicePlanList["ServiceZoneID"]][$time] }}',
+                                CancelRange: 'time',
+                            });_showModal('modalCancel')">
                             봉사취소
                         </button>
                     </div>
-                    @endif
                 </td>
                 @endfor
             </tr>
@@ -140,19 +158,39 @@
     </div>
 </section>
 @endsection
+
 @section('popup')
-<modal-publisher-set v-if="showModal === 'modalPublisherSet'" 
-    :service-date="yyyymmdd" 
-    :service-time-id="ServiceTimeID" 
-    :service-zone-id="ServiceZoneID"
-    @close="showModal = ''" >
-</modal-publisher-set>
-{{-- @include('layouts.sections.modalCancel')
-@include('layouts.sections.modalCancelPublisher')
-@include('layouts.sections.modalPush') --}}
+    <modal-publisher-set v-if="showModal === 'modalPublisherSet'" 
+        :circuit-id="CircuitID"
+        :service-date="yyyymmdd" 
+        :service-time-id="ServiceTimeID" 
+        :service-zone-id="ServiceZoneID"
+        @close="showModal = ''" >
+    </modal-publisher-set>
+
+    <modal-publisher-cancel v-if="showModal === 'modalPublisherCancel'" 
+        :service-zone-id="ServiceZoneID"
+        :service-time-id="ServiceTimeID" 
+        :service-date="yyyymmdd" 
+        :publisher-id="PublisherID"
+        @close="showModal = ''" >
+    </modal-publisher-cancel>
+
+    <modal-cancel v-if="showModal === 'modalCancel'" 
+        :circuit-id="CircuitID"
+        :service-zone-id="ServiceZoneID"
+        :service-time-id="ServiceTimeID" 
+        :service-date="yyyymmdd"
+        :cancel-range="CancelRange"
+        @close="showModal = ''" >
+    </modal-cancel>
 @endsection
+
 @section('script')
-@include('act.modalPublisherSet')
+    @include('act.modalPublisherSet')
+    @include('act.modalPublisherCancel')
+    @include('act.modalCancel')
+    @include('act.modalPush')
 <script>
     var app = new Vue({
         el:'#wrapper-body',
@@ -169,12 +207,15 @@
                 }
             },
             showModal: '',
+            CircuitID: "{{ session('auth.CircuitID') ?? request()->CircuitID }}",
             ServiceTimeID: null,
             ServiceZoneID: null,
+            PublisherID: null,
+            CancelRange: null,
         },
         watch: {
             today: function(){
-                location.href = this.yyyymmdd;
+                location.href = '?ServiceDate=' + this.yyyymmdd;
                 // history.pushState(null, null, this.yyyymmdd);
             },
         },
@@ -242,10 +283,10 @@
                         console.log(error);
                     });
             },
-            _setParams:function (popupName, params){
-                this.ServiceTimeID = params.ServiceTimeID;
-                this.ServiceZoneID = params.ServiceZoneID;
- 
+            _setParams:function (params){
+                for (var key in params) {
+                    this.$data[key] = params[key];
+                }
             },
         }
     })

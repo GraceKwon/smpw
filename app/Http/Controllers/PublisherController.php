@@ -21,7 +21,7 @@ class PublisherController extends Controller
         $CircuitList = $this->CommonService->getCircuitList();
         $CongregationList = $this->CommonService->getCongregationList();
         $ServantTypeList = $this->CommonService->getServantTypeList();
-
+// dd($CongregationList);
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
