@@ -1,7 +1,9 @@
 @extends('layouts.frames.master')
 @section('content')
+@if( !session('auth.CircuitID') && !request()->CircuitID )
+    <div class="alert alert-danger">순회구가 선택되지 않습니다.</div>
+@endif
 @include('layouts.sections.search')
-{{-- {{ dd(request('CircuitID')) }} --}}
 <section class="calender-section justify-content-center">
     <!-- start : common elements wrap -->
     <div class="select-date-wrap no-btn-select">
@@ -84,28 +86,29 @@
                     <td @if(session('auth.CircuitID') || request()->CircuitID)
                             onclick="location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate={{ $SetMonth . '-' . sprintf ('%02d', $day ) }}'"
                         @else
-                            onclick="alert('지역을 선택해주세요')"
                         @endif>
                         <div class="day 
                             @if( $i % 7 === 0 ) sun @endif
                             @if( ($i+1) % 7 === 0 ) sat @endif">
                             {{$day}}
                         </div>
-                        <div class="cal-item">
-                            <div class="cal-label">구역 수</div>
-                        <i class="fas fa-map-marked-alt"></i>
-                        <div class="cal-value">{{ $dailyServicePlanCnt[$day]->ServiceZoneCnt ?? 0}}</div>
-                        </div>
-                        <div class="cal-item">
-                            <div class="cal-label">봉사자 수</div>
-                            <i class="fas fa-user-friends"></i>
-                            <div class="cal-value">{{$dailyServicePlanCnt[$day]->PublisherCnt ?? 0}}</div>
-                        </div>
-                        <div class="cal-item">
-                            <div class="cal-label">인도자</div>
-                            <i class="fas fa-user-tie"></i>
-                            <div class="cal-value">{{$dailyServicePlanCnt[$day]->LeaderCnt ?? 0}}</div>
-                        </div>
+                        @if(session('auth.CircuitID') || request()->CircuitID)
+                            <div class="cal-item">
+                                <div class="cal-label">구역 수</div>
+                            <i class="fas fa-map-marked-alt"></i>
+                            <div class="cal-value">{{ $dailyServicePlanCnt[$day]->ServiceZoneCnt ?? 0}}</div>
+                            </div>
+                            <div class="cal-item">
+                                <div class="cal-label">봉사자 수</div>
+                                <i class="fas fa-user-friends"></i>
+                                <div class="cal-value">{{$dailyServicePlanCnt[$day]->PublisherCnt ?? 0}}</div>
+                            </div>
+                            <div class="cal-item">
+                                <div class="cal-label">인도자</div>
+                                <i class="fas fa-user-tie"></i>
+                                <div class="cal-value">{{$dailyServicePlanCnt[$day]->LeaderCnt ?? 0}}</div>
+                            </div>
+                        @endif
                     </td>
                     @php($i++)
                     @if( $i%7 === 0 ) </tr> @endif
@@ -125,7 +128,7 @@
         },
         watch: {
             today: function(){
-                location.href = '?SetMonth=' + this.yyyymm;
+                location.href = '?MetroID={{ request()->MetroID }}&CircuitID={{ request()->CircuitID }}&SetMonth=' + this.yyyymm;
             }
         },
         computed:{
