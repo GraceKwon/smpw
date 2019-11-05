@@ -76,7 +76,8 @@ Route::view('/errors/auth', 'errors.auth');
     //     return redirect('/acts?SetMonth=' . date('Y-m'));
     // });
     Route::get('acts', 'ActController@acts');
-    Route::get('acts/{CircuitID}', 'ActController@detailActs');
+    Route::get('acts/{CircuitID}', 'ActController@detailActs')
+        ->where('CircuitID', '[0-9]+');
     //봉사일정생성
     Route::get('create', 'ActController@create');
 

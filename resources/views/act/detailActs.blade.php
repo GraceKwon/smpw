@@ -1,5 +1,8 @@
 @extends('layouts.frames.master')
 @section('content')
+@if(!count($dailyServicePlanDetail))
+    <div class="alert alert-danger">봉사일정이 없습니다.</div>
+@endif
 <section class="calender-section justify-content-between">
     <div>
         <button class="btn btn-danger btn-sm"
@@ -13,18 +16,6 @@
     </div>
     <!-- start : common elements wrap -->
     <div class="select-date-wrap">
-        <div class="day-area">
-            {{-- <button class="arrow" @click="_prevDate">
-                <i class="fas fa-angle-left"></i>
-            </button>
-            <div class="year">@{{ year }}</div>
-            <div class="month">@{{ month }}</div>
-            <div class="day">@{{ day }}</div> --}}
-            {{-- <div class="weekday">@{{ weekday }}</div> --}}
-            {{-- <button class="arrow" @click="_nextDate">
-                <i class="fas fa-angle-right"></i>
-            </button> --}}
-        </div>
         <div class="btn-area">
             {{-- <button class="btn btn-outline-secondary btn-today btn-sm">
                 <i class="far fa-calendar-check"></i>
@@ -32,7 +23,6 @@
             <button class="arrow" @click="_prevDate">
                 <i class="fas fa-angle-left"></i>
             </button>
-            {{-- <input type="date" class="form-control" :value="yyyymmdd" @change="_changeDate" placeholder="날자를 선택해 주세요"> --}}
             <date-picker v-model="today" 
                         width="180"
                         value-type="date" 
@@ -41,7 +31,6 @@
                         :format="'YYYY. MM. DD ' + weekday"
                         :lang="lang" 
                         :icon-day="day"
-                        {{-- :range="true" --}}
                         >
             </date-picker>
             <button class="btn btn-outline-secondary btn-today btn-sm"
@@ -51,9 +40,7 @@
             <button class="arrow" @click="_nextDate">
                 <i class="fas fa-angle-right"></i>
             </button>
-            {{-- <button class="btn btn-outline-secondary btn-select btn-sm">
-                <i class="far fa-calendar-alt"></i>
-            </button> --}}
+
         </div>
     </div>
     <!-- end : common elements wrap -->
@@ -66,8 +53,8 @@
     <div class="table-responsive">
         <table class="table table-bordered table-striped-even table-font-size-90">
             <thead>
+                @if( !empty($ServiceTimeList) )
                 <tr>
-                @if(count($dailyServicePlanDetail))
                     <th class="text-center">
                         <div class="min-width">
                             <span>봉사타임</span>
@@ -80,24 +67,23 @@
                         </div>
                     </th>
                     @endfor
-                @else
-                <td class="text-center">
-                    <span v-html="dateToString + '봉사일정이 없습니다.'"></span>
-                </td>
-                @endif
                 </tr>
+                @endif
             </thead>
             <tbody>
-            @foreach($dailyServicePlanDetail as $ZoneName => $ServicePlanList)
+            @foreach($ServiceTimeList as $ServiceZoneID => $ArrayTimeID)
             <tr>
                 <td>
                     <div class="territory-name">
-                        {{ $ZoneName }}
+                        {{ $ArrayTimeID['ZoneName'] ?? ''}}
                     </div>
                     <div class="btn-area">
                         <button class="btn btn-outline-danger btn-block btn-sm" 
+                            @if(empty($dailyServicePlanDetail[$ServiceZoneID]))
+                                disabled
+                            @endif
                             @click="_setParams({
-                                ServiceZoneID: '{{$ServicePlanList["ServiceZoneID"]}}',
+                                ServiceZoneID: '{{$ServiceZoneID}}',
                                 CancelRange: 'zone',
                             });_showModal('modalCancel')">
                             구역봉사취소
@@ -110,15 +96,15 @@
                 @for($time = $min ; $time <= $max ; $time ++)
                 <td>
                     <div class="publisher-area">
-                    @if(isset($ServicePlanList[$time]))
+                    @if(isset($dailyServicePlanDetail[$ServiceZoneID][$time]))
                         <ul>
-                            @foreach($ServicePlanList[$time] as $Publisher)
+                            @foreach($dailyServicePlanDetail[$ServiceZoneID][$time] as $Publisher)
                             <li>
                                 <div class="name @if($Publisher->LeaderYn) introducer @endif">
                                     {{  $Publisher->PublisherName }}
                                 </div>
                                 <div class="del" @click="_setParams({
-                                        ServiceZoneID: '{{ $ServicePlanList["ServiceZoneID"] }}',
+                                        ServiceZoneID: '{{ $ServiceZoneID }}',
                                         ServiceTimeID: '{{ $Publisher->ServiceTimeID }}',
                                         PublisherID: '{{ $Publisher->PublisherID }}',
                                     });
@@ -132,18 +118,22 @@
                     </div>
                     <div class="btn-area">
                         <button class="btn btn-outline-secondary btn-block btn-sm" 
+                            alt="d"
                             @click="_setParams({
-                                ServiceZoneID: '{{ $ServicePlanList["ServiceZoneID"] }}',
-                                ServiceTimeID: '{{ $arrayServiceTimeID[$ServicePlanList["ServiceZoneID"]][$time] }}',
+                                ServiceZoneID: '{{ $ServiceZoneID }}',
+                                ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
                             });
                             _showModal('modalPublisherSet');
                             ">
                             임의배정
                         </button>
                         <button class="btn btn-outline-danger btn-block btn-sm" 
+                            @if(empty($dailyServicePlanDetail[$ServiceZoneID][$time]))
+                                disabled
+                            @endif
                             @click="_setParams({
-                                ServiceZoneID: '{{$ServicePlanList["ServiceZoneID"]}}',
-                                ServiceTimeID: '{{ $arrayServiceTimeID[$ServicePlanList["ServiceZoneID"]][$time] }}',
+                                ServiceZoneID: '{{ $ServiceZoneID }}',
+                                ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
                                 CancelRange: 'time',
                             });_showModal('modalCancel')">
                             봉사취소

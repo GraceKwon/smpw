@@ -81,7 +81,11 @@
                 @endfor
                 @for ($day = 1 ; $day <= $lastDay ; $day ++)
                     @if( $i % 7 === 0 ) <tr> @endif
-                    <td onclick="location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate={{ $SetMonth . '-' . sprintf ('%02d', $day ) }}'">
+                    <td @if(session('auth.CircuitID') || request()->CircuitID)
+                            onclick="location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate={{ $SetMonth . '-' . sprintf ('%02d', $day ) }}'"
+                        @else
+                            onclick="alert('지역을 선택해주세요')"
+                        @endif>
                         <div class="day 
                             @if( $i % 7 === 0 ) sun @endif
                             @if( ($i+1) % 7 === 0 ) sat @endif">

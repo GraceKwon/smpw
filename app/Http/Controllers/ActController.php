@@ -48,7 +48,7 @@ class ActController extends Controller
         return view('act.detailActs', [
             'max' => $getArrayServiceTime['max'],
             'min' => $getArrayServiceTime['min'],
-            'arrayServiceTimeID' => $getArrayServiceTime['arrayServiceTimeID'],
+            'ServiceTimeList' => $getArrayServiceTime['ServiceTimeList'],
             'dailyServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
             'CancelTypeList' => $this->CommonService->getCancelTypeList(),
         ]);

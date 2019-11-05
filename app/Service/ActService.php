@@ -3,6 +3,7 @@
 namespace App\Service;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
+// use Exception;
 
 class ActService
 {
@@ -25,22 +26,25 @@ class ActService
 
     public function getArrayServiceTime()
     {
+        // $week = ['일', '월', '화', '수', '목', '금', '토'];  
+        
         $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
             session('auth.CircuitID') ?? request()->CircuitID,
-            request()->ServiceYoil ?? '월',
+            request()->ServiceYoil ?? getWeekName(  date('w', strtotime( request()->ServiceDate ) ) ),
         ]);
         
         foreach ($res as $object) {
             $arrayServiceTime[] = $object->ServiceTime;
-            $arrayServiceTimeID[$object->ServiceZoneID][$object->ServiceTime] = $object->ServiceTimeID;
+            $ServiceTimeList[$object->ServiceZoneID]['ZoneName'] = $object->ZoneName;
+            $ServiceTimeList[$object->ServiceZoneID][$object->ServiceTime] = $object->ServiceTimeID;
         }
-        // dd($arrayServiceTimeID);
+        // dd($ServiceTimeList);
 
         
         return [
             'min' => isset($arrayServiceTime) ? min($arrayServiceTime) : null,
             'max' => isset($arrayServiceTime) ? max($arrayServiceTime) : null,
-            'arrayServiceTimeID' => $arrayServiceTimeID ?? null,
+            'ServiceTimeList' => $ServiceTimeList ?? [],
         ];
     }
 
@@ -52,9 +56,9 @@ class ActService
         ]);
 
         foreach($res as $object){
-            //모든 ServiceTime을 arrayServiceTime에 담는다
-            $dailyServicePlanDetail[$object->ZoneName]['ServiceZoneID'] = $object->ServiceZoneID;
-            $dailyServicePlanDetail[$object->ZoneName][$object->ServiceTime][] = $object;
+
+            $dailyServicePlanDetail[$object->ServiceZoneID][$object->ServiceTime][] = $object;
+
         }
     
         // dd($dailyServicePlanDetail);
@@ -66,7 +70,7 @@ class ActService
     public function setPublisherServicePlanInsert()
     {
  
-        DB::select('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
+        DB::statement('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
             request()->ServiceZoneID,
             request()->ServiceTimeID,
             request()->PublisherID,
@@ -110,19 +114,18 @@ class ActService
 
     public function setPublisherServicePlanCancel()
     {
- 
-        DB::select('uspSetStandingDailyServiceTimePublisherCancel ?,?,?,?,?', [
+        DB::statement('uspSetStandingDailyServiceTimePublisherCancel ?,?,?,?,?', [
             request()->ServiceZoneID,
             request()->ServiceTimeID,
             request()->PublisherID,
             request()->CancelTypeID,
             request()->ServiceDate,
-        ]);
+            ]);
     }
 
     public function setServiceTimeCancel()
     {
-        DB::select('uspSetStandingDailyServiceTimeCancel ?,?,?,?', [
+        DB::statement('uspSetStandingDailyServiceTimeCancel ?,?,?,?', [
             request()->ServiceZoneID,
             request()->ServiceTimeID,
             request()->CancelTypeID,
@@ -132,7 +135,7 @@ class ActService
 
     public function setServiceZoneCancel()
     {
-        DB::select('uspSetStandingDailyServiceZoneCancel ?,?,?', [
+        DB::statement('uspSetStandingDailyServiceZoneCancel ?,?,?', [
             request()->ServiceZoneID,
             request()->CancelTypeID,
             request()->ServiceDate,
@@ -147,7 +150,7 @@ class ActService
         {
             foreach ($ServiceZoneList as $ServiceZone) {
 
-                DB::select('uspSetStandingDailyServiceZoneCancel ?,?,?', [
+                DB::statement('uspSetStandingDailyServiceZoneCancel ?,?,?', [
                     $ServiceZone->ServiceZoneID,
                     request()->CancelTypeID,
                     request()->ServiceDate,
