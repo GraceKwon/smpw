@@ -1,4 +1,4 @@
-<form method="GET">
+<form method="GET" id="frm">
     <section class="search-section">
 
         @if(isset($MetroList))

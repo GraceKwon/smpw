@@ -1,12 +1,12 @@
 @extends('layouts.frames.master')
 @section('content')
-@if(!count($dailyServicePlanDetail))
+@if(!count($ServicePlanDetail))
     <div class="alert alert-danger">봉사일정이 없습니다.</div>
 @endif
 <section class="calender-section justify-content-between">
     <div>
         <button class="btn btn-danger btn-sm"
-            @if(count($dailyServicePlanDetail) == 0)
+            @if(count($ServicePlanDetail) == 0)
                 disabled
             @endif
             @click="_setParams({
@@ -16,31 +16,34 @@
     </div>
     <!-- start : common elements wrap -->
     <div class="select-date-wrap">
-        <div class="btn-area">
-            {{-- <button class="btn btn-outline-secondary btn-today btn-sm">
-                <i class="far fa-calendar-check"></i>
-            </button> --}}
-            <button class="arrow" @click="_prevDate">
+        <div class="day-area">
+            <button type="button" class="arrow" @click="_prevDate">
                 <i class="fas fa-angle-left"></i>
             </button>
-            <date-picker v-model="today" 
-                        width="180"
-                        value-type="date" 
-                        :clearable="false"
-                        input-class="form-control"
-                        :format="'YYYY. MM. DD ' + weekday"
-                        :lang="lang" 
-                        :icon-day="day"
-                        >
-            </date-picker>
-            <button class="btn btn-outline-secondary btn-today btn-sm"
-                @click="_today">
-                오늘
-            </button>
-            <button class="arrow" @click="_nextDate">
+            <div class="year" v-html="year"></div>
+            <div class="month" v-html="month"></div>
+            <div class="day" v-html="day"></div>
+            <div class="weekday" v-html="weekday"></div>
+            <button type="button" class="arrow" @click="_nextDate">
                 <i class="fas fa-angle-right"></i>
             </button>
-
+        </div>
+        <div class="btn-area">
+            <date-picker 
+                v-model="today" 
+                :input-name="'ServiceDate'"
+                width="0"
+                ref="datepicker" 
+                :clearable="false"
+                :input-class="'hide'" 
+                :lang="lang" 
+                >
+            </date-picker>
+            <button class="btn btn-outline-secondary btn-today btn-sm"
+                type="button"
+                @click="popupVisible = !popupVisible">
+                <i class="far fa-calendar-alt"></i>
+            </button>
         </div>
     </div>
     <!-- end : common elements wrap -->
@@ -79,7 +82,7 @@
                     </div>
                     <div class="btn-area">
                         <button class="btn btn-outline-danger btn-block btn-sm" 
-                            @if(empty($dailyServicePlanDetail[$ServiceZoneID]))
+                            @if(empty($ServicePlanDetail[$ServiceZoneID]))
                                 disabled
                             @endif
                             @click="_setParams({
@@ -96,9 +99,9 @@
                 @for($time = $min ; $time <= $max ; $time ++)
                 <td>
                     <div class="publisher-area">
-                    @if(isset($dailyServicePlanDetail[$ServiceZoneID][$time]))
+                    @if(isset($ServicePlanDetail[$ServiceZoneID][$time]))
                         <ul>
-                            @foreach($dailyServicePlanDetail[$ServiceZoneID][$time] as $Publisher)
+                            @foreach($ServicePlanDetail[$ServiceZoneID][$time] as $Publisher)
                             <li>
                                 <div class="name @if($Publisher->LeaderYn) introducer @endif">
                                     {{  $Publisher->PublisherName }}
@@ -118,24 +121,26 @@
                     </div>
                     <div class="btn-area">
                         <button class="btn btn-outline-secondary btn-block btn-sm" 
-                            alt="d"
-                            @click="_setParams({
-                                ServiceZoneID: '{{ $ServiceZoneID }}',
-                                ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
-                            });
-                            _showModal('modalPublisherSet');
-                            ">
-                            임의배정
-                        </button>
-                        <button class="btn btn-outline-danger btn-block btn-sm" 
-                            @if(empty($dailyServicePlanDetail[$ServiceZoneID][$time]))
+                            @if( isset($ServicePlanDetail[$ServiceZoneID][$time]) && count($ServicePlanDetail[$ServiceZoneID][$time]) > 5)
                                 disabled
                             @endif
                             @click="_setParams({
-                                ServiceZoneID: '{{ $ServiceZoneID }}',
-                                ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
-                                CancelRange: 'time',
-                            });_showModal('modalCancel')">
+                                    ServiceZoneID: '{{ $ServiceZoneID }}',
+                                    ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
+                                });
+                                _showModal('modalPublisherSet')">
+                            임의배정
+                        </button>
+                        <button class="btn btn-outline-danger btn-block btn-sm" 
+                            @if(empty($ServicePlanDetail[$ServiceZoneID][$time]))
+                                disabled
+                            @endif
+                            @click="_setParams({
+                                    ServiceZoneID: '{{ $ServiceZoneID }}',
+                                    ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
+                                    CancelRange: 'time',
+                                });
+                                _showModal('modalCancel')">
                             봉사취소
                         </button>
                     </div>
@@ -184,18 +189,10 @@
 <script>
     var app = new Vue({
         el:'#wrapper-body',
+        mixins: [datepickerLang],
         data:{
             today: new Date('{{ request()->ServiceDate }}'),
-            week: ['일', '월', '화', '수', '목', '금', '토'],
-            lang: {
-                days: ['일', '월', '화', '수', '목', '금', '토'],
-                months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                pickers: ['다음 7일', '다음 30일', '이전 7일', '이전 30일'],
-                placeholder: {
-                    date: '날짜를 선택해주세요',
-                    dateRange: '기간을 선택해주세요'
-                }
-            },
+            popupVisible: false,
             showModal: '',
             CircuitID: "{{ session('auth.CircuitID') ?? request()->CircuitID }}",
             ServiceTimeID: null,
@@ -206,7 +203,9 @@
         watch: {
             today: function(){
                 location.href = '?ServiceDate=' + this.yyyymmdd;
-                // history.pushState(null, null, this.yyyymmdd);
+            },
+            popupVisible: function(){
+                this.$refs.datepicker.showPopup();
             },
         },
         computed:{
@@ -220,7 +219,7 @@
                 return this.today.getDate();  
             },
             weekday: function(){
-                return this.week[this.today.getDay()];  
+                return this.lang.days[this.today.getDay()];  
             },
             yyyymmdd:function(){
                 var yyyy = this.today.getFullYear();
@@ -228,17 +227,6 @@
                 var dd = ('0' + this.today.getDate()).slice(-2);
                 return yyyy + '-' + mm + '-' + dd;
             },
-            yyyymm:function(){
-                var yyyy = this.today.getFullYear();
-                var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
-                return yyyy + '-' + mm;
-            },
-            dateToString:function(){
-                var yyyy = this.today.getFullYear();
-                var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
-                var dd = ('0' + this.today.getDate()).slice(-2);
-                return yyyy + '년 ' + mm + '월 ' + dd + '일 ';
-            }
         },
         methods:{
             _prevDate:function () {
@@ -250,28 +238,11 @@
             _today:function () {
                 this.today = new Date();
             },
-            _changeDate:function (e) {
-                if(e.target.value) this.today = new Date(e.target.value);
-            },
             _showModal:function (modalName) {
                 this.showModal = modalName;
             },
             _closeModal:function (popupName) {
-                // this[popup] =false;
                 this.$refs[popupName].style.display = 'none';
-            },
-            _submit:function (popupName) {
-                var formData = {
-                    ServiceDate: this.yyyymmdd,
-                }
-                Object.assign(formData, this[popupName]);
-                axios.put('/api/' + popupName, formData)
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
             },
             _setParams:function (params){
                 for (var key in params) {

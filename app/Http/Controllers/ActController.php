@@ -35,7 +35,6 @@ class ActController extends Controller
             'MetroList' => $this->CommonService->getMetroList(),
             'CircuitList' => $this->CommonService->getCircuitList(),
             'dailyServicePlanCnt' => $this->ActService->getDailyServicePlanCnt(),
-            'SetMonth' => $request->SetMonth,
             'lastDay' => date('t', strtotime($request->SetMonth)),
             'firstWeek' => date('w', strtotime($request->SetMonth)),
         ]);
@@ -43,13 +42,13 @@ class ActController extends Controller
 
     public function detailActs(Request $request)
     {
-        $getArrayServiceTime = $this->ActService->getArrayServiceTime();
+        $arrayServiceTime = $this->ActService->getArrayServiceTime();
         
         return view('act.detailActs', [
-            'max' => $getArrayServiceTime['max'],
-            'min' => $getArrayServiceTime['min'],
-            'ServiceTimeList' => $getArrayServiceTime['ServiceTimeList'],
-            'dailyServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
+            'max' => $arrayServiceTime['max'],
+            'min' => $arrayServiceTime['min'],
+            'ServiceTimeList' => $arrayServiceTime['ServiceTimeList'],
+            'ServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
             'CancelTypeList' => $this->CommonService->getCancelTypeList(),
         ]);
     }

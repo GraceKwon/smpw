@@ -5,26 +5,26 @@
             <!-- start : common elements wrap -->
             <div class="select-date-wrap">
                 <div class="day-area">
-                    <button type="button" class="arrow">
+                    <button type="button" class="arrow" @click="_prevDate">
                         <i class="fas fa-angle-left"></i>
                     </button>
-                    <div class="year">@{{year}}</div>
-                    <div class="month">@{{month}}</div>
-                    <div class="day">@{{day}}</div>
-                    <div class="weekday">@{{weekday}}</div>
-                    <button type="button" class="arrow">
+                    <div class="year" v-html="year"></div>
+                    <div class="month" v-html="month"></div>
+                    <div class="day" v-html="day"></div>
+                    <div class="weekday" v-html="weekday"></div>
+                    <button type="button" class="arrow" @click="_nextDate">
                         <i class="fas fa-angle-right"></i>
                     </button>
                 </div>
                 <div class="btn-area">
-                    <date-picker v-model="today" 
-                        width="1"
-                        value-type="date" 
+                    <date-picker 
+                        v-model="today" 
+                        :input-name="'ServiceDate'"
+                        width="0"
                         ref="datepicker" 
                         :clearable="false"
                         :input-class="'hide'" 
                         :lang="lang" 
-                        {{-- :range="true" --}}
                         >
                     </date-picker>
                     <button class="btn btn-outline-secondary btn-today btn-sm"
@@ -32,69 +32,13 @@
                         @click="popupVisible = !popupVisible">
                         <i class="far fa-calendar-alt"></i>
                     </button>
-                    {{-- <button class="btn btn-outline-secondary btn-select btn-sm">
-                        <i class="far fa-calendar-check"></i>
-                    </button> --}}
                 </div>
             </div>
             <!-- end : common elements wrap -->
         </div> <!-- /.search-form-item -->
     @endpush
     @include('layouts.sections.search', [])
-        
-{{-- <section class="search-section">
-    <div class="search-form-item">
-        <label class="label" for="city">도시</label>
-        <select class="custom-select" id="city">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="circuits">지역</label>
-        <select class="custom-select" id="circuits">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="territory">구역</label>
-        <select class="custom-select" id="territory">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-date">
-        <!-- start : common elements wrap -->
-        <div class="select-date-wrap">
-            <div class="day-area">
-                <button class="arrow">
-                    <i class="fas fa-angle-left"></i>
-                </button>
-                <div class="year">2019</div>
-                <div class="month">05</div>
-                <div class="day">31</div>
-                <div class="weekday">월요일</div>
-                <button class="arrow">
-                    <i class="fas fa-angle-right"></i>
-                </button>
-            </div>
-            <div class="btn-area">
-                <button class="btn btn-outline-secondary btn-today btn-sm">
-                    <i class="far fa-calendar-check"></i>
-                </button>
-                <button class="btn btn-outline-secondary btn-select btn-sm">
-                    <i class="far fa-calendar-alt"></i>
-                </button>
-            </div>
-        </div>
-        <!-- end : common elements wrap -->
-    </div> <!-- /.search-form-item -->
-    <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
-    </div> <!-- /.search-btn-area -->
-</section> --}}
-
+{{  dd($ReportList) }}
 <section class="section-table-section">
     <div class="table-responsive">
         <table class="table table-center table-font-size-90">
@@ -425,37 +369,25 @@
 @endsection
 
 @section('script')
-{{-- <script src="https://cdn.jsdelivr.net/npm/vue2-datepicker@2.13.0/lib/index.min.js"></script> --}}
 <script>
-// Vue.use(DatePicker.default);
     var app = new Vue({
         el:'#wrapper-body',
+        mixins: [datepickerLang],
         data:{
-            lang: {
-                days: ['일', '월', '화', '수', '목', '금', '토'],
-                months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                pickers: ['다음 7일', '다음 30일', '이전 7일', '이전 30일'],
-                placeholder: {
-                    date: '날짜를 선택해주세요',
-                    dateRange: '기간을 선택해주세요'
-                }
-            },
-            popupVisible: false,
-            today: new Date(),
-            week: ['일', '월', '화', '수', '목', '금', '토']
+            today: new Date('{{ request()->ServiceDate }}'),
+            popupVisible: false
         },
-        watch:{
+        watch: {
+            today: function(){
+                var query = '?MetroID={{ request()->MetroID }}';
+                    query += '&CircuitID={{ request()->MetroID }}';
+                    query += '&ServiceZoneID={{ request()->ServiceZoneID }}';
+                    query += '&ServiceDate=' + this.yyyymmdd;
+
+                location.href = query;
+            },
             popupVisible: function(){
-                console.log(this.$refs.datepicker.popupVisible);
-                // if(this.popupVisible){
-                    this.$refs.datepicker.showPopup();
-                // }else{
-                    // console.log(this.$refs.datepicker.popupVisible);
-                    // if(!this.$refs.datepicker.popupVisible) 
-                    //     this.$refs.datepicker.showPopup();
-                    // else
-                    //     this.$refs.datepicker.closePopup();
-                // }
+                this.$refs.datepicker.showPopup();
             },
         },
         computed:{
@@ -469,7 +401,7 @@
                 return this.today.getDate();  
             },
             weekday: function(){
-                return this.week[this.today.getDay()];  
+                return this.lang.days[this.today.getDay()];  
             },
             yyyymmdd:function(){
                 var yyyy = this.today.getFullYear();
@@ -487,9 +419,6 @@
             },
             _today:function () {
                 this.today = new Date();
-            },
-            _changeDate:function (e) {
-                if(e.target.value) this.today = new Date(e.target.value);
             },
         }
     })

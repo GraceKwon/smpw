@@ -13,8 +13,6 @@
             </button>
             <div class="year" v-html="year"></div>
             <div class="month" v-html="month"></div>
-            {{-- <div class="day">31</div> --}}
-            {{-- <div class="weekday">월요일</div> --}}
             <button class="arrow" @click="_nextCalendar">
                 <i class="fas fa-angle-right"></i>
             </button>
@@ -24,16 +22,11 @@
             @click="_today">
                 오늘
             </button>
-            {{-- <button class="btn btn-outline-secondary btn-today btn-sm">
-            <i class="far fa-calendar-check"></i>
-            </button> --}}
-            {{-- <button class="btn btn-outline-secondary btn-select btn-sm">
-            <i class="far fa-calendar-alt"></i>
-            </button> --}}
         </div>
     </div>
     <!-- end : common elements wrap -->
 </section>
+
 <section class="section-table-section schedule-overview">
     <div class="table-responsive">
         <table class="table table-bordered table-font-size-90" ref="calendar">
@@ -84,7 +77,7 @@
                 @for ($day = 1 ; $day <= $lastDay ; $day ++)
                     @if( $i % 7 === 0 ) <tr> @endif
                     <td @if(session('auth.CircuitID') || request()->CircuitID)
-                            onclick="location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate={{ $SetMonth . '-' . sprintf ('%02d', $day ) }}'"
+                            onclick="location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate={{ request()->SetMonth . '-' . sprintf ('%02d', $day ) }}'"
                         @else
                         @endif>
                         <div class="day 
@@ -124,7 +117,7 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
-            today: new Date("{{ $SetMonth ?? '' }}"),
+            today: new Date("{{ request()->SetMonth }}"),
         },
         watch: {
             today: function(){

@@ -3,7 +3,7 @@
 namespace App\Service;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
-// use Exception;
+use Exception;
 
 class ActService
 {
@@ -57,19 +57,21 @@ class ActService
 
         foreach($res as $object){
 
-            $dailyServicePlanDetail[$object->ServiceZoneID][$object->ServiceTime][] = $object;
+            $ServicePlanDetail[$object->ServiceZoneID][$object->ServiceTime][] = $object;
 
         }
-    
-        // dd($dailyServicePlanDetail);
+        // dd($ServicePlanDetail);
 
-        
-        return $dailyServicePlanDetail ?? [];
+        return $ServicePlanDetail ?? [];
     }
 
     public function setPublisherServicePlanInsert()
     {
- 
+        if( $this->checkServicePlanPublisherCnt() >= 6) return 'full';
+
+        if( request()->LeaderYn === '1' )
+            if($this->checkServicePlanHasLeader()) return 'Already Leader';
+         
         DB::statement('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
             request()->ServiceZoneID,
             request()->ServiceTimeID,
@@ -110,6 +112,34 @@ class ActService
         else
             return ['data' => []];
     
+    }
+
+    public function checkServicePlanHasLeader()
+    {
+        return DB::table('ServiceActs')
+            ->where([
+                ['ServiceZoneID' ,request()->ServiceZoneID],
+                ['ServiceTimeID' ,request()->ServiceTimeID],
+                ['ServiceDate' ,request()->ServiceDate],
+                ['LeaderYn' , 1],
+                ['WaitingYn' , 0],
+            ])
+            ->whereNull('CancelDate')
+            ->exists();
+    }
+
+    public function checkServicePlanPublisherCnt()
+    {
+        return (int)DB::table('ServiceActs')
+            ->where([
+                ['ServiceZoneID' ,request()->ServiceZoneID],
+                ['ServiceTimeID' ,request()->ServiceTimeID],
+                ['ServiceDate' ,request()->ServiceDate],
+                // ['LeaderYn' , 1],
+                ['WaitingYn' , 0],
+            ])
+            ->whereNull('CancelDate')
+            ->count();
     }
 
     public function setPublisherServicePlanCancel()

@@ -5,19 +5,13 @@ window.Vue = require("vue");
 import VeeValidate from 'vee-validate';
 import VueCookie from 'vue-cookie';
 import DatePicker from 'vue2-datepicker'
-import ko from './ko.js'
+import datepickerLang from './datepickerLang'
 
-const config = {
-  locale: 'ko',
-  dictionary: {
-    ko
-  }
-}
-
-window.Vue.use(VeeValidate, config);
+window.Vue.use(VeeValidate);
 window.Vue.use(VueCookie);
 window.Vue.use(DatePicker);
 
+window.datepickerLang = datepickerLang;
 //IE 대응
 if (typeof Object.assign != 'function') {
   // Must be writable: true, enumerable: false, configurable: true

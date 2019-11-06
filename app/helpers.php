@@ -37,6 +37,8 @@ function getAffectedRows($res) {
 }
 
 function getTotalCnt($res) {
+	dd($res);
+	if(empty($res) )return 0;
 	return reset($res)->TotalCnt;
 	
 }
