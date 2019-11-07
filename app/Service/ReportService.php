@@ -23,8 +23,8 @@ class ReportService
 
     public function getDailyServiceReportList()
     {
-        $paginate = 30;  
-        $page = request()->input('page', '1');
+        $paginate = 1;  
+        $page = (int)request()->input('page', '1');
 
         $parameter = [
                 ( session('auth.MetroID') ?? request()->MetroID ),

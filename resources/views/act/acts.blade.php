@@ -1,9 +1,9 @@
 @extends('layouts.frames.master')
 @section('content')
 @if( !session('auth.CircuitID') && !request()->CircuitID )
-    <div class="alert alert-danger">순회구가 선택되지 않습니다.</div>
+    <div class="alert alert-danger">지역이 선택되지 않습니다.</div>
 @endif
-@include('layouts.sections.search')
+@include('layouts.sections.searchCalendar')
 <section class="calender-section justify-content-center">
     <!-- start : common elements wrap -->
     <div class="select-date-wrap no-btn-select">

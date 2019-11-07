@@ -38,7 +38,7 @@
         </div> <!-- /.search-form-item -->
     @endpush
     @include('layouts.sections.search', [])
-{{  dd($ReportList) }}
+{{-- {{  dd($ReportList) }} --}}
 <section class="section-table-section">
     <div class="table-responsive">
         <table class="table table-center table-font-size-90">
@@ -54,11 +54,11 @@
                         <span>시간대</span>
                     </div>
                 </th>
-                <th>
+                {{-- <th>
                     <div class="min-width">
                         <span>보고</span>
                     </div>
-                </th>
+                </th> --}}
                 <th>
                     <div class="min-width">
                         <span>구역</span>
@@ -87,266 +87,34 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    201
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    202
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    203
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    204
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    205
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    206
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    207
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    208
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    209
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    210
-                </td>
-                <td>
-                    <a>08:00-09:00</a>
-                </td>
-                <td>
-                    X
-                </td>
-                <td>
-                    구리역
-                </td>
-                <td>
-                    <a>김사랑</a>
-                </td>
-                <td>
-                    <a>3</a>
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <a>0</a>
-                </td>
-            </tr>
+                @foreach ($ReportList as $Report)
+                <tr>
+                    <td>
+                        {{ $loop->index + 1 }}
+                    </td>
+                    <td>
+                        <a>{{ sprintfServiceTime( $Report->ServiceTime ) }}</a>
+                    </td>
+                    {{-- <td>
+                        X
+                    </td> --}}
+                    <td>
+                        {{ $Report->ZoneName }}
+                    </td>
+                    <td>
+                        <a>{{ $Report->PublisherName }}</a>
+                    </td>
+                    <td>
+                        <a>{{ $Report->PlacementQty }}</a>
+                    </td>
+                    <td>
+                        {{ $Report->VideoShowQty }}
+                    </td>
+                    <td>
+                        <a>{{ $Report->VisitRequestQty }}</a>
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -355,15 +123,8 @@
             엑셀파일 다운로드
         </button>
     </div>
-    <div>
-        <ul class="page">
-            <li class="active"><a>1</a></li>
-            <li><a>2</a></li>
-            <li><a>3</a></li>
-            <li><a>4</a></li>
-            <li><a>5</a></li>
-        </ul>
-    </div>
+    {{ $ReportList->appends( request()->all() )->links() }}
+
 </section>
 
 @endsection
