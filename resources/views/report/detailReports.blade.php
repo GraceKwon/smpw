@@ -38,7 +38,7 @@
         </div> <!-- /.search-form-item -->
     @endpush
     @include('layouts.sections.search', [])
-{{-- {{  dd($ReportList) }} --}}
+{{-- {{  dd( $ReportList->count() ) }} --}}
 <section class="section-table-section">
     <div class="table-responsive">
         <table class="table table-center table-font-size-90">
@@ -90,7 +90,7 @@
                 @foreach ($ReportList as $Report)
                 <tr>
                     <td>
-                        {{ $loop->index + 1 }}
+                        {{ ($loop->index + 1) + ( (request()->input('page', 1)-1) * 30 ) }}
                     </td>
                     <td>
                         <a>{{ sprintfServiceTime( $Report->ServiceTime ) }}</a>
@@ -115,11 +115,20 @@
                     </td>
                 </tr>
                 @endforeach
+                @if(!$ReportList->count())
+                <tr>
+                    <td colspan="7">조회 결과가 없습니다.</td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>
     <div class="btn-flex-area mt-3">
-        <button type="button" class="btn btn-success">
+        <button type="button" class="btn btn-success"
+            @if(!$ReportList->count())
+                disabled
+            @endif
+            @click="_export">
             엑셀파일 다운로드
         </button>
     </div>
@@ -140,12 +149,7 @@
         },
         watch: {
             today: function(){
-                var query = '?MetroID={{ request()->MetroID }}';
-                    query += '&CircuitID={{ request()->MetroID }}';
-                    query += '&ServiceZoneID={{ request()->ServiceZoneID }}';
-                    query += '&ServiceDate=' + this.yyyymmdd;
-
-                location.href = query;
+                location.href = this.query;
             },
             popupVisible: function(){
                 this.$refs.datepicker.showPopup();
@@ -169,6 +173,13 @@
                 var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
                 var dd = ('0' + this.today.getDate()).slice(-2);
                 return yyyy + '-' + mm + '-' + dd;
+            },
+            query: function () {
+                var query = '?MetroID={{ request()->MetroID }}';
+                    query += '&CircuitID={{ request()->MetroID }}';
+                    query += '&ServiceZoneID={{ request()->ServiceZoneID }}';
+                    query += '&ServiceDate=' + this.yyyymmdd;
+                return query;
             }
         },
         methods:{
@@ -180,6 +191,9 @@
             },
             _today:function () {
                 this.today = new Date();
+            },
+            _export:function () {
+                location.href = 'export' + this.query;
             },
         }
     })

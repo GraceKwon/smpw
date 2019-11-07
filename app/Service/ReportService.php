@@ -17,14 +17,14 @@ class ReportService
         foreach($res as $object){
             $array[date('j', strtotime($object->YMD))] = $object;
         }
-        // dd($array);
+        
         return $array ?? [];
     }
 
     public function getDailyServiceReportList()
     {
-        $paginate = 1;  
-        $page = (int)request()->input('page', '1');
+        $paginate = 30;  
+        $page = request()->input('page', 1);
 
         $parameter = [
                 ( session('auth.MetroID') ?? request()->MetroID ),

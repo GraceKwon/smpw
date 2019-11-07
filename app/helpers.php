@@ -54,21 +54,26 @@ function setPaginator($paginate, $page, $data, $count = null) {
 
 	$offSet = ($page * $paginate) - $paginate;  
 	$itemsForCurrentPage = array_slice($data, $offSet, $paginate, true);  
-	$AdminList = new Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, $count, $paginate, $page);  
-	$AdminList->setPath(request()->path());
+	$Collection = new Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, $count, $paginate, $page);  
+	$Collection->setPath(request()->path());
 	
-	return $AdminList;
+	return $Collection;
 	
 }
 
-function getMetroName()
+function getMetroName($MetroID = null)
 {
-	return  DB::table('Metros')->where( 'MetroID', session('auth.MetroID') )->value('MetroName');
+	return  DB::table('Metros')->where( 'MetroID', $MetroID ?? session('auth.MetroID') ?? request()->MetroID )->value('MetroName');
 }
 
-function getCircuitName()
+function getCircuitName($CircuitID = null)
 {
-	return  DB::table('Circuits')->where( 'CircuitID', session('auth.CircuitID') )->value('CircuitName');
+	return  DB::table('Circuits')->where( 'CircuitID', $CircuitID ?? session('auth.CircuitID') ?? request()->CircuitID )->value('CircuitName');
+}
+
+function getServiceZoneName($ServiceZoneID = null)
+{
+	return  DB::table('ServiceZones')->where( 'ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID )->value('ZoneName');
 }
 
 function getCongregationName()
@@ -83,7 +88,9 @@ function getMobile()
 
 function sprintfServiceTime($ServiceTime)
 {
-	return  sprintf ("%02d", $ServiceTime ) . ':00~' . sprintf("%02d", ($ServiceTime+1) ) . ':00' ;
+	// ex) $ServiceTime = 9 
+	//     return '09:00~10:00'
+	return  sprintf ('%02d', $ServiceTime ) . ':00~' . sprintf("%02d", ($ServiceTime+1) ) . ':00' ;
 }
 
 function getItemID($Item, $Separate) {

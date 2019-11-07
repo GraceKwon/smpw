@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\ReportService;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ReportsExport;
 
 class ReportController extends Controller
 {
@@ -50,6 +53,16 @@ class ReportController extends Controller
             'ServiceZoneList' => $ServiceZoneList,
             'ReportList' => $this->ReportService->getDailyServiceReportList(),
         ]);
+    }
+    public function exportReports(Request $request) 
+    {
+        $fileName = $request->MetroID ? getMetroName() . '_' : '' ;
+        $fileName .= $request->CircuitID ? getCircuitName() . '_' : '' ;
+        $fileName .= $request->ServiceZoneID ? getServiceZoneName() . '_' : '' ;
+        $fileName .= $request->ServiceDate . '_';
+        $fileName .= '봉사보고.xlsx';
+
+        return Excel::download(new ReportsExport, $fileName);
     }
 
     public function view_requests()
