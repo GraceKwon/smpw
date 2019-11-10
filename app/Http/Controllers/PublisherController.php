@@ -176,13 +176,13 @@ class PublisherController extends Controller
         DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
         {
             foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
-                DB::select('uspSetStandingServiceTimePublieherDelete ?,?', [
+                DB::statement('uspSetStandingServiceTimePublieherDelete ?,?', [
                     $PublisherID,
                     $ServiceTimeID,
                     ]);
 
                 if($ServiceSetType !== '미지정')
-                    DB::select('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
+                    DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
                         $PublisherID,
                         $ServiceTimeID,
                         ($ServiceSetType ==='인도자') ? 1 : 0,

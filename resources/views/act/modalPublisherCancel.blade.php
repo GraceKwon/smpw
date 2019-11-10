@@ -70,7 +70,7 @@
                     CancelTypeID: this.CancelTypeID,
                     ServiceDate: this.ServiceDate,
                 }
-                axios.put('/api/modalPublisherCancel', formData)
+                axios.post('/api/modalPublisherCancel', formData)
                     .then(function (response) {
                         console.log(response);
                         location.reload()

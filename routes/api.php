@@ -27,21 +27,21 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
 
 //봉사일정관리
     //봉사일정관리
-    Route::put('modalPublisherSet', function(ActService $ActService){
+    Route::post('modalPublisherSet', function(ActService $ActService){
         return $ActService->setPublisherServicePlanInsert();
     });
-    Route::put('modalPublisherSet/search', function(ActService $ActService){
+    Route::post('modalPublisherSet/search', function(ActService $ActService){
         return $ActService->modalPublisherSearch();
     });
-    Route::put('modalPublisherCancel', function(ActService $ActService){
+    Route::post('modalPublisherCancel', function(ActService $ActService){
         return $ActService->setPublisherServicePlanCancel();
     });
-    Route::put('modalTimeCancel', function(ActService $ActService){
+    Route::post('modalTimeCancel', function(ActService $ActService){
         return $ActService->setServiceTimeCancel();
     });
-    Route::put('modalZoneCancel', function(ActService $ActService){
+    Route::post('modalZoneCancel', function(ActService $ActService){
         return $ActService->setServiceZoneCancel();
     });
-    Route::put('modalTodayCancel', function(ActService $ActService){
+    Route::post('modalTodayCancel', function(ActService $ActService){
         return $ActService->setServiceTodayCancel();
     });

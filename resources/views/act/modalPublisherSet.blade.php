@@ -76,7 +76,7 @@
                                 <div class="inline-responsive">
                                     <select class="custom-select custom-select-sm" v-model="LeaderYn">
                                         <option value="0" selected>봉사자</option>
-                                        <option value="1" v-if="!hasLeader">인도자</option>
+                                        <option value="1">인도자</option>
                                     </select>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                     WaitingYn: 0,
                     ServiceDate: this.ServiceDate,
                 }
-                axios.put('/api/modalPublisherSet', formData)
+                axios.post('/api/modalPublisherSet', formData)
                     .then(function (response) {
                         console.log(response.data);
                         if(response.data === 'full') alert('해당 타임에 빈자리가 없습니다.');
@@ -156,7 +156,7 @@
                     PublisherName: this.PublisherName,
                     page: this.page,
                 };
-                axios.put('/api/modalPublisherSet/search', formData)
+                axios.post('/api/modalPublisherSet/search', formData)
                     .then(function (response) {
                         console.log(response.data);
                         this.PublisherList = response.data.data;
