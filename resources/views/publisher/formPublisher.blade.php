@@ -129,7 +129,7 @@
             <td>
                 <div class="inline-responsive">
                     <input type="text" 
-                        class="form-control @error('CongregationID') is-invalid @enderror"
+                        class="form-control @error('Mobile') is-invalid @enderror"
                         id="Mobile" 
                         name="Mobile" 
                         v-model="Mobile" 

@@ -1,5 +1,9 @@
 @extends('layouts.frames.master')
 @section('content')
+@if( !session('auth.CircuitID') && !request()->CircuitID )
+    <div class="alert alert-danger">지역이 선택되지 않습니다.</div>
+@endif
+@include('layouts.sections.searchCalendar')
 <section class="calender-section justify-content-center">
     <!-- start : common elements wrap -->
     <div class="select-date-wrap no-btn-select">
@@ -9,8 +13,6 @@
             </button>
             <div class="year" v-html="year"></div>
             <div class="month" v-html="month"></div>
-            {{-- <div class="day">31</div> --}}
-            {{-- <div class="weekday">월요일</div> --}}
             <button class="arrow" @click="_nextCalendar">
                 <i class="fas fa-angle-right"></i>
             </button>
@@ -20,12 +22,6 @@
             @click="_today">
                 오늘
             </button>
-            {{-- <button class="btn btn-outline-secondary btn-today btn-sm">
-            <i class="far fa-calendar-check"></i>
-            </button> --}}
-            {{-- <button class="btn btn-outline-secondary btn-select btn-sm">
-            <i class="far fa-calendar-alt"></i>
-            </button> --}}
         </div>
     </div>
     <!-- end : common elements wrap -->
@@ -80,27 +76,32 @@
                 @endfor
                 @for ($day = 1 ; $day <= $lastDay ; $day ++)
                     @if( $i % 7 === 0 ) <tr> @endif
-                    <td onclick="location.href='detail/{{ $SetMonth . '-' . sprintf ('%02d', $day ) }}'">
+                    <td @if(session('auth.CircuitID') || request()->CircuitID)
+                            onclick="location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate={{ request()->SetMonth . '-' . sprintf ('%02d', $day ) }}'"
+                        @else
+                        @endif>
                         <div class="day 
                             @if( $i % 7 === 0 ) sun @endif
                             @if( ($i+1) % 7 === 0 ) sat @endif">
                             {{$day}}
                         </div>
-                        <div class="cal-item">
-                            <div class="cal-label">구역 수</div>
-                        <i class="fas fa-map-marked-alt"></i>
-                        <div class="cal-value">{{ $dailyServicePlanCnt[$day]->ServiceZoneCnt ?? 0}}</div>
-                        </div>
-                        <div class="cal-item">
-                            <div class="cal-label">봉사자 수</div>
-                            <i class="fas fa-user-friends"></i>
-                            <div class="cal-value">{{$dailyServicePlanCnt[$day]->PublisherCnt ?? 0}}</div>
-                        </div>
-                        <div class="cal-item">
-                            <div class="cal-label">인도자</div>
-                            <i class="fas fa-user-tie"></i>
-                            <div class="cal-value">{{$dailyServicePlanCnt[$day]->LeaderCnt ?? 0}}</div>
-                        </div>
+                        @if(session('auth.CircuitID') || request()->CircuitID)
+                            <div class="cal-item">
+                                <div class="cal-label">구역 수</div>
+                            <i class="fas fa-map-marked-alt"></i>
+                            <div class="cal-value">{{ $dailyServicePlanCnt[$day]->ServiceZoneCnt ?? 0}}</div>
+                            </div>
+                            <div class="cal-item">
+                                <div class="cal-label">봉사자 수</div>
+                                <i class="fas fa-user-friends"></i>
+                                <div class="cal-value">{{$dailyServicePlanCnt[$day]->PublisherCnt ?? 0}}</div>
+                            </div>
+                            <div class="cal-item">
+                                <div class="cal-label">인도자</div>
+                                <i class="fas fa-user-tie"></i>
+                                <div class="cal-value">{{$dailyServicePlanCnt[$day]->LeaderCnt ?? 0}}</div>
+                            </div>
+                        @endif
                     </td>
                     @php($i++)
                     @if( $i%7 === 0 ) </tr> @endif
@@ -116,11 +117,11 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
-            today: new Date("{{ $SetMonth ?? '' }}"),
+            today: new Date("{{ request()->SetMonth }}"),
         },
         watch: {
             today: function(){
-                location.href = this.yyyymm;
+                location.href = '?MetroID={{ request()->MetroID }}&CircuitID={{ request()->CircuitID }}&SetMonth=' + this.yyyymm;
             }
         },
         computed:{

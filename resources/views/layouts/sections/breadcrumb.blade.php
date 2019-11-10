@@ -1,4 +1,5 @@
 @if(isset($breadcrumb))
+{{-- @php(dd($breadcrumb)) --}}
 <div class="page-header">
     <h1 class="page-title">{{ $breadcrumb[ count($breadcrumb) - 1 ]['name'] }}</h1>
     <div class="route">

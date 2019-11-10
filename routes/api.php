@@ -23,16 +23,7 @@ Route::get('/getCircuitList', function(CommonService $CommonService){
 Route::get('/getCongregationList', function(CommonService $CommonService){
     return $CommonService->getCongregationList();
 });
-//봉사알정관리
-    //봉사알정관리
-    Route::get('acts', function(ActService $ActService){
-        return $ActService->getDailyServicePlanCnt();
-    });
-//봉사보고관리
-    //봉사보고관리
-    Route::get('reports', function(ReportService $ReportService){
-        return $ReportService->getDailyServiceReportCnt();
-    });
+
 
 //봉사일정관리
     //봉사일정관리
@@ -41,4 +32,16 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     });
     Route::put('modalPublisherSet/search', function(ActService $ActService){
         return $ActService->modalPublisherSearch();
+    });
+    Route::put('modalPublisherCancel', function(ActService $ActService){
+        return $ActService->setPublisherServicePlanCancel();
+    });
+    Route::put('modalTimeCancel', function(ActService $ActService){
+        return $ActService->setServiceTimeCancel();
+    });
+    Route::put('modalZoneCancel', function(ActService $ActService){
+        return $ActService->setServiceZoneCancel();
+    });
+    Route::put('modalTodayCancel', function(ActService $ActService){
+        return $ActService->setServiceTodayCancel();
     });

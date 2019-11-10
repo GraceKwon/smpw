@@ -2,16 +2,20 @@
 
 namespace App\Service;
 use Illuminate\Support\Facades\DB;
+use App\Service\CommonService;
+use Exception;
 
 class ActService
 {
-    public function __construct()
+    public function __construct(CommonService $CommonService)
     {
+        $this->CommonService = $CommonService;
     }
 
     public function getDailyServicePlanCnt()
     {
-        $res = DB::select('uspGetStandingDailyServicePlanCnt ?', [
+        $res = DB::select('uspGetStandingDailyServicePlanCnt ?,?', [
+            session('auth.CircuitID') ?? request()->CircuitID,
             date('Y-m-01', strtotime( request()->SetMonth )),
         ]);
         foreach($res as $object){
@@ -20,10 +24,55 @@ class ActService
         return $array ?? [];
     }
 
+    public function getArrayServiceTime()
+    {
+        // $week = ['일', '월', '화', '수', '목', '금', '토'];  
+        
+        $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
+            session('auth.CircuitID') ?? request()->CircuitID,
+            request()->ServiceYoil ?? getWeekName(  date('w', strtotime( request()->ServiceDate ) ) ),
+        ]);
+        
+        foreach ($res as $object) {
+            $arrayServiceTime[] = $object->ServiceTime;
+            $ServiceTimeList[$object->ServiceZoneID]['ZoneName'] = $object->ZoneName;
+            $ServiceTimeList[$object->ServiceZoneID][$object->ServiceTime] = $object->ServiceTimeID;
+        }
+        // dd($ServiceTimeList);
+
+        
+        return [
+            'min' => isset($arrayServiceTime) ? min($arrayServiceTime) : null,
+            'max' => isset($arrayServiceTime) ? max($arrayServiceTime) : null,
+            'ServiceTimeList' => $ServiceTimeList ?? [],
+        ];
+    }
+
+    public function getDailyServicePlanDetail()
+    {
+        $res = DB::select('uspGetStandingDailyServicePlanDetail ?,?', [
+            session('auth.CircuitID') ?? request()->CircuitID,
+            request()->ServiceDate,
+        ]);
+
+        foreach($res as $object){
+
+            $ServicePlanDetail[$object->ServiceZoneID][$object->ServiceTime][] = $object;
+
+        }
+        // dd($ServicePlanDetail);
+
+        return $ServicePlanDetail ?? [];
+    }
+
     public function setPublisherServicePlanInsert()
     {
- 
-        DB::select('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
+        if( $this->checkServicePlanPublisherCnt() >= 6) return 'full';
+
+        if( request()->LeaderYn === '1' )
+            if($this->checkServicePlanHasLeader()) return 'Already Leader';
+         
+        DB::statement('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
             request()->ServiceZoneID,
             request()->ServiceTimeID,
             request()->PublisherID,
@@ -37,12 +86,11 @@ class ActService
     {
         if ( request()->PublisherName ) {
 
-            $CircuitID = DB::table('ServiceZones')->where('ServiceZoneID', request()->ServiceZoneID)->value('CircuitID');
             $paginate = 5;  
             $page = request()->input('page', '1');
             $parameter = [
                 null,
-                $CircuitID,
+                session('auth.CircuitID') ?? request()->CircuitID,
                 null,
                 request()->PublisherName,
                 null,
@@ -66,6 +114,80 @@ class ActService
     
     }
 
+    public function checkServicePlanHasLeader()
+    {
+        return DB::table('ServiceActs')
+            ->where([
+                ['ServiceZoneID' ,request()->ServiceZoneID],
+                ['ServiceTimeID' ,request()->ServiceTimeID],
+                ['ServiceDate' ,request()->ServiceDate],
+                ['LeaderYn' , 1],
+                ['WaitingYn' , 0],
+            ])
+            ->whereNull('CancelDate')
+            ->exists();
+    }
 
+    public function checkServicePlanPublisherCnt()
+    {
+        return (int)DB::table('ServiceActs')
+            ->where([
+                ['ServiceZoneID' ,request()->ServiceZoneID],
+                ['ServiceTimeID' ,request()->ServiceTimeID],
+                ['ServiceDate' ,request()->ServiceDate],
+                // ['LeaderYn' , 1],
+                ['WaitingYn' , 0],
+            ])
+            ->whereNull('CancelDate')
+            ->count();
+    }
+
+    public function setPublisherServicePlanCancel()
+    {
+        DB::statement('uspSetStandingDailyServiceTimePublisherCancel ?,?,?,?,?', [
+            request()->ServiceZoneID,
+            request()->ServiceTimeID,
+            request()->PublisherID,
+            request()->CancelTypeID,
+            request()->ServiceDate,
+            ]);
+    }
+
+    public function setServiceTimeCancel()
+    {
+        DB::statement('uspSetStandingDailyServiceTimeCancel ?,?,?,?', [
+            request()->ServiceZoneID,
+            request()->ServiceTimeID,
+            request()->CancelTypeID,
+            request()->ServiceDate,
+        ]);
+    }
+
+    public function setServiceZoneCancel()
+    {
+        DB::statement('uspSetStandingDailyServiceZoneCancel ?,?,?', [
+            request()->ServiceZoneID,
+            request()->CancelTypeID,
+            request()->ServiceDate,
+        ]);
+    }
+
+    public function setServiceTodayCancel()
+    {
+        $ServiceZoneList = $this->CommonService->getServiceZoneList();
+
+        DB::transaction(function() use ($ServiceZoneList)
+        {
+            foreach ($ServiceZoneList as $ServiceZone) {
+
+                DB::statement('uspSetStandingDailyServiceZoneCancel ?,?,?', [
+                    $ServiceZone->ServiceZoneID,
+                    request()->CancelTypeID,
+                    request()->ServiceDate,
+                ]);
+            }
+        });
+       
+    }
 
 }

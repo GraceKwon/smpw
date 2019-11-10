@@ -50,7 +50,7 @@
                             <div class="login">
                                 <div class="user-wrap">
                                     <div class="user-thumbnail">
-                                        <img src="../img/common/user-default.png" alt="">
+                                        <img src="/img/common/user-default.png" alt="">
                                     </div>
                                     <div class="user-name">
                                         <span class="text-primary font-weight-bold">{{ session('auth.AdminName')}}</span>님

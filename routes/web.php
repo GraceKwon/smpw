@@ -72,18 +72,21 @@ Route::view('/errors/auth', 'errors.auth');
 
 //봉사일정관리
     //봉사일정관리
-    Route::get('acts', function(){
-        return redirect('/acts/' . date('Y-m'));
-    });
-    Route::get('acts/{SetMonth}', 'ActController@acts');
-    Route::get('acts/detail/{ServiceDate}', 'ActController@detailActs');
+    // Route::get('acts', function(){
+    //     return redirect('/acts?SetMonth=' . date('Y-m'));
+    // });
+    Route::get('acts', 'ActController@acts');
+    Route::get('acts/{CircuitID}', 'ActController@detailActs')
+        ->where('CircuitID', '[0-9]+');
     //봉사일정생성
     Route::get('create', 'ActController@create');
 
 //봉사보고관리
     //봉사보고관리
     Route::get('reports', 'ReportController@reports');
-    Route::get('reports/{id}', 'ReportController@detailReports');
+    Route::get('reports/detail', 'ReportController@detailReports');
+    Route::get('reports/export', 'ReportController@exportReports');
+
     //방문요청관리
     Route::get('requests', 'ReportController@view_requests');
     Route::get('requests/{id}', 'ReportController@view_detail_requests');

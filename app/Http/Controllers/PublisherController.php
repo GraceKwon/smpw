@@ -21,7 +21,7 @@ class PublisherController extends Controller
         $CircuitList = $this->CommonService->getCircuitList();
         $CongregationList = $this->CommonService->getCongregationList();
         $ServantTypeList = $this->CommonService->getServantTypeList();
-
+// dd($CongregationList);
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
@@ -92,7 +92,7 @@ class PublisherController extends Controller
         ]);
         if($request->PublisherID === '0')
             $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
-                    'AAAA0003',//$request->Account,
+                    'AAAA00045',//$request->Account,
                     $request->PublisherName,
                     '11112222',//$request->UserPassword,
                     $request->CongregationID,

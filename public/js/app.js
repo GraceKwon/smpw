@@ -43198,8 +43198,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_cookie__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_cookie__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/lib/index.js");
 /* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue2_datepicker__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _ko_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ko.js */ "./resources/js/ko.js");
-/* harmony import */ var _ko_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_ko_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _datepickerLang__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./datepickerLang */ "./resources/js/datepickerLang.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -43207,15 +43206,10 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 
-var config = {
-  locale: 'ko',
-  dictionary: {
-    ko: _ko_js__WEBPACK_IMPORTED_MODULE_3___default.a
-  }
-};
-window.Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_0__["default"], config);
+window.Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_0__["default"]);
 window.Vue.use(vue_cookie__WEBPACK_IMPORTED_MODULE_1___default.a);
-window.Vue.use(vue2_datepicker__WEBPACK_IMPORTED_MODULE_2___default.a); //IE 대응
+window.Vue.use(vue2_datepicker__WEBPACK_IMPORTED_MODULE_2___default.a);
+window.datepickerLang = _datepickerLang__WEBPACK_IMPORTED_MODULE_3__["default"]; //IE 대응
 
 if (typeof Object.assign != 'function') {
   // Must be writable: true, enumerable: false, configurable: true
@@ -43312,152 +43306,29 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/js/ko.js":
-/*!****************************!*\
-  !*** ./resources/js/ko.js ***!
-  \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./resources/js/datepickerLang.js":
+/*!****************************************!*\
+  !*** ./resources/js/datepickerLang.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-!function (n, e) {
-  "object" == ( false ? undefined : _typeof(exports)) && "undefined" != typeof module ? module.exports = e() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (e),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (undefined);
-}(this, function () {
-  "use strict";
-
-  var n,
-      e = {
-    name: "ko",
-    messages: {
-      _default: function _default(n) {
-        return n + "항목의 값이 유효하지 않습니다.";
-      },
-      after: function after(n, e) {
-        return n + "항목의 값은 " + e[0] + "항목의 값 이후" + (e[1] ? "거나 같은 날이어야" : "여야") + " 합니다.";
-      },
-      alpha: function alpha(n) {
-        return n + "항목에는 영문자만 사용 가능합니다.";
-      },
-      alpha_dash: function alpha_dash(n) {
-        return n + "항목에는 영문자, 숫자와 특수기호(-),(_)만 사용 가능합니다.";
-      },
-      alpha_num: function alpha_num(n) {
-        return n + "항목에는 영문자와 숫자만 사용 가능합니다.";
-      },
-      alpha_spaces: function alpha_spaces(n) {
-        return n + "항목에는 영문자와 공백만 사용 가능합니다.";
-      },
-      before: function before(n, e) {
-        return n + "항목의 값은 " + e[0] + "항목의 값 이전" + (e[1] ? "이거나 같은 날" : "") + "이어야 합니다.";
-      },
-      between: function between(n, e) {
-        return n + "항목의 값은 " + e[0] + "에서 " + e[1] + " 사이여야 합니다.";
-      },
-      confirmed: function confirmed(n) {
-        return n + "항목의 값이 일치하지 않습니다.";
-      },
-      credit_card: function credit_card(n) {
-        return n + "항목의 값이 유효하지 않습니다.";
-      },
-      date_between: function date_between(n, e) {
-        return n + "항목의 값은 " + e[0] + "과 " + e[1] + " 사이의 날짜이어야 합니다.";
-      },
-      date_format: function date_format(n, e) {
-        return n + "항목의 값은 " + e[0] + "형식이어야 합니다.";
-      },
-      decimal: function decimal(n, e) {
-        void 0 === e && (e = []);
-        var t = e[0];
-        return void 0 === t && (t = "*"), n + "항목의 값은 숫자이어야 하며, 소수점 이하 " + (t && "*" !== t ? t : "") + "자리까지 사용 가능합니다.";
-      },
-      digits: function digits(n, e) {
-        return n + "항목의 값은 " + e[0] + "자리의 숫자이어야 합니다.";
-      },
-      dimensions: function dimensions(n, e) {
-        return n + "항목의 크기는 가로 " + e[0] + "픽셀, 세로 " + e[1] + "픽셀이어야 합니다.";
-      },
-      email: function email(n) {
-        return n + "항목의 값은 유효한 이메일 형식이어야 합니다.";
-      },
-      excluded: function excluded(n) {
-        return n + "항목은 유효한 값이어야 합니다.";
-      },
-      ext: function ext(n) {
-        return n + "항목은 유효한 파일이어야 합니다.";
-      },
-      image: function image(n) {
-        return n + "항목은 이미지 파일이어야 합니다.";
-      },
-      included: function included(n) {
-        return n + "항목의 값은 유효한 값이어야 합니다.";
-      },
-      integer: function integer(n) {
-        return n + "항목의 값은 정수이어야 합니다.";
-      },
-      ip: function ip(n) {
-        return n + "항목의 값은 유효한 IP(ipv4) 주소이어야 합니다.";
-      },
-      length: function length(n, e) {
-        var t = e[0],
-            r = e[1];
-        return r ? n + "항목의 값은 " + t + "자에서 " + r + "자이어야 합니다." : n + "항목의 값은 " + t + "자이어야 합니다.";
-      },
-      max: function max(n, e) {
-        return n + "항목의 값은 최대 " + e[0] + "글자이어야 합니다.";
-      },
-      max_value: function max_value(n, e) {
-        return n + "항목의 값은 " + e[0] + " 이하이어야 합니다.";
-      },
-      mimes: function mimes(n) {
-        return n + "는 유효한 파일 형식의 파일이어야 합니다.";
-      },
-      min: function min(n, e) {
-        return n + "항목의 값은 최소 " + e[0] + "글자이어야 합니다.";
-      },
-      min_value: function min_value(n, e) {
-        return n + "항목의 값은 " + e[0] + " 이상이어야 합니다.";
-      },
-      numeric: function numeric(n) {
-        return n + "항목에는 숫자만 사용 가능합니다.";
-      },
-      regex: function regex(n) {
-        return n + "항목은 형식에 맞지 않습니다.";
-      },
-      required: function required(n) {
-        return n + "항목은 필수 정보입니다.";
-      },
-      size: function size(n, e) {
-        return n + "항목의 크기는 " + function (n) {
-          var e = 1024,
-              t = 0 === (n = Number(n) * e) ? 0 : Math.floor(Math.log(n) / Math.log(e));
-          return 1 * (n / Math.pow(e, t)).toFixed(2) + " " + ["Byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][t];
-        }(e[0]) + "보다 작아야 합니다.";
-      },
-      url: function url(n) {
-        return n + "항목의 값은 유효한 주소(URL)가 아닙니다.";
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      lang: {
+        days: ['일', '월', '화', '수', '목', '금', '토'],
+        months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        pickers: ['다음 7일', '다음 30일', '이전 7일', '이전 30일'],
+        placeholder: {
+          date: '날짜를 선택해주세요',
+          dateRange: '기간을 선택해주세요'
+        }
       }
-    },
-    attributes: {
-      OrderNum: "우선 순위",
-      ZoneAlias: "구역 약호",
-      ZoneName: "구역 명칭",
-      Latitude: "위도",
-      Longitude: "경도",
-      AdminName: "이름",
-      AdminRoleID: "권한",
-      MetroID: "도시",
-      CircuitID: "순회구(지역)",
-      CongregationID: "회중",
-      ServantTypeID: "신분",
-      Mobile: "연락처"
-    }
-  };
-  return "undefined" != typeof VeeValidate && VeeValidate.Validator.localize(((n = {})[e.name] = e, n)), e;
+    };
+  }
 });
 
 /***/ }),
