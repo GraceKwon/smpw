@@ -9,7 +9,7 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select @error('MetroID') is-invalid @enderror"
+                    <select class="custom-select"
                             id="MetroID"
                             name="MetroID"
                             v-model="form.MetroID">
@@ -43,6 +43,7 @@
             <td>
                 <div class="inline-responsive">
                     <select class="custom-select"
+                        :class="{'is-invalid': validation.ReceiveGroupID}"
                         v-model="form.ReceiveGroupID">
                         <option value="">선택</option>
                         @foreach ($ReceiveGroupList as $ReceiveGroup)
@@ -145,17 +146,20 @@
                 Title: "",
                 Contents: "",
                 Files: []
+            },
+            validation: {
+                ReceiveGroupID: false,
+                Title: false,
+                Contents: false
             }
         },
         computed: {
-            // 계산된 getter
             fileSize: function () {
                 var size = 0
                 for (let index = 0; index < this.form.Files .length; index++) {
                     size += this.form.Files [index].size;
                 }
                 return size
-                
             }
         },
         watch: {
@@ -265,7 +269,11 @@
                 })
                 .catch(function (error) {
                     console.log(error.response);
-                });
+                    if (error.response.status === 422) {
+                        console.log(error.response);
+                        this.validation = error.response.data.errors
+                    }
+                }.bind(this));
             }
         }
     })
