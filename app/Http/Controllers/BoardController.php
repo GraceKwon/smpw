@@ -34,8 +34,7 @@ class BoardController extends Controller
         $request->validate([
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
-            'Contents' => 'required',
-            'Files' => 'file'
+            'Contents' => 'required'
         ]);
         $files = [];
         for ($i=0; $i < count( $request->Files ); $i++) { 
