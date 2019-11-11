@@ -2,9 +2,11 @@
 @section('content')
 
     @include('layouts.sections.search', [
-        'inputText' => [
-            'label' => '이름',
-            'id' =>'AdminName'
+        'inputTexts' => [
+            [
+                'label' => '이름',
+                'id' =>'AdminName'
+            ]
         ]
     ])
 

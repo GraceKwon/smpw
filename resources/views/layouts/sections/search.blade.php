@@ -106,11 +106,13 @@
             @endforeach
         @endif
 
-        @if(isset($inputText))
-            <div class="search-form-item">
-                <label class="label" for="{{ $inputText['id'] }}">{{ $inputText['label'] }}</label>
-                <input type="text" class="form-control" id="{{ $inputText['id'] }}" name="{{ $inputText['id'] }}" value="{{ request($inputText['id']) }}" placeholder="입력해 주세요">
-            </div> <!-- /.search-form-item -->
+        @if(isset($inputTexts))
+            @foreach ($inputTexts as $inputText)
+                <div class="search-form-item">
+                    <label class="label" for="{{ $inputText['id'] }}">{{ $inputText['label'] }}</label>
+                    <input type="text" class="form-control" id="{{ $inputText['id'] }}" name="{{ $inputText['id'] }}" value="{{ request($inputText['id']) }}" placeholder="입력해 주세요">
+                </div> <!-- /.search-form-item -->
+            @endforeach
         @endif  
 
         @if(isset($inputDate))

@@ -65,19 +65,37 @@ class ReportController extends Controller
         return Excel::download(new ReportsExport, $fileName);
     }
 
-    public function view_requests()
+    public function requests(Request $request)
     {
-        return view('report.requests');
+        if($request->CreateDate){
+            $request->CreateDate = explode('~', preg_replace('/\s+/', '', $request->CreateDate));
+            $request->StartDate = $request->CreateDate[0];
+            $request->EndDate = $request->CreateDate[1];
+        }
+        $MetroList = $this->CommonService->getMetroList();
+        $CircuitList = $this->CommonService->getCircuitList();
+        $CongregationList = $this->CommonService->getCongregationList();
+
+
+        return view('report.requests', [
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList,
+            'CongregationList' => $CongregationList,
+            'VisitRequestList' => $this->ReportService->getVisitRequestList(),
+        ]);
     }
 
-    public function view_detail_requests()
+    public function formRequests(Request $request)
     {
-        return view('report.datail_requests');
-    }
+        $res = DB::select( 'uspGetStandingServiceVisitRequestDetail ?', [
+                $request->VisitRequestID
+            ]);
 
-    public function view_form_requests()
-    {
-        return view('report.form_requests');
+        if( empty($res) ) abort(404); /* empty( [] ) === true */
+
+        return view('report.formRequests', [
+            'VisitRequest' => reset($res)
+        ]);
     }
 
     public function view_experiences()

@@ -37,8 +37,8 @@
             <!-- end : common elements wrap -->
         </div> <!-- /.search-form-item -->
     @endpush
-    @include('layouts.sections.search', [])
-{{-- {{  dd( $ReportList->count() ) }} --}}
+    @include('layouts.sections.search')
+{{-- {{  dd( $ReportList ) }} --}}
 <section class="section-table-section">
     <div class="table-responsive">
         <table class="table table-center table-font-size-90">

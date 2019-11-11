@@ -88,9 +88,9 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('reports/export', 'ReportController@exportReports');
 
     //방문요청관리
-    Route::get('requests', 'ReportController@view_requests');
-    Route::get('requests/{id}', 'ReportController@view_detail_requests');
-    Route::get('requests/{id}/form', 'ReportController@view_form_requests');
+    Route::get('requests', 'ReportController@requests');
+    Route::get('requests/{VisitRequestID}', 'ReportController@formRequests')
+        ->where('VisitRequestID', '[0-9]+');
     //경험담관리
     Route::get('experiences', 'ReportController@view_experiences');
     Route::get('experiences/{id}', 'ReportController@view_detail_experiences');

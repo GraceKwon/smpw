@@ -41,6 +41,28 @@ class ReportService
         return setPaginator($paginate, $page, $data, $count);
     }
 
+    public function getVisitRequestList()
+    {
+        $paginate = 30;  
+        $page = request()->input('page', 1);
+
+        $parameter = [
+                ( session('auth.MetroID') ?? request()->MetroID ),
+                ( session('auth.CircuitID') ?? request()->CircuitID ),
+                request()->CongregationID,
+                request()->PublisherName,
+                request()->InsteresterName,
+                request()->StartDate,
+                request()->EndDate,
+            ];
+
+        $data = DB::select('uspGetStandingServiceVisitRequestList ?,?,?,?,?,?,?,?,?', 
+            array_merge( [$paginate, $page], $parameter ));
+
+        $count = DB::select('uspGetStandingServiceVisitRequestListCnt ?,?,?,?,?,?,?', $parameter);
+        return setPaginator($paginate, $page, $data, $count);
+    }
+
 
 
 }

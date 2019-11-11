@@ -60,7 +60,7 @@ return [
             'requests' => [
                 'name' => '방문요청관리',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['방문요청'],
+                'subpage' => '방문요청조회',
             ],
             'experiences' => [
                 'name' => '경험담관리',
