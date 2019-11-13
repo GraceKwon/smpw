@@ -99,7 +99,10 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('VisitRequestID', '[0-9]+');
     //경험담관리
     Route::get('experiences', 'ReportController@experiences');
-    Route::get('experiences/{ExperienceID}', 'ReportController@formExperiences');
+    Route::get('experiences/{ExperienceID}', 'ReportController@formExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::put('experiences/{ExperienceID}', 'ReportController@putExperiences')
+        ->where('ExperienceID', '[0-9]+');
 
 //출판물관리
     //출판물재고관리

@@ -10,7 +10,7 @@
             :input-name="'CreateDate'"
             :input-class="'form-control'"
             :value-type="'format'"
-            :icon-day="yyyy"
+            :icon-day="31"
             {{-- :clearable="false" --}}
             :lang="lang" 
             :range="true"
@@ -37,11 +37,11 @@
                 'options' => [
                     [
                         'label' => '열람',
-                        'value' => 1,
+                        'value' => '1',
                     ],
                     [
                         'label' => '미열람',
-                        'value' => 0,
+                        'value' => '0',
                     ]
                 ] 
             ],
@@ -67,7 +67,12 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>순회구</span>
+                        <span>지역</span>
+                    </div>
+                </th>
+                <th>
+                    <div class="min-width">
+                        <span>보조자이름</span>
                     </div>
                 </th>
                 <th>
@@ -78,11 +83,6 @@
                 <th>
                     <div class="min-width">
                         <span>성별</span>
-                    </div>
-                </th>
-                <th>
-                    <div class="min-width">
-                        <span>순회구</span>
                     </div>
                 </th>
                 <th>
@@ -108,40 +108,43 @@
             </tr>
             </thead>
             <tbody>
-            {{-- <tr>
-                <td>
-                    201
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    형제
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    <div class="state-no-check">
-                        미열람
-                    </div>
-                </td>
-            </tr> --}}
+                @foreach ($ExperienceList as $Experience)
+                <tr class="pointer"
+                    onclick="location.href='{{ request()->path() }}/{{ $Experience->ExperienceID }}'">
+                    <td>
+                        {{ $Experience->ExperienceID }}
+                    </td>
+                    <td>
+                        {{ $Experience->MetroName }}
+                    </td>
+                    <td>
+                        {{ $Experience->CircuitName }}
+                    </td>
+                    <td>
+                        {{ $Experience->AdminName }}
+                    </td>
+                    <td>
+                        {{ $Experience->PublisherName }}
+                    </td>
+                    <td>
+                        {{ $Experience->PublisherGender }}
+                    </td>
+                    <td>
+                        {{ $Experience->CongregationName }}
+                    </td>
+                    <td>
+                        {{ $Experience->Mobile }}
+                    </td>
+                    <td>
+                        {{ $Experience->CreateDate }}
+                    </td>
+                    <td>
+                        <div class="state-no-check">
+                        {{ $Experience->BranchConfirmYn }}
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

@@ -179,12 +179,45 @@ class ReportController extends Controller
         ]);
     }
 
-    public function formExperiences()
+    public function formExperiences(Request $request)
     {
         $CongregationList = $this->CommonService->getCongregationList();
+        $res = DB::select( 'uspGetStandingServiceExperienceDetail ?', [
+            $request->ExperienceID
+        ]);
+
+        if( empty($res) ) abort(404); /* empty( [] ) === true */
 
         return view('report.formExperiences', [
             'CongregationList' => $CongregationList,
+            'Experience' => reset($res)
         ]);
+
+
+    }
+
+    public function putExperiences(Request $request)
+    {
+        $request->validate([
+            'PublisherID' => 'required',
+            'Contents' => 'required',
+        ]);
+        if($request->ExperienceID === '0')
+            $res = DB::select('uspSetStandingServiceExperienceInsert ?,?,?', [
+                session('auth.AdminID'),
+                $request->PublisherID,
+                $request->Contents,
+                ]);
+        else 
+            $res = DB::select('uspSetStandingServiceExperienceUpdate ?,?,?', [
+                $request->ExperienceID,
+                $request->PublisherID,
+                $request->Contents,
+                ]);
+   
+        if(getAffectedRows($res) === 0) 
+            return back()->withErrors(['fail' => '저장 실패하였습니다.']);
+        else
+            return back()->with(['success' => '저장 되었습니다.']);
     }
 }

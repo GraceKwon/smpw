@@ -1,156 +1,151 @@
 @extends('layouts.frames.master')
 @section('content')
 <section class="register-section">
-    <table class="table table-register">
-        <tbody>
-        <tr>
-            <th>
-                <label class="label">작성자이름</label>
-            </th>
-            <td>
-                <div>{{ session('auth.AdminName') }}</div>
-            </td>
-            <th>
-                <label class="label">연락처</label>
-            </th>
-            <td>
-                <div>{{ getMobile() }}</div>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label class="label">도시</label>
-            </th>
-            <td>
-                <div>{{ getMetroName() }}</div>
-            </td>
-            <th>
-                <label class="label">순회구</label>
-            </th>
-            <td>
-                <div>{{ getCircuitName() }}</div>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label class="label">작성일자</label>
-            </th>
-            <td colspan="3">
-                <div>{{ date('Y-m-d') }}</div>
-            </td>
-        </tr>
-        </tbody>
-        <tbody>
-        <tr>
-            <th>
-                <label class="label">전도인이름</label>
-            </th>
-            <td>
-                <div class="inline-responsive">
-                    <input type="text" 
-                        class="form-control @error('PublisherName') is-invalid @enderror"  
-                        name="PublisherName"
+    @error('fail')
+        <div class="alert alert-danger">{!! $message !!}</div>
+    @enderror
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @error('PublisherID')
+        <div class="alert alert-danger">봉사자를 조회하여 선택해 주세요</div>
+    @enderror
+    <form method="POST"
+        @submit="_confirm" 
+        @keydown.enter.prevent>
+        @method("PUT")
+        @csrf
+        <table class="table table-register">
+            <tbody>
+            <tr>
+                <th>
+                    <label class="label">작성자이름</label>
+                </th>
+                <td>
+                    <div>{{ $Experience->AdminName ?? session('auth.AdminName') }}</div>
+                </td>
+                <th>
+                    <label class="label">연락처</label>
+                </th>
+                <td>
+                    <div>{{ $Experience->AdminMobile ?? getMobile() }}</div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label class="label">도시</label>
+                </th>
+                <td>
+                    <div>{{ $Experience->MetroName ?? getMetroName() }}</div>
+                </td>
+                <th>
+                    <label class="label">순회구</label>
+                </th>
+                <td>
+                    <div>{{ $Experience->CircuitName ?? getCircuitName() }}</div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label class="label">작성일자</label>
+                </th>
+                <td colspan="3">
+                    <div>{{ $Experience->CreateDate ?? date('Y-m-d') }}</div>
+                </td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th>
+                    <label class="label">전도인이름</label>
+                </th>
+                <td>
+                    <div class="inline-responsive">
+                        <input type="text" 
+                            class="form-control"  
+                            :disabled="!modify"
+                            @click="_showModal('modalSearch')"
+                            v-model="PublisherName">
+                        <button type="button" class="btn btn-secondary" 
+                            :disabled="!modify"
+                            @click="_showModal('modalSearch')">봉사자 조회</button>
+                    </div>
+                    <input type="hidden" name="PublisherID" v-model="PublisherID">
+                </td>
+                <th>
+                    <label class="label">성별</label>
+                </th>
+                <td>
+                    <div v-html="PublisherGender"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label class="label">회중명</label>
+                </th>
+                <td>
+                    <div v-html="CongregationName"></div>
+                </td>
+                <th>
+                    <label class="label">연락처</label>
+                </th>
+                <td colspan="3">
+                    <div v-html="PublisherMobile"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label class="label">경험담내용</label>
+                </th>
+                <td colspan="3">
+                    <textarea type="text" 
+                        class="form-control w-100 @error('Contents') is-invalid @enderror"  
+                        name="Contents" 
+                        v-model="Contents" 
                         :disabled="!modify"
-                        v-model="PublisherName">
-                    @error('PublisherName')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        rows="5" 
+                        placeholder="경험담을 입력해 주세요.">
+                    </textarea>
+                    @error('Contents')
+                        <div class="invalid-feedback">경험담을 입력해 주세요.</div>
                     @enderror  
-                </div>
-            </td>
-            <th>
-                <label class="label">성별</label>
-            </th>
-            <td>
-                <div class="check-group inline-responsive">
-                    <div class="custom-control custom-radio"
-                     {{-- v-show="modify || Gender === 'M'" --}}
-                    >
-                        <input type="radio" 
-                            class="custom-control-input @error('Gender') is-invalid @enderror"
-                            id="M" 
-                            value="M" 
-                            v-model="Gender" 
-                            name="Gender">
-                        <label class="custom-control-label" 
-                            for="M">형제</label>
-                    </div>
-                    <div class="custom-control custom-radio"
-                     {{-- v-show="modify || Gender === 'F'" --}}
-                     >
-                        <input type="radio" 
-                            class="custom-control-input @error('Gender') is-invalid @enderror" 
-                            id="F" 
-                            value="F" 
-                            v-model="Gender" 
-                            name="Gender">
-                        <label class="custom-control-label" for="F">자매</label>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label class="label">회중명</label>
-            </th>
-            <td>
-                <div class="inline-responsive">
-                    <select class="custom-select" id="CongregationID" name="CongregationID" onchange=";submit()">
-                        @foreach ($CongregationList as $Congregation)
-                            <option @if(request()->CongregationID == $Congregation->CongregationID ) selected @endif
-                            value="{{ $Congregation->CongregationID }}">{{ $Congregation->CongregationName }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </td>
-            <th>
-                <label class="label">연락처</label>
-            </th>
-            <td colspan="3">
-                <div class="inline-responsive">
-                    <input type="text" class="form-control" id="register06" placeholder="연락처를 입력해 주세요.">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        @include('layouts.sections.formButton', [
+            'id' => isset($Experience->ExperienceID),
+        ])
+    </form>
 
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label class="label">경험담내용</label>
-            </th>
-            <td colspan="3">
-                <textarea class="form-control" rows="5" placeholder="경험담 내용을 입력해 주세요"></textarea>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="btn-flex-area justify-content-end">
-        <button type="button" class="btn btn-secondary">취소</button>
-        <button type="button" class="btn btn-primary">저장</button>
-    </div> <!-- /.register-btn-area -->
 </section>
 @endsection
 
 @section('popup')
+    <modal-search v-if="showModal === 'modalSearch'" 
+        :circuit-id="CircuitID"
+        @selected="_selected"
+        @close="showModal = ''" >
+    </modal-search>
 @endsection
 
 @section('script')
+@include('report.modalSearch')
 <script>
     var app = new Vue({
         el:'#wrapper-body',
         data:{
-            PublisherName: "{{ old('PublisherName') ?? $Experience->PublisherName ?? '' }}",
-            Gender: "{{ old('Gender') ?? $VisitRequest->Gender ?? '' }}",
-            Country: "{{ old('Country') ?? $VisitRequest->Country ?? '' }}",
-            ZipCode: "{{ old('ZipCode') ?? $VisitRequest->ZipCode ?? '' }}",
-            Sido: "{{ old('Sido') ?? $VisitRequest->Sido ?? '' }}",
-            Sigungu: "{{ old('Sigungu') ?? $VisitRequest->Sigungu ?? '' }}",
-            AddressMain: "{{ old('AddressMain') ?? $VisitRequest->AddressMain ?? '' }}",
-            AddressDetail: "{{ old('AddressDetail') ?? $VisitRequest->AddressDetail ?? '' }}",
-            Mobile: "{{ old('Mobile') ?? $VisitRequest->Mobile ?? '' }}",
-            Email: "{{ old('Email') ?? $VisitRequest->Email ?? '' }}",
-            RequestWeekday: "{{ old('RequestWeekday') ?? $VisitRequest->RequestWeekday ?? '' }}",
-            RequestTime: "{{ old('RequestTime') ?? $VisitRequest->RequestTime ?? '' }}",
-            Contents: "{{ old('Contents') ?? $VisitRequest->Contents ?? '' }}",
-            modify: false,
+            PublisherID: "{{ old('PublisherID') ?? $Experience->PublisherID ?? '' }}",
+            Contents: "{{ old('Contents') ?? $Experience->Contents ?? '' }}",
+            showModal: '',
+            PublisherName: "{{ $Experience->PublisherName }}",
+            PublisherGender: "{{ $Experience->PublisherGender }}",
+            CongregationName: "{{ $Experience->CongregationName }}",
+            PublisherMobile: "{{ $Experience->PublisherMobile }}",
+            modify: true,
+            CircuitID: "{{ session('auth.CircuitID') }}",
         },
         watch: {
             Mobile: function () {
@@ -160,9 +155,18 @@
         },
         methods:{
             _confirm: function (e) {
-                var res = confirm('{{ isset($Admin->AdminID) ? '수정' : '저장' }} 하시겠습니까?');
+                var res = confirm('{{ isset($Experience->ExperienceID) ? '수정' : '저장' }} 하시겠습니까?');
                 if(!res){
                     e.preventDefault();
+                }
+            },
+            _showModal:function (modalName) {
+                this.showModal = modalName;
+            },
+            _selected:function (data){
+                console.log(data);
+                for (var key in data) {
+                    this.$data[key] = data[key];
                 }
             },
             // _setConfirm: function () {

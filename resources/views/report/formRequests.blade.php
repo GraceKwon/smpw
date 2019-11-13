@@ -9,15 +9,6 @@
         {{ session('success') }}
     </div>
 @endif
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
     <form method="POST"
         @submit="_confirm" 
         @keydown.enter.prevent>
@@ -323,7 +314,7 @@
                             v-model="Contents" 
                             :disabled="!modify"
                             rows="5" 
-                            placeholder="메모를 입력해 주세요."></textarea>
+                            placeholder="내용을 입력해 주세요."></textarea>
                     </td>
                 </tr>
             </tbody>

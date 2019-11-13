@@ -9,7 +9,7 @@
             :input-name="'CreateDate'"
             :input-class="'form-control'"
             :value-type="'format'"
-            :icon-day="yyyy"
+            :icon-day="31"
             {{-- :clearable="false" --}}
             :lang="lang" 
             :range="true"

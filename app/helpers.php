@@ -76,9 +76,9 @@ function getServiceZoneName($ServiceZoneID = null)
 	return  DB::table('ServiceZones')->where( 'ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID )->value('ZoneName');
 }
 
-function getCongregationName()
+function getCongregationName($CongregationID = null)
 {
-	return  DB::table('Congregations')->where( 'CongregationID', session('auth.CongregationID') )->value('CongregationName');
+	return  DB::table('Congregations')->where( 'CongregationID', $CongregationID ?? session('auth.CongregationID') )->value('CongregationName');
 }
 
 function getMobile()
