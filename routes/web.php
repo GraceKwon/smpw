@@ -98,9 +98,8 @@ Route::view('/errors/auth', 'errors.auth');
     Route::post('requests/{VisitRequestID}', 'ReportController@receipRequests')
         ->where('VisitRequestID', '[0-9]+');
     //경험담관리
-    Route::get('experiences', 'ReportController@view_experiences');
-    Route::get('experiences/{ExperienceID}', 'ReportController@view_detail_experiences');
-    Route::get('experiences/{id}/form', 'ReportController@view_form_experiences');
+    Route::get('experiences', 'ReportController@experiences');
+    Route::get('experiences/{ExperienceID}', 'ReportController@formExperiences');
 
 //출판물관리
     //출판물재고관리

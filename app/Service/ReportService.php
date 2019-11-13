@@ -63,5 +63,45 @@ class ReportService
         return setPaginator($paginate, $page, $data, $count);
     }
 
+    public function getExperienceList()
+    {
+        $paginate = 30;  
+        $page = request()->input('page', 1);
+
+        $parameter = [
+                ( session('auth.MetroID') ?? request()->MetroID ),
+                ( session('auth.CircuitID') ?? request()->CircuitID ),
+                request()->AdminName,
+                request()->PublisherName,
+                request()->BranchConfirmYn,
+                request()->StartDate,
+                request()->EndDate,
+            ];
+
+        $data = DB::select('uspGetStandingServiceExperienceList ?,?,?,?,?,?,?,?,?', 
+            array_merge( [$paginate, $page], $parameter ));
+
+        $count = DB::select('uspGetStandingServiceExperienceListCnt ?,?,?,?,?,?,?', $parameter);
+        return setPaginator($paginate, $page, $data, $count);
+    }
+
+    public function getReportProductDetailList()
+    {
+        return DB::select('uspGetStandingDailyServiceReportProductDetailList ?,?', [
+            request()->ServiceTimeID,
+            request()->ServiceDate,
+        ]);
+       
+    }
+
+    public function getReportVisitRequestDetailList()
+    {
+        return DB::select('uspGetStandingDailyServiceReportVisitRequestDetailList ?,?', [
+            request()->ServiceTimeID,
+            request()->ServiceDate,
+        ]);
+       
+    }
+
 
 }

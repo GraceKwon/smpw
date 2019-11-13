@@ -54,21 +54,21 @@
                         <span>시간대</span>
                     </div>
                 </th>
-                {{-- <th>
+                <th>
                     <div class="min-width">
                         <span>보고</span>
                     </div>
-                </th> --}}
+                </th>
                 <th>
                     <div class="min-width">
                         <span>구역</span>
                     </div>
                 </th>
-                <th>
+                {{-- <th>
                     <div class="min-width">
                         <span>보고자</span>
                     </div>
-                </th>
+                </th> --}}
                 <th>
                     <div class="min-width">
                         <span>출판물</span>
@@ -95,23 +95,44 @@
                     <td>
                         <a>{{ sprintfServiceTime( $Report->ServiceTime ) }}</a>
                     </td>
-                    {{-- <td>
-                        X
-                    </td> --}}
+                    <td>
+                        @if($Report->ReportYn === 1
+                            || $Report->PlacementQty > 0
+                            || $Report->VideoShowQty > 0
+                            || $Report->VisitRequestQty > 0)
+                            O
+                        @else
+                            X
+                        @endif
+                    </td>
                     <td>
                         {{ $Report->ZoneName }}
                     </td>
-                    <td>
+                    {{-- <td>
                         <a>{{ $Report->PublisherName }}</a>
-                    </td>
-                    <td>
-                        <a>{{ $Report->PlacementQty }}</a>
+                    </td> --}}
+                    <td @if($Report->PlacementQty > 0)
+                        class="pointer"
+                        @click="_setParams({
+                            ServiceTimeID: '{{ $Report->ServiceTimeID }}',
+                            ServiceTime: '{{ sprintfServiceTime( $Report->ServiceTime ) }}',
+                            ZoneName: '{{ $Report->ZoneName }}',
+                        });_showModal('modalProductDetail')"
+                        @endif>
+                        <a>{{ $Report->PlacementQty > 0 ? $Report->PlacementQty : ''}}</a>
                     </td>
                     <td>
                         {{ $Report->VideoShowQty }}
                     </td>
-                    <td>
-                        <a>{{ $Report->VisitRequestQty }}</a>
+                    <td @if($Report->VisitRequestQty > 0)
+                        class="pointer"
+                        @click="_setParams({
+                            ServiceTimeID: '{{ $Report->ServiceTimeID }}',
+                            ServiceTime: '{{ sprintfServiceTime( $Report->ServiceTime ) }}',
+                            ZoneName: '{{ $Report->ZoneName }}',
+                        });_showModal('modalVisitRequestDetail')"
+                        @endif>
+                        <a >{{ $Report->VisitRequestQty }}</a>
                     </td>
                 </tr>
                 @endforeach
@@ -135,17 +156,39 @@
     {{ $ReportList->appends( request()->all() )->links() }}
 
 </section>
+@endsection
 
+@section('popup')
+<modal-product-detail v-if="showModal === 'modalProductDetail'" 
+    :service-time-id="ServiceTimeID" 
+    :service-time="ServiceTime" 
+    :zone-name="ZoneName" 
+    @close="showModal = ''" >
+</modal-product-detail>
+<modal-visit-request-detail v-if="showModal === 'modalVisitRequestDetail'" 
+    :service-time-id="ServiceTimeID" 
+    :service-time="ServiceTime" 
+    :zone-name="ZoneName" 
+    @close="showModal = ''" >
+</modal-visit-request-detail>
 @endsection
 
 @section('script')
+@include('report.modalProductDetail')
+@include('report.modalVisitRequestDetail')
+
 <script>
     var app = new Vue({
         el:'#wrapper-body',
         mixins: [datepickerLang],
         data:{
             today: new Date('{{ request()->ServiceDate }}'),
-            popupVisible: false
+            popupVisible: false,
+            showModal: '',
+            ServiceTimeID: null,
+            ServiceTime: null,
+            ZoneName: null,
+
         },
         watch: {
             today: function(){
@@ -194,6 +237,14 @@
             },
             _export:function () {
                 location.href = 'export' + this.query;
+            },
+            _showModal:function (modalName) {
+                this.showModal = modalName;
+            },
+            _setParams:function (params){
+                for (var key in params) {
+                    this.$data[key] = params[key];
+                }
             },
         }
     })

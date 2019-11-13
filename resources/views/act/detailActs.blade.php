@@ -250,9 +250,6 @@
             _showModal:function (modalName) {
                 this.showModal = modalName;
             },
-            _closeModal:function (popupName) {
-                this.$refs[popupName].style.display = 'none';
-            },
             _setParams:function (params){
                 for (var key in params) {
                     this.$data[key] = params[key];

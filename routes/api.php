@@ -45,3 +45,12 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     Route::post('modalTodayCancel', function(ActService $ActService){
         return $ActService->setServiceTodayCancel();
     });
+//봉사보고관리
+    //봉사보고관리
+    Route::post('modalProductDetail', function(ReportService $ReportService){
+        return $ReportService->getReportProductDetailList();
+    });
+    Route::post('modalVisitRequestDetail', function(ReportService $ReportService){
+        return $ReportService->getReportVisitRequestDetailList();
+    });
+    

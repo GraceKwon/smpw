@@ -17,7 +17,6 @@
             >
         </date-picker>
 </div> <!-- /.search-form-item -->
-{{-- {{ dd(request()->CreateDate) }} --}}
 @endpush
 @include('layouts.sections.search', [
     'inputTexts' => [
@@ -177,25 +176,6 @@
                     '{{ request()->StartDate }}', 
                     '{{ request()->EndDate }}', 
                 ],
-        },
-        computed:{
-            yyyy:function(){
-                return new Date().getFullYear();
-            },
-        },
-        methods:{
-            _prevDate:function () {
-                this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() - 1);
-            },
-            _nextDate:function () {
-                this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1);
-            },
-            _today:function () {
-                this.today = new Date();
-            },
-            _export:function () {
-                location.href = 'export' + this.query;
-            },
         }
     })
 

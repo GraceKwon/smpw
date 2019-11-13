@@ -21,15 +21,12 @@ class ReportsExport implements FromArray, WithTitle
                 request()->ServiceZoneID,
                 request()->ServiceDate,
             ]);
-
         foreach ($data as $row) {
             $row->ServiceTime = sprintfServiceTime($row->ServiceTime);
-            $row->VisitRequestQty = (string)$row->PlacementQty;
-            $row->VisitRequestQty = (string)$row->VideoShowQty;
-            $row->VisitRequestQty = (string)$row->VisitRequestQty;
+            $row->ReportYn = $row->ReportYn ? 'O' : 'X';
         }
         
-        $title[] = ['시간대', '구역', '보고자', '출판물', '동영상', '방문요청'];
+        $title[] = ['시간대', '보고여부', '구역', '출판물', '동영상', '방문요청'];
 
         return array_merge($title, $data);
 

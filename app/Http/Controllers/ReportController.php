@@ -163,18 +163,28 @@ class ReportController extends Controller
             return back()->with(['success' => '성공하였습니다']);
     }
 
-    public function view_experiences()
+    public function experiences(Request $request)
     {
-        return view('report.experiences');
+        if($request->CreateDate){
+            $request->CreateDate = explode('~', preg_replace('/\s+/', '', $request->CreateDate));
+            $request->StartDate = $request->CreateDate[0];
+            $request->EndDate = $request->CreateDate[1];
+        }
+        $MetroList = $this->CommonService->getMetroList();
+        $CircuitList = $this->CommonService->getCircuitList();
+        return view('report.experiences', [
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList,
+            'ExperienceList' => $this->ReportService->getExperienceList(),
+        ]);
     }
 
-    public function view_detail_experiences()
+    public function formExperiences()
     {
-        return view('report.datail_experiences');
-    }
+        $CongregationList = $this->CommonService->getCongregationList();
 
-    public function view_form_experiences()
-    {
-        return view('report.form_experiences');
+        return view('report.formExperiences', [
+            'CongregationList' => $CongregationList,
+        ]);
     }
 }
