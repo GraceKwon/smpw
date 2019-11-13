@@ -268,12 +268,7 @@
                             v-model="EndDate" 
                             :disabled="StopYn === '0'"
                             placeholder="날자를 선택해 주세요">
-                        {{-- <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="far fa-calendar-alt"></i>
-                            </div>
-                        </div> --}}
-                        @error('EndDate')
+\                        @error('EndDate')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror 
                     </div>
@@ -402,9 +397,9 @@
                     name="SetStartDate"
                     v-model="SetStartDate"
                     placeholder="날자를 선택해 주세요">
-                    @error('SetStartDate')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror 
+                @error('SetStartDate')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror 
                 {{-- <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>

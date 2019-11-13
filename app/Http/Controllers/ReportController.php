@@ -98,6 +98,71 @@ class ReportController extends Controller
         ]);
     }
 
+    public function putRequests(Request $request)
+    {
+        $request->validate([
+            'InsteresterName' => 'required',
+            'Gender' => 'required',
+            'Country' => 'required',
+            'ZipCode' => 'required',
+            'Sido' => 'required',
+            'Sigungu' => 'required',
+            'AddressMain' => 'required',
+            'AddressDetail' => 'required',
+            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+            'Email' => 'nullable|email',
+            'RequestWeekday' => 'required',
+            'RequestTime' => 'required',
+        ]);
+
+        $res = DB::select('uspSetStandingServiceVisitRequestUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
+            $request->VisitRequestID,
+            $request->InsteresterName,
+            $request->Gender,
+            $request->Country,
+            $request->Sido,
+            $request->Sigungu,
+            $request->AddressMain,
+            $request->AddressDetail,
+            $request->ZipCode,
+            $request->Mobile,
+            $request->Email,
+            $request->RequestWeekday,
+            $request->RequestTime,
+            $request->Contents,
+        ]);
+        // dd($res);
+        if(getAffectedRows($res) === 0) 
+            return back()->withErrors(['fail' => '수정 실패하였습니다.']);
+        else
+            return back()->with(['success' => '수정 되었습니다.']);
+    }
+
+    public function confirmRequests(Request $request)
+    {
+        $res = DB::select('uspSetStandingServiceVisitRequestAdminConfirm ?,?', [
+            $request->VisitRequestID,
+            session('auth.AdminID'),
+        ]);
+        // dd($res);
+        if(getAffectedRows($res) === 0) 
+            return back()->withErrors(['fail' => '실패하였습니다.']);
+        else
+            return back()->with(['success' => '성공하였습니다']);
+    }
+
+    public function receipRequests(Request $request)
+    {
+        $res = DB::select('uspSetStandingServiceVisitRequestBranchRedeip ?', [
+            $request->VisitRequestID,
+        ]);
+        // dd($res);
+        if(getAffectedRows($res) === 0) 
+            return back()->withErrors(['fail' => '실패하였습니다.']);
+        else
+            return back()->with(['success' => '성공하였습니다']);
+    }
+
     public function view_experiences()
     {
         return view('report.experiences');

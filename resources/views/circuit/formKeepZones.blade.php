@@ -58,7 +58,7 @@
                 <td colspan="3">
                     <div class="inline-responsive">
                         <div class="search-form flex">
-                            <input type="text" class="form-control" 
+                            <input type="text" class="form-control @error('ZipCode') is-invalid @enderror"  
                                 name="ZipCode" 
                                 v-model="ZipCode" 
                                 placeholder="우편번호"
@@ -66,24 +66,29 @@
                                 readonly>
                             <button type="button" class="btn btn-secondary" 
                                 @click="_execDaumPostcode">우편번호 찾기</button>
-                            
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td class="pt-0-mobile" colspan="3">
-                    <input type="text" class="form-control" 
+                    <input type="text" class="form-control @error('ZoneAddress') is-invalid @enderror"  
                         name="ZoneAddress" 
                         v-model="ZoneAddress" 
                         placeholder="주소"
                         readonly>
+                    @error('ZoneAddress')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                     <div class="inline-responsive">
-                        <input type="text" class="form-control" 
+                        <input type="text" class="form-control @error('ZoneAddressDetail') is-invalid @enderror"  
                             ref="ZoneAddressDetail" 
                             name="ZoneAddressDetail" 
                             v-model="ZoneAddressDetail" 
                             placeholder="상세주소">
+                        @error('ZoneAddressDetail')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </td>
             </tr>

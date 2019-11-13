@@ -295,7 +295,8 @@ class CircuitController extends Controller
     {
         $request->validate([
             'ZipCode' => 'required',
-            'ZoneAddress' => 'required'
+            'ZoneAddress' => 'required',
+            'ZoneAddressDetail' => 'required'
         ]);
 
         if($request->KeepZoneID === '0')

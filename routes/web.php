@@ -91,9 +91,15 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('requests', 'ReportController@requests');
     Route::get('requests/{VisitRequestID}', 'ReportController@formRequests')
         ->where('VisitRequestID', '[0-9]+');
+    Route::put('requests/{VisitRequestID}', 'ReportController@putRequests')
+        ->where('VisitRequestID', '[0-9]+');
+    Route::patch('requests/{VisitRequestID}', 'ReportController@confirmRequests')
+        ->where('VisitRequestID', '[0-9]+');
+    Route::post('requests/{VisitRequestID}', 'ReportController@receipRequests')
+        ->where('VisitRequestID', '[0-9]+');
     //경험담관리
     Route::get('experiences', 'ReportController@view_experiences');
-    Route::get('experiences/{id}', 'ReportController@view_detail_experiences');
+    Route::get('experiences/{ExperienceID}', 'ReportController@view_detail_experiences');
     Route::get('experiences/{id}/form', 'ReportController@view_form_experiences');
 
 //출판물관리
