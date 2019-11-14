@@ -68,11 +68,7 @@ class ReportController extends Controller
 
     public function requests(Request $request)
     {
-        if($request->CreateDate){
-            $request->CreateDate = explode('~', preg_replace('/\s+/', '', $request->CreateDate));
-            $request->StartDate = $request->CreateDate[0];
-            $request->EndDate = $request->CreateDate[1];
-        }
+        explodeRequestCreateDate();
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
         $CongregationList = $this->CommonService->getCongregationList();
@@ -166,11 +162,7 @@ class ReportController extends Controller
 
     public function experiences(Request $request)
     {
-        if($request->CreateDate){
-            $request->CreateDate = explode('~', preg_replace('/\s+/', '', $request->CreateDate));
-            $request->StartDate = $request->CreateDate[0];
-            $request->EndDate = $request->CreateDate[1];
-        }
+        explodeRequestCreateDate();
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
         return view('report.experiences', [
