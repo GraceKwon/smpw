@@ -174,31 +174,31 @@ class CircuitController extends Controller
 
     public function putAdmins(Request $request)
     {
-        $request->validate([
-            'AdminName' => [
-                'required',
-                'min:2',
-                'max:10',
-                Rule::unique('Admins')->ignore($request->AdminID, 'AdminID')->where('UseYn', 1),
-            ],
-            'AdminRoleID' => 'required',
-            'MetroID' => 'required',
-            'CircuitID' => 'required',
-            'CongregationID' => 'required',
-            'ServantTypeID' => 'required',
-            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
-        ]);
+        // $request->validate([
+        //     'AdminName' => [
+        //         'required',
+        //         'min:2',
+        //         'max:10',
+        //         Rule::unique('Admins')->ignore($request->AdminID, 'AdminID')->where('UseYn', 1),
+        //     ],
+        //     'AdminRoleID' => 'required',
+        //     'MetroID' => 'required',
+        //     'CircuitID' => 'required',
+        //     'CongregationID' => 'required',
+        //     'ServantTypeID' => 'required',
+        //     'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+        // ]);
    
 
         // if($request->AdminID === '0')
-        //     $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
-        //             $request->Account, //Account
-        //             '11112222',// UserPassword
-        //             $request->AdminName, //AdminName
-        //             $request->AdminRoleID, //AdminRoleID
-        //             1, //TempUseYn
-        //             $request->Mobile, //Mobile
-        //         ]);
+            $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?', [
+                    'role2',//$request->Account, //Account
+                    '11112222',// UserPassword
+                    '롤2', //AdminName
+                    2, //AdminRoleID
+                    1, //TempUseYn
+                    '000-0000-0000', //Mobile
+                ]);
         // else
         //     $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?,?,?', [
         //             $request->ServiceZoneID,

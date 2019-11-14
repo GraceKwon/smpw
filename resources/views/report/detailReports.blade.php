@@ -90,7 +90,7 @@
                 @foreach ($ReportList as $Report)
                 <tr>
                     <td>
-                        {{ ($loop->index + 1) + ( (request()->input('page', 1)-1) * 30 ) }}
+                        {{ listNumbering($loop->index, 30) }}
                     </td>
                     <td>
                         <a>{{ sprintfServiceTime( $Report->ServiceTime ) }}</a>

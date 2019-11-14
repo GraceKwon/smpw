@@ -148,9 +148,11 @@
             </tbody>
         </table>
     </div>
-    @include('layouts.sections.registrationButton', [
-            'label' => '경험담 보고',
-        ])
+    @if(session('auth.CircuitID'))
+        @include('layouts.sections.registrationButton', [
+                'label' => '경험담 보고',
+            ])
+    @endif
     {{ $ExperienceList->appends( request()->all() )->links() }}
 
 </section>

@@ -105,3 +105,19 @@ function getItemID($Item, $Separate) {
 	return $weeks[$w];
 
  }
+
+ function explodeRequestCreateDate() {
+
+	if(request()->CreateDate){
+		request()->CreateDate = explode('~', preg_replace('/\s+/', '', request()->CreateDate));
+		request()->StartDate = request()->CreateDate[0];
+		request()->EndDate = request()->CreateDate[1];
+	}
+
+}
+
+function listNumbering($index, $paginate) {
+
+	return ($index + 1) + ( (request()->input('page', 1)-1) * $paginate ) ;
+
+ }

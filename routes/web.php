@@ -101,12 +101,20 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('experiences', 'ReportController@experiences');
     Route::get('experiences/{ExperienceID}', 'ReportController@formExperiences')
         ->where('ExperienceID', '[0-9]+');
+    Route::get('experiences/{ExperienceID}/export', 'ReportController@exportExperiences')
+        ->where('ExperienceID', '[0-9]+');
     Route::put('experiences/{ExperienceID}', 'ReportController@putExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::patch('experiences/{ExperienceID}', 'ReportController@circuitConfirmExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::post('experiences/{ExperienceID}', 'ReportController@branchConfirmExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::delete('experiences/{ExperienceID}', 'ReportController@deleteExperiences')
         ->where('ExperienceID', '[0-9]+');
 
 //출판물관리
     //출판물재고관리
-    Route::get('stocks', 'ProductController@view_stocks');
+    Route::get('stocks', 'ProductController@stocks');
     //출판물신청관리
     Route::get('orders', 'ProductController@view_orders');
     Route::get('orders/{id}', 'ProductController@view_detail_orders');

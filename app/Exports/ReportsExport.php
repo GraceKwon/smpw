@@ -23,7 +23,15 @@ class ReportsExport implements FromArray, WithTitle
             ]);
         foreach ($data as $row) {
             $row->ServiceTime = sprintfServiceTime($row->ServiceTime);
-            $row->ReportYn = $row->ReportYn ? 'O' : 'X';
+            if($row->ReportYn === 1
+                || $row->PlacementQty > 0
+                || $row->VideoShowQty > 0
+                || $row->VisitRequestQty > 0)
+                
+                $row->ReportYn = 'O';
+            else
+                $row->ReportYn = 'X';
+
         }
         
         $title[] = ['시간대', '보고여부', '구역', '출판물', '동영상', '방문요청'];

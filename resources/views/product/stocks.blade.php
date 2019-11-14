@@ -1,61 +1,38 @@
 @extends('layouts.frames.master')
 @section('content')
 
-<section class="search-section">
-    <div class="search-form-item">
-        <label class="label" for="city">도시</label>
-        <select class="custom-select" id="city">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="circuits">순회구</label>
-        <select class="custom-select" id="circuits">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="congregation">분류</label>
-        <select class="custom-select" id="congregation">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="book">출판물명</label>
-        <select class="custom-select" id="book">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="date1">배송일자</label>
-        <div class="date-wrap">
-            <div class="input-group">
-                <input type="date" class="form-control" id="date1" placeholder="시작 날자를 선택해 주세요">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="div">~</div>
-            <div class="input-group">
-                <input type="date" class="form-control" id="date2" placeholder="마지막 날자를 선택해 주세요">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- /.search-form-item -->
-    <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
-    </div> <!-- /.search-btn-area -->
-</section>
+@push('slot')
+@if(isset($ProductList))
+<div class="search-form-item">
+    <label class="label" for="ServiceZoneID">출판물명</label>
+    <select class="custom-select" id="" name="ProductID" onchange="submit()">
+        <option value="">전체</option>
+        @foreach ($ProductList as $Product)
+            <option @if(request()->ProductID == $Product->ProductID ) selected @endif
+            value="{{ $Product->ProductID }}">{{ $Product->ProductName }}</option>
+        @endforeach
+    </select>
+</div> <!-- /.search-form-item -->
+@endif
+<div class="search-form-item">
+    <label class="label" for="CreateDate">최근배송일자</label>
+    <date-picker 
+        v-model="CreateDate" 
+        :input-id="'CreateDate'"
+        :input-name="'CreateDate'"
+        :input-class="'form-control'"
+        :value-type="'format'"
+        :icon-day="31"
+        {{-- :clearable="false" --}}
+        :lang="lang" 
+        :range="true"
+        width="260"
+        >
+    </date-picker>
+</div> <!-- /.search-form-item -->
+@endpush
+
+@include('layouts.sections.search')
 
 <section class="section-table-section">
     <div class="table-responsive">
@@ -74,22 +51,7 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>순회구</span>
-                    </div>
-                </th>
-                <th>
-                    <div class="min-width">
-                        <span>담당자</span>
-                    </div>
-                </th>
-                <th>
-                    <div class="min-width">
-                        <span>회중</span>
-                    </div>
-                </th>
-                <th>
-                    <div class="min-width">
-                        <span>연락처</span>
+                        <span>지역</span>
                     </div>
                 </th>
                 <th>
@@ -120,380 +82,76 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    201
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    202
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    203
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    204
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    205
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    206
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    207
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    208
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    209
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    210
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    전시대 카트
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-            </tr>
-            </tbody>
+                {{--  {{ dd( count( $ProductStockList) ) }}  --}}
+                @if( count( $ProductStockList) === 0)
+                <tr>
+                    <td colspan="11">조회 결과가 없습니다.</td>
+                </tr>
+                @endif
+                @foreach ($ProductStockList as $ProductStock)
+                <tr>
+                    <td>
+                        {{ listNumbering($loop->index, 30) }}
+                    </td>
+                    <td>
+                        {{ $ProductStockList->MetroName }}
+                    </td>
+                    <td>
+                        {{ $ProductStockList->CircuitName }}
+                    </td>
+                    <td>
+                        {{ $ProductStockList->ProductKind }}
+                    </td>
+                    <td>
+                        {{ $ProductStockList->ProductAlias }}
+                    </td>
+                    <td>
+                        {{ $ProductStockList->ProductName }}
+                    </td>
+                    <td>
+                        {{ $ProductStockList->StockCnt }}
+                    </td>
+                    <td>
+                        {{ $ProductStockList->ReceiptDate }}
+                    </td>
+                </tr>
+                @endforeach
+        </tbody>
         </table>
     </div>
-    <div class="btn-flex-area mt-3">
-        <button type="button" class="btn btn-success">
-            엑셀파일 다운로드
-        </button>
+    <div class="btn-flex-area btn-flex-row justify-content-between mt-3">
+        <div class="d-flex">
+            <button type="button" 
+                class="btn btn-success"
+                {{--  @click="_export"  --}}
+                >
+                엑셀파일 다운로드
+            </button>
+        </div>
+        <div class="d-flex">
+            <button type="button" class="btn btn-primary">
+                재고수량관리</button>
+        </div>
     </div>
-    <div>
-        <ul class="page">
-            <li class="active"><a>1</a></li>
-            <li><a>2</a></li>
-            <li><a>3</a></li>
-            <li><a>4</a></li>
-            <li><a>5</a></li>
-        </ul>
-    </div>
+    {{ $ProductStockList->appends( request()->all() )->links() }}
+
 </section>
 @endsection
 
-@section('popup')
-@endsection
 
-{{-- @section('script')
+@section('script')
 <script>
+    var app = new Vue({
+        el:'#wrapper-body',
+        mixins: [datepickerLang],
+        data:{
+            CreateDate: [
+                '{{ request()->StartDate }}', 
+                '{{ request()->EndDate }}', 
+            ],
+        },
+        methods:{
+        }
+    })
 </script>
-@endsection --}}
+@endsection

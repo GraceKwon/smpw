@@ -20,6 +20,7 @@
                                     <td>
                                         <div class="d-flex justify-content-between">
                                             <input class="form-control form-control-sm mr-1" 
+                                                ref="PublisherName"
                                                 v-model="PublisherName"
                                                 @keypress.enter="_search"
                                                 placeholder="이름 입력">
@@ -92,14 +93,17 @@
                 lastPage: null,
             }
         },
+        mounted: function() {
+            this.$refs.PublisherName.focus();
+        },
         watch: {
             PublisherID: function(){
                 this.$emit('selected', {
                     PublisherID: this.Publisher.PublisherID,
                     PublisherName: this.Publisher.PublisherName,
-                    Mobile: this.Publisher.Mobile,
+                    PublisherMobile: this.Publisher.Mobile,
                     CongregationName: this.Publisher.CongregationName,
-                    Gender: this.Publisher.Gender === 'M'? '형제' : '자매',
+                    PublisherGender: this.Publisher.Gender === 'M'? '형제' : '자매',
                 });
                 this.$emit('close');
             }

@@ -326,16 +326,18 @@
                     class="btn btn-outline-secondary"
                     v-if="!modify"
                     onclick="location.href='/{{ getTopPath() }}'">목록</button>
-                <button type="button" 
-                    class="btn btn-secondary"
-                    v-if="!modify"
-                    @click="modify = true">수정</button>
-                <button class="btn btn-outline-secondary"
-                    type="button"
-                    v-if="modify"
-                    @click="this.location.reload()">취소</button>
-                <button class="btn btn-primary"
-                    v-if="modify">저장</button>
+                @if(session('auth.AdminRoleID') >= 3)
+                    <button type="button" 
+                        class="btn btn-secondary"
+                        v-if="!modify"
+                        @click="modify = true">수정</button>
+                    <button class="btn btn-outline-secondary"
+                        type="button"
+                        v-if="modify"
+                        @click="this.location.reload()">취소</button>
+                    <button class="btn btn-primary"
+                        v-if="modify">저장</button>
+                @endif
             </div>
             <div class="d-flex">
                 @if(empty($VisitRequest->AdminID)
@@ -347,7 +349,7 @@
                 @endif
 
                 @if(isset($VisitRequest->AdminID) 
-                && session('auth.AdminRoleID') <= 2
+                && session('auth.AdminRoleID') === 2
                 && empty($VisitRequest->AdminReceiptDate))
                 <button type="button" 
                     v-if="!modify"
