@@ -76,6 +76,16 @@ function getServiceZoneName($ServiceZoneID = null)
 	return  DB::table('ServiceZones')->where( 'ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID )->value('ZoneName');
 }
 
+function getProductName($ProductID = null)
+{
+	return  DB::table('Products')->where( 'ProductID', $ProductID ?? request()->ProductID )->value('ProductName');
+}
+
+function getProductAlias($ProductID = null)
+{
+	return  DB::table('Products')->where( 'ProductID', $ProductID ?? request()->ProductID )->value('ProductAlias');
+}
+
 function getCongregationName($CongregationID = null)
 {
 	return  DB::table('Congregations')->where( 'CongregationID', $CongregationID ?? session('auth.CongregationID') )->value('CongregationName');

@@ -115,10 +115,14 @@ Route::view('/errors/auth', 'errors.auth');
 //출판물관리
     //출판물재고관리
     Route::get('stocks', 'ProductController@stocks');
+    Route::get('stocks/export', 'ProductController@exportStocks');
+    Route::get('stocks/modify', 'ProductController@modifyStocks');
     //출판물신청관리
-    Route::get('orders', 'ProductController@view_orders');
-    Route::get('orders/{id}', 'ProductController@view_detail_orders');
-    Route::get('orders/{id}/form', 'ProductController@view_form_orders');
+    Route::get('orders', 'ProductController@orders');
+    Route::get('orders/export', 'ProductController@exportOrders');
+    Route::get('orders/{ProductOrderID}', 'ProductController@formOrders');
+    Route::put('orders/{ProductOrderID}', 'ProductController@putOrders');
+    Route::get('orders/{ProductOrderID}/form', 'ProductController@view_form_orders');
         
 //봉사기록통계
     //봉사자통계

@@ -2,6 +2,7 @@
 use App\Service\CommonService;
 use App\Service\ReportService;
 use App\Service\ActService;
+use App\Service\ProductService;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,5 +53,10 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     });
     Route::post('modalVisitRequestDetail', function(ReportService $ReportService){
         return $ReportService->getReportVisitRequestDetailList();
+    });
+//출판물관리
+    //출판물신청관리
+    Route::post('getProductStock', function(ProductService $ProductService){
+        return $ProductService->getProductStock();
     });
     

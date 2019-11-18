@@ -94,25 +94,25 @@
                         {{ listNumbering($loop->index, 30) }}
                     </td>
                     <td>
-                        {{ $ProductStockList->MetroName }}
+                        {{ $ProductStock->MetroName }}
                     </td>
                     <td>
-                        {{ $ProductStockList->CircuitName }}
+                        {{ $ProductStock->CircuitName }}
                     </td>
                     <td>
-                        {{ $ProductStockList->ProductKind }}
+                        {{ $ProductStock->ProductKind }}
                     </td>
                     <td>
-                        {{ $ProductStockList->ProductAlias }}
+                        {{ $ProductStock->ProductAlias }}
                     </td>
                     <td>
-                        {{ $ProductStockList->ProductName }}
+                        {{ $ProductStock->ProductName }}
                     </td>
                     <td>
-                        {{ $ProductStockList->StockCnt }}
+                        {{ $ProductStock->StockCnt }}
                     </td>
                     <td>
-                        {{ $ProductStockList->ReceiptDate }}
+                        {{ $ProductStock->ReceiptDate }}
                     </td>
                 </tr>
                 @endforeach
@@ -123,13 +123,16 @@
         <div class="d-flex">
             <button type="button" 
                 class="btn btn-success"
-                {{--  @click="_export"  --}}
-                >
+                @if(!$ProductStockList->count())
+                    {{--  disabled  --}}
+                @endif
+                @click="_export">
                 엑셀파일 다운로드
             </button>
         </div>
         <div class="d-flex">
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary"
+            onclick="location.href='/{{ request()->path() }}/modify'">
                 재고수량관리</button>
         </div>
     </div>
@@ -137,7 +140,6 @@
 
 </section>
 @endsection
-
 
 @section('script')
 <script>
@@ -150,7 +152,20 @@
                 '{{ request()->EndDate }}', 
             ],
         },
+        computed:{
+            query: function () {
+                var query = '?MetroID={{ request()->MetroID }}';
+                    query += '&CircuitID={{ request()->MetroID }}';
+                    query += '&ProductID={{ request()->ProductID }}';
+                    query += '&StartDate=' + this.CreateDate[0];
+                    query += '&EndDate=' + this.CreateDate[1];
+                return query;
+            }
+        },
         methods:{
+            _export:function () {
+                location.href = '/{{ request()->path() }}/export' + this.query;
+            },
         }
     })
 </script>

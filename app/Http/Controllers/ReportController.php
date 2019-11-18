@@ -57,8 +57,8 @@ class ReportController extends Controller
     }
     public function exportReports(Request $request) 
     {
-        $fileName = $request->MetroID ? getMetroName() . '_' : '' ;
-        $fileName .= $request->CircuitID ? getCircuitName() . '_' : '' ;
+        $fileName = (session('auth.MetroID') ?? $request->MetroID) ? getMetroName() . '_' : '' ;
+        $fileName .= (session('auth.CircuitID') ?? $request->CircuitID) ? getCircuitName() . '_' : '' ;
         $fileName .= $request->ServiceZoneID ? getServiceZoneName() . '_' : '' ;
         $fileName .= $request->ServiceDate . '_';
         $fileName .= '봉사보고.xlsx';
