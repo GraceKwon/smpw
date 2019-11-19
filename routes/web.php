@@ -119,9 +119,11 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('stocks/modify', 'ProductController@modifyStocks');
     //출판물신청관리
     Route::get('orders', 'ProductController@orders');
+    Route::put('orders', 'ProductController@putMutipleInvoiceCode');
     Route::get('orders/export', 'ProductController@exportOrders');
     Route::get('orders/{ProductOrderID}', 'ProductController@formOrders');
     Route::put('orders/{ProductOrderID}', 'ProductController@putOrders');
+    Route::delete('orders/{ProductOrderID}', 'ProductController@deleteOrders');
     Route::get('orders/{ProductOrderID}/form', 'ProductController@view_form_orders');
         
 //봉사기록통계
@@ -149,3 +151,56 @@ Route::view('/errors/auth', 'errors.auth');
     //푸시메세지발송
     Route::get('pushes', 'LatterController@view_pushes');
     
+/*
+비동기
+*/
+use App\Service\CommonService;
+use App\Service\ReportService;
+use App\Service\ActService;
+use App\Service\ProductService;
+//공통
+Route::get('/getMetroList', function(CommonService $CommonService){
+    return $CommonService->getMetroList();
+});
+Route::get('/getCircuitList', function(CommonService $CommonService){
+    return $CommonService->getCircuitList();
+});
+Route::get('/getCongregationList', function(CommonService $CommonService){
+    return $CommonService->getCongregationList();
+});
+
+
+//봉사일정관리
+    //봉사일정관리
+    Route::post('modalPublisherSet', function(ActService $ActService){
+        return $ActService->setPublisherServicePlanInsert();
+    });
+    Route::post('modalPublisherSet/search', function(ActService $ActService){
+        return $ActService->modalPublisherSearch();
+    });
+    Route::post('modalPublisherCancel', function(ActService $ActService){
+        return $ActService->setPublisherServicePlanCancel();
+    });
+    Route::post('modalTimeCancel', function(ActService $ActService){
+        return $ActService->setServiceTimeCancel();
+    });
+    Route::post('modalZoneCancel', function(ActService $ActService){
+        return $ActService->setServiceZoneCancel();
+    });
+    Route::post('modalTodayCancel', function(ActService $ActService){
+        return $ActService->setServiceTodayCancel();
+    });
+//봉사보고관리
+    //봉사보고관리
+    Route::post('modalProductDetail', function(ReportService $ReportService){
+        return $ReportService->getReportProductDetailList();
+    });
+    Route::post('modalVisitRequestDetail', function(ReportService $ReportService){
+        return $ReportService->getReportVisitRequestDetailList();
+    });
+
+//출판물관리
+    //출판물신청
+    Route::post('getProductStock', function(ProductService $ProductService){
+        return $ProductService->getProductStock();
+    });

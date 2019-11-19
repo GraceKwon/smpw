@@ -64,7 +64,6 @@ class ProductController extends Controller
 
     public function formOrders(Request $request)
     {
-        // dd('d');
         if($request->ProductOrderID !== '0'){
             $res = DB::select( 'uspGetStandingProductOrderDeatil ?', [
                     $request->ProductOrderID
@@ -81,22 +80,74 @@ class ProductController extends Controller
 
     public function putOrders(Request $request)
     {
-        DB::transaction(function() use ($request)
-        {
+        if( $request->ProductOrderID !== '0' 
+            && isset($request->InvoiceCode) ){
+
+            $res =  $this->ProductService->putProductOrderInvoice();
+
+            if( getAffectedRows($res) === 0 ) 
+                return back()->withErrors(['fail' => '송장번호 저장 실패하였습니다.']);
+            else
+                return back()->with(['success' => '송장번호 저장 성공하였습니다.']);
+
+        }else if($request->ProductOrderID === '0'){
+
+         
             foreach ($request->ProductID as $index => $ProductID) {
-                // dd(session('auth.AdminID'));
-                // dd($ProductID);
                 
-                DB::select('uspSetStandingProductOrderInsert ?,?,?,?', [
+                $res = DB::select('uspSetStandingProductOrderInsert ?,?,?,?', [
                     session('auth.CircuitID'),
                     session('auth.AdminID'),
                     $ProductID,
                     $request->OrderCnt[$index],
                 ]);
             }
-        });
+
+            if( getAffectedRows($res) === 0 ) 
+                return back()->withErrors(['fail' => '신청 실패하였습니다.']);
+            else
+                return redirect('/orders');  
+
+        }else{
+
+            $res =  DB::select('uspSetStandingProductOrderUpdate ?,?,?', [
+                    $request->ProductOrderID,
+                    $request->ProductID[0],
+                    $request->OrderCnt[0],
+                ]);
             
-        return redirect('/orders');
+            if( getAffectedRows($res) === 0 ) 
+                return back()->withErrors(['fail' => '수정 실패하였습니다.']);
+            else
+                return back()->with(['success' => '수정 성공하였습니다.']);
+
+        }
+                        
+     
+    }
+
+    public function putMutipleInvoiceCode(Request $request)
+    {
+
+        DB::transaction(function() use ($request)
+        {
+            foreach ($request->ProductOrderID as $ProductOrderID) {
+                $this->ProductService->putProductOrderInvoice($ProductOrderID);
+            }
+        });
+         
+    }
+
+    public function deleteOrders(Request $request)
+    {
+        $res = DB::select('uspSetStandingProductOrderDelete ?', [
+            $request->ProductOrderID,
+        ]);
+
+        if( getAffectedRows($res) === 0 ) 
+            return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
+        else
+            return redirect('/orders');   
      
     }
 
@@ -105,13 +156,9 @@ class ProductController extends Controller
         $fileName = (session('auth.MetroID') ?? $request->MetroID) ? getMetroName() . '_' : '' ;
         $fileName .= (session('auth.CircuitID') ?? $request->CircuitID) ? getCircuitName() . '_' : '' ;
         $fileName .= $request->ProductID ? getProductAlias() . '_' : '' ;
-        $fileName .= '출판물주문.xlsx';
+        $fileName .= '출판물신청.xlsx';
 
         return Excel::download(new ProductOrderExport, $fileName);
     }
 
-    public function view_detail_orders()
-    {
-        return view('product.detail_orders');
-    }
 }

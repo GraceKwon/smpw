@@ -79,7 +79,7 @@
         //             WaitingYn: 0,
         //             ServiceDate: this.ServiceDate,
         //         }
-        //         axios.post('/api/modalPublisherSet', formData)
+        //         axios.post('/modalPublisherSet', formData)
         //             .then(function (response) {
         //                 console.log(response.data);
         //                 if(response.data === 'full') alert('해당 타임에 빈자리가 없습니다.');
@@ -97,7 +97,7 @@
         //             PublisherName: this.PublisherName,
         //             page: this.page,
         //         };
-        //         axios.post('/api/modalPublisherSet/search', formData)
+        //         axios.post('/modalPublisherSet/search', formData)
         //             .then(function (response) {
         //                 console.log(response.data);
         //                 this.PublisherList = response.data.data;

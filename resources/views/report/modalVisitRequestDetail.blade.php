@@ -93,7 +93,7 @@
                     ServiceTimeID: this.ServiceTimeId,
                     ServiceDate: this.ServiceDate,
                 };
-                axios.post('/api/modalVisitRequestDetail', formData)
+                axios.post('/modalVisitRequestDetail', formData)
                     .then(function (response) {
                         console.log(response.data);
                         this.VisitRequestList = response.data;
@@ -110,7 +110,7 @@
             //         CancelTypeID: this.CancelTypeID,
             //         ServiceDate: this.ServiceDate,
             //     }
-            //     axios.post('/api/' + this.url, formData)
+            //     axios.post('/' + this.url, formData)
             //         .then(function (response) {
             //             console.log(response);
             //             location.reload()

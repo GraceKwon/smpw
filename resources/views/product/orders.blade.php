@@ -40,6 +40,8 @@
             <thead>
             <tr>
                 <th>
+                </th>
+                <th>
                     <div class="min-width">
                         <span>No</span>
                     </div>
@@ -104,39 +106,54 @@
                 </tr>
                 @endif
                 @foreach ($ProductOrderList as $ProductOrder)
-                <tr class="pointer"
-                    onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                <tr ref="{{ $ProductOrder->ProductOrderID }}">
                     <td>
+                        <input name="ProductOrderID[]"
+                            type="checkbox" 
+                            value="{{ $ProductOrder->ProductOrderID }}" @change="_change">
+                    </td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ listNumbering($loop->index, 30) }}
                     </td>
-                    <td>
+                    <td class="MetroName pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->MetroName }}
                     </td>
-                    <td>
+                    <td class="CircuitName pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->CircuitName }}
                     </td>
-                    <td>
+                    <td class="AdminName pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->AdminName }}
                     </td>
-                    <td>
+                    <td class="Mobile pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->Mobile }}
                     </td>
-                    <td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->ProductKind }}
                     </td>
-                    <td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->ProductAlias }}
                     </td>
-                    <td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->ProductName }}
                     </td>
-                    <td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->OrderCnt }}
                     </td>
-                    <td>
+                    <td class="CreateDate pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->CreateDate }}
                     </td>
-                    <td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ $ProductOrder->InvoiceCode }}
                     </td>
                 </tr>
@@ -152,7 +169,9 @@
                 @click="_export">
                 엑셀파일 다운로드
             </button>
-            <button type="button" class="btn btn-info">
+            <button type="button" class="btn btn-info"
+                :disabled="checkedRow.length === 0"
+                @click="_showModal('modalInvoiceCode')">
                 송장정보입력
             </button>
         </div>
@@ -165,60 +184,6 @@
     {{ $ProductOrderList->appends( request()->all() )->links() }}
 
 </section>
-
-<section class="modal-layer-container" style="display :none">
-    <div class="mx-auto px-3">
-        <div class="mlp-wrap">
-            <div class="max-w-auto">
-                <div class="mlp-header">
-                    <div class="mlp-title">
-                        송장 정보 입력 팝업창
-                    </div>
-                    <div class="mlp-close">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="mlp-content text-center">
-                    <div class="table-area">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>도시</th>
-                                <th>순회구</th>
-                                <th>담당자</th>
-                                <th>회중</th>
-                                <th>연락처</th>
-                                <th>신청일자</th>
-                                <th>송장번호 입력</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>남양주</td>
-                                <td>경기18</td>
-                                <td>홍길동</td>
-                                <td>남양주양지</td>
-                                <td>010-1423-3232</td>
-                                <td>2019-04-30</td>
-                                <td>
-                                    <input type="text" class="form-control form-control-sm max-w-250px">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm">닫기</button>
-                    <button class="btn btn-primary btn-sm">확인</button>
-                </div>
-            </div> <!-- /.mlp-wrap -->
-        </div>
-    </div>
-</section>
-
 <section class="modal-layer-container" style="display :none">
     <div class="mx-auto px-3">
         <div class="mlp-wrap">
@@ -227,7 +192,7 @@
                     <div class="mlp-title">
                         배송 조회
                     </div>
-                    <div class="mlp-close">
+                    <div class="mlp-close" @click="$emit('close')">
                         <i class="fas fa-times"></i>
                     </div>
                 </div>
@@ -250,27 +215,27 @@
                     </div>
                 </div>
                 <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm">닫기</button>
+                    <button class="btn btn-outline-secondary btn-sm"
+                        @click="$emit('close')">닫기</button>
                     <button class="btn btn-primary btn-sm">확인</button>
                 </div>
             </div> <!-- /.mlp-wrap -->
         </div>
     </div>
 </section>
+
 @endsection
 
 @section('popup')
-    {{--  <modal-order-confirm v-if="showModal === 'modalOrderConfirm'" 
-        :circuit-id="CircuitID"
-        :service-date="yyyymmdd" 
-        :service-time-id="ServiceTimeID" 
-        :service-zone-id="ServiceZoneID"
-        @close="showModal = ''" >
-    </modal-order-confirm>  --}}
-
+<modal-invoice-code v-if="showModal === 'modalInvoiceCode'" 
+    :array="checkedRow"
+    @submit="_setInvoiceCode"
+    @close="showModal = ''">
+</modal-invoice-code>
 @endsection
 
 @section('script')
+@include('product.modalInvoiceCode')
 <script>
     var app = new Vue({
         el:'#wrapper-body',
@@ -281,6 +246,7 @@
                 '{{ request()->StartDate }}', 
                 '{{ request()->EndDate }}', 
             ],
+            checkedRow: [],
         },
         computed:{
             query: function () {
@@ -293,8 +259,45 @@
             }
         },
         methods:{
+            _showModal:function (modalName) {
+                this.showModal = modalName;
+            },
             _export:function () {
                 location.href = '/{{ request()->path() }}/export' + this.query;
+            },
+            _locationHref:function (e) {
+                if(e.target.className !== 'exception')
+                    location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'
+            },
+            _change:function (e) {
+                if(e.target.checked)
+                    this.checkedRow.push(Number(e.target.value))
+                else{
+                    var idx = this.checkedRow.indexOf(Number(e.target.value)) 
+                    if (idx > -1) this.checkedRow.splice(idx, 1)
+
+                }  
+                this.checkedRow.sort(function(a, b) { // 내림차순
+                    return b - a;
+                });
+            },
+            _setInvoiceCode:function (InvoiceCode) {
+                var formData = {
+                    InvoiceCode: InvoiceCode,
+                    ProductOrderID: this.checkedRow
+                }
+                axios.put('{{ request()->path() }}', formData)
+                    .then(function (response) {
+                        // console.log(response);
+                        location.reload()
+                    })
+                    .catch(function (error) {
+                        alert('실패했습니다.')
+                        console.log(error);
+                        console.log(error.response);
+                    });
+                // this.$refs.form.submit();
+                // location.href = '/{{ request()->path() }}/export' + this.query;
             },
         }
     })

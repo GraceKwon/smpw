@@ -91,7 +91,7 @@
                     ServiceTimeID: this.ServiceTimeId,
                     ServiceDate: this.ServiceDate,
                 };
-                axios.post('/api/modalProductDetail', formData)
+                axios.post('/modalProductDetail', formData)
                     .then(function (response) {
                         console.log(response.data);
                         this.ProductList = response.data;
@@ -108,7 +108,7 @@
             //         CancelTypeID: this.CancelTypeID,
             //         ServiceDate: this.ServiceDate,
             //     }
-            //     axios.post('/api/' + this.url, formData)
+            //     axios.post('/' + this.url, formData)
             //         .then(function (response) {
             //             console.log(response);
             //             location.reload()

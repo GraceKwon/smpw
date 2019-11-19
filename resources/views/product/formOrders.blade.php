@@ -1,8 +1,16 @@
 @extends('layouts.frames.master')
 @section('content')
+@error('fail')
+    <div class="alert alert-danger">{!! $message !!}</div>
+@enderror
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
 <section class="register-section">
     <form method="POST"
-        @submit="_confirm" 
+        ref="form"
         @keydown.enter.prevent>
         @method("PUT")
         @csrf
@@ -45,7 +53,8 @@
                 </td>
             </tr>
             </tbody>
-            <tbody v-for="(row, index) in array">
+            <tbody :class="{ off : !modify }"
+                v-for="(row, index) in array">
                 <tr>
                     <th>
                         <label class="label">출판물선택</label>
@@ -55,6 +64,7 @@
                             <select class="custom-select" 
                                 name="ProductID[]"
                                 v-model="row.ProductID" 
+                                :disabled="!modify"
                                 @change="_getProductStock(index)"
                                 >
                                 <option value="">선택</option>
@@ -63,15 +73,20 @@
                                         value="{{ $Product->ProductID }}">{{ $Product->ProductName }}</option>
                                 @endforeach
                             </select>
+                            @if(empty($ProductOrder->ProductOrderID))
                             <button class="btn btn-outline-secondary"
                                 type="button"
                                 @click="_removeRow(index)">삭제</button>
+                            @endif
                         </div>
                     </td>
                     <th>
                         <label class="label">현재재고량</label>
                     </th>
-                    <td v-html="row.StockCnt">
+                    <td 
+                    @if( empty($ProductOrder->InvoiceCode) )
+                        v-html="row.StockCnt"
+                    @endif>
                     </td>
                 </tr>
                 <tr>
@@ -87,6 +102,7 @@
                             <input type="text" 
                                 name="OrderCnt[]"
                                 v-model="row.OrderCnt"
+                                :disabled="!modify"
                                 @keyup="_qty(index)"
                                 class="form-control"
                                 placeholder="수량을 입력해 주세요.">
@@ -101,27 +117,92 @@
                     <th>
                         <label class="label">수령 후 재고량</label>
                     </th>
-                    <td v-html="_sumQty(index)">
+                    <td 
+                    @if( empty($ProductOrder->InvoiceCode) )
+                        v-html="_sumQty(index)" 
+                    @endif>
                     </td>
                 </tr>
+                <tbody  @if( session('auth.AdminRoleID') !== 2) class="off" @endif>
+                    @if(isset($ProductOrder->ProductOrderID))
+                    <tr v-if="!modify">
+                        <th>
+                            <label class="label">송장번호</label>
+                        </th>
+                        <td colspan="3">
+                            <div class="d-flex max-w-300px-desktop">
+                                <input type="text" 
+                                    name="InvoiceCode"
+                                    v-model="InvoiceCode"
+                                    class="form-control"
+                                    @if( session('auth.AdminRoleID') !== 2)
+                                        readonly
+                                    @else
+                                        placeholder="송장번호를 입력해주세요."
+                                    @endif
+                                    >
+                            </div>
+                        </td>
+                    </tr>
+                    @endif
+                </tbody>
             </tbody>
         </table>
+        @if(empty($ProductOrder->ProductOrderID))
         <div class="text-center mt-2">
             <button class="btn btn-outline-secondary"
                 type="button"
                 @click="_addRow">+ 출판물 추가</button>
         </div>
-        <div class="btn-flex-area justify-content-end">
-            <button type="button" class="btn btn-secondary">취소</button>
-            <button type="submit" class="btn btn-primary">저장</button>
+        @endif
+        <div class="btn-flex-area btn-flex-row justify-content-between mt-3">
+            {{--  <div class="btn-flex-area justify-content-end">  --}}
+            <div class="d-flex">
+                @if(isset($ProductOrder->ProductOrderID) 
+                    && empty($ProductOrder->InvoiceCode)
+                    && session('auth.AdminRoleID') !== 2)
+                <button type="button" 
+                    class="btn btn-secondary"
+                    v-if="!modify"
+                    @click="modify = true">수정</button>
+                <button class="btn btn-outline-secondary"
+                    type="button"
+                    v-if="modify"
+                    @click="this.location.reload()">취소</button>
+                @endif
+            </div>  
+            <div class="d-flex">
+                <button type="button" class="btn btn-secondary"
+                    onclick="location.href='/{{ getTopPath() }}'">
+                    {{ isset($ProductOrder->ProductOrderID) ? '목록' : '취소' }}
+                </button>
+                <button type="button" 
+                    class="btn btn-primary"
+                    v-if="modify"
+                    @click="_confirm">저장</button>
+                @if(isset($ProductOrder->ProductOrderID) 
+                    && empty($ProductOrder->InvoiceCode)
+                    && session('auth.AdminRoleID') !== 2)
+                    <button type="button" class="btn btn-point-sub"
+                        v-if="!modify"
+                        @click="_delete">삭제</button>
+                @elseif(session('auth.AdminRoleID') === 2)
+                    <button type="submit" class="btn btn-point-sub">저장</button>
+                @endif
+            </div>  
         </div> <!-- /.register-btn-area -->
+    </form>
+    <form ref="formDelete" method="POST">
+        @method("DELETE")
+        @csrf
     </form>
 </section>
 @endsection
 @section('popup')
     <modal-order-comfirm v-if="showModal === 'modalOrderConfirm'" 
         :array="array"
-        @close="showModal = ''" >
+        @submit="_submit"
+        @close="showModal = ''">
     </modal-order-confirm>
 @endsection
 @section('script')
@@ -131,6 +212,7 @@
         el: '#wrapper-body',
         data: {
             showModal: '',
+            modify: {{ isset($ProductOrder->ProductOrderID) ? 'false' : 'true' }},
             array: [
                 {
                     ProductID: "{{ $ProductOrder->ProductID ?? '' }}",
@@ -141,6 +223,7 @@
                     OrderCnt: "{{ $ProductOrder->OrderCnt ?? '' }}",
                 }
             ],
+            InvoiceCode: "{{ $ProductOrder->InvoiceCode ?? '' }}"
         },
         watch: {
             Mobile: function() {
@@ -151,25 +234,23 @@
         methods: {
             _confirm: function(e) {
                 this._showModal('modalOrderConfirm');
-                e.preventDefault();
-                // var res = confirm('{{ isset($Experience->ExperienceID) ? '수정 ' : '저장 ' }} 하시겠습니까?');
-                // if (!res) {
-                // }
+            },
+            _submit: function() {
+                this.$refs.form.submit()
             },
             _getProductStock: function(index){
-                console.log(this._checkExist(index));  
                 if( this._checkExist(index) < 0){
                     
                     var formData = {
+                        CircuitID: "{{ session('auth.CircuitID') ?? $ProductOrder->CircuitID }}",
                         ProductID: this.array[index].ProductID,
                     };
-                    axios.post('/api/getProductStock', formData)
+                    axios.post('/getProductStock', formData)
                         .then(function (response) {
                             console.log(response.data);
                             if(response.data.length)
                                 for (var key in response.data[0]) {
                                     this.array[index][key] = response.data[0][key];
-                                  
                                 }
                             else
                                 for (var key in this.array[index]) {
@@ -186,18 +267,6 @@
                     alert('이미 동일한 출판물이 선택되어 있습니다');
                 }
             },
-            // _showModal: function(modalName) {
-            //     this.showModal = modalName;
-            // },
-            // _selected: function(data) {
-            //     console.log(data);
-            //     for (var key in data) {
-            //         this.$data[key] = data[key];
-            //     }
-            // },
-            // _export:function () {
-            //     location.href = '/{{ request()->path() }}/export';
-            // },
             _delete: function () {
                 if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()
             },
@@ -223,8 +292,6 @@
             },
             _checkExist: function(index){
                 for (var key in this.array) {
-                    console.log('key', this.array[key].ProductID);
-                    console.log('index', this.array[index].ProductID);
                     if( key != index )
                     if( this.array[key].ProductID == this.array[index].ProductID ) return this.array[key].ProductID;
                         
@@ -236,13 +303,7 @@
             _showModal:function (modalName) {
                 this.showModal = modalName;
             },
-            // _setCircuitConfirm: function () {
-            //     if( confirm('제출 하시겠습니까?') ) this.$refs.formCircuitConfirm.submit()
-            // },
-            // _setBranchConfirm: function () {
-            //     if( confirm('열람내용확인 하시겠습니까?') ) this.$refs.formBranchConfirm.submit()
-            // }
-
+   
         }
     })
 </script>

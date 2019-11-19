@@ -250,7 +250,7 @@
                         MetroID: this.MetroID 
                     }
                 };
-                axios.get('/api/getCircuitList', params)
+                axios.get('/getCircuitList', params)
                     .then(function (response) {
                         console.log(response.data);
                         this.CircuitList = response.data;
@@ -265,7 +265,7 @@
                         CircuitID: this.CircuitID 
                     }
                 };
-                axios.get('/api/getCongregationList', params)
+                axios.get('/getCongregationList', params)
                     .then(function (response) {
                         console.log(response.data);
                         this.CongregationList = response.data;

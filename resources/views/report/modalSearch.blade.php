@@ -123,7 +123,7 @@
                     PublisherName: this.PublisherName,
                     page: this.page,
                 };
-                axios.post('/api/modalPublisherSet/search', formData)
+                axios.post('/modalPublisherSet/search', formData)
                     .then(function (response) {
                         console.log(response.data);
                         this.PublisherList = response.data.data;

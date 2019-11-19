@@ -59,43 +59,29 @@ class ProductService
 
     public function getProductStock()
     {
+        // return session('auth.CircuitID');
         return DB::select('uspGetStandingProductOrderStock ?,?', [
             ( session('auth.CircuitID') ?? request()->CircuitID ),
             request()->ProductID
         ]);
        
     }
-    // public function getExperienceList()
-    // {
-    //     $paginate = 30;  
-    //     $page = request()->input('page', 1);
 
-    //     $parameter = [
-    //             ( session('auth.MetroID') ?? request()->MetroID ),
-    //             ( session('auth.CircuitID') ?? request()->CircuitID ),
-    //             request()->AdminName,
-    //             request()->PublisherName,
-    //             request()->BranchConfirmYn,
-    //             request()->StartDate,
-    //             request()->EndDate,
-    //         ];
+    public function putProductOrderInvoice($ProductOrderID = null)
+    {
+        $res =  DB::select('uspSetStandingProductOrderInvoiceUpdate ?,?', [
+            $ProductOrderID ?? request()->ProductOrderID,
+            request()->InvoiceCode,
+        ]);
 
-    //     $data = DB::select('uspGetStandingServiceExperienceList ?,?,?,?,?,?,?,?,?', 
-    //         array_merge( [$paginate, $page], $parameter ));
-
-    //     $count = DB::select('uspGetStandingServiceExperienceListCnt ?,?,?,?,?,?,?', $parameter);
-    //     return setPaginator($paginate, $page, $data, $count);
-    // }
-
-    // public function getReportProductDetailList()
-    // {
-    //     return DB::select('uspGetStandingDailyServiceReportProductDetailList ?,?', [
-    //         request()->ServiceTimeID,
-    //         request()->ServiceDate,
-    //     ]);
+        if( getAffectedRows($res) === 1 
+            && DB::table('ProductStocks')->where('ProductOrderID', $ProductOrderID ?? request()->ProductOrderID)->doesntExist() ) 
+            $res =  DB::select('uspSetStandingProductStockInsert ?', [
+                $ProductOrderID ?? request()->ProductOrderID
+            ]);
+        return $res;
        
-    // }
-
+    }
 
 
 }

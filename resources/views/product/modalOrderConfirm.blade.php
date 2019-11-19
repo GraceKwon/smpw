@@ -85,7 +85,9 @@
                     </div>
                     <div class="mlp-footer justify-content-end">
                         <button class="btn btn-outline-secondary btn-sm" 
-                            @click="$emit('close')">닫기</button>
+                            @click="$emit('close')">수정</button>
+                        <button class="btn btn-primary btn-sm" 
+                            @click="$emit('submit')">확인</button>
                     </div>
                 </div>
             </div> <!-- /.mlp-wrap -->
@@ -97,55 +99,15 @@
         template: '#modalOrderConfirm',
         props: [
             'array',
-            // 'ServiceTime',
-            // 'ZoneName',
         ],
-        data: function () {
-            return {
-                ServiceDate: "{{ request()->ServiceDate }}",
-                VisitRequestList: []
-            }
-        },
-        mounted: function() {
-            this._getList();
-        },
+        // data: function () {
+        //     return {
+        // },
         methods:{
-            _getList: function(){
-                var formData = {
-                    ServiceTimeID: this.ServiceTimeId,
-                    ServiceDate: this.ServiceDate,
-                };
-                axios.post('/api/modalVisitRequestDetail', formData)
-                    .then(function (response) {
-                        console.log(response.data);
-                        this.VisitRequestList = response.data;
-                    }.bind(this))
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
             _sumQty: function (index) {
                 var qty = (this.array[index].OrderCnt * 1) + (this.array[index].StockCnt * 1)
                 return !isNaN(qty) ? qty : '';
             },
-            // _submit: function(){
-            //     var formData = {
-            //         CircuitID: this.CircuitId,
-            //         ServiceZoneID: this.ServiceZoneId,
-            //         ServiceTimeID: this.ServiceTimeId,
-            //         CancelTypeID: this.CancelTypeID,
-            //         ServiceDate: this.ServiceDate,
-            //     }
-            //     axios.post('/api/' + this.url, formData)
-            //         .then(function (response) {
-            //             console.log(response);
-            //             location.reload()
-            //         })
-            //         .catch(function (error) {
-            //             console.log(error);
-            //             console.log(error.response);
-            //         });
-            // }
         }
     })
 </script>
