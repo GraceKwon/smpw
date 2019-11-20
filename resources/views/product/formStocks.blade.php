@@ -2,12 +2,15 @@
 @section('content')
 
 <section class="section-table-section">
-    <div class="table-responsive">
+    @error('fail')
+        <div class="alert alert-danger">{!! $message !!}</div>
+    @enderror
     <form method="POST"
         @submit="_confirm" 
         @keydown.enter.prevent>
         @method("PUT")
         @csrf
+        <div class="table-responsive">
             <table class="table table-center table-font-size-90">
                 <thead>
                 <tr>
@@ -48,47 +51,41 @@
                     @foreach ($ProductStockList as $ProductStock)
                     <tr>
                         <td>
-                            {{ $ProductStockList->ProductKind }}
+                            {{ $ProductStock->ProductKind }}
                         </td>
                         <td>
-                            {{ $ProductStockList->ProductAlias }}
+                            {{ $ProductStock->ProductAlias }}
                         </td>
                         <td>
-                            {{ $ProductStockList->ProductName }}
+                            {{ $ProductStock->ProductName }}
                         </td>
                         <td>
-                            {{ $ProductStockList->StockCnt }}
+                            {{ $ProductStock->StockCnt }}
+                            <input type="hidden"
+                                name="StockCnt[]"
+                                value="{{ $ProductStock->StockCnt }}">
                         </td>
                         <td>
                             <input type="text" 
                                 class="form-control"
                                 @keyup="_qty"
-                                name="Qty_{{ $ProductStockList->ProductID }}">
+                                name="Qty[]">
+                            <input type="hidden"
+                                name="ProductID[]"
+                                value="{{ $ProductStock->ProductID }}">
                         </td>
                     </tr>
                     @endforeach
             </tbody>
             </table>
-            {{--  <input type="text" 
-                class="form-control"
-                @keypress="_qty"
-                name="Qty_1">
-            <input type="text" 
-                class="form-control"
-                @keypress="_qty"
-                name="Qty_2">
-            <input type="text" 
-                class="form-control"
-                @keypress="_qty"
-                name="Qty_3">  --}}
-        </form>
-    </div>
-    <div class="btn-flex-area justify-content-end mt-3">
-        <button type="button" class="btn btn-secondary" 
+        </div>
+        <div class="btn-flex-area justify-content-end mt-3">
+            <button type="button" class="btn btn-secondary" 
             onclick="location.href = '/{{ getTopPath() }}'">취소</button>
-        {{--  <button type="submit" class="btn btn-primary">
-            저장</button>  --}}
-    </div>
+            <button type="submit" class="btn btn-primary">
+                저장</button> 
+        </div>
+    </form>
     {{ $ProductStockList->appends( request()->all() )->links() }}
 
 </section>

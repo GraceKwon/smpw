@@ -131,9 +131,11 @@
             </button>
         </div>
         <div class="d-flex">
-            <button type="button" class="btn btn-primary"
-            onclick="location.href='/{{ request()->path() }}/modify'">
-                재고수량관리</button>
+            @if( (session('auth.CircuitID') ?? request()->CircuitID) ) 
+                <button type="button" class="btn btn-primary"
+                onclick="location.href='/{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}'">
+                    재고수량관리</button>
+            @endif
         </div>
     </div>
     {{ $ProductStockList->appends( request()->all() )->links() }}

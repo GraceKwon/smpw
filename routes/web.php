@@ -116,7 +116,10 @@ Route::view('/errors/auth', 'errors.auth');
     //출판물재고관리
     Route::get('stocks', 'ProductController@stocks');
     Route::get('stocks/export', 'ProductController@exportStocks');
-    Route::get('stocks/modify', 'ProductController@modifyStocks');
+    Route::get('stocks/{CircuitID}', 'ProductController@formStocks')
+        ->where('CircuitID', '[0-9]+');
+    Route::put('stocks/{CircuitID}', 'ProductController@putStocks')
+        ->where('CircuitID', '[0-9]+');
     //출판물신청관리
     Route::get('orders', 'ProductController@orders');
     Route::put('orders', 'ProductController@putMutipleInvoiceCode');

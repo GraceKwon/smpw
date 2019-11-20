@@ -42,11 +42,32 @@ class ProductController extends Controller
         return Excel::download(new ProductStockExport, $fileName);
     }
 
-    public function modifyStocks(Request $request)
+    public function formStocks(Request $request)
     {
-        return view('product.modifyStocks', [
+        return view('product.formStocks', [
             'ProductStockList' => $this->ProductService->getProductStockList(),
         ]);
+    }
+
+    public function putStocks(Request $request)
+    {
+        // dd( $request->all() );
+        foreach ($request->ProductID as $index => $ProductID) {
+            if($request->Qty[$index] !== null){
+
+                $res = DB::select('uspSetStandingProductStockDirectInsert ?,?,?', [
+                    (session('auth.CircuitID') ?? $request->CircuitID),
+                    $ProductID,
+                    $request->Qty[$index] - $request->StockCnt[$index],
+                ]);
+
+            }
+        }
+
+        if( getAffectedRows($res) === 0 ) 
+            return back()->withErrors(['fail' => '변경 실패하였습니다.']);
+        else
+            return redirect('/stocks');  
     }
 
     public function orders()

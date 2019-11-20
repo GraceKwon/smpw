@@ -118,10 +118,9 @@ class LoginController extends Controller
         $request->validate([
             'UserPassword' => 'required|confirmed|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/', //8~12자리의 영문, 숫자, 특수문자 포함
         ]);
-        $res = DB::select('uspSetStandingAdminPasswordUpdate ?,?,?',
+        $res = DB::select('uspSetStandingAdminPasswordUpdate ?,?',
             [
                 session('auth.AdminID'),
-                '11112222',
                 $request->UserPassword,
             ]);
         if(getAffectedRows($res) === 0) 
