@@ -153,7 +153,7 @@
                         {{ $ProductOrder->CreateDate }}
                     </td>
                     <td class="pointer"
-                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        @click="tracks = '{{ $ProductOrder->InvoiceCode }}'">
                         {{ $ProductOrder->InvoiceCode }}
                     </td>
                 </tr>
@@ -164,7 +164,6 @@
         <div class="d-flex">
             <button type="button" class="btn btn-success"
                 @if(!$ProductOrderList->count())
-                    {{--  disabled  --}}
                 @endif
                 @click="_export">
                 엑셀파일 다운로드
@@ -184,45 +183,6 @@
     {{ $ProductOrderList->appends( request()->all() )->links() }}
 
 </section>
-<section class="modal-layer-container" style="display :none">
-    <div class="mx-auto px-3">
-        <div class="mlp-wrap">
-            <div class="max-w-auto">
-                <div class="mlp-header">
-                    <div class="mlp-title">
-                        배송 조회
-                    </div>
-                    <div class="mlp-close" @click="$emit('close')">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="mlp-content text-center min-w-500px-desktop">
-                    <div class="table-area">
-                        <table class="table table-bordered">
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th>송장번호</th>
-                                <td>
-                                    <input type="text" class="form-control">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-3">
-                        <textarea class="form-control w-100" rows="10"></textarea>
-                    </div>
-                </div>
-                <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm"
-                        @click="$emit('close')">닫기</button>
-                    <button class="btn btn-primary btn-sm">확인</button>
-                </div>
-            </div> <!-- /.mlp-wrap -->
-        </div>
-    </div>
-</section>
 
 @endsection
 
@@ -232,16 +192,22 @@
     @submit="_setInvoiceCode"
     @close="showModal = ''">
 </modal-invoice-code>
+<modal-delivery-tracking v-if="showModal === 'modalDeliveryTracking'" 
+    :tracks="tracks"
+    @close="showModal = ''">
+</modal-delivery-tracking>
 @endsection
 
 @section('script')
 @include('product.modalInvoiceCode')
+@include('product.modalDeliveryTracking')
 <script>
     var app = new Vue({
         el:'#wrapper-body',
         mixins: [datepickerLang],
         data:{
             showModal: '',
+            tracks: '',
             CreateDate: [
                 '{{ request()->StartDate }}', 
                 '{{ request()->EndDate }}', 
@@ -256,6 +222,12 @@
                     query += '&StartDate=' + this.CreateDate[0];
                     query += '&EndDate=' + this.CreateDate[1];
                 return query;
+            }
+        },
+        watch: {
+            tracks: function () {
+                if(this.tracks !== '');
+                    this._showModal('modalDeliveryTracking');
             }
         },
         methods:{
