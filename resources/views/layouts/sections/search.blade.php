@@ -91,6 +91,19 @@
         </div> <!-- /.search-form-item -->
         @endif
 
+        @if(isset($ReceiveGroupList))
+        <div class="search-form-item">
+            <label class="label" for="ReceiveGroupID">대상</label>
+            <select class="custom-select" id="ReceiveGroupID" name="ReceiveGroupID" onchange="submit()">
+                <option value="">전체</option>
+                @foreach ($ReceiveGroupList as $ReceiveGroup)
+                    <option @if(request()->ReceiveGroupID == $ReceiveGroup->ID ) selected @endif
+                        value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
+                @endforeach
+            </select>
+        </div> <!-- /.search-form-item -->
+        @endif
+
         @if(isset($selectBoxs))
             @foreach ($selectBoxs as $selectBox)
                 <div class="search-form-item">

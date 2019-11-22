@@ -9,51 +9,71 @@ use DB;
 
 class BoardController extends Controller
 {
-    public function view_notices()
+    public function view_notices(Request $request, CommonService $CommonService)
     {
-        return view('board.notices');
+        $MetroList = $CommonService->getMetroList();
+        $CircuitList = $CommonService->getCircuitList();
+        $ReceiveGroupList = $CommonService->getReceiveGroupList();
+        $paginate = 30;  
+        $page = $request->input('page', '1');
+        $parameter = [
+            ( session('auth.MetroID') ?? $request->MetroID ),
+            ( session('auth.CircuitID') ?? $request->CircuitID ),
+            $request->ReceiveGroupID
+        ];
+        $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
+            array_merge( [$paginate, $page], $parameter ));
+        $count = DB::select('uspGetStandingNoticeListCnt ?,?,?', $parameter);
+        $NoticeList = setPaginator($paginate, $page, $data, $count);
+
+        return view('board.notices', [
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList,
+            'ReceiveGroupList' => $ReceiveGroupList,
+            'NoticeList' => $NoticeList
+        ]);
     }
 
-    public function view_detail_notices()
+    public function view_detail_notices($id)
     {
-        return view('board.detail_notices');
+        DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
+        $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
+        $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
+
+        return view('board.detail_notices', [
+            'Files' => $Files,
+            'Notice' => $Notice[0]
+        ]);
     }
 
     public function view_form_notices(CommonService $common)
     {
         $MetroList = $common->getMetroList();
         $ReceiveGroupList = $common->getReceiveGroupList();
+
         return view('board.form_notices', [
             'MetroList' => $MetroList,
             'ReceiveGroupList' => $ReceiveGroupList
         ]);
     }
 
-    public function postForm($id, Request $request)
+    public function postForm(Request $request)
     {   
         $request->validate([
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
             'Contents' => 'required'
         ]);
-        $files = [];
-        for ($i=0; $i < count( $request->Files ); $i++) { 
-            $files[] = [
-                'path' => $request->Files[$i]->store('files'),
-                'name' => $request->Files[$i]->getClientOriginalName()
-            ];
+
+        if ($request->Files !== null) {
+            $files = [];
+            for ($i=0; $i < count( $request->Files ); $i++) { 
+                $files[] = [
+                    'path' => $request->Files[$i]->store('files'),
+                    'name' => $request->Files[$i]->getClientOriginalName()
+                ];
+            }
         }
-        // return storage_path();
-        /*
-        @MetroID int 
-        @CircuitID int
-        @ReceiveGroupID int
-        @Title nvarchar(500) 
-        @Contents nvarchar(max)
-        @DisplayYn bit 
-        @AdminID int 
-        @ReadCnt int 
-        */
         $res = DB::select('uspSetStandingNoticeInsert ?,?,?,?,?,?,?,?', [
             $request->MetroID,
             $request->CircuitID,
@@ -65,15 +85,27 @@ class BoardController extends Controller
             0
         ]);
         $ID = $res[0]->computed;
-
-        foreach($files as $file)
-        {
-            Storage::move($file['path'], 'notice/'.$ID.'/'.$file['name']);
-            DB::select('uspSetStandingNoticeFileInsert ?,?', [
-                $ID,
-                $file['name']
-            ]);
+        if ($request->Files !== null) {
+            foreach($files as $file)
+            {
+                Storage::move($file['path'], 'notice/'.$ID.'/'.$file['name']);
+                DB::select('uspSetStandingNoticeFileInsert ?,?', [
+                    $ID,
+                    $file['name']
+                ]);
+            }
         }
 
+        return;
+
+    }
+
+    public function file_download($id, $fid)
+    {
+        $FilePath = DB::table('NoticeFiles')
+            ->where('NoticeFileID', $fid)
+            ->value('FilePath');
+
+        return Storage::download('notice/'.$id.'/'.$FilePath);
     }
 }

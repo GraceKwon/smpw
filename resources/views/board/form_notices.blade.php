@@ -50,6 +50,7 @@
                             <option value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
                         @endforeach
                     </select>
+                    <div class="invalid-feedback" v-if="validation.ReceiveGroupID">@{{ validation.ReceiveGroupID[0] }}</div>
                 </div>
             </td>
             <th>
@@ -84,7 +85,14 @@
                 <label class="label">제목</label>
             </th>
             <td colspan="3">
-                <input type="text" class="form-control" v-model="form.Title" placeholder="제목을 입력해 주세요">
+                <input type="text" 
+                    class="form-control"
+                    :class="{'is-invalid': validation.Title}"
+                    v-model="form.Title" 
+                    placeholder="제목을 입력해 주세요">
+                <div class="invalid-feedback" v-if="validation.Title">
+                    @{{ validation.Title[0] }}
+                </div>
             </td>
             
         </tr>
@@ -114,13 +122,19 @@
                 <label class="label">내용</label>
             </th>
             <td colspan="3">
+                <div class="invalid-feedback" v-if="validation.Contents" style="display: block">
+                    @{{ validation.Contents[0] }}
+                </div>
                 <textarea v-model="form.Contents" class="form-control" name="notice-board" id="notice-board"></textarea>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="btn-flex-area justify-content-end">
-        <button type="button" class="btn btn-secondary">취소</button>
+        <button 
+            type="button" 
+            class="btn btn-secondary"
+            onclick="location.href='/notices'">취소</button>
         <button type="button" class="btn btn-primary" @click="trySubmit">저장</button>
     </div> <!-- /.register-btn-area -->
 </section>
@@ -266,6 +280,7 @@
                 axios.post('/notices/0/form', formData)
                 .then(function (response) {
                     console.log(response);
+                    location.href = '/notices'
                 })
                 .catch(function (error) {
                     console.log(error.response);
