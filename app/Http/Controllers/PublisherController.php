@@ -152,7 +152,7 @@ class PublisherController extends Controller
         $res = DB::table('Publishers')
             ->where('PublisherID', $request->PublisherID)
             ->update([
-                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', '11112222')"),
+                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', CONVERT(nvarchar(100),'11112222') )"),
                 'TempPassYn' => 1,
             ]);
         // if( getAffectedRows($res) === 0 ) 

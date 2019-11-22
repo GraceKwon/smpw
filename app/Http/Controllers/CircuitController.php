@@ -191,17 +191,17 @@ class CircuitController extends Controller
    
 
         // if($request->AdminID === '0')
-            $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?', [
-                    'role2',//$request->Account, //Account
-                    '11112222',// UserPassword
-                    '롤2', //AdminName
-                    2, //AdminRoleID
-                    1, //TempUseYn
-                    '000-0000-0000', //Mobile
-                ]);
+        //     $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?', [
+        //             $request->MetroID,
+        //             $request->CircuitID,
+        //             '11112222',// UserPassword
+        //             $request->AdminName,
+        //             $request->AdminRoleID,
+        //             $request->Mobile,
+        //         ]);
         // else
-        //     $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?,?,?', [
-        //             $request->ServiceZoneID,
+        //     $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?', [
+        //             $request->AdminID,
         //             $request->ZoneName,
         //             $request->ZoneAlias,
         //             $request->Latitude,
@@ -211,12 +211,17 @@ class CircuitController extends Controller
         //             session('auth.AdminID'),
         //             session('auth.CircuitID')
         //         ]);
+                // @AdminID int 
+                // , @UserPassword nvarchar(100)
+                // , @AdminRoleID int 
+                // , @TempPassYn bit
+                // , @Mobile varchar(13) 
         
 
         // if(getAffectedRows($res) === 0) 
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
         // else
-            // return redirect('/admins');
+        //     return redirect('/admins');
         
     }
 
@@ -239,7 +244,7 @@ class CircuitController extends Controller
         $res = DB::table('Admins')
             ->where('AdminID', $request->AdminID)
             ->update([
-                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', '11112222')"),
+                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', CONVERT(nvarchar(100),'11112222') )"),
                 'TempPassYn' => 1,
             ]);
         if( $res === 0 ) 
