@@ -77,7 +77,7 @@
                 if(this.CancelRange === 'zone')
                     return 'modalZoneCancel';
                 if(this.CancelRange === 'today')
-                    return 'modalTodayCancel';
+                    return 'modalDayCancel';
             },
         },
         methods:{
@@ -91,8 +91,8 @@
                 }
                 axios.post('/' + this.url, formData)
                     .then(function (response) {
-                        console.log(response);
-                        location.reload()
+                        console.log(response.data);
+                        // location.reload()
                     })
                     .catch(function (error) {
                         console.log(error);

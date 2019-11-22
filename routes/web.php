@@ -166,6 +166,7 @@ use App\Service\CommonService;
 use App\Service\ReportService;
 use App\Service\ActService;
 use App\Service\ProductService;
+use App\Service\PushService;
 //공통
 Route::get('/getMetroList', function(CommonService $CommonService){
     return $CommonService->getMetroList();
@@ -189,15 +190,9 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     Route::post('modalPublisherCancel', function(ActService $ActService){
         return $ActService->setPublisherServicePlanCancel();
     });
-    Route::post('modalTimeCancel', function(ActService $ActService){
-        return $ActService->setServiceTimeCancel();
-    });
-    Route::post('modalZoneCancel', function(ActService $ActService){
-        return $ActService->setServiceZoneCancel();
-    });
-    Route::post('modalTodayCancel', function(ActService $ActService){
-        return $ActService->setServiceTodayCancel();
-    });
+    Route::post('modalTimeCancel', 'ActController@modalTimeCancel');
+    Route::post('modalZoneCancel', 'ActController@modalZoneCancel');
+    Route::post('modalDayCancel', 'ActController@modalDayCancel');
 //봉사보고관리
     //봉사보고관리
     Route::post('modalProductDetail', function(ReportService $ReportService){

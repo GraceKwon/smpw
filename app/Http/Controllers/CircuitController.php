@@ -153,7 +153,6 @@ class CircuitController extends Controller
     {
         $AdminRoleList = $this->CommonService->getAdminRoleList();
         $MetroList = $this->CommonService->getMetroList();
-        $ServantTypeList = $this->CommonService->getServantTypeList();
         
         if( $request->AdminID !== '0' ) {
             $res = DB::select( 'uspGetStandingAdminDetail ?', [
@@ -168,60 +167,53 @@ class CircuitController extends Controller
             'Admin' => $Admin ?? null,
             'AdminRoleList' => $AdminRoleList,
             'MetroList' => $MetroList,
-            'ServantTypeList' => $ServantTypeList,
         ]);
     }
 
     public function putAdmins(Request $request)
     {
-        // $request->validate([
-        //     'AdminName' => [
-        //         'required',
-        //         'min:2',
-        //         'max:10',
-        //         Rule::unique('Admins')->ignore($request->AdminID, 'AdminID')->where('UseYn', 1),
-        //     ],
-        //     'AdminRoleID' => 'required',
-        //     'MetroID' => 'required',
-        //     'CircuitID' => 'required',
-        //     'CongregationID' => 'required',
-        //     'ServantTypeID' => 'required',
-        //     'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
-        // ]);
+        $request->validate([
+            'AdminName' => [
+                'required',
+                'min:2',
+                'max:10',
+                Rule::unique('Admins')->ignore($request->AdminID, 'AdminID')->where('UseYn', 1),
+            ],
+            'AdminRoleID' => 'required',
+            'MetroID' => 'required',
+            'CircuitID' => 'required',
+            'CongregationID' => 'required',
+            'ServantTypeID' => 'required',
+            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+        ]);
    
-
-        // if($request->AdminID === '0')
-        //     $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?', [
-        //             $request->MetroID,
-        //             $request->CircuitID,
-        //             '11112222',// UserPassword
-        //             $request->AdminName,
-        //             $request->AdminRoleID,
-        //             $request->Mobile,
-        //         ]);
-        // else
-        //     $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?', [
-        //             $request->AdminID,
-        //             $request->ZoneName,
-        //             $request->ZoneAlias,
-        //             $request->Latitude,
-        //             $request->Longitude,
-        //             $request->ZoneAddress,
-        //             $request->OrderNum,
-        //             session('auth.AdminID'),
-        //             session('auth.CircuitID')
-        //         ]);
-                // @AdminID int 
-                // , @UserPassword nvarchar(100)
-                // , @AdminRoleID int 
-                // , @TempPassYn bit
-                // , @Mobile varchar(13) 
+        if($request->AdminID === '0')
+            $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
+                    $request->MetroID,
+                    $request->CircuitID,
+                    $request->CongregationID,
+                    '11112222',// UserPassword
+                    $request->AdminName,
+                    $request->AdminRoleID,
+                    1,// TempUseYn
+                    $request->Mobile,
+                ]);
+        else
+            $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?', [
+                    $request->AdminID,
+                    $request->MetroID,
+                    $request->CircuitID,
+                    $request->CongregationID,
+                    $request->AdminName,
+                    $request->AdminRoleID,
+                    $request->Mobile,
+                ]);
         
 
-        // if(getAffectedRows($res) === 0) 
+        if(getAffectedRows($res) === 0) 
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
-        // else
-        //     return redirect('/admins');
+        else
+            return redirect('/admins');
         
     }
 

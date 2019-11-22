@@ -172,7 +172,7 @@ class ActService
         ]);
     }
 
-    public function setServiceTodayCancel()
+    public function setServiceDayCancel()
     {
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
 

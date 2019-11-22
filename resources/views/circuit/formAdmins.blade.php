@@ -138,31 +138,11 @@
                         @enderror
                     </div>
                 </td>
-                <th>
-                    <label class="label" for="ServantTypeID">신분</label>
-                </th>
-                <td>
-                    <div class="inline-responsive">
-                        <select class="custom-select @error('ServantTypeID') is-invalid @enderror" 
-                            id="ServantTypeID"
-                            name="ServantTypeID"
-                            v-model="ServantTypeID">
-                            <option value="">선택</option>
-                            @foreach ($ServantTypeList as $ServantType)
-                                <option value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
-                            @endforeach
-                        </select>
-                        @error('ServantTypeID')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror                    
-                    </div>
-                </td>
-            </tr>
-            <tr>
+               
                 <th>
                     <label class="label" for="Mobile">연락처</label>
                 </th>
-                <td colspan="3">
+                <td>
                     <div class="inline-responsive">
                         <input type="text" 
                             class="form-control @error('Mobile') is-invalid @enderror" 

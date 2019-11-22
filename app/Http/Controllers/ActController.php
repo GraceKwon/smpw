@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\ActService;
+use App\Service\PushService;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
@@ -14,10 +15,11 @@ use FCM;
 
 class ActController extends Controller
 {
-    public function __construct(CommonService $CommonService, ActService $ActService)
+    public function __construct(CommonService $CommonService, ActService $ActService, PushService $PushService)
     {
         $this->CommonService = $CommonService;
         $this->ActService = $ActService;
+        $this->PushService = $PushService;
         // $this->middleware('admin_auth');
     }
 
@@ -60,6 +62,24 @@ class ActController extends Controller
     public function create()
     {
         return view('act.create');
+    }
+
+    public function modalTimeCancel()
+    {
+        // $this->ActService->setServiceTimeCancel();
+        $this->PushService->RequestPushTimeCancel();
+    }
+
+    public function modalZoneCancel()
+    {
+        // $this->ActService->setServiceTimeCancel();
+        return $this->PushService->RequestPushZoneCancel();
+    }
+
+    public function modalDayCancel()
+    {
+        // $this->ActService->setServiceTimeCancel();
+        return $this->PushService->RequestPushDayCancel();
     }
 
     public function fcm()

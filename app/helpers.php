@@ -76,6 +76,11 @@ function getServiceZoneName($ServiceZoneID = null)
 	return  DB::table('ServiceZones')->where( 'ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID )->value('ZoneName');
 }
 
+function getServiceTime($ServiceTimes = null)
+{
+	return  DB::table('ServiceTimes')->where( 'ServiceTimeID', $ServiceTimeID ?? request()->ServiceTimeID )->value('ServiceTime');
+}
+
 function getProductName($ProductID = null)
 {
 	return  DB::table('Products')->where( 'ProductID', $ProductID ?? request()->ProductID )->value('ProductName');
@@ -106,6 +111,12 @@ function sprintfServiceTime($ServiceTime)
 function getItemID($Item, $Separate) {
 
 	return DB::table('ItemCodes')->where([['Item', $Item],['Separate', $Separate]])->value('ID');
+
+ }
+
+ function getItem($ID, $Separate) {
+
+	return DB::table('ItemCodes')->where([['ID', $ID],['Separate', $Separate]])->value('Item');
 
  }
 

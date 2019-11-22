@@ -91,15 +91,13 @@ class PublisherController extends Controller
             'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
         ]);
         if($request->PublisherID === '0')
-            $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
-                    'AAAA00045',//$request->Account,
+            $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherName,
                     '11112222',//$request->UserPassword,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
                     40,//$request->MobileOsKindID,
-                    null,//$request->PhotoFilePath,
                     $request->PioneerTypeID,
                     $request->ServantTypeID,
                     1,//$request->UseYn,
@@ -109,14 +107,13 @@ class PublisherController extends Controller
                     $request->EndTypeID,
                 ]);
         else
-            $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?,?', [
+            $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
                     $request->PublisherName,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
                     40,//$request->MobileOsKindID,
-                    null,//$request->PhotoFilePath,
                     $request->PioneerTypeID,
                     $request->ServantTypeID,
                     1,//$request->UseYn,
