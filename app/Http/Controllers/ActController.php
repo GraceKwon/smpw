@@ -115,7 +115,7 @@ class ActController extends Controller
     public function fcmtopic()
     {
         $notificationBuilder = new PayloadNotificationBuilder('my title');
-        $notificationBuilder->setBody('Hello world')
+        $notificationBuilder->setBody('Hello topic 1')
                             ->setSound('default');
         
         $notification = $notificationBuilder->build();
