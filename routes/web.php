@@ -146,6 +146,8 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('notices/{id}', 'BoardController@view_detail_notices');
     Route::get('notices/{id}/form', 'BoardController@view_form_notices');
     Route::post('notices/{id}/form', 'BoardController@postForm');
+    Route::get('notices/{id}/file/{fid}', 'BoardController@file_download');
+
 
 //메세지함
     //받음메세지함
