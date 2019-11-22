@@ -111,7 +111,6 @@
     </div>
 </section>
 @endsection
-
 @section('script')
 <script>
     var app = new Vue({

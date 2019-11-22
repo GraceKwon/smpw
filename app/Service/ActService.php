@@ -190,4 +190,36 @@ class ActService
        
     }
 
+    public function getArrayRequiredServiceTime()
+    {
+        request()->ServiceZoneID = 1;
+        request()->ServiceDate = '2019-11-04';
+        $res = DB::table('ServiceTimes')
+            ->select(
+                // 'ServiceTimes.ServiceZoneID',
+                // 'ServiceTimes.ServiceTimeID',
+                'ServiceTimes.ServiceTime',
+                'ServiceActs.ServiceTimeID',
+                DB::raw('ServiceActs.CC')
+            )
+            ->leftjoin('ServiceActs', function ($join) {
+                $join->on('ServiceTimes.ServiceTimeID', '=', 'ServiceActs.ServiceTimeID')
+                    ->select(DB::raw('COUNT(*) as CC'))
+                    ->whereNull('CancelDate')
+                    ->whereYear('ServiceDate', date('Y', strtotime( request()->ServiceDate )))
+                    ->whereMonth('ServiceDate', date('m', strtotime( request()->ServiceDate )))
+                    ->whereDay('ServiceDate', date('d', strtotime( request()->ServiceDate )));
+            })
+            ->where([
+                [ 'ServiceTimes.ServiceZoneID', request()->ServiceZoneID ],
+                [ 'ServiceTimes.ServiceZoneID', request()->ServiceZoneID ],
+                [ 'ServiceTimes.ServiceYoil', getWeekName(  date('w', strtotime( request()->ServiceDate )) )],
+            ])
+            ->whereNull('ServiceActs.ServiceTimeID')
+            ->groupBy(['ServiceActs.ServiceTimeID', 'ServiceTimes.ServiceTime'])
+            ->get();
+        dd($res);
+       
+    }
+
 }

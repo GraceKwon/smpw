@@ -72,3 +72,16 @@
     pointer-events: none;
     background-color: transparent;
 }
+
+.off input{
+    background-color: #fff !important;
+    border: 0
+}
+.off select{
+    background-color: #fff !important;
+    border: 0
+}
+.off textarea{
+    background-color: #fff !important;
+    border: 0
+}

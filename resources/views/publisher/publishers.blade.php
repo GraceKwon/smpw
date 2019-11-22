@@ -1,10 +1,11 @@
 @extends('layouts.frames.master')
 @section('content')
-
     @include('layouts.sections.search', [
-        'inputText' => [
-            'label' => '이름',
-            'id' =>'PublisherName'
+        'inputTexts' => [
+            [
+                'label' => '이름',
+                'id' =>'PublisherName'
+            ]
         ],
         'selectBoxs' => [
             [ 
@@ -27,11 +28,11 @@
                 'options' => [
                     [
                         'label' => '봉사중',
-                        'value' => '0',
+                        'value' => 0,
                     ],
                     [
                         'label' => '중단',
-                        'value' => '1',
+                        'value' => 1,
                     ]
                 ] 
             ],
@@ -97,38 +98,6 @@
             </tr>
             </thead>
             <tbody>
-                {{-- <tr>
-                    <td>
-                        201
-                    </td>
-                    <td>
-                        남양주
-                    </td>
-                    <td>
-                        경기18
-                    </td>
-                    <td>
-                        남양주양지
-                    </td>
-                    <td>
-                        김사랑
-                    </td>
-                    <td>
-                        형제
-                    </td>
-                    <td>
-                        장로
-                    </td>
-                    <td>
-                        봉사중
-                    </td>
-                    <td>
-                        010-1234-5678
-                    </td>
-                    <td>
-                        2019-03-23
-                    </td>
-                </tr> --}}
                 @foreach ($PublisherList as $Publisher)
                 <tr class="pointer"
                     onclick="location.href = '/{{request()->path()}}/{{ $Publisher->PublisherID }}'">
@@ -178,11 +147,3 @@
 
 </section>
 @endsection
-
-@section('popup')
-@endsection
-
-{{-- @section('script')
-<script>
-</script>
-@endsection --}}

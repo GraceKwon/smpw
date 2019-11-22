@@ -48,7 +48,7 @@
     </div>
     <!-- end : common elements wrap -->
     <div>
-        <button class="btn btn-primary btn-sm" @click="_showModal('')">지원요청하기</button>
+        <button class="btn btn-primary btn-sm" @click="_showModal('modalPush')">지원요청하기</button>
     </div>
 </section>
 
@@ -91,7 +91,7 @@
                             });_showModal('modalCancel')">
                             구역봉사취소
                         </button>
-                        <button class="btn btn-outline-primary btn-block btn-sm" @click="_showModal('modalPublisherSet')">
+                        <button class="btn btn-outline-primary btn-block btn-sm" @click="_showModal('modalPush')">
                             지원요청하기
                         </button>
                     </div>
@@ -179,6 +179,15 @@
         :cancel-range="CancelRange"
         @close="showModal = ''" >
     </modal-cancel>
+
+    <modal-push v-if="showModal === 'modalPush'" 
+        {{-- :circuit-id="CircuitID"
+        :service-zone-id="ServiceZoneID"
+        :service-time-id="ServiceTimeID" 
+        :service-date="yyyymmdd"
+        :cancel-range="CancelRange" --}}
+        @close="showModal = ''" >
+    </modal-push>
 @endsection
 
 @section('script')
@@ -240,9 +249,6 @@
             },
             _showModal:function (modalName) {
                 this.showModal = modalName;
-            },
-            _closeModal:function (popupName) {
-                this.$refs[popupName].style.display = 'none';
             },
             _setParams:function (params){
                 for (var key in params) {

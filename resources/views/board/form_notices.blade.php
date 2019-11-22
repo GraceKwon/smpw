@@ -232,7 +232,7 @@
                         MetroID: this.form.MetroID 
                     }
                 };
-                axios.get('/api/getCircuitList', params)
+                axios.get('/getCircuitList', params)
                     .then(function (response) {
                         console.log(response.data);
                         this.CircuitList = response.data;

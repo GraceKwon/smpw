@@ -2,7 +2,8 @@
 
 /* font setting */
 @import url('https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css');
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean');
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean');
 @import url('https://use.fontawesome.com/releases/v5.4.1/css/all.css');
 
 /* reset */
@@ -35,11 +36,11 @@ body {
     line-height: 1.5;
     font-size: 1rem;
     overflow-x: hidden;
-    font-family: 'NanumSquare', sans-serif;
+    font-family: 'NanumSquare', sans-serif, 'Noto Sans KR', sans-serif, 'Nanum Gothic', sans-serif;
 }
 
 .font-family-root {
-    font-family: 'NanumSquare', sans-serif !important;
+    font-family: 'NanumSquare', sans-serif, 'Noto Sans KR', sans-serif, 'Nanum Gothic', sans-serif !important;
 }
 
 .color-root {
@@ -71,7 +72,7 @@ a:active {
 }
 
 input[type='password'] {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif, 'Nanum Gothic', sans-serif;
 }
 
 input::placeholder {
@@ -2003,6 +2004,10 @@ a.file {
 /* ------------------------------ */
 
 .table thead th {
+    background-color: rgba(75, 90, 170, .1) !important;
+}
+
+.table tbody th {
     background-color: rgba(75, 90, 170, .1) !important;
 }
 

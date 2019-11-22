@@ -60,12 +60,12 @@ return [
             'requests' => [
                 'name' => '방문요청관리',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['방문요청'],
+                'subpage' => '방문요청조회',
             ],
             'experiences' => [
                 'name' => '경험담관리',
                 'auth' => [1,2,3],
-                'subpage' => ['경험담보고'],
+                'subpage' => '경험담보고',
             ],
         ]
     ],
@@ -75,12 +75,13 @@ return [
         'submenus' => [
             'stocks' => [
                 'name' => '출판물재고관리',
-                'auth' => [1,2,3,4,5]
+                'auth' => [1,2,3,4,5],
+                'subpage' => '재고수량관리',
             ],
             'orders' => [
                 'name' => '출판물신청관리',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['출판물신청'],
+                'subpage' => '출판물신청',
             ]
         ]
     ],

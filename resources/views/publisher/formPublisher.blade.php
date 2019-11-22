@@ -245,10 +245,10 @@
                         class="form-control w-100 @error('Memo') is-invalid @enderror"  
                         id="Memo" 
                         name="Memo" 
-                        v-model="Memo" 
+                        {{-- v-model="Memo" --}}
                         rows="5" 
-                        placeholder="메모를 입력해 주세요."></textarea>
-                    @error('Memo')
+                        placeholder="메모를 입력해 주세요.">{{ old('Memo') ?? $Publisher->Memo  ?? '' }}</textarea>
+                        @error('Memo')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror 
                 </div>
@@ -268,11 +268,6 @@
                             v-model="EndDate" 
                             :disabled="StopYn === '0'"
                             placeholder="날자를 선택해 주세요">
-                        {{-- <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="far fa-calendar-alt"></i>
-                            </div>
-                        </div> --}}
                         @error('EndDate')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror 
@@ -402,9 +397,9 @@
                     name="SetStartDate"
                     v-model="SetStartDate"
                     placeholder="날자를 선택해 주세요">
-                    @error('SetStartDate')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror 
+                @error('SetStartDate')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror 
                 {{-- <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
@@ -434,7 +429,7 @@
             ServantTypeID: "{{ old('ServantTypeID') ?? $Publisher->ServantTypeID ?? '' }}",
             StopYn: "{{ old('StopYn') ?? isset($Publisher->EndDate) ? '1' : '0' }}",
             SupportYn: "{{ old('SupportYn') ?? $Publisher->SupportYn ?? '1' }}",
-            Memo: "{{ old('Memo') ?? $Publisher->Memo ?? '' }}",
+            // Memo: "",
             EndDate: "{{ old('EndDate') ?? $Publisher->EndDate ?? '' }}",
             EndTypeID: "{{ old('EndTypeID') ?? $Publisher->EndTypeID ?? '' }}",
             ServiceYoil: "{{ request('ServiceYoil') ?? '월' }}",

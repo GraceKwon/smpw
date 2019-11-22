@@ -111,7 +111,7 @@
     </div>
 </section>
 @endsection
-
+{{-- {{  dd($dailyServiceReportCnt) }} --}}
 @section('script')
 <script>
     var app = new Vue({

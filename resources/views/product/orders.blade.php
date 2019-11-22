@@ -1,67 +1,46 @@
 @extends('layouts.frames.master')
 @section('content')
-<section class="search-section">
-    <div class="search-form-item">
-        <label class="label" for="city">도시</label>
-        <select class="custom-select" id="city">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="circuits">순회구</label>
-        <select class="custom-select" id="circuits">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="congregation">회중</label>
-        <select class="custom-select" id="congregation">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="book">출판물명</label>
-        <select class="custom-select" id="book">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="date1">배송일자</label>
-        <div class="date-wrap">
-            <div class="input-group">
-                <input type="date" class="form-control" id="date1" placeholder="시작 날자를 선택해 주세요">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="div">~</div>
-            <div class="input-group">
-                <input type="date" class="form-control" id="date2" placeholder="마지막 날자를 선택해 주세요">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- /.search-form-item -->
-    <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
-    </div> <!-- /.search-btn-area -->
-</section>
+
+@push('slot')
+@if(isset($ProductList))
+<div class="search-form-item">
+    <label class="label" for="ServiceZoneID">출판물명</label>
+    <select class="custom-select" id="" name="ProductID" onchange="submit()">
+        <option value="">전체</option>
+        @foreach ($ProductList as $Product)
+            <option @if(request()->ProductID == $Product->ProductID ) selected @endif
+            value="{{ $Product->ProductID }}">{{ $Product->ProductName }}</option>
+        @endforeach
+    </select>
+</div> <!-- /.search-form-item -->
+@endif
+<div class="search-form-item">
+    <label class="label" for="CreateDate">신청일자</label>
+    <date-picker 
+        v-model="CreateDate" 
+        :input-id="'CreateDate'"
+        :input-name="'CreateDate'"
+        :input-class="'form-control'"
+        :value-type="'format'"
+        :icon-day="31"
+        {{-- :clearable="false" --}}
+        :lang="lang" 
+        :range="true"
+        width="260"
+        >
+    </date-picker>
+</div> <!-- /.search-form-item -->
+@endpush
+
+@include('layouts.sections.search')
 
 <section class="section-table-section">
     <div class="table-responsive">
         <table class="table table-center table-font-size-90">
             <thead>
             <tr>
-                <th></th>
+                <th>
+                </th>
                 <th>
                     <div class="min-width">
                         <span>No</span>
@@ -80,11 +59,6 @@
                 <th>
                     <div class="min-width">
                         <span>담당자</span>
-                    </div>
-                </th>
-                <th>
-                    <div class="min-width">
-                        <span>회중</span>
                     </div>
                 </th>
                 <th>
@@ -125,572 +99,179 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck1">201</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck2">
-                        <label class="custom-control-label" for="customCheck2"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck2">202</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck3">
-                        <label class="custom-control-label" for="customCheck3"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck3">203</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck4">
-                        <label class="custom-control-label" for="customCheck4"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck4">204</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck5">
-                        <label class="custom-control-label" for="customCheck5"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck5">205</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck6">
-                        <label class="custom-control-label" for="customCheck6"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck6">206</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck7">
-                        <label class="custom-control-label" for="customCheck7"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck7">207</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck8">
-                        <label class="custom-control-label" for="customCheck8"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck8">208</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck9">
-                        <label class="custom-control-label" for="customCheck9"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck9">209</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck10">
-                        <label class="custom-control-label" for="customCheck10"></label>
-                    </div>
-                </td>
-                <td>
-                    <label for="customCheck10">210</label>
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    김사랑
-                </td>
-                <td>
-                    남양주양지
-                </td>
-                <td>
-                    010-2485-3947
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    -
-                </td>
-                <td>
-                    청소년은 묻는다 – 질문과 효과있는 대답 1부
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    2019-03-23
-                </td>
-                <td>
-                    배송전
-                </td>
-            </tr>
-            </tbody>
+                {{--  {{ dd( count( $ProductOrderList) ) }}  --}}
+                @if( count( $ProductOrderList) === 0)
+                <tr>
+                    <td colspan="12">조회 결과가 없습니다.</td>
+                </tr>
+                @endif
+                @foreach ($ProductOrderList as $ProductOrder)
+                <tr ref="{{ $ProductOrder->ProductOrderID }}">
+                    <td>
+                        <input name="ProductOrderID[]"
+                            type="checkbox" 
+                            value="{{ $ProductOrder->ProductOrderID }}" @change="_change">
+                    </td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ listNumbering($loop->index, 30) }}
+                    </td>
+                    <td class="MetroName pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->MetroName }}
+                    </td>
+                    <td class="CircuitName pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->CircuitName }}
+                    </td>
+                    <td class="AdminName pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->AdminName }}
+                    </td>
+                    <td class="Mobile pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->Mobile }}
+                    </td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->ProductKind }}
+                    </td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->ProductAlias }}
+                    </td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->ProductName }}
+                    </td>
+                    <td class="pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->OrderCnt }}
+                    </td>
+                    <td class="CreateDate pointer"
+                        onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
+                        {{ $ProductOrder->CreateDate }}
+                    </td>
+                    <td class="pointer"
+                        @click="tracks = '{{ $ProductOrder->InvoiceCode }}'">
+                        {{ $ProductOrder->InvoiceCode }}
+                    </td>
+                </tr>
+                @endforeach
         </table>
     </div>
     <div class="btn-flex-area btn-flex-row justify-content-between mt-3">
         <div class="d-flex">
-            <button type="button" class="btn btn-success">
+            <button type="button" class="btn btn-success"
+                @if(!$ProductOrderList->count())
+                @endif
+                @click="_export">
                 엑셀파일 다운로드
             </button>
-            <button type="button" class="btn btn-info">
+            <button type="button" class="btn btn-info"
+                :disabled="checkedRow.length === 0"
+                @click="_showModal('modalInvoiceCode')">
                 송장정보입력
             </button>
         </div>
-        <div class="d-flex">
-            <button type="button" class="btn btn-primary">
-                출판물신청
-            </button>
-        </div>
+        @if(session('auth.CircuitID'))
+            @include('layouts.sections.registrationButton', [
+                'label' => '출판물신청',
+            ])
+        @endif    
     </div>
-    <div>
-        <ul class="page">
-            <li class="active"><a>1</a></li>
-            <li><a>2</a></li>
-            <li><a>3</a></li>
-            <li><a>4</a></li>
-            <li><a>5</a></li>
-        </ul>
-    </div>
+    {{ $ProductOrderList->appends( request()->all() )->links() }}
+
 </section>
 
-<section class="modal-layer-container" style="display :none">
-    <div class="mx-auto px-3">
-        <div class="mlp-wrap">
-            <div class="max-w-auto">
-                <div class="mlp-header">
-                    <div class="mlp-title">
-                        송장 정보 입력 팝업창
-                    </div>
-                    <div class="mlp-close">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="mlp-content text-center">
-                    <div class="table-area">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>도시</th>
-                                <th>순회구</th>
-                                <th>담당자</th>
-                                <th>회중</th>
-                                <th>연락처</th>
-                                <th>신청일자</th>
-                                <th>송장번호 입력</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>남양주</td>
-                                <td>경기18</td>
-                                <td>홍길동</td>
-                                <td>남양주양지</td>
-                                <td>010-1423-3232</td>
-                                <td>2019-04-30</td>
-                                <td>
-                                    <input type="text" class="form-control form-control-sm max-w-250px">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm">닫기</button>
-                    <button class="btn btn-primary btn-sm">확인</button>
-                </div>
-            </div> <!-- /.mlp-wrap -->
-        </div>
-    </div>
-</section>
-
-<section class="modal-layer-container" style="display :none">
-    <div class="mx-auto px-3">
-        <div class="mlp-wrap">
-            <div class="max-w-auto">
-                <div class="mlp-header">
-                    <div class="mlp-title">
-                        배송 조회
-                    </div>
-                    <div class="mlp-close">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="mlp-content text-center min-w-500px-desktop">
-                    <div class="table-area">
-                        <table class="table table-bordered">
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th>송장번호</th>
-                                <td>
-                                    <input type="text" class="form-control">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-3">
-                        <textarea class="form-control w-100" rows="10"></textarea>
-                    </div>
-                </div>
-                <div class="mlp-footer justify-content-end">
-                    <button class="btn btn-outline-secondary btn-sm">닫기</button>
-                    <button class="btn btn-primary btn-sm">확인</button>
-                </div>
-            </div> <!-- /.mlp-wrap -->
-        </div>
-    </div>
-</section>
 @endsection
 
 @section('popup')
+<modal-invoice-code v-if="showModal === 'modalInvoiceCode'" 
+    :array="checkedRow"
+    @submit="_setInvoiceCode"
+    @close="showModal = ''">
+</modal-invoice-code>
+<modal-delivery-tracking v-if="showModal === 'modalDeliveryTracking'" 
+    :tracks="tracks"
+    @close="showModal = ''">
+</modal-delivery-tracking>
 @endsection
 
-{{-- @section('script')
+@section('script')
+@include('product.modalInvoiceCode')
+@include('product.modalDeliveryTracking')
 <script>
+    var app = new Vue({
+        el:'#wrapper-body',
+        mixins: [datepickerLang],
+        data:{
+            showModal: '',
+            tracks: '',
+            CreateDate: [
+                '{{ request()->StartDate }}', 
+                '{{ request()->EndDate }}', 
+            ],
+            checkedRow: [],
+        },
+        computed:{
+            query: function () {
+                var query = '?MetroID={{ request()->MetroID }}';
+                    query += '&CircuitID={{ request()->MetroID }}';
+                    query += '&ProductID={{ request()->ProductID }}';
+                    query += '&StartDate=' + this.CreateDate[0];
+                    query += '&EndDate=' + this.CreateDate[1];
+                return query;
+            }
+        },
+        watch: {
+            tracks: function () {
+                if(this.tracks !== '');
+                    this._showModal('modalDeliveryTracking');
+            }
+        },
+        methods:{
+            _showModal:function (modalName) {
+                this.showModal = modalName;
+            },
+            _export:function () {
+                location.href = '/{{ request()->path() }}/export' + this.query;
+            },
+            _locationHref:function (e) {
+                if(e.target.className !== 'exception')
+                    location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'
+            },
+            _change:function (e) {
+                if(e.target.checked)
+                    this.checkedRow.push(Number(e.target.value))
+                else{
+                    var idx = this.checkedRow.indexOf(Number(e.target.value)) 
+                    if (idx > -1) this.checkedRow.splice(idx, 1)
+
+                }  
+                this.checkedRow.sort(function(a, b) { // 내림차순
+                    return b - a;
+                });
+            },
+            _setInvoiceCode:function (InvoiceCode) {
+                var formData = {
+                    InvoiceCode: InvoiceCode,
+                    ProductOrderID: this.checkedRow
+                }
+                axios.put('{{ request()->path() }}', formData)
+                    .then(function (response) {
+                        // console.log(response);
+                        location.reload()
+                    })
+                    .catch(function (error) {
+                        alert('실패했습니다.')
+                        console.log(error);
+                        console.log(error.response);
+                    });
+                // this.$refs.form.submit();
+                // location.href = '/{{ request()->path() }}/export' + this.query;
+            },
+        }
+    })
 </script>
-@endsection --}}
+@endsection

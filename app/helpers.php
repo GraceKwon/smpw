@@ -76,9 +76,19 @@ function getServiceZoneName($ServiceZoneID = null)
 	return  DB::table('ServiceZones')->where( 'ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID )->value('ZoneName');
 }
 
-function getCongregationName()
+function getProductName($ProductID = null)
 {
-	return  DB::table('Congregations')->where( 'CongregationID', session('auth.CongregationID') )->value('CongregationName');
+	return  DB::table('Products')->where( 'ProductID', $ProductID ?? request()->ProductID )->value('ProductName');
+}
+
+function getProductAlias($ProductID = null)
+{
+	return  DB::table('Products')->where( 'ProductID', $ProductID ?? request()->ProductID )->value('ProductAlias');
+}
+
+function getCongregationName($CongregationID = null)
+{
+	return  DB::table('Congregations')->where( 'CongregationID', $CongregationID ?? session('auth.CongregationID') )->value('CongregationName');
 }
 
 function getMobile()
@@ -103,5 +113,21 @@ function getItemID($Item, $Separate) {
 
 	$weeks = ['일', '월', '화', '수', '목', '금', '토'];  
 	return $weeks[$w];
+
+ }
+
+ function explodeRequestCreateDate() {
+
+	if(request()->CreateDate){
+		request()->CreateDate = explode('~', preg_replace('/\s+/', '', request()->CreateDate));
+		request()->StartDate = request()->CreateDate[0];
+		request()->EndDate = request()->CreateDate[1];
+	}
+
+}
+
+function listNumbering($index, $paginate) {
+
+	return ($index + 1) + ( (request()->input('page', 1)-1) * $paginate ) ;
 
  }

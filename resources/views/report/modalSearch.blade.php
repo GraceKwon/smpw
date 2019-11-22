@@ -1,11 +1,11 @@
-<script type="text/x-template" id="modalPublisherSet">
-    <section class="modal-layer-container" ref="modalPublisherSet">
+<script type="text/x-template" id="modalSearch">
+    <section class="modal-layer-container" ref="modalSearch">
         <div class="mx-auto px-3">
             <div class="mlp-wrap">
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            임의 배정
+                            봉사자 검색
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -20,6 +20,7 @@
                                     <td>
                                         <div class="d-flex justify-content-between">
                                             <input class="form-control form-control-sm mr-1" 
+                                                ref="PublisherName"
                                                 v-model="PublisherName"
                                                 @keypress.enter="_search"
                                                 placeholder="이름 입력">
@@ -39,8 +40,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>성명</th>
+                                    <th>성별</th>
                                     <th>회중</th>
-                                    <th>조회결과</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,8 +55,8 @@
                                 <tr v-for="Publisher in PublisherList" >
                                     <td>@{{ Publisher.PublisherID }}</td>
                                     <td class="pointer" @click="PublisherID = Publisher.PublisherID">@{{ Publisher.PublisherName }}</td>
+                                    <td>@{{ Publisher.Gender === 'M' ? '형제' : '자매' }}</td>
                                     <td>@{{ Publisher.CongregationName }}</td>
-                                    <td>@{{ Publisher.SupportYn ? '임의배정가능' : '임의배정불가' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -67,24 +68,9 @@
                             </span>
                         </div>
                         
-                        <div class="result-area border p-2 mt-3">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <div class="mr-3">
-                                    <span class="text-primary">@{{selectedName}}</span>
-                                    <small class="text-muted">@{{selectedCong}}</small>
-                                </div>
-                                <div class="inline-responsive">
-                                    <select class="custom-select custom-select-sm" v-model="LeaderYn">
-                                        <option value="0" selected>봉사자</option>
-                                        <option value="1">인도자</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="mlp-footer justify-content-end">
                         <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
-                        <button class="btn btn-primary btn-sm" @click="_submit()">임의 배정</button>
                     </div>
                 </div> <!-- /.mlp-wrap -->
             </div>
@@ -92,13 +78,10 @@
     </section> <!-- /.modal-layer-container -->
 </script>
 <script>
-    Vue.component('modal-publisher-set', {
-        template: '#modalPublisherSet',
+    Vue.component('modal-search', {
+        template: '#modalSearch',
         props: [
             'CircuitId',
-            'ServiceDate',
-            'ServiceTimeId',
-            'ServiceZoneId',
         ],
         data: function(){
             return {
@@ -110,49 +93,33 @@
                 lastPage: null,
             }
         },
-        computed: {
-            selectedName: function () {
-                var res = this.PublisherList.find(function (el) {
-                    return el.PublisherID == this.PublisherID;
-                }.bind(this))
-                return (typeof res !== 'undefined') ? res.PublisherName : '';
-            },
-            selectedCong: function () {
-                var res = this.PublisherList.find(function (el) {
-                    return el.PublisherID == this.PublisherID;
-                }.bind(this))
-                return (typeof res !== 'undefined') ? res.CongregationName : '';
+        mounted: function() {
+            this.$refs.PublisherName.focus();
+        },
+        watch: {
+            PublisherID: function(){
+                this.$emit('selected', {
+                    PublisherID: this.Publisher.PublisherID,
+                    PublisherName: this.Publisher.PublisherName,
+                    PublisherMobile: this.Publisher.Mobile,
+                    CongregationName: this.Publisher.CongregationName,
+                    PublisherGender: this.Publisher.Gender === 'M'? '형제' : '자매',
+                });
+                this.$emit('close');
             }
         },
-        methods:{
-            _submit: function(){
-                if(this.PublisherID === null){
-                    alert('봉사자를 조회하여 선택해주세요.') ;
-                    return;
-                } 
-                var formData = {
-                    ServiceZoneID: this.ServiceZoneId,
-                    ServiceTimeID: this.ServiceTimeId,
-                    PublisherID: this.PublisherID,
-                    LeaderYn: this.LeaderYn,
-                    WaitingYn: 0,
-                    ServiceDate: this.ServiceDate,
-                }
-                axios.post('/modalPublisherSet', formData)
-                    .then(function (response) {
-                        console.log(response.data);
-                        if(response.data === 'full') alert('해당 타임에 빈자리가 없습니다.');
-                        if(response.data === 'Already Leader') alert('이미 인도자가 있습니다.');
-                        location.reload();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+        computed: {
+            Publisher: function () {
+                var res = this.PublisherList.find(function (el) {
+                    return el.PublisherID == this.PublisherID;
+                }.bind(this))
+                return (typeof res !== 'undefined') ? res : '';
             },
+        },
+        methods:{
             _getList: function(){
                 var formData = {
                     CircuitID: this.CircuitId,
-                    ServiceZoneID: this.ServiceZoneId,
                     PublisherName: this.PublisherName,
                     page: this.page,
                 };

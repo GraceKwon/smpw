@@ -2,9 +2,11 @@
 @section('content')
 
     @include('layouts.sections.search', [
-        'inputText' => [
-            'label' => '이름',
-            'id' =>'keepZoneName'
+        'inputTexts' => [
+            [
+                'label' => '이름',
+                'id' =>'keepZoneName'
+            ]
         ]
     ])
     <section class="section-table-section">

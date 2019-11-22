@@ -59,8 +59,11 @@
                             </div>
                             <nav class="nav-member for-desktop">
                                 <ul>
-                                    <li>
+                                    {{-- <li>
                                         <a>내 정보 수정</a>
+                                    </li> --}}
+                                    <li class="split">
+                                        <a href="/ResetPwd">비밀번호초기화</a>
                                     </li>
                                     <li class="split">
                                         <a href="/logOut">로그아웃</a>

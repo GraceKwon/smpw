@@ -80,6 +80,9 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('CircuitID', '[0-9]+');
     //봉사일정생성
     Route::get('create', 'ActController@create');
+    Route::get('fcm', 'ActController@fcm');
+    Route::get('fcmtopic', 'ActController@fcmtopic');
+    
 
 //봉사보고관리
     //봉사보고관리
@@ -88,21 +91,46 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('reports/export', 'ReportController@exportReports');
 
     //방문요청관리
-    Route::get('requests', 'ReportController@view_requests');
-    Route::get('requests/{id}', 'ReportController@view_detail_requests');
-    Route::get('requests/{id}/form', 'ReportController@view_form_requests');
+    Route::get('requests', 'ReportController@requests');
+    Route::get('requests/{VisitRequestID}', 'ReportController@formRequests')
+        ->where('VisitRequestID', '[0-9]+');
+    Route::put('requests/{VisitRequestID}', 'ReportController@putRequests')
+        ->where('VisitRequestID', '[0-9]+');
+    Route::patch('requests/{VisitRequestID}', 'ReportController@confirmRequests')
+        ->where('VisitRequestID', '[0-9]+');
+    Route::post('requests/{VisitRequestID}', 'ReportController@receipRequests')
+        ->where('VisitRequestID', '[0-9]+');
     //경험담관리
-    Route::get('experiences', 'ReportController@view_experiences');
-    Route::get('experiences/{id}', 'ReportController@view_detail_experiences');
-    Route::get('experiences/{id}/form', 'ReportController@view_form_experiences');
+    Route::get('experiences', 'ReportController@experiences');
+    Route::get('experiences/{ExperienceID}', 'ReportController@formExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::get('experiences/{ExperienceID}/export', 'ReportController@exportExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::put('experiences/{ExperienceID}', 'ReportController@putExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::patch('experiences/{ExperienceID}', 'ReportController@circuitConfirmExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::post('experiences/{ExperienceID}', 'ReportController@branchConfirmExperiences')
+        ->where('ExperienceID', '[0-9]+');
+    Route::delete('experiences/{ExperienceID}', 'ReportController@deleteExperiences')
+        ->where('ExperienceID', '[0-9]+');
 
 //출판물관리
     //출판물재고관리
-    Route::get('stocks', 'ProductController@view_stocks');
+    Route::get('stocks', 'ProductController@stocks');
+    Route::get('stocks/export', 'ProductController@exportStocks');
+    Route::get('stocks/{CircuitID}', 'ProductController@formStocks')
+        ->where('CircuitID', '[0-9]+');
+    Route::put('stocks/{CircuitID}', 'ProductController@putStocks')
+        ->where('CircuitID', '[0-9]+');
     //출판물신청관리
-    Route::get('orders', 'ProductController@view_orders');
-    Route::get('orders/{id}', 'ProductController@view_detail_orders');
-    Route::get('orders/{id}/form', 'ProductController@view_form_orders');
+    Route::get('orders', 'ProductController@orders');
+    Route::put('orders', 'ProductController@putMutipleInvoiceCode');
+    Route::get('orders/export', 'ProductController@exportOrders');
+    Route::get('orders/{ProductOrderID}', 'ProductController@formOrders');
+    Route::put('orders/{ProductOrderID}', 'ProductController@putOrders');
+    Route::delete('orders/{ProductOrderID}', 'ProductController@deleteOrders');
+    Route::get('orders/{ProductOrderID}/form', 'ProductController@view_form_orders');
         
 //봉사기록통계
     //봉사자통계
@@ -131,3 +159,60 @@ Route::view('/errors/auth', 'errors.auth');
     //푸시메세지발송
     Route::get('pushes', 'LatterController@view_pushes');
     
+/*
+비동기
+*/
+use App\Service\CommonService;
+use App\Service\ReportService;
+use App\Service\ActService;
+use App\Service\ProductService;
+//공통
+Route::get('/getMetroList', function(CommonService $CommonService){
+    return $CommonService->getMetroList();
+});
+Route::get('/getCircuitList', function(CommonService $CommonService){
+    return $CommonService->getCircuitList();
+});
+Route::get('/getCongregationList', function(CommonService $CommonService){
+    return $CommonService->getCongregationList();
+});
+
+
+//봉사일정관리
+    //봉사일정관리
+    Route::post('modalPublisherSet', function(ActService $ActService){
+        return $ActService->setPublisherServicePlanInsert();
+    });
+    Route::post('modalPublisherSet/search', function(ActService $ActService){
+        return $ActService->modalPublisherSearch();
+    });
+    Route::post('modalPublisherCancel', function(ActService $ActService){
+        return $ActService->setPublisherServicePlanCancel();
+    });
+    Route::post('modalTimeCancel', function(ActService $ActService){
+        return $ActService->setServiceTimeCancel();
+    });
+    Route::post('modalZoneCancel', function(ActService $ActService){
+        return $ActService->setServiceZoneCancel();
+    });
+    Route::post('modalTodayCancel', function(ActService $ActService){
+        return $ActService->setServiceTodayCancel();
+    });
+//봉사보고관리
+    //봉사보고관리
+    Route::post('modalProductDetail', function(ReportService $ReportService){
+        return $ReportService->getReportProductDetailList();
+    });
+    Route::post('modalVisitRequestDetail', function(ReportService $ReportService){
+        return $ReportService->getReportVisitRequestDetailList();
+    });
+
+//출판물관리
+    //출판물신청
+    Route::post('getProductStock', function(ProductService $ProductService){
+        return $ProductService->getProductStock();
+    });
+//테스트
+    Route::get('get', function(ActService $ActService){
+        return $ActService->getArrayRequiredServiceTime();
+    });

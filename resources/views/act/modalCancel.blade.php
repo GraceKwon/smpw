@@ -89,7 +89,7 @@
                     CancelTypeID: this.CancelTypeID,
                     ServiceDate: this.ServiceDate,
                 }
-                axios.post('/api/' + this.url, formData)
+                axios.post('/' + this.url, formData)
                     .then(function (response) {
                         console.log(response);
                         location.reload()
