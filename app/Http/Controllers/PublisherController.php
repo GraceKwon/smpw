@@ -165,30 +165,30 @@ class PublisherController extends Controller
     {
         $request->validate([
             'SetStartDate' => 'required|date',
-        ]);
-        $ServiceSetType = $request->ServiceSetType;
-        $PublisherID = $request->PublisherID;
-        $SetStartDate = $request->SetStartDate;
-        // dd($ServiceSetType);
-        DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
-        {
-            foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
-                DB::statement('uspSetStandingServiceTimePublieherDelete ?,?', [
-                    $PublisherID,
-                    $ServiceTimeID,
-                    ]);
-
-                if($ServiceSetType !== '미지정')
-                    DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
-                        $PublisherID,
-                        $ServiceTimeID,
-                        ($ServiceSetType ==='인도자') ? 1 : 0,
-                        ($ServiceSetType ==='대기') ? 1 : 0,
-                        $SetStartDate,
-                    ]);
-            }
-        });
-
+            ]);
+            $ServiceSetType = $request->ServiceSetType;
+            $PublisherID = $request->PublisherID;
+            $SetStartDate = $request->SetStartDate;
+            // DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
+            // {
+                foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
+                    DB::statement('uspSetStandingServiceTimePublieherDelete ?,?', [
+                            $PublisherID,
+                            $ServiceTimeID,
+                        ]);
+                            
+                    if($ServiceSetType !== '미지정')
+                        DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
+                            $PublisherID,
+                            $ServiceTimeID,
+                            ($ServiceSetType ==='인도자') ? 1 : 0,
+                            ($ServiceSetType ==='대기') ? 1 : 0,
+                            $SetStartDate,
+                            ]);
+                }
+            // });
+                    
+        // dd($request->all());
         return back();
         
     }

@@ -9,6 +9,15 @@
             {{ session('success') }}
         </div>
     @endif
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <form method="POST"
     @submit="_confirm"
     @keydown.enter.prevent>
@@ -71,7 +80,11 @@
                             v-model="AdminRoleID">
                             <option value="">선택</option>
                             @foreach ($AdminRoleList as $AdminRole)
+                                {{-- @if( session('auth.AdminRoleID') === 1 
+                                || ($AdminRole->Item === '순회감독자' || $AdminRole->Item === '순회구보조자' || $AdminRole->Item === '조정장로')
+                                ) --}}
                                 <option value="{{ $AdminRole->ID }}">{{ $AdminRole->Item }}</option>
+                                {{-- @endif --}}
                             @endforeach
                         </select>
                         @error('AdminRoleID')
@@ -125,7 +138,8 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select @error('CongregationID') is-invalid @enderror"
+                        {{-- <select class="custom-select @error('CongregationID') is-invalid @enderror" --}}
+                        <select class="custom-select"
                             id="CongregationID"
                             name="CongregationID"
                             v-model="CongregationID">
@@ -133,9 +147,9 @@
                             <option v-for="Congregation in CongregationList"
                                 :value="Congregation.CongregationID">@{{ Congregation.CongregationName }}</option>
                         </select>
-                        @error('CongregationID')
+                        {{-- @error('CongregationID')
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        @enderror --}}
                     </div>
                 </td>
                

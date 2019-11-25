@@ -66,38 +66,42 @@ class ActController extends Controller
 
     public function modalPublisherCancel()
     {
-        // $this->ActService->setPublisherServicePlanCancel();
-        $this->PushService->PublisherCancel();
+        if($this->ActService->setPublisherServicePlanCancel())
+            return $this->PushService->PublisherCancel();
     }
 
     public function modalTimeCancel()
     {
-        // $this->ActService->setServiceTimeCancel();
-        $this->PushService->TimeCancel();
+        $PublisherIDs = $this->PushService->getPublisherIDsTimeCancel();
+        if($this->ActService->setServiceTimeCancel())
+            return $this->PushService->TimeCancel($PublisherIDs);
     }
 
     public function modalZoneCancel()
     {
-        // $this->ActService->setServiceTimeCancel();
-        return $this->PushService->ZoneCancel();
+        $PublisherIDs = $this->PushService->getPublisherIDsZoneCancel();
+        if($this->ActService->setServiceZoneCancel())
+            return $this->PushService->ZoneCancel($PublisherIDs);
     }
 
     public function modalDayCancel()
     {
-        // $this->ActService->setServiceTimeCancel();
-        return $this->PushService->DayCancel();
+        $PublisherIDs = $this->PushService->getPublisherIDsDayCancel();
+        if($this->ActService->setServiceDayCancel())
+            return $this->PushService->DayCancel($PublisherIDs);
+        
     }
 
     public function modalPush()
     {
-        // $this->ActService->setServiceTimeCancel();
-        return $this->PushService->RequestJoin();
+        if($this->ActService->setServiceTimeCancel())
+            return $this->PushService->RequestJoin();
     }
 
     public function modalPushAllZones()
     {
-        // $this->ActService->setServiceTimeCancel();
-        return $this->PushService->RequestJoinAllZones();
+        if($this->ActService->setServiceTimeCancel())
+            return $this->PushService->RequestJoinAllZones();
     }
 
 
