@@ -191,7 +191,7 @@ class CircuitController extends Controller
             'AdminRoleID' => 'required',
             'MetroID' => 'required',
             'CircuitID' => 'required',
-            'CongregationID' => 'required',
+            // 'CongregationID' => 'required',
             'ServantTypeID' => 'required',
             'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
         ]);
