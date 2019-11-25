@@ -64,6 +64,12 @@ class ActController extends Controller
         return view('act.create');
     }
 
+    public function modalPublisherCancel()
+    {
+        // $this->ActService->setPublisherServicePlanCancel();
+        $this->PushService->PublisherCancel();
+    }
+
     public function modalTimeCancel()
     {
         // $this->ActService->setServiceTimeCancel();

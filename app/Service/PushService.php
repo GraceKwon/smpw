@@ -100,6 +100,18 @@ class PushService
 
     }
 
+    public function PublisherCancel()
+    {
+        $PublisherIDs = [request()->PublisherID];
+
+        $msg = request()->ServiceDate . "\r\n";
+        $msg .= getServiceZoneName() . "\r\n";
+        $msg .= sprintfServiceTime( getServiceTime() ). "\r\n";
+        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
+
+        $this->sendToToken($msg, $PublisherIDs);
+    }
+
     public function TimeCancel()
     {
         $PublisherIDs = DB::table('ServiceActs')->where([

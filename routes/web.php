@@ -187,9 +187,7 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     Route::post('modalPublisherSet/search', function(ActService $ActService){
         return $ActService->modalPublisherSearch();
     });
-    Route::post('modalPublisherCancel', function(ActService $ActService){
-        return $ActService->setPublisherServicePlanCancel();
-    });
+    Route::post('modalPublisherCancel', 'ActController@modalPublisherCancel');
     Route::post('modalTimeCancel', 'ActController@modalTimeCancel');
     Route::post('modalZoneCancel', 'ActController@modalZoneCancel');
     Route::post('modalDayCancel', 'ActController@modalDayCancel');
