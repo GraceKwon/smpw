@@ -18,6 +18,15 @@ class CircuitController extends Controller
 
     public function serviceZones(Request $request)
     {
+        if($request->MetroID === null 
+            && session('auth.MetroID') == null){
+            $request->MetroID = $this->CommonService->getMetroList()[0]->MetroID ?? '';
+        }
+
+        if($request->CircuitID === null 
+            && session('auth.CircuitID') === null){
+            $request->CircuitID = $this->CommonService->getCircuitList()[0]->CircuitID ?? '';
+        }
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
         

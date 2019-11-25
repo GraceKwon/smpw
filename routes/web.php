@@ -193,6 +193,8 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     Route::post('modalTimeCancel', 'ActController@modalTimeCancel');
     Route::post('modalZoneCancel', 'ActController@modalZoneCancel');
     Route::post('modalDayCancel', 'ActController@modalDayCancel');
+    Route::post('modalPush', 'ActController@modalPush');
+    Route::post('modalPushAllZones', 'ActController@modalPushAllZones');
 //봉사보고관리
     //봉사보고관리
     Route::post('modalProductDetail', function(ReportService $ReportService){

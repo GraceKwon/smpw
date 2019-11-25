@@ -1,6 +1,6 @@
 @extends('layouts.frames.master')
 @section('content')
-    @include('layouts.sections.search')
+    @include('layouts.sections.searchCalendar')
 
     <section class="section-table-section edit-circuits-territory-list">
         <div class="table-responsive">

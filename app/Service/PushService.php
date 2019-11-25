@@ -19,8 +19,8 @@ class PushService
     {
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60*20);
-        
-        $notificationBuilder = new PayloadNotificationBuilder('봉사취소안내');
+        $title = '[봉사취소안내]';
+        $notificationBuilder = new PayloadNotificationBuilder($title);
         $notificationBuilder->setBody($msg)
                             ->setSound('default');
         
@@ -34,27 +34,73 @@ class PushService
             ->pluck('PushTokenValue')
             ->toArray();
 
-        $downstreamResponse = FCM::sendTo($tokens, $option, $notification);
+        if( !empty($tokens) ){
+            $downstreamResponse = FCM::sendTo($tokens, $option, $notification);
+        }
+
+        $insertArray = [];
+        foreach ($PublisherIDs as $PublisherID) {
+            $insertArray[] = [
+                'AdminID' => session('auth.AdminID'),
+                'PushTitle' => $title,
+                'PushMessage' => $msg,
+                'PublisherID' => $PublisherID,
+                'PushKindID' => getItemID('일정취소', 'PushKindID'),
+                'SendDate' => date('Y-m-d H:i:s'),
+                'CreateDate' => date('Y-m-d H:i:s')
+            ];
+        }
+
+        DB::table('Pushes')->insert($insertArray);
         
-        $downstreamResponse->numberSuccess();
-        $downstreamResponse->numberFailure();
-        $downstreamResponse->numberModification();
+        // $downstreamResponse->numberSuccess();
+        // $downstreamResponse->numberFailure();
+        // $downstreamResponse->numberModification();
         
         // return Array - you must remove all this tokens in your database
-        $downstreamResponse->tokensToDelete();
+        // $downstreamResponse->tokensToDelete();
         
         // return Array (key : oldToken, value : new token - you must change the token in your database)
-        $downstreamResponse->tokensToModify();
+        // $downstreamResponse->tokensToModify();
         
         // return Array - you should try to resend the message to the tokens in the array
-        $downstreamResponse->tokensToRetry();
+        // $downstreamResponse->tokensToRetry();
         
         // return Array (key:token, value:error) - in production you should remove from your database the tokens present in this array
-        $downstreamResponse->tokensWithError();
-        var_dump($downstreamResponse);
+        // $downstreamResponse->tokensWithError();
     }
 
-    public function RequestPushTimeCancel()
+    public function sendToTopic($msg)
+    {
+        $title = '[봉사지원요청]';
+        $CircuitID =  request()->CircuitID ?? session('auth.CircuitID');
+        $notificationBuilder = new PayloadNotificationBuilder($title);
+        $notificationBuilder->setBody($msg)
+                            ->setSound('default');
+        
+        $notification = $notificationBuilder->build();
+        
+        $topic = new Topics();
+        $topic->topic($CircuitID);
+        
+        $topicResponse = FCM::sendToTopic($topic, null, $notification, null);
+        DB::table('Pushes')->insert([
+            'AdminID' => session('auth.AdminID'),
+            'PushTitle' => $title,
+            'PushMessage' => $msg,
+            'PushKindID' => getItemID('지원요청', 'PushKindID'),
+            'Topic' => $CircuitID,
+            'SendDate' => date('Y-m-d H:i:s'),
+            'CreateDate' => date('Y-m-d H:i:s')
+        ]);
+        // $topicResponse->isSuccess();
+        // $topicResponse->shouldRetry();
+        // $topicResponse->error();
+        // var_dump($topicResponse->isSuccess());
+
+    }
+
+    public function TimeCancel()
     {
         $PublisherIDs = DB::table('ServiceActs')->where([
                 ['ServiceDate' , request()->ServiceDate],
@@ -73,7 +119,7 @@ class PushService
         $this->sendToToken($msg, $PublisherIDs);
     }
 
-    public function RequestPushZoneCancel()
+    public function ZoneCancel()
     {
         $PublisherIDs = DB::table('ServiceActs')->where([
             ['ServiceDate' , request()->ServiceDate],
@@ -92,7 +138,7 @@ class PushService
         $this->sendToToken($msg, $PublisherIDs);
     }
 
-    public function RequestPushDayCancel()
+    public function DayCancel()
     {
         $ServiceZoneIDs = DB::table('ServiceZones')->where([
                 ['CircuitID' , ( session('auth.CircuitID') ?? request()->CircuitID )],
@@ -118,35 +164,57 @@ class PushService
         $this->sendToToken($msg, $PublisherIDs);
     }
 
-    public function getArrayRequiredServiceTime()
+    public function getArrayForRequestJoin($ServiceZoneID = null)
     {
-        request()->ServiceZoneID = 1;
-        request()->ServiceDate = '2019-11-04';
-        $res = DB::table('ServiceTimes')
+        return DB::table('ServiceActs')
             ->select(
-                // 'ServiceTimes.ServiceZoneID',
-                // 'ServiceTimes.ServiceTimeID',
                 'ServiceTimes.ServiceTime',
-                'ServiceActs.ServiceTimeID',
-                DB::raw('ServiceActs.CC')
+                DB::raw('COUNT(*) AS Cnt')
             )
-            ->leftjoin('ServiceActs', function ($join) {
-                $join->on('ServiceTimes.ServiceTimeID', '=', 'ServiceActs.ServiceTimeID')
-                    ->select(DB::raw('COUNT(*) as CC'))
-                    ->whereNull('CancelDate')
-                    ->whereYear('ServiceDate', date('Y', strtotime( request()->ServiceDate )))
-                    ->whereMonth('ServiceDate', date('m', strtotime( request()->ServiceDate )))
-                    ->whereDay('ServiceDate', date('d', strtotime( request()->ServiceDate )));
-            })
+            ->leftJoin('ServiceTimes', 'ServiceTimes.ServiceTimeID', 'ServiceActs.ServiceTimeID')
             ->where([
-                [ 'ServiceTimes.ServiceZoneID', request()->ServiceZoneID ],
-                [ 'ServiceTimes.ServiceZoneID', request()->ServiceZoneID ],
-                [ 'ServiceTimes.ServiceYoil', getWeekName(  date('w', strtotime( request()->ServiceDate )) )],
+                [ 'ServiceActs.ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID ],
+                [ 'ServiceActs.ServiceDate', date ('Y-m-d H:i:s' , strtotime(request()->ServiceDate) ) ],
+                [ 'ServiceTimes.ServiceTime', '>', (int)date ('H') ],
             ])
-            ->whereNull('ServiceActs.ServiceTimeID')
+            ->havingRaw('COUNT(*) < 6')
+            ->whereNull('ServiceActs.CancelDate')
             ->groupBy(['ServiceActs.ServiceTimeID', 'ServiceTimes.ServiceTime'])
             ->get();
-        dd($res);
+       
+    }
+
+    public function RequestJoin()
+    {
+        $res = $this->getArrayForRequestJoin();
+       
+        $msg = request()->ServiceDate . "\r\n";
+        $msg .= getServiceZoneName() . "\r\n";
+        foreach ($res as $row) {
+            $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . (6 - $row->Cnt) . ')' . "\r\n";
+        }
+        if( count($res) ) $this->sendToTopic($msg);
+    }
+    
+    public function RequestJoinAllZones()
+    {
+        $ServiceZoneIDs = DB::table('ServiceZones')->where([
+                ['CircuitID' , ( session('auth.CircuitID') ?? request()->CircuitID )],
+                ['UseYn' , 1],
+            ])
+            ->pluck('ServiceZoneID');
+
+        foreach( $ServiceZoneIDs as $ServiceZoneID ){
+
+            $res = $this->getArrayForRequestJoin($ServiceZoneID);
+                
+            $msg = request()->ServiceDate . "\r\n";
+            $msg .= getServiceZoneName($ServiceZoneID) . "\r\n";
+            foreach ($res as $row) {
+                $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . (6 - $row->Cnt) . ')' . "\r\n";
+            }
+            if( count($res) ) $this->sendToTopic($msg);
+        }          
        
     }
 

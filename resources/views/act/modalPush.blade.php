@@ -17,14 +17,15 @@
                         </div>
                         <div class="border p-3">
                             요청정보 :
-                            {{-- <span class="text-primary">11월 4일 / 10시 - 강남역 10번출구</span> --}}
+                            <span class="text-primary">@{{ ServiceDate }}  @{{ ZoneName }}</span>
                             구역
                         </div>
                         </div>
                     </div>
                     <div class="mlp-footer justify-content-end">
                         <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
-                        <button class="btn btn-primary btn-sm">봉사 요청</button>
+                        <button class="btn btn-primary btn-sm"
+                            @click="_submit">봉사 요청</button>
                     </div>
                 </div>
             </div> <!-- /.mlp-wrap -->
@@ -35,94 +36,35 @@
 <script>
     Vue.component('modal-push', {
         template: '#modalPush',
-        // props: [
-        //     'CircuitId',
-        //     'ServiceDate',
-        //     'ServiceTimeId',
-        //     'ServiceZoneId',
-        // ],
-        // data: function(){
-        //     return {
-        //         PublisherName: '',
-        //         PublisherList: [],
-        //         PublisherID: null,
-        //         LeaderYn: '0',
-        //         page: 1,
-        //         lastPage: null,
-        //     }
-        // },
-        // computed: {
-        //     selectedName: function () {
-        //         var res = this.PublisherList.find(function (el) {
-        //             return el.PublisherID == this.PublisherID;
-        //         }.bind(this))
-        //         return (typeof res !== 'undefined') ? res.PublisherName : '';
-        //     },
-        //     selectedCong: function () {
-        //         var res = this.PublisherList.find(function (el) {
-        //             return el.PublisherID == this.PublisherID;
-        //         }.bind(this))
-        //         return (typeof res !== 'undefined') ? res.CongregationName : '';
-        //     }
-        // },
-        // methods:{
-        //     _submit: function(){
-        //         if(this.PublisherID === null){
-        //             alert('봉사자를 조회하여 선택해주세요.') ;
-        //             return;
-        //         } 
-        //         var formData = {
-        //             ServiceZoneID: this.ServiceZoneId,
-        //             ServiceTimeID: this.ServiceTimeId,
-        //             PublisherID: this.PublisherID,
-        //             LeaderYn: this.LeaderYn,
-        //             WaitingYn: 0,
-        //             ServiceDate: this.ServiceDate,
-        //         }
-        //         axios.post('/modalPublisherSet', formData)
-        //             .then(function (response) {
-        //                 console.log(response.data);
-        //                 if(response.data === 'full') alert('해당 타임에 빈자리가 없습니다.');
-        //                 if(response.data === 'Already Leader') alert('이미 인도자가 있습니다.');
-        //                 location.reload();
-        //             })
-        //             .catch(function (error) {
-        //                 console.log(error);
-        //             });
-        //     },
-        //     _getList: function(){
-        //         var formData = {
-        //             CircuitID: this.CircuitId,
-        //             ServiceZoneID: this.ServiceZoneId,
-        //             PublisherName: this.PublisherName,
-        //             page: this.page,
-        //         };
-        //         axios.post('/modalPublisherSet/search', formData)
-        //             .then(function (response) {
-        //                 console.log(response.data);
-        //                 this.PublisherList = response.data.data;
-        //                 this.lastPage = response.data.lastPage;
-        //             }.bind(this))
-        //             .catch(function (error) {
-        //                 console.log(error);
-        //             });
-        //     },
-        //     _search: function(){
-        //         this.page = 1
-        //         this._getList()
-        //     },
-        //     _prevPage: function(){
-        //         if(this.page > 1){
-        //             this.page --;
-        //             this._getList()
-        //         } 
-        //     },
-        //     _nextPage: function(){
-        //         if(this.page < this.lastPage){
-        //             this.page ++;
-        //             this._getList()
-        //         } 
-        //     },
-        // }
+        props: [
+            'CircuitId',
+            'ZoneName',
+            'ServiceZoneId',
+            'ServiceDate',
+        ],
+        computed: {
+            url: function () {
+                if(this.ZoneName === '전체')
+                    return 'modalPushAllZones'   
+                else   
+                    return 'modalPush' 
+            },
+        },
+        methods:{
+            _submit: function(){
+                var formData = {
+                    CircuitID: this.CircuitId,
+                    ServiceZoneID: this.ServiceZoneId,
+                    ServiceDate: this.ServiceDate,
+                };
+                axios.post('/' + this.url , formData)
+                    .then(function (response) {
+                        console.log(response.data);
+                    }.bind(this))
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+        }
     })
 </script>

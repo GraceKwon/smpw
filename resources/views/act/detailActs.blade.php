@@ -48,7 +48,11 @@
     </div>
     <!-- end : common elements wrap -->
     <div>
-        <button class="btn btn-primary btn-sm" @click="_showModal('modalPush')">지원요청하기</button>
+        <button class="btn btn-primary btn-sm" 
+            :disabled="Passing"
+            @click="_setParams({
+                ZoneName: '전체',
+                });_showModal('modalPush')">지원요청하기</button>
     </div>
 </section>
 
@@ -91,7 +95,12 @@
                             });_showModal('modalCancel')">
                             구역봉사취소
                         </button>
-                        <button class="btn btn-outline-primary btn-block btn-sm" @click="_showModal('modalPush')">
+                        <button class="btn btn-outline-primary btn-block btn-sm" 
+                            :disabled="Passing"
+                            @click="_setParams({
+                                ServiceZoneID: '{{$ServiceZoneID}}',
+                                ZoneName: '{{ $ArrayTimeID['ZoneName'] }}',
+                                });_showModal('modalPush')">
                             지원요청하기
                         </button>
                     </div>
@@ -181,11 +190,10 @@
     </modal-cancel>
 
     <modal-push v-if="showModal === 'modalPush'" 
-        {{-- :circuit-id="CircuitID"
+        :circuit-id="CircuitID"
         :service-zone-id="ServiceZoneID"
-        :service-time-id="ServiceTimeID" 
         :service-date="yyyymmdd"
-        :cancel-range="CancelRange" --}}
+        :zone-name="ZoneName"
         @close="showModal = ''" >
     </modal-push>
 @endsection
@@ -208,6 +216,7 @@
             ServiceZoneID: null,
             PublisherID: null,
             CancelRange: null,
+            ZoneName: null
         },
         watch: {
             today: function(){
@@ -236,6 +245,13 @@
                 var dd = ('0' + this.today.getDate()).slice(-2);
                 return yyyy + '-' + mm + '-' + dd;
             },
+            Passing: function(){
+                var today = new Date();
+                if( this.today.getFullYear() < today.getFullYear()) return true;
+                if( this.today.getMonth() < today.getMonth()) return true;
+                if( this.today.getDate() < today.getDate()) return true;
+                return false;
+            }
         },
         methods:{
             _prevDate:function () {
