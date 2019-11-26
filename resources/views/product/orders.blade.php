@@ -237,10 +237,6 @@
             _export:function () {
                 location.href = '/{{ request()->path() }}/export' + this.query;
             },
-            _locationHref:function (e) {
-                if(e.target.className !== 'exception')
-                    location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'
-            },
             _change:function (e) {
                 if(e.target.checked)
                     this.checkedRow.push(Number(e.target.value))
