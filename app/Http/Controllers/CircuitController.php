@@ -128,9 +128,8 @@ class CircuitController extends Controller
     {
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
-        $CongregationList = $this->CommonService->getCongregationList();
+        // $CongregationList = $this->CommonService->getCongregationList();
         $AdminRoleList = $this->CommonService->getAdminRoleList();
-        $ServantTypeList = $this->CommonService->getServantTypeList();
         
         $paginate = 30;  
         $page = $request->input('page', '1');
@@ -139,22 +138,22 @@ class CircuitController extends Controller
                 ( session('auth.MetroID') ?? $request->MetroID ),
                 ( session('auth.CircuitID') ?? $request->CircuitID ),
                 $request->CongregationID,
+                $request->AdminRoleID,
                 $request->AdminName,
                 $request->Gender,
             ];
 
-        $data = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
-        $count = DB::select('uspGetStandingAdminListCnt ?,?,?,?,?', $parameter);
+        $count = DB::select('uspGetStandingAdminListCnt ?,?,?,?,?,?', $parameter);
         $AdminList = setPaginator($paginate, $page, $data, $count);
    
         return view( 'circuit.admins', [
             'AdminList' => $AdminList,
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
-            'CongregationList' => $CongregationList,
+            // 'CongregationList' => $CongregationList,
             'AdminRoleList' => $AdminRoleList,
-            'ServantTypeList' => $ServantTypeList
         ]);
     }
 
@@ -182,18 +181,17 @@ class CircuitController extends Controller
     public function putAdmins(Request $request)
     {
         $request->validate([
-            'AdminName' => [
-                'required',
-                'min:2',
-                'max:10',
-                Rule::unique('Admins')->ignore($request->AdminID, 'AdminID')->where('UseYn', 1),
-            ],
+            'AdminName' => 'required|min:2|max:12',
+            // 'AdminName' => [
+            //     'required',
+            //     'min:2',
+            //     'max:12',
+            //     Rule::unique('Admins')->ignore($request->AdminID, 'AdminID')->where('UseYn', 1),
+            // ],
             'AdminRoleID' => 'required',
-            'MetroID' => 'required',
-            'CircuitID' => 'required',
-            'CongregationID' => 'required',
-            'ServantTypeID' => 'required',
-            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+            // 'MetroID' => 'required',
+            // 'CircuitID' => 'required',
+            'Mobile' => 'nullable|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
         ]);
    
         if($request->AdminID === '0')

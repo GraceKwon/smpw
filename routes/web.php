@@ -209,7 +209,3 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     Route::post('getProductStock', function(ProductService $ProductService){
         return $ProductService->getProductStock();
     });
-//테스트
-    Route::get('get', function(ActService $ActService){
-        return $ActService->getArrayRequiredServiceTime();
-    });

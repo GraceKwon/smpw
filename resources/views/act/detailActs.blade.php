@@ -247,10 +247,11 @@
             },
             Passing: function(){
                 var today = new Date();
-                if( this.today.getFullYear() < today.getFullYear()) return true;
-                if( this.today.getMonth() < today.getMonth()) return true;
-                if( this.today.getDate() < today.getDate()) return true;
-                return false;
+                if( this.today.getFullYear() >= today.getFullYear()) return false;
+                else if( this.today.getMonth() >= today.getMonth()) return false;
+                else if( this.today.getDate() >= today.getDate()) return false;
+                else
+                return true;
             }
         },
         methods:{

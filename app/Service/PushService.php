@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\Topics;
 use FCM;
 
@@ -17,16 +18,22 @@ class PushService
 
     public function sendToToken($msg, $PublisherIDs)
     {
-        $optionBuilder = new OptionsBuilder();
-        $optionBuilder->setTimeToLive(60*20);
+        // $optionBuilder = new OptionsBuilder();
+        // $optionBuilder->setTimeToLive(60*20);
         $title = '[봉사취소안내]';
         $notificationBuilder = new PayloadNotificationBuilder($title);
         $notificationBuilder->setBody($msg)
                             ->setSound('default');
+
+        $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData([
+            'title' => $title,
+            'body' => $msg,
+            ]);
         
-        
-        $option = $optionBuilder->build();
+        // $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
 
         $tokens = DB::table('Publishers')
             ->whereIn('PublisherID' ,$PublisherIDs)
@@ -35,7 +42,7 @@ class PushService
             ->toArray();
 
         if( !empty($tokens) ){
-            $downstreamResponse = FCM::sendTo($tokens, $option, $notification);
+            $downstreamResponse = FCM::sendTo($tokens, null, $notification, $data);
         }
 
         $insertArray = [];
@@ -68,22 +75,31 @@ class PushService
         
         // return Array (key:token, value:error) - in production you should remove from your database the tokens present in this array
         // $downstreamResponse->tokensWithError();
+
     }
 
     public function sendToTopic($msg)
     {
         $title = '[봉사지원요청]';
         $CircuitID =  request()->CircuitID ?? session('auth.CircuitID');
+
         $notificationBuilder = new PayloadNotificationBuilder($title);
         $notificationBuilder->setBody($msg)
                             ->setSound('default');
         
+        $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData([
+                'title' => $title,
+                'body' => $msg,
+            ]);
+
         $notification = $notificationBuilder->build();
-        
+        $data = $dataBuilder->build();
+
         $topic = new Topics();
         $topic->topic($CircuitID);
         
-        $topicResponse = FCM::sendToTopic($topic, null, $notification, null);
+        $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
         DB::table('Pushes')->insert([
             'AdminID' => session('auth.AdminID'),
             'PushTitle' => $title,
@@ -112,9 +128,9 @@ class PushService
         $this->sendToToken($msg, $PublisherIDs);
     }
 
-    public function TimeCancel()
+    public function getPublisherIDsTimeCancel()
     {
-        $PublisherIDs = DB::table('ServiceActs')->where([
+        return DB::table('ServiceActs')->where([
                 ['ServiceDate' , request()->ServiceDate],
                 ['ServiceTimeID' , request()->ServiceTimeID],
                 ['ServiceZoneID' , request()->ServiceZoneID],
@@ -122,18 +138,11 @@ class PushService
             ->whereNull('CancelDate')
             ->pluck('PublisherID')
             ->toArray();
-
-        $msg = request()->ServiceDate . "\r\n";
-        $msg .= getServiceZoneName() . "\r\n";
-        $msg .= sprintfServiceTime( getServiceTime() ). "\r\n";
-        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
-
-        $this->sendToToken($msg, $PublisherIDs);
     }
 
-    public function ZoneCancel()
+    public function getPublisherIDsZoneCancel()
     {
-        $PublisherIDs = DB::table('ServiceActs')->where([
+        return DB::table('ServiceActs')->where([
             ['ServiceDate' , request()->ServiceDate],
             ['ServiceZoneID' , request()->ServiceZoneID],
         ])
@@ -141,16 +150,9 @@ class PushService
         ->groupBy('PublisherID')
         ->pluck('PublisherID')
         ->toArray();
-        // return $PublisherIDs;
-        $msg = request()->ServiceDate . "\r\n";
-        $msg .= getServiceZoneName() . "\r\n";
-        $msg .= '전체시간'. "\r\n";
-        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
-
-        $this->sendToToken($msg, $PublisherIDs);
     }
 
-    public function DayCancel()
+    public function getPublisherIDsDayCancel()
     {
         $ServiceZoneIDs = DB::table('ServiceZones')->where([
                 ['CircuitID' , ( session('auth.CircuitID') ?? request()->CircuitID )],
@@ -159,7 +161,7 @@ class PushService
             ->pluck('ServiceZoneID')
             ->toArray();
       
-        $PublisherIDs = DB::table('ServiceActs')->where([
+        return DB::table('ServiceActs')->where([
                 ['ServiceDate' , request()->ServiceDate],
             ])
             ->whereIn('ServiceZoneID', $ServiceZoneIDs)
@@ -168,6 +170,31 @@ class PushService
             ->pluck('PublisherID')
             ->toArray(); 
 
+    }
+
+    public function TimeCancel($PublisherIDs = [])
+    {
+        $msg = request()->ServiceDate . "\r\n";
+        $msg .= getServiceZoneName() . "\r\n";
+        $msg .= sprintfServiceTime( getServiceTime() ). "\r\n";
+        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
+
+        $this->sendToToken($msg, $PublisherIDs);
+    }
+
+    public function ZoneCancel($PublisherIDs = [])
+    {
+        $msg = request()->ServiceDate . "\r\n";
+        $msg .= getServiceZoneName() . "\r\n";
+        $msg .= '전체시간'. "\r\n";
+        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
+
+        $this->sendToToken($msg, $PublisherIDs);
+    }
+
+
+    public function DayCancel($PublisherIDs = [])
+    {
         $msg = request()->ServiceDate . "\r\n";
         $msg .= '전체구역' . "\r\n";
         $msg .= '전체시간'. "\r\n";
@@ -187,8 +214,10 @@ class PushService
             ->where([
                 [ 'ServiceActs.ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID ],
                 [ 'ServiceActs.ServiceDate', date ('Y-m-d H:i:s' , strtotime(request()->ServiceDate) ) ],
-                [ 'ServiceTimes.ServiceTime', '>', (int)date ('H') ],
             ])
+            ->when( request()->ServiceDate === date('Y-m-d') , function ($query) {
+                return $query->where('ServiceTimes.ServiceTime', '>', (int)date('H') );
+            })
             ->havingRaw('COUNT(*) < 6')
             ->whereNull('ServiceActs.CancelDate')
             ->groupBy(['ServiceActs.ServiceTimeID', 'ServiceTimes.ServiceTime'])
@@ -205,6 +234,7 @@ class PushService
         foreach ($res as $row) {
             $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . (6 - $row->Cnt) . ')' . "\r\n";
         }
+        // return $res;
         if( count($res) ) $this->sendToTopic($msg);
     }
     

@@ -30,19 +30,14 @@
                             <span>순회구</span>
                         </div>
                     </th>
-                    <th>
+                    {{-- <th>
                         <div class="min-width">
                             <span>회중</span>
                         </div>
-                    </th>
+                    </th> --}}
                     <th>
                         <div class="min-width">
                             <span>이름</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="min-width">
-                            <span>신분</span>
                         </div>
                     </th>
                     <th>
@@ -73,16 +68,13 @@
                             {{ $Admin->MetroName }}
                         </td>
                         <td>
-                            순회구
+                            {{ $Admin->CircuitName }}
                         </td>
-                        <td>
-                            회중
-                        </td>
+                        {{-- <td>
+                            {{ $Admin->CongregationName }}
+                        </td> --}}
                         <td>
                             {{ $Admin->AdminName }}
-                        </td>
-                        <td>
-                            신분
                         </td>
                         <td>
                             {{ $Admin->Mobile }}

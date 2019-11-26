@@ -69,7 +69,7 @@
         <div class="search-form-item">
             <label class="label" for="AdminRoleID">권한</label>
             <select class="custom-select" id="AdminRoleID" name="AdminRoleID" onchange="submit()">
-                <option selected>전체</option>
+                <option value="" selected>전체</option>
                 @foreach ($AdminRoleList as $AdminRole)
                     <option @if(request()->AdminRoleID == $AdminRole->ID ) selected @endif
                         value="{{ $AdminRole->ID }}">{{ $AdminRole->Item }}</option>
