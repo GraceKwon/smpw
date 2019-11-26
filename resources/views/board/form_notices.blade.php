@@ -135,7 +135,10 @@
             type="button" 
             class="btn btn-secondary"
             onclick="location.href='/notices'">취소</button>
-        <button type="button" class="btn btn-primary" @click="trySubmit">저장</button>
+        <button 
+            type="button" 
+            class="btn btn-primary" 
+            @click="trySubmit">저장</button>
     </div> <!-- /.register-btn-area -->
 </section>
 
@@ -292,8 +295,5 @@
             }
         }
     })
-
-
-    
 </script>
 @endsection

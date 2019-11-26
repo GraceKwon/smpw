@@ -104,6 +104,32 @@
         </div> <!-- /.search-form-item -->
         @endif
 
+        @if(isset($AdminList))
+        <div class="search-form-item">
+            <label class="label" for="AdminRoleID">발신</label>
+            <select class="custom-select" id="AdminID" name="AdminID" onchange="submit()">
+                <option value="">전체</option>
+                @foreach ($AdminList as $Admin)
+                    <option @if(request()->AdminID == $Admin->AdminID ) selected @endif
+                        value="{{ $Admin->AdminID }}">{{ $Admin->AdminName }}</option>
+                @endforeach
+            </select>
+        </div> <!-- /.search-form-item -->
+        @endif
+
+        @if(isset($ReceiveAdminID))
+        <div class="search-form-item">
+            <label class="label" for="ReceiveAdminID">수신</label>
+            <select class="custom-select" id="ReceiveAdminID" name="ReceiveAdminID" onchange="submit()">
+                <option value="">전체</option>
+                @foreach ($ReceiveAdminID as $Admin)
+                    <option @if(request()->ReceiveAdminID == $Admin->AdminID ) selected @endif
+                        value="{{ $Admin->AdminID }}">{{ $Admin->AdminName }}</option>
+                @endforeach
+            </select>
+        </div> <!-- /.search-form-item -->
+        @endif
+
         @if(isset($selectBoxs))
             @foreach ($selectBoxs as $selectBox)
                 <div class="search-form-item">

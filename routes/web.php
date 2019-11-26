@@ -156,8 +156,10 @@ Route::view('/errors/auth', 'errors.auth');
     //보낸메세지함
     Route::get('sent', 'LatterController@view_sent');
     Route::get('sent/{id}', 'LatterController@view_form_sent');
+    Route::post('sent/{id}/form', 'LatterController@post_form_sent');
     //푸시메세지발송
     Route::get('pushes', 'LatterController@view_pushes');
+    Route::get('letter/{id}/file/{fid}', 'LatterController@file_download');
     
 /*
 비동기
