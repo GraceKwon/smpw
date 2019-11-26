@@ -45,13 +45,13 @@ class LoginController extends Controller
         if($res === []) $fail = '로그인에 실패하였습니다.<br>Caps Lock 키가 꺼져 있는지 확인한 뒤 다시 시도하십시오.';
 
         if($res){
-            $AdminID = $res[0]->AdminID;
+            $AdminID = $res[0]->AdminID ? (int)$res[0]->AdminID : null;
             $AdminName = $res[0]->AdminName;
-            $AdminRoleID = $res[0]->AdminRoleID;
-            $MetroID = $res[0]->MetroID;
-            $CircuitID = $res[0]->CircuitID;
-            $CongregationID = $res[0]->CongregationID;
-            $TempPassYn = $res[0]->TempPassYn;
+            $AdminRoleID = $res[0]->AdminRoleID ? (int)$res[0]->AdminRoleID : null;
+            $MetroID = $res[0]->MetroID ? (int)$res[0]->MetroID : null;
+            $CircuitID = $res[0]->CircuitID ? (int)$res[0]->CircuitID : null;
+            $CongregationID = $res[0]->CongregationID ? (int)$res[0]->CongregationID : null;
+            $TempPassYn = $res[0]->TempPassYn ? (int)$res[0]->TempPassYn : null;
             $admin_auth = config('admin_auth');
             $gnb = [];
             $auth_path = [];
@@ -86,12 +86,12 @@ class LoginController extends Controller
             }
             //세션 주입
             session(['auth.path' => $auth_path]);
-            session(['auth.AdminID' => (int)$AdminID]);
+            session(['auth.AdminID' => $AdminID]);
             session(['auth.AdminName' => $AdminName]);
-            session(['auth.AdminRoleID' => (int)$AdminRoleID]);
-            session(['auth.MetroID' => (int)$MetroID]);
-            session(['auth.CircuitID' => (int)$CircuitID]);
-            session(['auth.CongregationID' => (int)$CongregationID]);
+            session(['auth.AdminRoleID' => $AdminRoleID]);
+            session(['auth.MetroID' => $MetroID]);
+            session(['auth.CircuitID' => $CircuitID]);
+            session(['auth.CongregationID' => $CongregationID]);
             session(['gnb' => $gnb]);
             session(['breadcrumb' => $breadcrumb]);
         }
@@ -100,7 +100,7 @@ class LoginController extends Controller
             return back()
                 ->withInput(Input::except('UserPassword'))
                 ->withErrors(['fail' => $fail]);
-        else if($TempPassYn === 1)
+        else if( $TempPassYn === 1)
             return redirect('/SetPwd');
         else
             return redirect('/');
