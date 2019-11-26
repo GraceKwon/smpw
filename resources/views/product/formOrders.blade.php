@@ -141,8 +141,6 @@
                                         placeholder="송장번호를 입력해주세요."
                                     @endif
                                     >
-                                    {{ gettype( session('auth.AdminRoleID') ) }}
-                                    {{ session('auth.AdminRoleID') }}
                             </div>
                         </td>
                     </tr>
