@@ -86,12 +86,12 @@ class LoginController extends Controller
             }
             //세션 주입
             session(['auth.path' => $auth_path]);
-            session(['auth.AdminID' => $AdminID]);
+            session(['auth.AdminID' => (int)$AdminID]);
             session(['auth.AdminName' => $AdminName]);
-            session(['auth.AdminRoleID' => $AdminRoleID]);
-            session(['auth.MetroID' => $MetroID]);
-            session(['auth.CircuitID' => $CircuitID]);
-            session(['auth.CongregationID' => $CongregationID]);
+            session(['auth.AdminRoleID' => (int)$AdminRoleID]);
+            session(['auth.MetroID' => (int)$MetroID]);
+            session(['auth.CircuitID' => (int)$CircuitID]);
+            session(['auth.CongregationID' => (int)$CongregationID]);
             session(['gnb' => $gnb]);
             session(['breadcrumb' => $breadcrumb]);
         }
