@@ -125,7 +125,7 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('CircuitID', '[0-9]+');
     //출판물신청관리
     Route::get('orders', 'ProductController@orders');
-    Route::put('orders', 'ProductController@putMutipleInvoiceCode');
+    Route::post('orders', 'ProductController@putMutipleInvoiceCode');
     Route::get('orders/export', 'ProductController@exportOrders');
     Route::get('orders/{ProductOrderID}', 'ProductController@formOrders');
     Route::put('orders/{ProductOrderID}', 'ProductController@putOrders');

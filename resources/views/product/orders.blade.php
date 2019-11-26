@@ -258,7 +258,7 @@
                     InvoiceCode: InvoiceCode,
                     ProductOrderID: this.checkedRow
                 }
-                axios.put('{{ request()->path() }}', formData)
+                axios.post('{{ request()->path() }}', formData)
                     .then(function (response) {
                         // console.log(response);
                         location.reload()
