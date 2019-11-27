@@ -39,39 +39,6 @@
     font-size: 22px;
     color: #7b7b7b;
 }
-.dropdown-row {
-    display: block;
-    width: 100%;
-    padding: 0.25rem 1.5rem;
-    clear: both;
-    font-weight: 400;
-    color: #212529;
-    text-align: inherit;
-    white-space: nowrap;
-    background-color: transparent;
-    border: 0;
-  }
-
-.dropdown-row:hover,
-.dropdown-row:focus {
-    color: #16181b;
-    text-decoration: none;
-    background-color: #f8f9fa;
-}
-
-.dropdown-row.active,
-.dropdown-row:active {
-    color: #16181b;
-    text-decoration: none;
-    background-color: #f8f9fa;
-}
-
-.dropdown-row.disabled,
-.dropdown-row:disabled {
-    color: #6c757d;
-    pointer-events: none;
-    background-color: transparent;
-}
 
 .off input{
     background-color: #fff !important;
