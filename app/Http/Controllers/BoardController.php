@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Service\CommonService;
+use App\Service\PushService;
 use DB;
 
 class BoardController extends Controller
@@ -17,8 +18,8 @@ class BoardController extends Controller
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
-            ( session('auth.MetroID') ?? $request->MetroID ),
-            ( session('auth.CircuitID') ?? $request->CircuitID ),
+            $request->MetroID,
+            $request->CircuitID,
             $request->ReceiveGroupID
         ];
         $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
@@ -57,7 +58,7 @@ class BoardController extends Controller
         ]);
     }
 
-    public function postForm(Request $request)
+    public function postForm(Request $request, PushService $PushService)
     {   
         $request->validate([
             'ReceiveGroupID' => 'required',
@@ -84,7 +85,9 @@ class BoardController extends Controller
             session('auth.AdminID'),
             0
         ]);
-        $ID = $res[0]->computed;
+
+        // $ID = $res[0]->computed; 이렇게하면 윈도우서버에서 오류납니다. 아래코드로 수정함
+        $ID = getAffectedRows($res);
         if ($request->Files !== null) {
             foreach($files as $file)
             {
@@ -95,6 +98,9 @@ class BoardController extends Controller
                 ]);
             }
         }
+
+        if($request->CircuitID && (int)$request->ReceiveGroupID === (int)getItemID('봉사자전체' , 'ReceiveGroupID')) 
+        $PushService->newNotice();
 
         return;
 

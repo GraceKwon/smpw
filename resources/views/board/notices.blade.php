@@ -1,6 +1,6 @@
 @extends('layouts.frames.master')
 @section('content')
-@include('layouts.sections.search')
+@include('layouts.sections.searchNotice')
 
 <section class="section-table-section">
     <div class="table-responsive">
