@@ -137,13 +137,7 @@
                 var yyyy = this.today.getFullYear();
                 var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
                 return yyyy + '-' + mm;
-            },
-            yyyymmdd:function(){
-                var yyyy = this.today.getFullYear();
-                var mm = ('0' + (this.today.getMonth() + 1)).slice(-2);
-                var dd = ('0' + (this.today.getDate() + 1)).slice(-2);
-                return yyyy + '-' + mm + '-' + dd;
-            },
+            }
         },
         methods:{
             _prevCalendar:function () {
@@ -157,7 +151,6 @@
                 var mm = ('0' + (new Date().getMonth() + 1)).slice(-2);
                 var dd = ('0' + (new Date().getDate() + 1)).slice(-2);
                 var yyyymmdd = yyyy + '-' + mm + '-' + dd;
-                // this.today = new Date();
                 location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate=' + yyyymmdd
             }
         }
