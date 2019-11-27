@@ -78,8 +78,11 @@
                     @if( $i % 7 === 0 ) <tr> @endif
                     <td @if(session('auth.CircuitID') || request()->CircuitID)
                             onclick="location.href='{{ request()->path() }}/detail?MetroID={{ session('auth.MetroID') ?? request()->MetroID }}&CircuitID={{ session('auth.CircuitID') ?? request()->CircuitID }}&ServiceDate={{ request()->SetMonth . '-' . sprintf ('%02d', $day ) }}'"
-                        @else
-                        @endif>
+                        @endif
+                        @if( $day === (int)date('d'))
+                            class="isToday"
+                        @endif
+                        >
                         <div class="day 
                             @if( $i % 7 === 0 ) sun @endif
                             @if( ($i+1) % 7 === 0 ) sat @endif">
@@ -145,7 +148,11 @@
                 this.today = new Date(this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate());
             },
             _today:function () {
-                this.today = new Date();
+                var yyyy = new Date().getFullYear();
+                var mm = ('0' + (new Date().getMonth() + 1)).slice(-2);
+                var dd = ('0' + (new Date().getDate() + 1)).slice(-2);
+                var yyyymmdd = yyyy + '-' + mm + '-' + dd;
+                location.href='{{ request()->path() }}/detail?MetroID={{ session('auth.MetroID') ?? request()->MetroID }}&CircuitID={{ session('auth.CircuitID') ?? request()->CircuitID }}&ServiceDate=' + yyyymmdd;
             }
         }
     })

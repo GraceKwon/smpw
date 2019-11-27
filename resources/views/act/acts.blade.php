@@ -151,7 +151,7 @@
                 var mm = ('0' + (new Date().getMonth() + 1)).slice(-2);
                 var dd = ('0' + (new Date().getDate() + 1)).slice(-2);
                 var yyyymmdd = yyyy + '-' + mm + '-' + dd;
-                location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate=' + yyyymmdd
+                location.href='{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}?ServiceDate=' + yyyymmdd;
             }
         }
     })
