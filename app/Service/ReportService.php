@@ -11,8 +11,9 @@ class ReportService
 
     public function getDailyServiceReportCnt()
     {
-        $res = DB::select('uspGetStandingDailyServiceReportCnt ?', [
+        $res = DB::select('uspGetStandingDailyServiceReportCnt ?,?', [
             date('Y-m-01', strtotime( request()->SetMonth )),
+            ( session('auth.CircuitID') ?? request()->CircuitID ),
         ]);
         foreach($res as $object){
             $array[date('j', strtotime($object->YMD))] = $object;
