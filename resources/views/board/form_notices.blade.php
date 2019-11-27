@@ -12,22 +12,24 @@
                     <select class="custom-select"
                             id="MetroID"
                             name="MetroID"
+                            @if(session('auth.MetroID')) disabled @endif
                             v-model="form.MetroID">
                             <option value="">전체</option>
                             @foreach ($MetroList as $Metro)
-                                <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
+                                <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName}}</option>
                             @endforeach
                     </select>
                 </div>
             </td>
             <th>
-                <label class="label">지역(순회구)</label>
+                <label class="label">지역</label>
             </th>
             <td>
                 <div class="inline-responsive">
                     <select class="custom-select @error('CircuitID') is-invalid @enderror"
                         id="CircuitID"
                         name="CircuitID"
+                        @if(session('auth.CircuitID')) disabled @endif
                         v-model="form.CircuitID">
                         <option value="">전체</option>
                         <option v-for="Circuit in CircuitList"
@@ -156,8 +158,8 @@
         data:{
             CircuitList: [],
             form: {
-                MetroID: "",
-                CircuitID: "",
+                MetroID: "{{ session('auth.MetroID') }}",
+                CircuitID: "{{ session('auth.CircuitID') }}",
                 ReceiveGroupID: "",
                 DisplayYn: 1,
                 Title: "",
@@ -186,6 +188,7 @@
             },
         },
         mounted: function () {
+            this._getCircuitList();
             this.$nextTick(function () {
                 CKEDITOR.replace( 'notice-board' ,{
                     enterMode: CKEDITOR.ENTER_BR
