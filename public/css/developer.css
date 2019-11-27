@@ -85,3 +85,8 @@
     background-color: #fff !important;
     border: 0
 }
+
+.isToday {
+    background-color: #efeff6 !important;
+
+}
