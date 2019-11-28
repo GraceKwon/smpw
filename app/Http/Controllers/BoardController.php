@@ -105,7 +105,8 @@ class BoardController extends Controller
         }
 
         if($request->CircuitID && (int)$request->ReceiveGroupID === (int)getItemID('봉사자전체' , 'ReceiveGroupID')) 
-        $PushService->newNotice();
+        
+        $PushService->newNotice(); //푸시발송
 
         return;
 
