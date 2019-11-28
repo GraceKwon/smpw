@@ -13,7 +13,6 @@ class CircuitController extends Controller
     {
         $this->CommonService = $CommonService;
         $this->middleware('admin_auth');
-        // $this->middleware('CheckCircuitID', ['only' => ['putServiceZones']]);
     }
 
     public function serviceZones(Request $request)

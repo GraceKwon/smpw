@@ -130,7 +130,6 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('orders/{ProductOrderID}', 'ProductController@formOrders');
     Route::put('orders/{ProductOrderID}', 'ProductController@putOrders');
     Route::delete('orders/{ProductOrderID}', 'ProductController@deleteOrders');
-    Route::get('orders/{ProductOrderID}/form', 'ProductController@view_form_orders');
         
 //봉사기록통계
     //봉사자통계
@@ -142,24 +141,24 @@ Route::view('/errors/auth', 'errors.auth');
 
 //게시판관리
     //공지사항
-    Route::get('notices', 'BoardController@view_notices');
-    Route::get('notices/{id}', 'BoardController@view_detail_notices');
-    Route::get('notices/{id}/form', 'BoardController@view_form_notices');
-    Route::post('notices/{id}/form', 'BoardController@postForm');
-    Route::get('notices/{id}/file/{fid}', 'BoardController@file_download');
+    Route::get('notices', 'BoardController@notices');
+    Route::get('notices/{id}', 'BoardController@detailNotices');
+    Route::get('notices/{id}/form', 'BoardController@formNotices');
+    Route::post('notices/{id}/form', 'BoardController@putNotices');
+    Route::get('notices/{id}/file/{fid}', 'BoardController@fileDownload');
 
 
 //메세지함
     //받음메세지함
-    Route::get('inbox', 'LatterController@view_inbox');
-    Route::get('inbox/{id}', 'LatterController@view_detail_inbox');
+    Route::get('inbox', 'LatterController@inbox');
+    Route::get('inbox/{id}', 'LatterController@detailInbox');
     //보낸메세지함
-    Route::get('sent', 'LatterController@view_sent');
-    Route::get('sent/{id}', 'LatterController@view_form_sent');
-    Route::post('sent/{id}/form', 'LatterController@post_form_sent');
+    Route::get('sent', 'LatterController@sent');
+    Route::get('sent/{id}', 'LatterController@formSent');
+    Route::post('sent/{id}/form', 'LatterController@putSent');
     //푸시메세지발송
-    Route::get('pushes', 'LatterController@view_pushes');
-    Route::get('letter/{id}/file/{fid}', 'LatterController@file_download');
+    Route::get('pushes', 'LatterController@pushes');
+    Route::get('letter/{id}/file/{fid}', 'LatterController@fileDownload');
     
 /*
 비동기

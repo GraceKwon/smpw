@@ -10,7 +10,12 @@ use DB;
 
 class BoardController extends Controller
 {
-    public function view_notices(Request $request, CommonService $CommonService)
+    public function __construct()
+    {
+        $this->middleware('admin_auth');
+    }
+
+    public function notices(Request $request, CommonService $CommonService)
     {
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
@@ -35,7 +40,7 @@ class BoardController extends Controller
         ]);
     }
 
-    public function view_detail_notices($id)
+    public function detailNotices($id)
     {
         DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
@@ -47,18 +52,18 @@ class BoardController extends Controller
         ]);
     }
 
-    public function view_form_notices(CommonService $common)
+    public function formNotices(CommonService $common)
     {
         $MetroList = $common->getMetroList();
         $ReceiveGroupList = $common->getReceiveGroupList();
 
-        return view('board.form_notices', [
+        return view('board.formNotices', [
             'MetroList' => $MetroList,
             'ReceiveGroupList' => $ReceiveGroupList
         ]);
     }
 
-    public function postForm(Request $request, PushService $PushService)
+    public function putNotices(Request $request, PushService $PushService)
     {   
         $request->validate([
             'ReceiveGroupID' => 'required',
@@ -106,7 +111,7 @@ class BoardController extends Controller
 
     }
 
-    public function file_download($id, $fid)
+    public function fileDownload($id, $fid)
     {
         $FilePath = DB::table('NoticeFiles')
             ->where('NoticeFileID', $fid)

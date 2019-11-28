@@ -86,23 +86,23 @@ return [
         ]
     ],
     
-    'statistics' => [
-        'title' => '봉사기록통계',
-        'submenus' => [
-            'STTST_publishers' => [
-                'name' => '봉사자통계',
-                'auth' => [1,2]
-            ],
-            'STTST_reports' => [
-                'name' => '봉사보고통계',
-                'auth' => [1,2]
-            ],
-            'STTST_products' => [
-                'name' => '출판물배부통계',
-                'auth' => [1,2]
-            ]
-        ]
-    ],
+    // 'statistics' => [
+    //     'title' => '봉사기록통계',
+    //     'submenus' => [
+    //         'STTST_publishers' => [
+    //             'name' => '봉사자통계',
+    //             'auth' => [1,2]
+    //         ],
+    //         'STTST_reports' => [
+    //             'name' => '봉사보고통계',
+    //             'auth' => [1,2]
+    //         ],
+    //         'STTST_products' => [
+    //             'name' => '출판물배부통계',
+    //             'auth' => [1,2]
+    //         ]
+    //     ]
+    // ],
 
     'boards' => [
         'title' => '게시판관리',
@@ -121,7 +121,7 @@ return [
             'inbox' => [
                 'name' => '받은메세지함',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['상세보기'],
+                'subpage' => '상세보기',
             ],
             'sent' => [
                 'name' => '보낸메세지함',
@@ -130,7 +130,8 @@ return [
             ],
             'pushes' => [
                 'name' => '푸시메세지발송',
-                'auth' => [1,2,3,4,5]
+                'auth' => [1,2,3,4,5],
+                'subpage' => ['푸시메세지보내기', '상세보기'],
             ],
         ]
     ],

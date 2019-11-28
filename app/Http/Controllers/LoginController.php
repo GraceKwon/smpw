@@ -10,15 +10,6 @@ class LoginController extends Controller
 {
     public function login()
     {
-        // DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?',
-        //     [
-        //         'role5', // @Account
-        //         '11112222', //@UserPassword
-        //         '롤5', // @AdminName
-        //         5, // @AdminRoleID
-        //         1, // @TempUseYn
-        //         '010-7224-0578' // @Mobile
-        //      ]);
         return view('login');
     }
     public function logOut()
@@ -41,7 +32,6 @@ class LoginController extends Controller
                 $request->Account, 
                 $request->UserPassword,
             ]);
-        // dd($request->UserPassword);
         if($res === []) $fail = '로그인에 실패하였습니다.<br>Caps Lock 키가 꺼져 있는지 확인한 뒤 다시 시도하십시오.';
 
         if($res){

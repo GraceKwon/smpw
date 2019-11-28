@@ -20,7 +20,7 @@ class ActController extends Controller
         $this->CommonService = $CommonService;
         $this->ActService = $ActService;
         $this->PushService = $PushService;
-        // $this->middleware('admin_auth');
+        $this->middleware('admin_auth');
     }
 
     public function Acts(Request $request)
