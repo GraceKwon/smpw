@@ -75,7 +75,7 @@ class BoardController extends Controller
             $files = [];
             for ($i=0; $i < count( $request->Files ); $i++) { 
                 $files[] = [
-                    // 'path' => $request->Files[$i]->store('files'),
+                    'path' => $request->Files[$i]->store('files'),
                     'name' => $request->Files[$i]->getClientOriginalName()
                 ];
             }
@@ -96,7 +96,7 @@ class BoardController extends Controller
         if ($request->Files !== null) {
             foreach($files as $file)
             {
-                // Storage::move($file['path'], 'notice/'.$ID.'/'.$file['name']);
+                Storage::move($file['path'], 'notice/'.$ID.'/'.$file['name']);
                 DB::select('uspSetStandingNoticeFileInsert ?,?', [
                     $ID,
                     $file['name']
