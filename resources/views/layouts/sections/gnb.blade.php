@@ -71,14 +71,14 @@
                                 </ul>
                             </nav>
                             <div class="login-info-wrap">
-                                <span class="label">최근 로그인 :</span>
+                                {{-- <span class="label">최근 로그인 :</span>
                                 <span class="date">2019-03-02</span>
-                                <span class="time">23:21:27</span>
+                                <span class="time">23:21:27</span> --}}
                             </div>
                         </div>
                     </div>
                     <div class="soc-footer for-mobile">
-                        <a class="btn-log">로그아웃</a>
+                        <a class="btn-log" href="/logOut">로그아웃</a>
                     </div>
                 </section>
             </div> <!-- /.container -->
