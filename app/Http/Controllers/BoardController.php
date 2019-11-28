@@ -46,7 +46,7 @@ class BoardController extends Controller
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
 
-        return view('board.detail_notices', [
+        return view('board.detailNotices', [
             'Files' => $Files,
             'Notice' => $Notice[0]
         ]);
@@ -65,6 +65,7 @@ class BoardController extends Controller
 
     public function putNotices(Request $request, PushService $PushService)
     {   
+        return $request->Files[0];
         $request->validate([
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
