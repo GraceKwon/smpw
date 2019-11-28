@@ -96,7 +96,7 @@ class BoardController extends Controller
         if ($request->Files !== null) {
             foreach($files as $file)
             {
-                Storage::move($file['path'], 'notice/'.$ID.'/'.$file['name']);
+                // Storage::move($file['path'], 'notice/'.$ID.'/'.$file['name']);
                 DB::select('uspSetStandingNoticeFileInsert ?,?', [
                     $ID,
                     $file['name']
