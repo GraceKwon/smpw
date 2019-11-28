@@ -75,7 +75,7 @@ class BoardController extends Controller
             $files = [];
             for ($i=0; $i < count( $request->Files ); $i++) { 
                 $files[] = [
-                    'path' => $request->Files[$i]->store('files'),
+                    // 'path' => $request->Files[$i]->store('files'),
                     'name' => $request->Files[$i]->getClientOriginalName()
                 ];
             }
