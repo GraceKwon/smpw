@@ -65,7 +65,7 @@ class BoardController extends Controller
 
     public function putNotices(Request $request, PushService $PushService)
     {   
-        return $request->Files[0];
+        // return $request->Files[0];
         $request->validate([
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
