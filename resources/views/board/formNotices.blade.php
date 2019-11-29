@@ -287,7 +287,7 @@
                 axios.post('/notices/0/form', formData)
                 .then(function (response) {
                     console.log(response);
-                    // location.href = '/notices'
+                    location.href = '/notices'
                 })
                 .catch(function (error) {
                     console.log(error.response);
