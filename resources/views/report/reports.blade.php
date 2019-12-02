@@ -101,8 +101,13 @@
                             </div>
                             <div class="cal-item">
                                 <div class="cal-label">방문요청</div>
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-clipboard-list"></i>
                                 <div class="cal-value">{{$dailyServiceReportCnt[$day]->VisitRequestQty ?? 0}}</div>
+                            </div>
+                            <div class="cal-item">
+                                <div class="cal-label">전달사항</div>
+                                <i class="fas fa-edit"></i>
+                                <div class="cal-value">{{$dailyServiceReportCnt[$day]->MemoQty ?? 0}}</div>
                             </div>
                         @endif
                     </td>

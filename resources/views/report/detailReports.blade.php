@@ -144,7 +144,7 @@
                         });_showModal('modalMemoDetail')"
                         @endif>
                         <a>
-                            {{ $Report->MemoQty }}
+                            {{ $Report->MemoQty > 0 ? $Report->MemoQty : '' }}
                         </a>
                     </td>
                 </tr>
