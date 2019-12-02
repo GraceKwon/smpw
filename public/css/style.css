@@ -1903,6 +1903,41 @@ a.file {
     border: 1px solid #ddd;
     display: flex;
     display: -ms-flexbox;
+    display: -webkit-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.calender-section .container-cancel {
+    order: 1;
+    margin-top: .5rem;
+    width: calc(50% - .125rem);
+}
+
+.calender-section .container-cancel .btn {
+    width: 100%
+}
+
+.calender-section .select-date-wrap{}
+
+.calender-section .container-ask{
+    order: 1;
+    margin-top: .5rem;
+    width: calc(50% - .125rem);
+}
+
+.calender-section .container-ask .btn {
+    width: 100%
+}
+
+@media (min-width: 576px) {
+    .calender-section .container-ask,
+    .calender-section .container-cancel {
+        order: 0;
+        margin-top: 0;
+        width: auto;
+    }
+
 }
 
 /* register form section in register page */
