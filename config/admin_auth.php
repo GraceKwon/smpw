@@ -64,7 +64,7 @@ return [
             ],
             'experiences' => [
                 'name' => '경험담관리',
-                'auth' => [1,2,3],
+                'auth' => [1,2,3,4,5],
                 'subpage' => '경험담보고',
             ],
         ]

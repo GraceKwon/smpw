@@ -104,5 +104,14 @@ class ReportService
        
     }
 
+    public function getReportMemoDetailList()
+    {
+        return DB::select('uspGetStandingDailyServiceReportMemoDetailList ?,?', [
+            request()->ServiceTimeID,
+            request()->ServiceDate,
+        ]);
+       
+    }
+
 
 }

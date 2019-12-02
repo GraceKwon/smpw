@@ -202,6 +202,9 @@ Route::get('/getCongregationList', function(CommonService $CommonService){
     Route::post('modalVisitRequestDetail', function(ReportService $ReportService){
         return $ReportService->getReportVisitRequestDetailList();
     });
+    Route::post('modalMemoDetail', function(ReportService $ReportService){
+        return $ReportService->getReportMemoDetailList();
+    });
 
 //출판물관리
     //출판물신청
