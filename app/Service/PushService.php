@@ -109,10 +109,16 @@ class PushService
                             ->setSound('default');
         
         $dataBuilder = new PayloadDataBuilder();
-        $dataBuilder->addData([
-                'title' => $title,
-                'body' => $msg,
-            ]);
+
+        $addData = [
+            'title' => $title,
+            'body' => $msg
+        ];
+        if(request()->NoticeID) $addData['NoticeID'] = request()->NoticeID;
+        if(request()->ServiceDate) $addData['ServiceDate'] = request()->ServiceDate;
+        if(request()->ServiceZoneID) $addData['ServiceZoneID'] = request()->ServiceZoneID;
+
+        $dataBuilder->addData($addData);
 
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
@@ -276,15 +282,8 @@ class PushService
             ->pluck('ServiceZoneID');
 
         foreach( $ServiceZoneIDs as $ServiceZoneID ){
-
-            $res = $this->getArrayForRequestJoin($ServiceZoneID);
-                
-            $msg = request()->ServiceDate . "\r\n";
-            $msg .= getServiceZoneName($ServiceZoneID) . "\r\n";
-            foreach ($res as $row) {
-                $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . (6 - $row->Cnt) . ')' . "\r\n";
-            }
-            if( count($res) ) $this->sendToTopic('[봉사지원요청]' ,$msg);
+            request()->ServiceZoneID = $ServiceZoneID;
+            $this->RequestJoin();
         }          
        
     }
