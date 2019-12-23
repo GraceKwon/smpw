@@ -176,9 +176,7 @@
                 @if(!$ProductOrderList->count())
                     disabled
                 @endif
-                @click="_export">
-                엑셀파일 다운로드
-            </button>
+                @click="_export">엑셀파일 다운로드</button>
             @if( session('auth.AdminRoleID') === 2)
             <button type="button" class="btn btn-info"
                 :disabled="checkedRow.length === 0"
