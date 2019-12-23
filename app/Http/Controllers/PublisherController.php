@@ -66,6 +66,9 @@ class PublisherController extends Controller
         
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
         $ServiceTimeList = $PublisherService->getServiceTimeList();
+
+        $SetTimeCount = $PublisherService->getServiceYoilSetTimeCount();
+        // dd($ServiceTimeList);
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
@@ -74,6 +77,7 @@ class PublisherController extends Controller
             'Publisher' => $Publisher ?? null,
             'ServiceZoneList' => $ServiceZoneList,
             'ServiceTimeList' => $ServiceTimeList,
+            'SetTimeCount' => $SetTimeCount->reverse()
         ]);
     }
 

@@ -328,7 +328,12 @@
                 <option value="일">일요일</option>
             </select>
         </form>
-        {{-- <div class="form-control bg-primary border-primary text-white mt-1 mt-sm-0 ml-sm-2">2타임 배정</div> --}}
+        @foreach ($SetTimeCount as $row)
+        <button class="btn btn-primary mt-1 mt-sm-0 ml-sm-2"
+            onclick="location.href='?ServiceYoil={{ $row->ServiceYoil }}'">
+            {{ $row->ServiceYoil }} ({{ $row->Count }})
+        </button>
+        @endforeach
     </div>
     <form method="POST"
     @keydown.enter.prevent>
@@ -373,11 +378,13 @@
                                         미지정
                                     </option>
                                     @if($ServiceTime['PublisherCnt'] < 6)
-                                    <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>대기</option>
-                                    <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>봉사자</option>
-                                    <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>인도자</option>
+                                        <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>대기</option>
+                                        <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>봉사자</option>
+                                        @if($ServiceTime['ServiceSetType'] === '인도자' || $ServiceTime['LeaderCnt'] < 1)
+                                            <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>인도자</option>
+                                        @endif
                                     @elseif($ServiceTime['ServiceSetType'] !== '미지정')
-                                    <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
+                                        <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
                                     @endif
                                 </select>
                             </div>
