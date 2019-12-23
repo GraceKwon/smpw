@@ -332,7 +332,7 @@
 
         @foreach ($WeeksArray as $week)
         <button class="btn 
-        @if(request('ServiceYoil') === $week) btn-primary @else btn-secondary @endif mt-1 mt-sm-0 ml-sm-2 min-w-100px-desktop "
+        @if(request('ServiceYoil') === $week || !request('ServiceYoil') && $week === '월') btn-primary @else btn-secondary @endif mt-1 mt-sm-0 ml-sm-2 min-w-100px-desktop "
             onclick="location.href='?ServiceYoil={{ $week }}'">
             {{ $week }} 
             @if(isset($SetTimeCount[$week]))
