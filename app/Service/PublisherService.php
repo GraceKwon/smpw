@@ -65,7 +65,7 @@ class PublisherService
 
     public function getServiceYoilSetTimeCount()
     {
-        return DB::table('ServiceTimeSets')
+        $res =  DB::table('ServiceTimeSets')
             ->select(
                 'ServiceTimes.ServiceYoil',
                 DB::raw('COUNT(*) AS Count')
@@ -76,6 +76,10 @@ class PublisherService
             ->leftJoin('ServiceTimes', 'ServiceTimeSets.ServiceTimeID', 'ServiceTimes.ServiceTimeID')
             ->groupBy('ServiceTimes.ServiceYoil')
             ->get();
+        foreach($res as $item){
+            $array[$item->ServiceYoil] = $item->Count;
+        }
+        return $array;
         
     }
 

@@ -68,7 +68,7 @@ class PublisherController extends Controller
         $ServiceTimeList = $PublisherService->getServiceTimeList();
 
         $SetTimeCount = $PublisherService->getServiceYoilSetTimeCount();
-        // dd($ServiceTimeList);
+        // dd($SetTimeCount);
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
@@ -77,7 +77,9 @@ class PublisherController extends Controller
             'Publisher' => $Publisher ?? null,
             'ServiceZoneList' => $ServiceZoneList,
             'ServiceTimeList' => $ServiceTimeList,
-            'SetTimeCount' => $SetTimeCount->reverse()
+            'SetTimeCount' => $SetTimeCount,
+            'WeeksArray' => ['월', '화', '수', '목', '금', '토', '일']
+            
         ]);
     }
 
