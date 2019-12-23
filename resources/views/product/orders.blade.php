@@ -39,8 +39,10 @@
         <table class="table table-center table-font-size-90">
             <thead>
             <tr>
-                <th>
-                </th>
+                @if( session('auth.AdminRoleID') === 2)
+                    <th>
+                    </th>
+                @endif
                 <th>
                     <div class="min-width">
                         <span>No</span>
@@ -102,16 +104,24 @@
                 {{--  {{ dd( count( $ProductOrderList) ) }}  --}}
                 @if( count( $ProductOrderList) === 0)
                 <tr>
-                    <td colspan="12">조회 결과가 없습니다.</td>
+                    <td 
+                    @if( session('auth.AdminRoleID') === 2)
+                        colspan="12"
+                    @else 
+                        colspan="11"
+                    @endif
+                    >조회 결과가 없습니다.</td>
                 </tr>
                 @endif
                 @foreach ($ProductOrderList as $ProductOrder)
                 <tr ref="{{ $ProductOrder->ProductOrderID }}">
+                    @if( session('auth.AdminRoleID') === 2)
                     <td>
                         <input name="ProductOrderID[]"
                             type="checkbox" 
                             value="{{ $ProductOrder->ProductOrderID }}" @change="_change">
                     </td>
+                    @endif
                     <td class="pointer"
                         onclick="location.href = '/{{request()->path()}}/{{ $ProductOrder->ProductOrderID }}'">
                         {{ listNumbering($loop->index, 30) }}
@@ -164,15 +174,18 @@
         <div class="d-flex">
             <button type="button" class="btn btn-success"
                 @if(!$ProductOrderList->count())
+                    disabled
                 @endif
                 @click="_export">
                 엑셀파일 다운로드
             </button>
+            @if( session('auth.AdminRoleID') === 2)
             <button type="button" class="btn btn-info"
                 :disabled="checkedRow.length === 0"
                 @click="_showModal('modalInvoiceCode')">
                 송장정보입력
             </button>
+            @endif
         </div>
         @if(session('auth.CircuitID'))
             @include('layouts.sections.registrationButton', [
