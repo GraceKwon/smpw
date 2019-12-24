@@ -144,7 +144,7 @@ class LatterController extends Controller
 
     public function formSent()
     {
-        return view('latter.form_sent');
+        return view('latter.formSent');
     }
 
     public function pushes()
