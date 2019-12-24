@@ -78,8 +78,6 @@ class PublisherController extends Controller
             'ServiceZoneList' => $ServiceZoneList,
             'ServiceTimeList' => $ServiceTimeList,
             'SetTimeCount' => $SetTimeCount,
-            'WeeksArray' => ['월', '화', '수', '목', '금', '토', '일']
-            
         ]);
     }
 
