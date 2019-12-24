@@ -313,8 +313,8 @@
 @if(isset($ServiceTimeList) && isset($Publisher->PublisherID))
 <section class="table-section mt-6">
     <h4 class="text-primary">봉사 타임 지정</h4>
-    <div class="btn-flex-area">
-        {{-- <form method="get">
+    <div class="inline-responsive">
+        <form method="get">
             <select class="custom-select"
                 onchange="submit()"
                 name="ServiceYoil"
@@ -327,18 +327,28 @@
                 <option value="토">토요일</option>
                 <option value="일">일요일</option>
             </select>
-        </form> --}}
+        </form>
         {{-- <div class="btn-flex-area"> --}}
 
-        @foreach ($WeeksArray as $week)
-        <button class="btn 
-        @if(request('ServiceYoil') === $week || !request('ServiceYoil') && $week === '월') btn-primary @else btn-secondary @endif mt-1 mt-sm-0 ml-sm-2 min-w-100px-desktop "
+        @foreach ($SetTimeCount as $week => $count)
+        <a href="?ServiceYoil={{ $week }}">
+            <span class="badge badge-secondary mt-1 mt-sm-0 ml-sm-2">
+                {{ $week }}
+                <span class="badge badge-pill badge-warning">
+                    {{ $count }}
+                </span>
+            </span>
+        </a>
+        {{-- {{ $week }} ({{ $count }}), --}}
+        {{-- <button class="btn 
+            @if(request('ServiceYoil') === $week || !request('ServiceYoil') && $week === '월') btn-primary @else btn-secondary @endif 
+            mt-1 mt-sm-0 ml-sm-2 min-w-100px-desktop "
             onclick="location.href='?ServiceYoil={{ $week }}'">
             {{ $week }} 
             @if(isset($SetTimeCount[$week]))
-                ({{ $SetTimeCount[$week] }})
+                <span class="badge badge-light">{{ $SetTimeCount[$week] }}</span>
             @endif
-        </button>
+        </button> --}}
         @endforeach
         {{-- </div> --}}
     </div>

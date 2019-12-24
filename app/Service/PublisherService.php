@@ -65,6 +65,7 @@ class PublisherService
 
     public function getServiceYoilSetTimeCount()
     {
+
         $res =  DB::table('ServiceTimeSets')
             ->select(
                 'ServiceTimes.ServiceYoil',
@@ -76,10 +77,16 @@ class PublisherService
             ->leftJoin('ServiceTimes', 'ServiceTimeSets.ServiceTimeID', 'ServiceTimes.ServiceTimeID')
             ->groupBy('ServiceTimes.ServiceYoil')
             ->get();
+
         foreach($res as $item){
             $array[$item->ServiceYoil] = $item->Count;
         }
-        return $array;
+
+        foreach( ['월', '화', '수', '목', '금', '토', '일'] as $weekday ){
+            if( isset($array[$weekday]) ) $sort_array[$weekday] = $item->Count;
+        }
+        
+        return $sort_array;
         
     }
 
