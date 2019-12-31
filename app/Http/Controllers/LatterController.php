@@ -145,7 +145,7 @@ class LatterController extends Controller
             $request->ReceiveAdminID
         ]);
 
-        $ID = $res[0]->computed;
+        return $ID = $res;
         if ($request->Files !== null) {
             foreach($files as $file)
             {

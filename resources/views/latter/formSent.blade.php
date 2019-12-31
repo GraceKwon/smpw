@@ -246,7 +246,7 @@
                 axios.post('/sent/0/form', formData)
                 .then(function (response) {
                     console.log(response);
-                    location.href = '/sent'
+                    // location.href = '/sent'
                 })
                 .catch(function (error) {
                     console.log(error.response);
