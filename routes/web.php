@@ -149,9 +149,10 @@ Route::view('/errors/auth', 'errors.auth');
 
 
 //메세지함
-    //받음메세지함
+    //받은메세지함
     Route::get('inbox', 'LatterController@inbox');
     Route::get('inbox/{id}', 'LatterController@detailInbox');
+    Route::get('inbox/{id}/file/{fid}', 'LatterController@fileDownload');
     //보낸메세지함
     Route::get('sent', 'LatterController@sent');
     Route::get('sent/{id}', 'LatterController@formSent');
@@ -159,7 +160,6 @@ Route::view('/errors/auth', 'errors.auth');
     
     //푸시메세지발송
     Route::get('pushes', 'LatterController@pushes');
-    Route::get('letter/{id}/file/{fid}', 'LatterController@fileDownload');
     
 /*
 비동기
