@@ -42,7 +42,7 @@
             </th>
             <td colspan="3">
                 @foreach ($Files as $File)
-                    <a class="file" href="/letter/{{ request('id') }}/file/{{ $File->LetterFileID }}">{{ $File->FilePath }}</a>
+                    <a class="file" href="/inbox/{{ request('id') }}/file/{{ $File->LetterFileID }}">{{ $File->FilePath }}</a>
                 @endforeach
             </td>
         </tr>
