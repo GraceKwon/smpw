@@ -49,12 +49,12 @@ class LatterController extends Controller
         $letter = DB::select('uspGetStandingLetterDetail ?', [$id]);
         $Files = DB::select('uspGetStandingLetterFile ?', [$id]);
 
-        
         if ($letter[0]->ReceiveAdminID == session('auth.AdminID')) {
             DB::table('Letters')
                 ->where('LetterID', $id)
                 ->update([
-                    'ReadYn' => 1
+                    'ReadYn' => 1,
+                    'ReceiveDate' => date('Y-m-d H:i:s')
                 ]);
         }
 
@@ -140,7 +140,17 @@ class LatterController extends Controller
 
     public function view_form_sent()
     {
-        return view('latter.form_sent');
+        $ReceiveAdminID = DB::table('Admins')
+            ->when(session('auth.AdminRoleID') > 2, function ($query, $role) {
+                return $query->where('AdminRoleID', 2);
+            })
+            ->when(session('auth.AdminRoleID') < 3, function ($query, $role) {
+                return $query->where('AdminRoleID', '>', 2);
+            })
+            ->get();
+        return view('latter.form_sent', [
+            'ReceiveAdminID' => $ReceiveAdminID
+        ]);
     }
 
     public function view_pushes()

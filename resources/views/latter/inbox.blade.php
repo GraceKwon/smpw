@@ -112,6 +112,11 @@
                 </td>
             </tr>
             @endforeach
+            @if (count($LetterList) === 0)
+                <tr>
+                    <td colspan="8">데이터가 없습니다.</td>
+                </tr>
+            @endif  
             </tbody>
         </table>
     </div>

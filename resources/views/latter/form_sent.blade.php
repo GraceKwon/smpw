@@ -25,8 +25,11 @@
                     <select 
                         class="custom-select"
                         v-model="form.ReceiveAdminID">
-                        <option selected="">선택</option>
-                        <option>option</option>
+                        @foreach ($ReceiveAdminID as $Admin) 
+
+                        
+                        <option value="{{ $Admin->AdminID }}">{{ $Admin->AdminName }}</option>
+                        @endforeach
                     </select>
                 </div>
             </td>
@@ -112,7 +115,7 @@
         data:{
             form: {
                 AdminID: "{{ session('auth.AdminID') }}",
-                ReceiveAdminID: "1",
+                ReceiveAdminID: "",
                 Title: "",
                 Contents: "",
                 Files: []
