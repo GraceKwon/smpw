@@ -12,22 +12,24 @@
                     <select class="custom-select"
                             id="MetroID"
                             name="MetroID"
+                            @if(session('auth.MetroID')) disabled @endif
                             v-model="form.MetroID">
                             <option value="">전체</option>
                             @foreach ($MetroList as $Metro)
-                                <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
+                                <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName}}</option>
                             @endforeach
                     </select>
                 </div>
             </td>
             <th>
-                <label class="label">지역(순회구)</label>
+                <label class="label">지역</label>
             </th>
             <td>
                 <div class="inline-responsive">
                     <select class="custom-select @error('CircuitID') is-invalid @enderror"
                         id="CircuitID"
                         name="CircuitID"
+                        @if(session('auth.CircuitID')) disabled @endif
                         v-model="form.CircuitID">
                         <option value="">전체</option>
                         <option v-for="Circuit in CircuitList"
@@ -50,7 +52,7 @@
                             <option value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
                         @endforeach
                     </select>
-                    <div class="invalid-feedback" v-if="validation.ReceiveGroupID">@{{ validation.ReceiveGroupID[0] }}</div>
+                    <div class="invalid-feedback" v-if="validation.ReceiveGroupID" v-html="validation.ReceiveGroupID[0]"></div>
                 </div>
             </td>
             <th>
@@ -90,8 +92,7 @@
                     :class="{'is-invalid': validation.Title}"
                     v-model="form.Title" 
                     placeholder="제목을 입력해 주세요">
-                <div class="invalid-feedback" v-if="validation.Title">
-                    @{{ validation.Title[0] }}
+                <div class="invalid-feedback" v-if="validation.Title" v-html="validation.Title[0]">
                 </div>
             </td>
             
@@ -103,7 +104,7 @@
             <td colspan="3">    
                 <div id="drop-zone">
                     <div v-for="(file, index) in form.Files">
-                        <span style="font-size: 15px; color:#4b5aaa">@{{ file.name }}</span> 
+                        <span style="font-size: 15px; color:#4b5aaa" v-html="file.name"></span> 
                         <i @click="delFile(index)" class="fas fa-times-circle pointer"></i>
                     </div>
                     <div class="here" v-if="form.Files.length === 0">
@@ -122,8 +123,10 @@
                 <label class="label">내용</label>
             </th>
             <td colspan="3">
-                <div class="invalid-feedback" v-if="validation.Contents" style="display: block">
-                    @{{ validation.Contents[0] }}
+                <div class="invalid-feedback" 
+                    v-if="validation.Contents" 
+                    v-html="validation.Contents[0]"
+                    style="display: block">
                 </div>
                 <textarea v-model="form.Contents" class="form-control" name="notice-board" id="notice-board"></textarea>
             </td>
@@ -156,8 +159,8 @@
         data:{
             CircuitList: [],
             form: {
-                MetroID: "",
-                CircuitID: "",
+                MetroID: "{{ session('auth.MetroID') }}",
+                CircuitID: "{{ session('auth.CircuitID') }}",
                 ReceiveGroupID: "",
                 DisplayYn: 1,
                 Title: "",
@@ -186,6 +189,7 @@
             },
         },
         mounted: function () {
+            this._getCircuitList();
             this.$nextTick(function () {
                 CKEDITOR.replace( 'notice-board' ,{
                     enterMode: CKEDITOR.ENTER_BR

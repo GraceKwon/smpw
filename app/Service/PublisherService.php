@@ -46,6 +46,7 @@ class PublisherService
                     $array[$key][$ServiceZone->ServiceZoneID] = [
                         'ServiceZoneID' => $ServiceZone->ServiceZoneID,
                         'PublisherCnt' => $ServiceTime->PublisherCnt,
+                        'LeaderCnt' => $ServiceTime->LeaderCnt,
                         'ServiceTimeID' => $ServiceTime->ServiceTimeID,
                         'ServiceSetType' => 
                             isset( $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key] )
@@ -60,6 +61,33 @@ class PublisherService
             }
         }
         return $array ?? null;
+    }
+
+    public function getServiceYoilSetTimeCount()
+    {
+
+        $res =  DB::table('ServiceTimeSets')
+            ->select(
+                'ServiceTimes.ServiceYoil',
+                DB::raw('COUNT(*) AS Count')
+            )
+            ->where([
+                ['ServiceTimeSets.PublisherID', request()->PublisherID],
+            ])
+            ->leftJoin('ServiceTimes', 'ServiceTimeSets.ServiceTimeID', 'ServiceTimes.ServiceTimeID')
+            ->groupBy('ServiceTimes.ServiceYoil')
+            ->get();
+
+        foreach($res as $item){
+            $array[$item->ServiceYoil] = $item->Count;
+        }
+
+        foreach( ['월', '화', '수', '목', '금', '토', '일'] as $weekday ){
+            if( isset($array[$weekday]) ) $sort_array[$weekday] = $item->Count;
+        }
+        
+        return $sort_array;
+        
     }
 
 }

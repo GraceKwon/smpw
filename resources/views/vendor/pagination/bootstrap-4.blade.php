@@ -13,7 +13,7 @@
                     @if ($page == request()->input('page', '1'))
                         <li class="active"><a>{{ $page }}</a></li>
                     @else
-                        <li><a href="{{ $url }}">{{ $page }}</a></li>
+                        <li><a href="/{{ $url }}">{{ $page }}</a></li>
                     @endif
                 @endforeach
             @endif

@@ -43,6 +43,24 @@ class PushService
 
         if( !empty($tokens) ){
             $downstreamResponse = FCM::sendTo($tokens, null, $notification, $data);
+            
+            if( count($downstreamResponse->tokensToDelete()) ){
+                DB::table('Publishers')->whereIn('PushTokenValue', $downstreamResponse->tokensToDelete())->delete();
+            }
+
+            if( count($downstreamResponse->tokensToModify()) ){
+                foreach ( $downstreamResponse->tokensToModify() as $oldToken => $newToken ){
+                    DB::table('Publishers')
+                        ->where(' PushTokenValue', $oldToken )
+                        ->update([ 'PushTokenValue' => $newToken ]);
+                }
+            }
+
+            if( count($downstreamResponse->tokensToRetry()) ){
+                foreach ( $downstreamResponse->tokensToRetry() as $token ){
+                    $downstreamResponse = FCM::sendTo($token, null, $notification, $data);
+                }
+            }
         }
 
         $insertArray = [];
@@ -59,10 +77,14 @@ class PushService
         }
 
         DB::table('Pushes')->insert($insertArray);
-        
-        // $downstreamResponse->numberSuccess();
-        // $downstreamResponse->numberFailure();
-        // $downstreamResponse->numberModification();
+
+        echo('numberSuccess : ');
+        var_dump($downstreamResponse->numberSuccess());
+        echo('numberFailure : ');
+        var_dump($downstreamResponse->numberFailure());
+        echo('numberModification : ');
+        var_dump($downstreamResponse->numberModification());
+
         
         // return Array - you must remove all this tokens in your database
         // $downstreamResponse->tokensToDelete();
@@ -78,9 +100,8 @@ class PushService
 
     }
 
-    public function sendToTopic($msg)
+    public function sendToTopic($title, $msg)
     {
-        $title = '[봉사지원요청]';
         $CircuitID =  request()->CircuitID ?? session('auth.CircuitID');
 
         $notificationBuilder = new PayloadNotificationBuilder($title);
@@ -88,10 +109,16 @@ class PushService
                             ->setSound('default');
         
         $dataBuilder = new PayloadDataBuilder();
-        $dataBuilder->addData([
-                'title' => $title,
-                'body' => $msg,
-            ]);
+
+        $addData = [
+            'title' => $title,
+            'body' => $msg
+        ];
+        if(request()->NoticeID) $addData['NoticeID'] = request()->NoticeID;
+        if(request()->ServiceDate) $addData['ServiceDate'] = request()->ServiceDate;
+        if(request()->ServiceZoneID) $addData['ServiceZoneID'] = request()->ServiceZoneID;
+
+        $dataBuilder->addData($addData);
 
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
@@ -100,6 +127,11 @@ class PushService
         $topic->topic($CircuitID);
         
         $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
+        if(!$topicResponse->isSuccess() && $topicResponse->shouldRetry()){
+            echo('!$topicResponse->isSuccess() && $topicResponse->shouldRetry() === true');
+            $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
+        } 
+        
         DB::table('Pushes')->insert([
             'AdminID' => session('auth.AdminID'),
             'PushTitle' => $title,
@@ -109,10 +141,13 @@ class PushService
             'SendDate' => date('Y-m-d H:i:s'),
             'CreateDate' => date('Y-m-d H:i:s')
         ]);
-        // $topicResponse->isSuccess();
-        // $topicResponse->shouldRetry();
-        // $topicResponse->error();
-        // var_dump($topicResponse->isSuccess());
+            
+        echo('isSuccess : ');
+        var_dump($topicResponse->isSuccess());
+        echo('shouldRetry : ');
+        var_dump($topicResponse->shouldRetry());
+        echo('error : ');
+        var_dump($topicResponse->error());
 
     }
 
@@ -235,7 +270,7 @@ class PushService
             $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . (6 - $row->Cnt) . ')' . "\r\n";
         }
         // return $res;
-        if( count($res) ) $this->sendToTopic($msg);
+        if( count($res) ) $this->sendToTopic('[봉사지원요청]' ,$msg);
     }
     
     public function RequestJoinAllZones()
@@ -247,17 +282,17 @@ class PushService
             ->pluck('ServiceZoneID');
 
         foreach( $ServiceZoneIDs as $ServiceZoneID ){
-
-            $res = $this->getArrayForRequestJoin($ServiceZoneID);
-                
-            $msg = request()->ServiceDate . "\r\n";
-            $msg .= getServiceZoneName($ServiceZoneID) . "\r\n";
-            foreach ($res as $row) {
-                $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . (6 - $row->Cnt) . ')' . "\r\n";
-            }
-            if( count($res) ) $this->sendToTopic($msg);
+            request()->ServiceZoneID = $ServiceZoneID;
+            $this->RequestJoin();
         }          
        
+    }
+
+    public function newNotice()
+    {
+        $msg = '새로운 공지사항이 등록되었습니다.' . "\r\n";
+  
+        $this->sendToTopic('[공지사항]' ,$msg);
     }
 
 }

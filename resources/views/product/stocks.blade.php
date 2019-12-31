@@ -124,7 +124,7 @@
             <button type="button" 
                 class="btn btn-success"
                 @if(!$ProductStockList->count())
-                    {{--  disabled  --}}
+                    disabled 
                 @endif
                 @click="_export">
                 엑셀파일 다운로드

@@ -137,7 +137,7 @@
                     <select class="custom-select" id="{{ $selectBox['id'] }}" name="{{ $selectBox['id'] }}" onchange="submit()">
                         <option value="">전체</option>
                         @foreach ($selectBox['options'] as $option)
-                            <option @if(request($selectBox['id']) == $option['value'] ) selected @endif
+                            <option @if(request($selectBox['id']) === $option['value'] ) selected @endif
                                 value="{{ $option['value']  }}">{{ $option['label'] }}</option>
                         @endforeach
                     </select>

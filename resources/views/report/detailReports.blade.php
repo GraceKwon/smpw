@@ -64,11 +64,6 @@
                         <span>구역</span>
                     </div>
                 </th>
-                {{-- <th>
-                    <div class="min-width">
-                        <span>보고자</span>
-                    </div>
-                </th> --}}
                 <th>
                     <div class="min-width">
                         <span>출판물</span>
@@ -84,6 +79,11 @@
                         <span>방문요청</span>
                     </div>
                 </th>
+                <th>
+                <div class="min-width">
+                    <span>전달사항</span>
+                </div>
+            </th>
             </tr>
             </thead>
             <tbody>
@@ -134,11 +134,24 @@
                         @endif>
                         <a >{{ $Report->VisitRequestQty }}</a>
                     </td>
+                    <td 
+                    @if($Report->MemoQty > 0)
+                        class="pointer"
+                        @click="_setParams({
+                            ServiceTimeID: '{{ $Report->ServiceTimeID }}',
+                            ServiceTime: '{{ sprintfServiceTime( $Report->ServiceTime ) }}',
+                            ZoneName: '{{ $Report->ZoneName }}',
+                        });_showModal('modalMemoDetail')"
+                        @endif>
+                        <a>
+                            {{ $Report->MemoQty > 0 ? $Report->MemoQty : '' }}
+                        </a>
+                    </td>
                 </tr>
                 @endforeach
                 @if(!$ReportList->count())
                 <tr>
-                    <td colspan="7">조회 결과가 없습니다.</td>
+                    <td colspan="8">조회 결과가 없습니다.</td>
                 </tr>
                 @endif
             </tbody>
@@ -171,11 +184,18 @@
     :zone-name="ZoneName" 
     @close="showModal = ''" >
 </modal-visit-request-detail>
+<modal-memo-detail v-if="showModal === 'modalMemoDetail'" 
+    :service-time-id="ServiceTimeID" 
+    :service-time="ServiceTime" 
+    :zone-name="ZoneName" 
+    @close="showModal = ''" >
+</modal-memo-detail>
 @endsection
 
 @section('script')
 @include('report.modalProductDetail')
 @include('report.modalVisitRequestDetail')
+@include('report.modalMemoDetail')
 
 <script>
     var app = new Vue({

@@ -4,7 +4,7 @@
     <div class="alert alert-danger">봉사일정이 없습니다.</div>
 @endif
 <section class="calender-section justify-content-between">
-    <div>
+    <div class="container-cancel">
         <button class="btn btn-danger btn-sm"
             @if(count($ServicePlanDetail) == 0)
                 disabled
@@ -47,7 +47,7 @@
         </div>
     </div>
     <!-- end : common elements wrap -->
-    <div>
+    <div class="container-ask">
         <button class="btn btn-primary btn-sm" 
             :disabled="Passing"
             @click="_setParams({

@@ -123,7 +123,7 @@
                     @endif>
                     </td>
                 </tr>
-                <tbody  @if( session('auth.AdminRoleID') !== 2) class="off" @endif>
+                <tbody @if( session('auth.AdminRoleID') !== 2) class="off" @endif>
                     @if(isset($ProductOrder->ProductOrderID))
                     <tr v-if="!modify">
                         <th>

@@ -20,7 +20,14 @@ class ActController extends Controller
         $this->CommonService = $CommonService;
         $this->ActService = $ActService;
         $this->PushService = $PushService;
-        // $this->middleware('admin_auth');
+        $this->middleware('admin_auth')
+            ->except(['modalPublisherCancel', 
+                'modalTimeCancel',
+                'modalZoneCancel',
+                'modalDayCancel',
+                'modalPush',
+                'modalPushAllZones',
+                ]);
     }
 
     public function Acts(Request $request)

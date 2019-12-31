@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Service\CommonService;
+use App\Service\PushService;
 use DB;
 
 class BoardController extends Controller
 {
-    public function view_notices(Request $request, CommonService $CommonService)
+    public function __construct()
+    {
+        $this->middleware('admin_auth');
+    }
+
+    public function notices(Request $request, CommonService $CommonService)
     {
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
@@ -17,8 +23,8 @@ class BoardController extends Controller
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
-            ( session('auth.MetroID') ?? $request->MetroID ),
-            ( session('auth.CircuitID') ?? $request->CircuitID ),
+            $request->MetroID,
+            $request->CircuitID,
             $request->ReceiveGroupID
         ];
         $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
@@ -34,31 +40,32 @@ class BoardController extends Controller
         ]);
     }
 
-    public function view_detail_notices($id)
+    public function detailNotices($id)
     {
         DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
 
-        return view('board.detail_notices', [
+        return view('board.detailNotices', [
             'Files' => $Files,
             'Notice' => $Notice[0]
         ]);
     }
 
-    public function view_form_notices(CommonService $common)
+    public function formNotices(CommonService $common)
     {
         $MetroList = $common->getMetroList();
         $ReceiveGroupList = $common->getReceiveGroupList();
 
-        return view('board.form_notices', [
+        return view('board.formNotices', [
             'MetroList' => $MetroList,
             'ReceiveGroupList' => $ReceiveGroupList
         ]);
     }
 
-    public function postForm(Request $request)
+    public function putNotices(Request $request, PushService $PushService)
     {   
+        // return $request->Files[0];
         $request->validate([
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
@@ -84,7 +91,9 @@ class BoardController extends Controller
             session('auth.AdminID'),
             0
         ]);
-        $ID = $res[0]->computed;
+
+        // $ID = $res[0]->computed; 이렇게하면 윈도우서버에서 오류납니다. 아래코드로 수정함
+        $ID = getAffectedRows($res);
         if ($request->Files !== null) {
             foreach($files as $file)
             {
@@ -96,11 +105,16 @@ class BoardController extends Controller
             }
         }
 
+        if($request->CircuitID && (int)$request->ReceiveGroupID === (int)getItemID('봉사자전체' , 'ReceiveGroupID')) 
+        
+        $request->NoticeID = $ID; //PushService->sendToTopic에서 사용
+        $PushService->newNotice(); //푸시발송
+
         return;
 
     }
 
-    public function file_download($id, $fid)
+    public function fileDownload($id, $fid)
     {
         $FilePath = DB::table('NoticeFiles')
             ->where('NoticeFileID', $fid)

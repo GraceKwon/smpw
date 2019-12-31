@@ -313,7 +313,7 @@
 @if(isset($ServiceTimeList) && isset($Publisher->PublisherID))
 <section class="table-section mt-6">
     <h4 class="text-primary">봉사 타임 지정</h4>
-    <div class="info-area form-inline mt-3">
+    <div class="inline-responsive">
         <form method="get">
             <select class="custom-select"
                 onchange="submit()"
@@ -328,7 +328,29 @@
                 <option value="일">일요일</option>
             </select>
         </form>
-        {{-- <div class="form-control bg-primary border-primary text-white mt-1 mt-sm-0 ml-sm-2">2타임 배정</div> --}}
+        {{-- <div class="btn-flex-area"> --}}
+
+        @foreach ($SetTimeCount as $week => $count)
+        <a href="?ServiceYoil={{ $week }}">
+            <span class="badge badge-secondary mt-1 mt-sm-0 ml-sm-2">
+                {{ $week }}
+                <span class="badge badge-pill badge-warning">
+                    {{ $count }}
+                </span>
+            </span>
+        </a>
+        {{-- {{ $week }} ({{ $count }}), --}}
+        {{-- <button class="btn 
+            @if(request('ServiceYoil') === $week || !request('ServiceYoil') && $week === '월') btn-primary @else btn-secondary @endif 
+            mt-1 mt-sm-0 ml-sm-2 min-w-100px-desktop "
+            onclick="location.href='?ServiceYoil={{ $week }}'">
+            {{ $week }} 
+            @if(isset($SetTimeCount[$week]))
+                <span class="badge badge-light">{{ $SetTimeCount[$week] }}</span>
+            @endif
+        </button> --}}
+        @endforeach
+        {{-- </div> --}}
     </div>
     <form method="POST"
     @keydown.enter.prevent>
@@ -373,11 +395,13 @@
                                         미지정
                                     </option>
                                     @if($ServiceTime['PublisherCnt'] < 6)
-                                    <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>대기</option>
-                                    <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>봉사자</option>
-                                    <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>인도자</option>
+                                        <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>대기</option>
+                                        <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>봉사자</option>
+                                        @if($ServiceTime['ServiceSetType'] === '인도자' || $ServiceTime['LeaderCnt'] < 1)
+                                            <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>인도자</option>
+                                        @endif
                                     @elseif($ServiceTime['ServiceSetType'] !== '미지정')
-                                    <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
+                                        <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
                                     @endif
                                 </select>
                             </div>

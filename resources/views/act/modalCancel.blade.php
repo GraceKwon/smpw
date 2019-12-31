@@ -92,7 +92,7 @@
                 axios.post('/' + this.url, formData)
                     .then(function (response) {
                         console.log(response.data);
-                        // location.reload()
+                        location.reload()
                     })
                     .catch(function (error) {
                         console.log(error);

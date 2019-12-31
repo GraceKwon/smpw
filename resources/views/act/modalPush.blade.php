@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            지원 요청 (미구현)
+                            지원 요청
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -60,6 +60,8 @@
                 axios.post('/' + this.url , formData)
                     .then(function (response) {
                         console.log(response.data);
+                        this.$emit('close');
+
                     }.bind(this))
                     .catch(function (error) {
                         console.log(error);

@@ -274,7 +274,7 @@
     </div>
 </section>
 
-<section class="modal-layer-container">
+{{-- <section class="modal-layer-container">
     <div class="mx-auto px-3">
         <div class="mlp-wrap">
             <div class="max-w-auto">
@@ -335,7 +335,7 @@
             </div> <!-- /.mlp-wrap -->
         </div>
     </div>
-</section>
+</section> --}}
 @endsection
 
 @section('popup')

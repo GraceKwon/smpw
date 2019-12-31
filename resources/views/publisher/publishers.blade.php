@@ -28,11 +28,11 @@
                 'options' => [
                     [
                         'label' => '봉사중',
-                        'value' => 0,
+                        'value' => '0',
                     ],
                     [
                         'label' => '중단',
-                        'value' => 1,
+                        'value' => '1',
                     ]
                 ] 
             ],

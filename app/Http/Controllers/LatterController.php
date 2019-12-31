@@ -8,7 +8,11 @@ use DB;
 
 class LatterController extends Controller
 {
-    public function view_inbox(Request $request)
+    public function __construct()
+    {
+        $this->middleware('admin_auth');
+    }
+    public function inbox(Request $request)
     {
         explodeRequestCreateDate();
         if (session('auth.AdminRoleID') > 2) request()->ReceiveAdminID = session('auth.AdminID');
@@ -44,7 +48,7 @@ class LatterController extends Controller
         ]);
     }
 
-    public function view_detail_inbox($id)
+    public function detailInbox($id)
     {
         $letter = DB::select('uspGetStandingLetterDetail ?', [$id]);
         $Files = DB::select('uspGetStandingLetterFile ?', [$id]);
@@ -64,7 +68,7 @@ class LatterController extends Controller
         ]);
     }
 
-    public function view_sent(Request $request)
+    public function sent(Request $request)
     {
         explodeRequestCreateDate();
         if (session('auth.AdminRoleID') > 2) request()->AdminID = session('auth.AdminID');
@@ -101,7 +105,7 @@ class LatterController extends Controller
         ]);
     }
     
-    public function post_form_sent(Request $request)
+    public function putSent(Request $request)
     {
         $request->validate([
             'Title' => 'required|max:500',
@@ -138,7 +142,7 @@ class LatterController extends Controller
         }
     }
 
-    public function view_form_sent()
+    public function formSent()
     {
         $ReceiveAdminID = DB::table('Admins')
             ->when(session('auth.AdminRoleID') > 2, function ($query, $role) {
@@ -153,12 +157,12 @@ class LatterController extends Controller
         ]);
     }
 
-    public function view_pushes()
+    public function pushes()
     {
         return view('latter.pushes');
     }
 
-    public function file_download($id, $fid)
+    public function fileDownload($id, $fid)
     {
         $FilePath = DB::table('LetterFiles')
             ->where('LetterFileID', $fid)
