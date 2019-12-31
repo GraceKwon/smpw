@@ -104,17 +104,26 @@
         </div> <!-- /.search-form-item -->
         @endif
 
-        @if(isset($AdminList))
+        @if(isset($AdminID))
         <div class="search-form-item">
-            <label class="label" for="AdminRoleID">발신</label>
-            <select class="custom-select" id="AdminID" name="AdminID" onchange="submit()">
+            <label class="label" for="AdminID">발신</label>
+            <select class="custom-select" 
+                id="AdminID" 
+                name="AdminID" 
+                onchange="submit()">
                 <option value="">전체</option>
-                @foreach ($AdminList as $Admin)
-                    <option @if(request()->AdminID == $Admin->AdminID ) selected @endif
-                        value="{{ $Admin->AdminID }}">{{ $Admin->AdminName }}</option>
+                @foreach ($AdminID as $Admin)
+                    <option 
+                        @if(request()->AdminID == $Admin->AdminID ) selected @endif
+                        value="{{ $Admin->AdminID }}">
+                        @if ($Admin->AdminRoleID == 3) 순회감독자 - @endif
+                        @if ($Admin->AdminRoleID == 4) 순회구보조자 - @endif
+                        @if ($Admin->AdminRoleID == 5) 조정장로 - @endif
+                        {{ $Admin->AdminName }}
+                    </option>
                 @endforeach
             </select>
-        </div> <!-- /.search-form-item -->
+        </div>
         @endif
 
         @if(isset($ReceiveAdminID))
@@ -124,10 +133,15 @@
                 <option value="">전체</option>
                 @foreach ($ReceiveAdminID as $Admin)
                     <option @if(request()->ReceiveAdminID == $Admin->AdminID ) selected @endif
-                        value="{{ $Admin->AdminID }}">{{ $Admin->AdminName }}</option>
+                        value="{{ $Admin->AdminID }}">
+                        @if ($Admin->AdminRoleID == 3) 순회감독자 - @endif
+                        @if ($Admin->AdminRoleID == 4) 순회구보조자 - @endif
+                        @if ($Admin->AdminRoleID == 5) 조정장로 - @endif
+                        {{ $Admin->AdminName }}
+                    </option>
                 @endforeach
             </select>
-        </div> <!-- /.search-form-item -->
+        </div>
         @endif
 
         @if(isset($selectBoxs))

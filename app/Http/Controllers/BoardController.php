@@ -12,7 +12,7 @@ class BoardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin_auth');
+        $this->middleware('admin_auth')->except('fileDownload');
     }
 
     public function notices(Request $request, CommonService $CommonService)

@@ -64,7 +64,10 @@
                 type="button" 
                 class="btn btn-secondary"
                 onclick="location.href='{{ url()->previous() }}'">취소</button>
-            <button type="button" class="btn btn-primary">메시지보내기</button>
+            <button 
+                type="button" 
+                class="btn btn-primary"
+                onclick="location.href='/sent/0'">메시지보내기</button>
     </div>
 </section>
 @endsection

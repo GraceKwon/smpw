@@ -2,7 +2,7 @@
 @section('content')
 @push('slot')
 <div class="search-form-item">
-        <label class="label" for="CreateDate">요청일자</label>
+        <label class="label" for="CreateDate">발송일자</label>
         <date-picker 
             v-model="CreateDate" 
             :input-id="'CreateDate'"
@@ -88,9 +88,21 @@
                 </td>
                 <td>
                     {{ $Letter->AdminName }}
+                    @if ($Letter->AdminRoleID > 2) 
+                        <br>
+                        <small>
+                            ( {{ $Letter->MetroName . ' > ' . $Letter->CircuitName . ' > ' . $Letter->AdminRole }} )
+                        </small>
+                    @endif
                 </td>
                 <td>
                     {{ $Letter->ReceiveAdminName }}
+                    @if ($Letter->rAdminRoleID > 2) 
+                        <br>
+                        <small>
+                            ( {{ $Letter->rMetroName . ' > ' . $Letter->rCircuitName . ' > ' . $Letter->rAdminRole }} )
+                        </small>
+                    @endif
                 </td>
                 <td class="title">
                     <div class="d-flex">

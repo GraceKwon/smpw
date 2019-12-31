@@ -62,4 +62,23 @@ class CommonService
         return  DB::select('uspGetStandingItemCodeList ?, ?', ['ReceiveGroupID', null]);
     }
 
+    public function getReceiveAdminList($request)
+    {
+        return DB::table('Admins')
+            ->select('AdminID', 'AdminName')
+            ->when(session('auth.MetroID'), function ($query) {
+                return $query->where('MetroID', session('auth.MetroID'));
+            })
+            ->when(session('auth.CircuitID'), function ($query) {
+                return $query->where('CircuitID', session('auth.CircuitID'));
+            })
+            ->where('AdminName', 'LIKE', '%'.$request.'%')
+            ->orWhere(function ($query) use ($request) {
+                $query->where('AdminRoleID', '=', 2)
+                    ->where('AdminName', 'LIKE', '%'.$request.'%');
+            })
+            ->orderBy('AdminRoleID', 'ASC')
+            ->get();
+    }
+
 }

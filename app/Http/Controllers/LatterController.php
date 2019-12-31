@@ -12,17 +12,25 @@ class LatterController extends Controller
     {
         $this->middleware('admin_auth');
     }
+
     public function inbox(Request $request)
     {
         explodeRequestCreateDate();
-        if (session('auth.AdminRoleID') > 2) request()->ReceiveAdminID = session('auth.AdminID');
-        $AdminList = DB::table('Admins')
-            ->when(session('auth.AdminRoleID') > 2, function ($query, $role) {
-                return $query->where('AdminRoleID', 2);
+        if (session('auth.AdminRoleID') > 1) request()->ReceiveAdminID = session('auth.AdminID');
+
+        $AdminID = DB::table('Admins')
+            ->when(session('auth.MetroID'), function ($query) {
+                return $query->where('MetroID', session('auth.MetroID'))
+                    ->orWhere('AdminRoleID', 2);
             })
+            ->when(session('auth.CircuitID'), function ($query) {
+                return $query->where('CircuitID', session('auth.CircuitID'))
+                    ->orWhere('AdminRoleID', 2);
+            })
+            ->orderBy('AdminRoleID', 'ASC')
             ->get();
         $ReceiveAdminID = DB::table('Admins')
-            ->when(session('auth.AdminRoleID') > 2, function ($query, $role) {
+            ->when(session('auth.AdminRoleID') > 1, function ($query) {
                 return $query->where('AdminID', session('auth.AdminID'));
             })
             ->get();
@@ -42,7 +50,7 @@ class LatterController extends Controller
         $LetterList = setPaginator($paginate, $page, $data, $count);
 
         return view('latter.inbox', [
-            'AdminList' => $AdminList,
+            'AdminID' => $AdminID,
             'ReceiveAdminID' => $ReceiveAdminID,
             'LetterList' => $LetterList
         ]);
@@ -62,7 +70,7 @@ class LatterController extends Controller
                 ]);
         }
 
-        return view('latter.detail_inbox', [
+        return view('latter.detailInbox', [
             'letter' => $letter[0],
             'Files' => $Files 
         ]);
@@ -71,17 +79,25 @@ class LatterController extends Controller
     public function sent(Request $request)
     {
         explodeRequestCreateDate();
-        if (session('auth.AdminRoleID') > 2) request()->AdminID = session('auth.AdminID');
+        if (session('auth.AdminRoleID') > 1) request()->AdminID = session('auth.AdminID');
         
-        $AdminList = DB::table('Admins')
-            ->when(session('auth.AdminRoleID') > 2, function ($query, $role) {
+        $AdminID = DB::table('Admins')
+            ->when(session('auth.AdminRoleID') > 1, function ($query) {
                 return $query->where('AdminID', session('auth.AdminID'));
             })
             ->get();
+
         $ReceiveAdminID = DB::table('Admins')
-            ->when(session('auth.AdminRoleID') > 2, function ($query, $role) {
-                return $query->where('AdminRoleID', 2);
-            })->get();
+            ->when(session('auth.MetroID'), function ($query) {
+                return $query->where('MetroID', session('auth.MetroID'))
+                    ->orWhere('AdminRoleID', 2);
+            })
+            ->when(session('auth.CircuitID'), function ($query) {
+                return $query->where('CircuitID', session('auth.CircuitID'))
+                    ->orWhere('AdminRoleID', 2);
+            })
+            ->orderBy('AdminRoleID', 'ASC')
+            ->get();
 
         $paginate = 30;  
         $page = $request->input('page', '1');
@@ -97,9 +113,8 @@ class LatterController extends Controller
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingLetterSendListCnt ?,?,?,?,?', $parameter);
         $LetterList = setPaginator($paginate, $page, $data, $count);
-        // dd($LetterList);
         return view('latter.sent', [
-            'AdminList' => $AdminList,
+            'AdminID' => $AdminID,
             'ReceiveAdminID' => $ReceiveAdminID,
             'LetterList' => $LetterList
         ]);
@@ -109,7 +124,8 @@ class LatterController extends Controller
     {
         $request->validate([
             'Title' => 'required|max:500',
-            'Contents' => 'required'
+            'Contents' => 'required',
+            'ReceiveAdminID' => 'required'
         ]);
 
         if ($request->Files !== null) {
@@ -144,17 +160,7 @@ class LatterController extends Controller
 
     public function formSent()
     {
-        $ReceiveAdminID = DB::table('Admins')
-            ->when(session('auth.AdminRoleID') > 2, function ($query, $role) {
-                return $query->where('AdminRoleID', 2);
-            })
-            ->when(session('auth.AdminRoleID') < 3, function ($query, $role) {
-                return $query->where('AdminRoleID', '>', 2);
-            })
-            ->get();
-        return view('latter.form_sent', [
-            'ReceiveAdminID' => $ReceiveAdminID
-        ]);
+        return view('latter.formSent');
     }
 
     public function pushes()

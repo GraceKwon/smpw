@@ -156,6 +156,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('sent', 'LatterController@sent');
     Route::get('sent/{id}', 'LatterController@formSent');
     Route::post('sent/{id}/form', 'LatterController@putSent');
+    
     //푸시메세지발송
     Route::get('pushes', 'LatterController@pushes');
     Route::get('letter/{id}/file/{fid}', 'LatterController@fileDownload');
@@ -177,6 +178,9 @@ Route::get('/getCircuitList', function(CommonService $CommonService){
 });
 Route::get('/getCongregationList', function(CommonService $CommonService){
     return $CommonService->getCongregationList();
+});
+Route::get('getReceiveAdminList', function(CommonService $CommonService){
+    return $CommonService->getReceiveAdminList(request()->name);
 });
 
 

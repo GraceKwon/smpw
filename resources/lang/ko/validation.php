@@ -166,7 +166,8 @@ return [
         'Title' => '제목',
         'Contents' => '내용',
         'AddressMain' => '주소',
-        'AddressDetail' => '상세주소'
+        'AddressDetail' => '상세주소',
+        'ReceiveAdminID' => '수신대상'
     ],
 
 ];

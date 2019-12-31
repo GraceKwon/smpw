@@ -22,15 +22,25 @@
             </th>
             <td>
                 <div class="inline-responsive">
+                    <input type="text"
+                        class="form-control mr-1"
+                        v-model="searchAdmin"
+                        placeholder="수신대상 검색">
                     <select 
+                        id="ReceiveAdminID"
+                        style="width: 200px"
                         class="custom-select"
+                        :class="{'is-invalid': validation.ReceiveAdminID}"
                         v-model="form.ReceiveAdminID">
-                        @foreach ($ReceiveAdminID as $Admin) 
-
-                        
-                        <option value="{{ $Admin->AdminID }}">{{ $Admin->AdminName }}</option>
-                        @endforeach
+                        <option value="">선택</option>
+                        <option v-for="(receiveAdmin, index) in receiveAdmins"
+                            :value="receiveAdmin.AdminID">@{{receiveAdmin.AdminName }}</option>
+                      
                     </select>
+                    <div class="invalid-feedback" v-if="validation.Title">
+                        @{{ validation.ReceiveAdminID[0] }}
+                    </div> 
+                    
                 </div>
             </td>
         </tr>
@@ -113,9 +123,11 @@
     var app = new Vue({
         el:'#wrapper-body',
         data:{
+            receiveAdmins: [],
+            searchAdmin: '',
             form: {
                 AdminID: "{{ session('auth.AdminID') }}",
-                ReceiveAdminID: "",
+                ReceiveAdminID: '',
                 Title: "",
                 Contents: "",
                 Files: []
@@ -132,6 +144,14 @@
                     size += this.form.Files [index].size;
                 }
                 return size
+            }
+        },
+        created: function () {
+            this.getReceiveAdmins()
+        },
+        watch: {
+            searchAdmin: function () {
+                this.getReceiveAdmins()
             }
         },
         mounted: function () {
@@ -178,6 +198,17 @@
             })
         },
         methods:{
+            getReceiveAdmins: function() {
+                this.form.ReceiveAdminID = ''
+                axios.get('/getReceiveAdminList?name=' + this.searchAdmin)
+                .then(function (response) {
+                    this.receiveAdmins = response.data
+                    if (this.receiveAdmins.length === 1) this.form.ReceiveAdminID = this.receiveAdmins[0].AdminID
+                }.bind(this))
+                .catch(function (error) {
+                    console.log(error.response)
+                })
+            },
             pushFile: function(file) {
                 if (this.fileSize >= 20000000) {
                     alert('용량이 초과 되었습니다.')

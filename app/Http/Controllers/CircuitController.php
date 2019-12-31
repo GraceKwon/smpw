@@ -141,7 +141,6 @@ class CircuitController extends Controller
                 $request->AdminName,
                 $request->Gender,
             ];
-
         $data = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingAdminListCnt ?,?,?,?,?,?', $parameter);
