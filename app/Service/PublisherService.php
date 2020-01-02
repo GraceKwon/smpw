@@ -86,7 +86,7 @@ class PublisherService
             if( isset($array[$weekday]) ) $sort_array[$weekday] = $item->Count;
         }
         
-        return $sort_array;
+        return $sort_array ?? [];
         
     }
 
