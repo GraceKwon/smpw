@@ -77,13 +77,12 @@ class PublisherService
             ->leftJoin('ServiceTimes', 'ServiceTimeSets.ServiceTimeID', 'ServiceTimes.ServiceTimeID')
             ->groupBy('ServiceTimes.ServiceYoil')
             ->get();
-
         foreach($res as $item){
             $array[$item->ServiceYoil] = $item->Count;
         }
 
         foreach( ['월', '화', '수', '목', '금', '토', '일'] as $weekday ){
-            if( isset($array[$weekday]) ) $sort_array[$weekday] = $item->Count;
+            if( isset($array[$weekday]) ) $sort_array[$weekday] = $array[$weekday];
         }
         
         return $sort_array ?? [];
