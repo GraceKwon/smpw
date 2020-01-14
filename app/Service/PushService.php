@@ -40,29 +40,28 @@ class PushService
             ->whereNotNull('PushTokenValue')
             ->pluck('PushTokenValue')
             ->toArray();
-
         if( !empty($tokens) ){
             $downstreamResponse = FCM::sendTo($tokens, null, $notification, $data);
             
             if( count($downstreamResponse->tokensToDelete()) ){
                 DB::table('Publishers')->whereIn('PushTokenValue', $downstreamResponse->tokensToDelete())->delete();
             }
-
+            
             if( count($downstreamResponse->tokensToModify()) ){
                 foreach ( $downstreamResponse->tokensToModify() as $oldToken => $newToken ){
                     DB::table('Publishers')
-                        ->where(' PushTokenValue', $oldToken )
-                        ->update([ 'PushTokenValue' => $newToken ]);
+                    ->where(' PushTokenValue', $oldToken )
+                    ->update([ 'PushTokenValue' => $newToken ]);
                 }
             }
-
+            
             if( count($downstreamResponse->tokensToRetry()) ){
                 foreach ( $downstreamResponse->tokensToRetry() as $token ){
                     $downstreamResponse = FCM::sendTo($token, null, $notification, $data);
                 }
             }
         }
-
+        
         $insertArray = [];
         foreach ($PublisherIDs as $PublisherID) {
             $insertArray[] = [
@@ -75,15 +74,19 @@ class PushService
                 'CreateDate' => date('Y-m-d H:i:s')
             ];
         }
-
+        
         DB::table('Pushes')->insert($insertArray);
+        if( !empty($tokens) ){
 
-        echo('numberSuccess : ');
-        var_dump($downstreamResponse->numberSuccess());
-        echo('numberFailure : ');
-        var_dump($downstreamResponse->numberFailure());
-        echo('numberModification : ');
-        var_dump($downstreamResponse->numberModification());
+            echo('numberSuccess : ');
+            var_dump($downstreamResponse->numberSuccess());
+            echo('numberFailure : ');
+            var_dump($downstreamResponse->numberFailure());
+            echo('numberModification : ');
+            var_dump($downstreamResponse->numberModification());
+        }else{
+            echo 'empty($tokens) === true';
+        }
 
         
         // return Array - you must remove all this tokens in your database
