@@ -42,6 +42,7 @@ class LoginController extends Controller
             $CircuitID = $res[0]->CircuitID ? (int)$res[0]->CircuitID : null;
             $CongregationID = $res[0]->CongregationID ? (int)$res[0]->CongregationID : null;
             $TempPassYn = $res[0]->TempPassYn ? (int)$res[0]->TempPassYn : null;
+            $PublisherNumber = (int)$res[0]->PublisherNumber ?? 6;
             $admin_auth = config('admin_auth');
             $gnb = [];
             $auth_path = [];
@@ -82,6 +83,7 @@ class LoginController extends Controller
             session(['auth.MetroID' => $MetroID]);
             session(['auth.CircuitID' => $CircuitID]);
             session(['auth.CongregationID' => $CongregationID]);
+            session(['auth.PublisherNumber' => $PublisherNumber]);
             session(['gnb' => $gnb]);
             session(['breadcrumb' => $breadcrumb]);
         }

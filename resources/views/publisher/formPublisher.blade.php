@@ -394,7 +394,7 @@
                                     <option value="미지정" @if( $ServiceTime['ServiceSetType'] === '미지정' ) selected @endif>
                                         미지정
                                     </option>
-                                    @if($ServiceTime['PublisherCnt'] < 6)
+                                    @if($ServiceTime['PublisherCnt'] < session('auth.PublisherNumber') )
                                         <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>대기</option>
                                         <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>봉사자</option>
                                         @if($ServiceTime['ServiceSetType'] === '인도자' || $ServiceTime['LeaderCnt'] < 1)
@@ -405,7 +405,7 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="mt-1 font-size-80">[{{ $ServiceTime['PublisherCnt'] }}/6]</div>
+                            <div class="mt-1 font-size-80">[{{ $ServiceTime['PublisherCnt'] }}/{{ session('auth.PublisherNumber') }}]</div>
                         </td>  
                         @endif
                         @endforeach

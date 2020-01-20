@@ -256,7 +256,7 @@ class PushService
             ->when( request()->ServiceDate === date('Y-m-d') , function ($query) {
                 return $query->where('ServiceTimes.ServiceTime', '>', (int)date('H') );
             })
-            ->havingRaw('COUNT(*) < 6')
+            ->havingRaw('COUNT(*) < ' . session('auth.PublisherNumber'))
             ->whereNull('ServiceActs.CancelDate')
             ->groupBy(['ServiceActs.ServiceTimeID', 'ServiceTimes.ServiceTime'])
             ->get();
@@ -270,7 +270,7 @@ class PushService
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         foreach ($res as $row) {
-            $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . (6 - $row->Cnt) . ')' . "\r\n";
+            $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
         }
         // return $res;
         if( count($res) ) $this->sendToTopic('[봉사지원요청]' ,$msg);

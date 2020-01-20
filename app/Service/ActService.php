@@ -67,7 +67,7 @@ class ActService
 
     public function setPublisherServicePlanInsert()
     {
-        if( $this->checkServicePlanPublisherCnt() >= 6) return 'full';
+        if( $this->checkServicePlanPublisherCnt() >= session('auth.PublisherNumber')) return 'full';
 
         if( request()->LeaderYn === '1' )
             if($this->checkServicePlanHasLeader()) return 'Already Leader';

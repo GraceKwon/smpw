@@ -130,7 +130,7 @@
                     </div>
                     <div class="btn-area">
                         <button class="btn btn-outline-secondary btn-block btn-sm" 
-                            @if( isset($ServicePlanDetail[$ServiceZoneID][$time]) && count($ServicePlanDetail[$ServiceZoneID][$time]) > 5)
+                            @if( isset($ServicePlanDetail[$ServiceZoneID][$time]) && count($ServicePlanDetail[$ServiceZoneID][$time]) >= session('auth.PublisherNumber'))
                                 disabled
                             @endif
                             @click="_setParams({
