@@ -80,6 +80,7 @@ Route::view('/errors/auth', 'errors.auth');
         ->where('CircuitID', '[0-9]+');
     //봉사일정생성
     Route::get('create', 'ActController@create');
+    Route::put('create', 'ActController@putCreate');
     Route::get('fcm', 'ActController@fcm');
     Route::get('fcmtopic', 'ActController@fcmtopic');
     

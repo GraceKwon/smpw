@@ -71,6 +71,18 @@ class ActController extends Controller
         return view('act.create');
     }
 
+    public function putCreate(Request $request)
+    {
+        $request->validate([
+            'SetStartDate' => 'required|date',
+        ]);
+        DB::statement('uspSetStandingServiceActReInsert ?,?', [
+            session('auth.CircuitID'),
+            $request->SetStartDate,
+        ]);
+        return view('act.create');
+    }
+
     public function modalPublisherCancel()
     {
         if($this->ActService->setPublisherServicePlanCancel())
@@ -110,7 +122,5 @@ class ActController extends Controller
         if($this->ActService->setServiceTimeCancel())
             return $this->PushService->RequestJoinAllZones();
     }
-
-
 
 }
