@@ -3,7 +3,7 @@
 <section class="section-wrap schedule-reset">
     <div class="notice">
         <div>선택한 일자 이후로 기존에 생성된 모든 일정이 삭제되고 다시 생성됩니다.</div>
-        <div>일정 생성은 신중히 진행해 주시기 바랍니다.</div>
+        <div>일정 재생성은 신중히 진행해 주시기 바랍니다.</div>
     </div>
     <form method="POST"
     @submit="_confirm" 
