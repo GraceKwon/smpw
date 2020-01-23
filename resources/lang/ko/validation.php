@@ -162,6 +162,7 @@ return [
         'EndDate' => '계정중단일',
         'EndTypeID' => '계정중단사유',
         'SetStartDate' => '스케줄변경 시작일',
+        'ReSetStartDate' => '일정 재생성 시작일',
         'ReceiveGroupID' => '열람대상',
         'Title' => '제목',
         'Contents' => '내용',

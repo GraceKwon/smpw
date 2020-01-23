@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\AfterToday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\ActService;
 use App\Service\PushService;
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
-use LaravelFCM\Message\Topics;
-use FCM;
 
 class ActController extends Controller
 {
@@ -74,11 +70,15 @@ class ActController extends Controller
     public function putCreate(Request $request)
     {
         $request->validate([
-            'SetStartDate' => 'required|date',
+            'ReSetStartDate' => [
+                'required',
+                'date',
+                new AfterToday
+            ],
         ]);
         DB::statement('uspSetStandingServiceActReInsert ?,?', [
             session('auth.CircuitID'),
-            $request->SetStartDate,
+            $request->ReSetStartDate,
         ]);
         return view('act.create');
     }

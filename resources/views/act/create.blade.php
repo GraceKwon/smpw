@@ -14,11 +14,10 @@
             <label class="label">일정 재생성 시작일</label>
             <div class="input-group max-w-250px-desktop">
                 <input type="date"
-                    class="form-control @error('SetStartDate') is-invalid @enderror"  
-                    name="SetStartDate"
-                    v-model="SetStartDate"
+                    class="form-control @error('ReSetStartDate') is-invalid @enderror"  
+                    name="ReSetStartDate"
                     placeholder="날자를 선택해 주세요">
-                @error('SetStartDate')
+                @error('ReSetStartDate')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror 
                 {{-- <div class="input-group-append">
