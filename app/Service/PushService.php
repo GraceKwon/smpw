@@ -44,7 +44,7 @@ class PushService
             $downstreamResponse = FCM::sendTo($tokens, null, $notification, $data);
             
             if( count($downstreamResponse->tokensToDelete()) ){
-                DB::table('Publishers')->whereIn('PushTokenValue', $downstreamResponse->tokensToDelete())->delete();
+                DB::table('Publishers')->whereIn('PushTokenValue', $downstreamResponse->tokensToDelete())->update(['PushTokenValue' => NULL]);
             }
             
             if( count($downstreamResponse->tokensToModify()) ){
