@@ -14,7 +14,7 @@ Route::get('/phpinfo', function(){
     phpinfo();
 });
 //메인
-Route::get('/', 'DashBoardController@viewDashboard');
+Route::get('/', 'DashBoardController@dashboard');
 
 //어드민
     //로그인

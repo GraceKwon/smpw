@@ -10,7 +10,7 @@ class DashBoardController extends Controller
     {
         $this->middleware('admin_auth');
     }
-    public function viewDashboard()
+    public function dashboard()
     {
         return view('dashboard');
     }
