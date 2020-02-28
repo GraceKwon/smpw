@@ -37,13 +37,13 @@
         <div class="dl_con">
             <div class="dl_txt_con">
                 <div class="dl_div_icon">
-                    <a href="/app/jwsmpw.apk">
+                    <a href="/app/smpw.apk">
                         <img src="@Url.Content("~/images/android.png")" class="dl_icon" />
                         <span class="txt_b">안드로이드용 설치</span>
                     </a>
                 </div>
                 <div class="dl_div_icon">
-                    <a href="itms-services://?action=download-manifest&amp;url=https://8smw.org/app/jwsmpw.plist"> -->
+                    <a href="itms-services://?action=download-manifest&amp;url=https://8smw.org/app/smpw.plist"> -->
                         <img src="@Url.Content("~/images/ios.png")" class="dl_icon" />
                         <span class="txt_b txt_wid">iOS용 설치</span>
                     </a>
