@@ -150,14 +150,12 @@ class PublisherController extends Controller
 
     public function resetPwdPublishers(Request $request)
     {
-        $res = DB::table('Publishers')
-            ->where('PublisherID', $request->PublisherID)
-            ->update([
-                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', CONVERT(nvarchar(100),'11112222') )"),
-                'TempPassYn' => 1,
-            ]);
-        // if( getAffectedRows($res) === 0 ) 
-        if( $res === 0 ) 
+        $res = DB::select('uspSetPublisherPasswordReset ?,?', [
+            $request->PublisherID,
+            '11112222',
+        ]);
+        
+        if( getAffectedRows($res) === 0 ) 
             return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
         else
             return back()->with(['success' => '비밀번호 초기화를 성공하였습니다.']);
