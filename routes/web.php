@@ -16,6 +16,11 @@ Route::get('/phpinfo', function(){
 //메인
 Route::get('/', 'DashBoardController@dashboard');
 
+//앱 다운로드 페이지
+Route::get('/home/appdownload', function(){
+    return view('download');
+});
+
 //어드민
     //로그인
     Route::get('/login', 'LoginController@login');
