@@ -97,7 +97,7 @@
                                         </a>
                                         <a href="/app/smpw.apk">
                                             <div class="typo-area">
-                                                <div class="font-size-120 opacity-70">안드로이드용</div>
+                                                <div class="font-size-120 opacity-70">안드로이드</div>
                                             </div>
                                         </a>
                                     </div>
@@ -110,7 +110,7 @@
                                         </a>
                                         <a href="itms-services://?action=download-manifest&amp;url=https://8smw.org/app/smpw.plist">
                                             <div class="typo-area">
-                                                <div class="font-size-120 opacity-70">iOS용 앱</div>
+                                                <div class="font-size-120 opacity-70">iOS</div>
                                             </div>
                                         </a>
                                     </div>
