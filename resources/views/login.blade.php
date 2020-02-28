@@ -66,7 +66,7 @@
                                                 
                                             </div>
                                             <div class="text-right">
-                                                <a class="btn-ask-reset" href="/reset-pwd">
+                                                <a class="btn-ask-reset" href="/ResetPwd">
                                                     비밀번호 초기화 요청
                                                 </a>
                                             </div>
