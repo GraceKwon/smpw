@@ -216,3 +216,8 @@ Route::get('getReceiveAdminList', function(CommonService $CommonService){
     Route::post('getProductStock', function(ProductService $ProductService){
         return $ProductService->getProductStock();
     });
+
+    Route::get('/sms', function(){
+        echo DB::connection('sms')->statement('uspSetSMS ?,?,?,?,?,?', ['SEUP00050','한진희','010','7224','0578','전달할 문자 내용']);
+       
+    });

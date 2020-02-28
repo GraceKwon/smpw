@@ -91,6 +91,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'sms' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_SMS', 'localhost'),
+            'port' => env('DB_PORT_SMS', '1433'),
+            'database' => env('DB_DATABASE_SMS', 'forge'),
+            'username' => env('DB_USERNAME_SMS', 'forge'),
+            'password' => env('DB_PASSWORD_SMS', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
     ],
 
     /*
