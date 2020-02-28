@@ -92,10 +92,10 @@
                                 </div>
                                 <div class="login-form-wrap no-label">
                                     <div class="logo-wrap" style="padding:0">
-                                        <a href="http://1.234.82.81:8000/smpw.apk">
+                                        <a href="/app/smpw.apk">
                                             <img src="../img/android.png" alt="">
                                         </a>
-                                        <a href="http://1.234.82.81:8000/smpw.apk">
+                                        <a href="/app/smpw.apk">
                                             <div class="typo-area">
                                                 <div class="font-size-120 opacity-70">안드로이드</div>
                                             </div>
@@ -105,10 +105,10 @@
                                 <br>
                                 <div class="login-form-wrap no-label">
                                     <div class="logo-wrap" style="padding:0">
-                                        <a href="itms-services://?action=download-manifest&amp;url=http://1.234.82.81:8000/smpw.plist">
+                                        <a href="itms-services://?action=download-manifest&amp;url=https://8smw.org/app/smpw.plist">
                                             <img src="../img/apple.png" alt="">
                                         </a>
-                                        <a href="itms-services://?action=download-manifest&amp;url=http://1.234.82.81:8000/smpw.plist">
+                                        <a href="itms-services://?action=download-manifest&amp;url=https://8smw.org/app/smpw.plist">
                                             <div class="typo-area">
                                                 <div class="font-size-120 opacity-70">iOS</div>
                                             </div>
