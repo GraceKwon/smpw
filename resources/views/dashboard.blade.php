@@ -1,7 +1,7 @@
 @extends('layouts.frames.master')
 @section('content')
 <div class="row row-10px">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <section class="section">
             <div class="shadow mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
@@ -65,12 +65,12 @@
             </div>
         </section>
     </div>
-    <div class="col-lg-4">
+    {{-- <div class="col-lg-4">
         <section class="section">
             <div class="shadow mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
                     <h3 class="text-primary">
-                        구역별 통계
+                        봉사보고 현황
                     </h3>
                 </div>
                 <div class="row mt-3">
@@ -82,7 +82,7 @@
                 </div>
             </div>
         </section>
-    </div>
+    </div> --}}
 </div>
 <div class="row row-10px">
     <div class="col-lg-4">
