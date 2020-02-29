@@ -170,6 +170,8 @@
             ZoneName: "{{ old('ZoneName') ?? $ServiceZone->ZoneName ?? '' }}",
             Latitude: "{{ old('Latitude') ?? $ServiceZone->Latitude ?? '' }}",
             Longitude: "{{ old('Longitude') ?? $ServiceZone->Longitude ?? '' }}",
+            // Latitude: "3",
+            // Longitude: "4",
             ZoneAddress: "{{ old('ZoneAddress') ?? $ServiceZone->ZoneAddress ?? '' }}",
         },
         mounted: function () {
@@ -208,11 +210,11 @@
             _loadKakaoMap: function (e) {
                 this.container = this.$refs.map; //지도를 담을 영역의 DOM 레퍼런스
                 var options = { //지도를 생성할 때 필요한 기본 옵션
-                    center: new kakao.maps.LatLng(this.Latitude ? this.Latitude : 37.00124464023314, 
-                    this.Longitude ? this.Longitude : 127.19440172814731), //지도의 중심좌표.
+                    center: new kakao.maps.LatLng(37.00124464023314, 127.19440172814731), //지도의 중심좌표.
                     level: 3 //지도의 레벨(확대, 축소 정도)
                 };
                 this.map = new kakao.maps.Map(this.container, options); //지도 생성 및 객체 리턴
+                console.log(this.map);
                 var mapTypeControl = new kakao.maps.MapTypeControl(); // 맵타입을 제어할 수 있는 컨트롤을 생성합니다
                 var zoomControl = new kakao.maps.ZoomControl(); // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
                 this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
@@ -220,12 +222,14 @@
                 
                 this.geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
                 
+
+                this.map.setCenter(new kakao.maps.LatLng(this.Latitude, this.Longitude))
                 this.marker = new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(this.Latitude, this.Longitude)
                 }); //마커 객체를 생성합니다.
                 
-                this.marker.setMap(this.map);
-                
+                this.marker.setMap(this.map);  
+
             },
             _addressSearch: function() {
                 var alertMessage = '';
