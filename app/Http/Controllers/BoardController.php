@@ -27,6 +27,9 @@ class BoardController extends Controller
             $request->CircuitID,
             $request->ReceiveGroupID
         ];
+        
+        if (session('auth.MetroID')) $parameter[0] = session('auth.MetroID');
+        if (session('auth.CircuitID')) $parameter[1] = session('auth.CircuitID');
         $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingNoticeListCnt ?,?,?', $parameter);
@@ -65,7 +68,6 @@ class BoardController extends Controller
 
     public function putNotices(Request $request, PushService $PushService)
     {   
-        // return $request->Files[0];
         $request->validate([
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
