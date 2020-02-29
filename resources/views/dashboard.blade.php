@@ -280,62 +280,24 @@
                 </div>
                 <div class="content-area">
                     <div class="font-size-80 mb-2 text-right">
-                        <a href="#">
-                        + 더보기
+                        <a href="/notices">
+                            <span class="badge badge-secondary">+ 더보기</span>
                         </a>
                     </div>
                     <div class="table-area">
                         <table class="table">
+                            @foreach ($Notices as $Notice)
                             <tr>
                                 <td class="pl-0">
-                                    <a href="#">
-                                        봄꽃 축제 전시대 봉사 마련 광고
+                                    <a href="/notices/{{ $Notice->NoticeID }}">
+                                        {{ $Notice->Title }}
                                     </a>
                                 </td>
                                 <td class="text-right text-muted pr-0">
-                                    2019-05-05
+                                    {{ $Notice->CreateDate }}
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        봉사 중 우리의 안전에 유의함
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2019-04-15
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        전시대 보관 장소 변경 안내
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2019-03-01
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        새로운 봉사 구역이 등록되었습니다.
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2019-01-02
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        대특공 정기 교육 마련 광고
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2018-09-09
-                                </td>
-                            </tr>
+                            @endforeach
                         </table>
                     </div>
                 </div>
@@ -345,22 +307,22 @@
     <div class="col-lg-4">
         <section class="main-icon-link">
             <div class="shadow min-h-350px mb-4">
-                <a href="#">
+                <a href="/publishers">
                     <i class="fas fa-users"></i>
                     <span>봉사자 관리</span>
                 </a>
-                <a href="#">
+                <a href="/publishers/0">
                     <i class="fas fa-user"></i>
                     <span>신규봉사자 등록</span>
                 </a>
-                <a href="#">
+                <a href="/reports">
                     <i class="fas fa-file-signature"></i>
                     <span>봉사보고 관리</span>
                 </a>
-                <a href="#">
+                <a href="/inbox">
                     <i class="fas fa-envelope"></i>
                     <span>받은편지함</span>
-                    <span>(2)</span>
+                    {{-- <span class="badge badge-danger">2</span> --}}
                 </a>
             </div>
         </section>
