@@ -17,7 +17,7 @@
                         <div class="bubble-graph bubble-graph-lg">
                             <div>
                                 <label class="label">총인원</label>
-                                <div class="num">563</div>
+                                <div class="num">{{ $StatisticsCnt->PublisherCnt }}</div>
                             </div>
                         </div>
                     </div>
@@ -27,8 +27,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">정기참여</label>
-                                        <div class="num">321</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month1_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -36,8 +36,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">6개월내참여</label>
-                                        <div class="num">445</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month6_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -45,8 +45,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">1년내참여</label>
-                                        <div class="num">510</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month12_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -54,8 +54,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">장기미참여</label>
-                                        <div class="num">35</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month12NO_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
     </div> --}}
 </div>
 <div class="row row-10px">
-    <div class="col-lg-4">
+    {{-- <div class="col-lg-4">
         <section class="section">
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
@@ -269,8 +269,8 @@
                 </div>
             </div>
         </section>
-    </div>
-    <div class="col-lg-4">
+    </div> --}}
+    <div class="col-lg-8">
         <section class="section">
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
