@@ -60,7 +60,7 @@ class CircuitController extends Controller
         $request->validate([
             'ZoneName' => [
                 'required',
-                'max:10',
+                'max:20',
                 Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')->where('UseYn', 1),
             ],
             'ZoneAlias' => [
