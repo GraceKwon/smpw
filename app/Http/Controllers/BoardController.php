@@ -17,6 +17,8 @@ class BoardController extends Controller
 
     public function notices(Request $request, CommonService $CommonService)
     {
+        // dd(session('auth'));
+        
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
         $ReceiveGroupList = $CommonService->getReceiveGroupList();
@@ -27,6 +29,9 @@ class BoardController extends Controller
             $request->CircuitID,
             $request->ReceiveGroupID
         ];
+        
+        if (session('auth.MetroID')) $parameter[0] = session('auth.MetroID');
+        if (session('auth.CircuitID')) $parameter[1] = session('auth.CircuitID');
         $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingNoticeListCnt ?,?,?', $parameter);
