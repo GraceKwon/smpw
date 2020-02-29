@@ -59,7 +59,13 @@ class CommonService
 
     public function getReceiveGroupList()
     {
-        return  DB::select('uspGetStandingItemCodeList ?, ?', ['ReceiveGroupID', null]);
+        $IDs = [41, 42, 43];
+        if (session('auth.AdminRoleID') > 3) $IDs = [42, 43];
+        return DB::table('ItemCodes')
+            ->where('Separate', 'ReceiveGroupID')
+            ->whereIn('ID', $IDs)
+            ->get();
+        // return  DB::select('uspGetStandingItemCodeList ?, ?', ['ReceiveGroupID', null]);
     }
 
     public function getReceiveAdminList($request)

@@ -17,8 +17,6 @@ class BoardController extends Controller
 
     public function notices(Request $request, CommonService $CommonService)
     {
-        // dd(session('auth'));
-        
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
         $ReceiveGroupList = $CommonService->getReceiveGroupList();
@@ -70,7 +68,6 @@ class BoardController extends Controller
 
     public function putNotices(Request $request, PushService $PushService)
     {   
-        // return $request->Files[0];
         $request->validate([
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
