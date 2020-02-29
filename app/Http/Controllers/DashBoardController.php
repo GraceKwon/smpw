@@ -11,7 +11,7 @@ class DashBoardController extends Controller
     {
         $this->middleware('admin_auth');
     }
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $Notices = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
             [
