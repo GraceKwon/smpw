@@ -53,7 +53,7 @@ class BoardController extends Controller
         if (session('auth.AdminRoleID') == 1 || session('auth.AdminRoleID') == 2) $modify = true;
         if (session('auth.MetroID') == $Notice[0]->MetroID) $modify = true;
         if (session('auth.CircuitID') == $Notice[0]->CircuitID) $modify = true;
-        // dd($Notice[0]);
+        // dd($Files);
         // dd(session('auth'));
         return view('board.detailNotices', [
             'Files' => $Files,
@@ -81,6 +81,7 @@ class BoardController extends Controller
     public function putNotices($id, Request $request, PushService $PushService)
     {   
         $request->validate([
+            'MetroID' => 'required',
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
             'Contents' => 'required'

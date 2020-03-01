@@ -10,6 +10,7 @@
             <td>
                 <div class="inline-responsive">
                     <select class="custom-select"
+                            :class="{'is-invalid': validation.MetroID}"
                             id="MetroID"
                             name="MetroID"
                             @if(session('auth.MetroID')) disabled @endif
@@ -19,6 +20,7 @@
                                 <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName}}</option>
                             @endforeach
                     </select>
+                    <div class="invalid-feedback" v-if="validation.MetroID" v-html="validation.MetroID[0]"></div>
                 </div>
             </td>
             <th>
@@ -176,6 +178,7 @@
                 Files: []
             },
             validation: {
+                MetroID: false,
                 ReceiveGroupID: false,
                 Title: false,
                 Contents: false

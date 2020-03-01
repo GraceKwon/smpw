@@ -12,10 +12,10 @@
                     if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = ''; 
                     submit()"
                     >
-                <option value="">전체</option>
+                @if(!session('auth.MetroID')) <option value="">선택</option>  @endif
                 @foreach ($MetroList as $Metro)
                     @if(!session('auth.MetroID') || session('auth.MetroID') ==  $Metro->MetroID)
-                        <option @if(request()->MetroID == $Metro->MetroID ) selected @endif
+                        <option @if(session('auth.MetroID') == $Metro->MetroID || request()->MetroID == $Metro->MetroID) selected @endif
                         value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
                     @endif
                 @endforeach
@@ -32,10 +32,10 @@
                 onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
                     if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = ''; 
                     submit()">
-                <option value="">전체</option>
+                @if(!session('auth.CircuitID')) <option value="">선택</option>  @endif
                 @foreach ($CircuitList as $Circuit)
                     @if(!session('auth.CircuitID') || session('auth.CircuitID') == $Circuit->CircuitID)
-                        <option @if(request()->CircuitID == $Circuit->CircuitID ) selected @endif
+                        <option @if(session('auth.CircuitID') == $Circuit->CircuitID || request()->CircuitID == $Circuit->CircuitID) selected @endif
                         value="{{ $Circuit->CircuitID }}">{{ $Circuit->CircuitName }}</option>
                     @endif
                 @endforeach
@@ -47,7 +47,7 @@
         <div class="search-form-item">
             <label class="label" for="ReceiveGroupID">대상</label>
             <select class="custom-select" id="ReceiveGroupID" name="ReceiveGroupID" onchange="submit()">
-                <option value="">전체</option>
+                <option value="">선택</option>
                 @foreach ($ReceiveGroupList as $ReceiveGroup)
                     <option @if(request()->ReceiveGroupID == $ReceiveGroup->ID ) selected @endif
                         value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
