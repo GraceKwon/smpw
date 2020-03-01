@@ -159,12 +159,15 @@
         data:{
             CircuitList: [],
             form: {
-                MetroID: "{{ session('auth.MetroID') }}",
-                CircuitID: "{{ session('auth.CircuitID') }}",
-                ReceiveGroupID: "",
-                DisplayYn: 1,
-                Title: "",
-                Contents: "",
+                NoticeID: "{{ $Notice[0]->NoticeID ?? 0 }}",
+                AdminID: "{{ $Notice[0]->AdminID ?? session('auth.AdminID') }}",
+                MetroID: "{{ $Notice[0]->MetroID ?? session('auth.MetroID') }}",
+                CircuitID: "{{ $Notice[0]->CircuitID ?? session('auth.CircuitID') }}",
+                ReceiveGroupID: "{{ $Notice[0]->ReceiveGroupID ?? "" }}",
+                DisplayYn: {{ $Notice[0]->DisplayYn ?? 1 }},
+                Title: "{{ $Notice[0]->Title ?? "" }}",
+                Contents: "{!! $Notice[0]->Contents ?? "" !!}",
+                ReadCnt: {{ $Notice[0]->ReadCnt ?? 0 }},
                 Files: []
             },
             validation: {
@@ -273,6 +276,8 @@
             },
             trySubmit: function() {
                 var formData = new FormData();
+                formData.append('NoticeID', this.form.NoticeID);
+                formData.append('AdminID', this.form.AdminID);
                 formData.append('MetroID', this.form.MetroID);
                 formData.append('CircuitID', this.form.CircuitID);
                 formData.append('ReceiveGroupID', this.form.ReceiveGroupID);
@@ -284,10 +289,10 @@
                     console.log(this.form.Files[i])
                 }
 
-                axios.post('/notices/0/form', formData)
+                axios.post('/notices/' + this.form.NoticeID + '/form', formData)
                 .then(function (response) {
                     console.log(response);
-                    location.href = '/notices'
+                    // location.href = '/notices'
                 })
                 .catch(function (error) {
                     console.log(error.response);
