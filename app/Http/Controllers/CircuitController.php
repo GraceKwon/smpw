@@ -224,7 +224,7 @@ class CircuitController extends Controller
 
     public function deleteAdmins(Request $request)
     {
-        $res = DB::select('uspSetStandingAdminDelete ? ?', [
+        $res = DB::select('uspSetStandingAdminDelete ?,?', [
                 $request->AdminID,
                 0
             ]);
@@ -255,7 +255,7 @@ class CircuitController extends Controller
     {
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
-        $CongregationList = $this->CommonService->getCongregationList();
+        // $CongregationList = $this->CommonService->getCongregationList();
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
@@ -274,7 +274,7 @@ class CircuitController extends Controller
             'KeepZoneList' => $KeepZoneList,
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
-            'CongregationList' => $CongregationList,
+            // 'CongregationList' => $CongregationList,
         ]);
     }
 
@@ -319,6 +319,20 @@ class CircuitController extends Controller
 
         if(getAffectedRows($res) === 0) 
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
+        else
+            return redirect('/KeepZones');
+        
+    }
+
+    public function deleteKeepZones(Request $request)
+    {
+        $res = DB::select('uspSetStandingProductKeepZoneDelete ?,?', [
+                $request->KeepZoneID,
+                0
+            ]);
+
+        if( getAffectedRows($res) === 0 ) 
+            return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
         else
             return redirect('/KeepZones');
         
