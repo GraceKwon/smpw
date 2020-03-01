@@ -62,7 +62,7 @@
         </tbody>
     </table>
     <div class="btn-flex-area justify-content-end">
-        @if ($Notice->AdminID == session('auth.AdminID'))
+        @if ($modify)
         <button type="button" 
                 class="btn btn-secondary" 
                 onclick="location.href='/notices/{{ $Notice->NoticeID }}/form'">수정</button>

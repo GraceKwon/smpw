@@ -57,13 +57,39 @@ class CommonService
         return  DB::select('uspGetStandingItemCodeList ?, ?', ['CancelTypeID', null]);
     }
 
-    public function getReceiveGroupList()
+    public function getReceiveGroupList($view)
     {
-        $IDs = [41, 42, 43];
-        if (session('auth.AdminRoleID') > 3) $IDs = [42, 43];
+        /* 
+        AdminRoleID 1 관리자
+        AdminRoleID 2 지부사무실
+        AdminRoleID 3 순회감독자
+        AdminRoleID 5 조정장로
+        AdminRoleID 4 순회구보조자
+
+
+        ReceiveGroupID 41 순회감독자
+        ReceiveGroupID 42 조정장로
+        ReceiveGroupID 50 순회구보조자
+        ReceiveGroupID 43 봉사자전체
+      
+        */
+        if (session('auth.AdminRoleID') == 1) $ReceiveGroupID = [41, 42, 50, 43];
+        if (session('auth.AdminRoleID') == 2) $ReceiveGroupID = [41, 42, 50, 43];
+        if ($view === 'form') {
+            if (session('auth.AdminRoleID') == 3) $ReceiveGroupID = [42, 50, 43];
+            if (session('auth.AdminRoleID') == 5) $ReceiveGroupID = [50, 43];
+            if (session('auth.AdminRoleID') == 4) $ReceiveGroupID = [43];
+        }
+        if ($view === 'list') {
+            if (session('auth.AdminRoleID') == 3) $ReceiveGroupID = [41, 42, 50, 43];
+            if (session('auth.AdminRoleID') == 5) $ReceiveGroupID = [42, 50, 43];
+            if (session('auth.AdminRoleID') == 4) $ReceiveGroupID = [50, 43];
+        }
+    
         return DB::table('ItemCodes')
             ->where('Separate', 'ReceiveGroupID')
-            ->whereIn('ID', $IDs)
+            ->whereIn('ID', $ReceiveGroupID)
+            ->orderBy('OrderNum', 'ASC')
             ->get();
         // return  DB::select('uspGetStandingItemCodeList ?, ?', ['ReceiveGroupID', null]);
     }

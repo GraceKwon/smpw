@@ -19,20 +19,21 @@ class BoardController extends Controller
     {
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
-        $ReceiveGroupList = $CommonService->getReceiveGroupList();
+        $ReceiveGroupList = $CommonService->getReceiveGroupList('list');
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
             $request->MetroID,
             $request->CircuitID,
-            $request->ReceiveGroupID
+            $request->ReceiveGroupID,
+            session('auth.AdminRoleID')
         ];
         
         if (session('auth.MetroID')) $parameter[0] = session('auth.MetroID');
         if (session('auth.CircuitID')) $parameter[1] = session('auth.CircuitID');
-        $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
+        $data = DB::select('uspGetStandingNoticeList_Dev ?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
-        $count = DB::select('uspGetStandingNoticeListCnt ?,?,?', $parameter);
+        $count = DB::select('uspGetStandingNoticeListCnt_Dev ?,?,?,?', $parameter);
         $NoticeList = setPaginator($paginate, $page, $data, $count);
 
         return view('board.notices', [
@@ -45,12 +46,19 @@ class BoardController extends Controller
 
     public function detailNotices($id)
     {
+        $modify = false;
         DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
+        if (session('auth.AdminRoleID') == 1 || session('auth.AdminRoleID') == 2) $modify = true;
+        if (session('auth.MetroID') == $Notice[0]->MetroID) $modify = true;
+        if (session('auth.CircuitID') == $Notice[0]->CircuitID) $modify = true;
+        // dd($Notice[0]);
+        // dd(session('auth'));
         return view('board.detailNotices', [
             'Files' => $Files,
-            'Notice' => $Notice[0]
+            'Notice' => $Notice[0],
+            'modify' => $modify
         ]);
     }
 
@@ -61,7 +69,7 @@ class BoardController extends Controller
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
         // dd($Notice);
         $MetroList = $common->getMetroList();
-        $ReceiveGroupList = $common->getReceiveGroupList();
+        $ReceiveGroupList = $common->getReceiveGroupList('form');
 
         return view('board.formNotices', [
             'Notice' => $Notice,

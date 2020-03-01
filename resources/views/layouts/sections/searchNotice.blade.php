@@ -27,14 +27,14 @@
         <div class="search-form-item">
             <label class="label" for="CircuitID">지역</label>
             <select class="custom-select" 
-                {{-- @if(session('auth.MetroID')) disabled  @endif --}}
+                {{-- @if(session('auth.CircuitID')) disabled  @endif --}}
                 id="CircuitID" name="CircuitID" 
                 onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
                     if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = ''; 
                     submit()">
                 <option value="">전체</option>
                 @foreach ($CircuitList as $Circuit)
-                    @if(!session('auth.CircuitID') || session('auth.CircuitID') ==  $Circuit->CircuitID)
+                    @if(!session('auth.CircuitID') || session('auth.CircuitID') == $Circuit->CircuitID)
                         <option @if(request()->CircuitID == $Circuit->CircuitID ) selected @endif
                         value="{{ $Circuit->CircuitID }}">{{ $Circuit->CircuitName }}</option>
                     @endif
