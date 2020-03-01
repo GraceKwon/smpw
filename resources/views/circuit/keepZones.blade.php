@@ -31,11 +31,6 @@
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>회중</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="min-width">
                             <span>관리자 이름</span>
                         </div>
                     </th>
@@ -57,35 +52,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {{-- <tr>
-                        <td>
-                            201
-                        </td>
-                        <td>
-                            남양주
-                        </td>
-                        <td>
-                            경기18
-                        </td>
-                        <td>
-                            남양주양지
-                        </td>
-                        <td>
-                            김사랑
-                        </td>
-                        <td>
-                            장로
-                        </td>
-                        <td>
-                            010-1234-5678
-                        </td>
-                        <td>
-                            서울 송파구 문정동 324-942 2층
-                        </td>
-                        <td>
-                            2019-03-23
-                        </td>
-                    </tr> --}}
                     @foreach ($KeepZoneList as $KeppZone)
                     <tr class="pointer"
                         onclick="location.href = '/{{request()->path()}}/{{ $KeppZone->KeepZoneID }}'">
@@ -97,9 +63,6 @@
                         </td>
                         <td>
                             {{ $KeppZone->CircuitName }}
-                        </td>
-                        <td>
-                            {{ $KeppZone->CongregationName }}
                         </td>
                         <td>
                             {{ $KeppZone->AdminName }}
@@ -124,39 +87,7 @@
             ])
         @endif
 
-
         {{ $KeepZoneList->appends( request()->all() )->links() }}
 
     </section>
 @endsection
-
-@section('popup')
-    <!-- <section class="modal-layer-container">
-        <div class="mx-auto px-3">
-            <div class="mlp-wrap">
-                <div class="max-w-800px">
-                    <div class="mlp-header">
-                        <div class="mlp-title">
-                            <span>Modal layer popup</span>
-                        </div>
-                        <div class="mlp-close">
-                            <i class="fa fa-times"></i>
-                        </div>
-                    </div>
-                    <div class="mlp-content">
-                        점검중입니다
-                    </div>
-                    <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-secondary btn-sm">취소</button>
-                        <button class="btn btn-primary btn-sm">확인</button>
-                    </div>
-                </div>
-            </div> 
-        </div>
-    </section> -->
-@endsection
-
-{{-- @section('script')
-<script>
-</script>
-@endsection --}}

@@ -45,7 +45,7 @@
                 <td>
                 </td> --}}
                 <th>
-                    <label class="label">연럭처</label>
+                    <label class="label">연락처</label>
                 </th>
                 <td>
                     {{ $KeepZone->Mobile ?? getMobile() }}

@@ -20,6 +20,9 @@ Route::get('/', 'DashBoardController@dashboard');
 Route::get('/home/appdownload', function(){
     return view('download');
 });
+Route::get('/Home/AppDownload', function(){
+    return view('download');
+});
 
 //어드민
     //로그인
@@ -59,6 +62,8 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('KeepZones/{KeepZoneID}', 'CircuitController@formKeepZones')
         ->where('KeepZoneID', '[0-9]+');
     Route::put('KeepZones/{KeepZoneID}', 'CircuitController@putKeepZones')
+        ->where('KeepZoneID', '[0-9]+');
+    Route::delete('KeepZones/{KeepZoneID}', 'CircuitController@deleteKeepZones')
         ->where('KeepZoneID', '[0-9]+');
 
 //봉사자관리
