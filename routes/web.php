@@ -234,5 +234,5 @@ Route::get('getReceiveAdminList', function(CommonService $CommonService){
             'NAMP00640',
             '010-7224-0578',
         ]);
-        DD($res);
+        DD(getAffectedRows($res));
     });
