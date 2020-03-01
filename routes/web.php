@@ -152,6 +152,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('notices/{id}/form', 'BoardController@formNotices');
     Route::post('notices/{id}/form', 'BoardController@putNotices');
     Route::get('notices/{id}/file/{fid}', 'BoardController@fileDownload');
+    Route::post('notices/{id}/delete', 'BoardController@deleteNotices');
 
 
 //메세지함

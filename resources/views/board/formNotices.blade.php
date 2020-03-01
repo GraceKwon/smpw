@@ -128,7 +128,7 @@
                     v-html="validation.Contents[0]"
                     style="display: block">
                 </div>
-                <textarea v-model="form.Contents" class="form-control" name="notice-board" id="notice-board"></textarea>
+                <textarea class="form-control" name="notice-board" id="notice-board">{{ $Notice[0]->Contents ?? "" }}</textarea>
             </td>
         </tr>
         </tbody>
@@ -138,10 +138,16 @@
             type="button" 
             class="btn btn-secondary"
             onclick="location.href='/notices'">취소</button>
+        @if (isset($Notice[0]->NoticeID))    
+        <button 
+            type="button" 
+            class="btn btn-danger" 
+            @click="tryDelete">삭제</button>
+        @endif
         <button 
             type="button" 
             class="btn btn-primary" 
-            @click="trySubmit">저장</button>
+            @click="trySubmit">{{ isset($Notice[0]->NoticeID) ? '수정' : '저장'}}</button>
     </div> <!-- /.register-btn-area -->
 </section>
 
@@ -159,12 +165,14 @@
         data:{
             CircuitList: [],
             form: {
-                MetroID: "{{ session('auth.MetroID') }}",
-                CircuitID: "{{ session('auth.CircuitID') }}",
-                ReceiveGroupID: "",
-                DisplayYn: 1,
-                Title: "",
-                Contents: "",
+                NoticeID: "{{ $Notice[0]->NoticeID ?? 0 }}",
+                AdminID: "{{ $Notice[0]->AdminID ?? session('auth.AdminID') }}",
+                MetroID: "{{ $Notice[0]->MetroID ?? session('auth.MetroID') }}",
+                CircuitID: "{{ $Notice[0]->CircuitID ?? session('auth.CircuitID') }}",
+                ReceiveGroupID: "{{ $Notice[0]->ReceiveGroupID ?? "" }}",
+                DisplayYn: {{ $Notice[0]->DisplayYn ?? 1 }},
+                Title: "{{ $Notice[0]->Title ?? "" }}",
+                ReadCnt: {{ $Notice[0]->ReadCnt ?? 0 }},
                 Files: []
             },
             validation: {
@@ -241,11 +249,9 @@
                 };
                 axios.get('/getCircuitList', params)
                     .then(function (response) {
-                        console.log(response.data);
                         this.CircuitList = response.data;
                     }.bind(this))
                     .catch(function (error) {
-                        console.log(error.response)
                     });
             },
             pushFile: function(file) {
@@ -273,29 +279,43 @@
             },
             trySubmit: function() {
                 var formData = new FormData();
+                formData.append('NoticeID', this.form.NoticeID);
+                formData.append('AdminID', this.form.AdminID);
                 formData.append('MetroID', this.form.MetroID);
                 formData.append('CircuitID', this.form.CircuitID);
                 formData.append('ReceiveGroupID', this.form.ReceiveGroupID);
                 formData.append('DisplayYn', this.form.DisplayYn);
                 formData.append('Title', this.form.Title);
+                formData.append('ReadCnt', this.form.ReadCnt);
                 formData.append('Contents', CKEDITOR.instances['notice-board'].getData());
                 for (var i = 0; i < this.form.Files.length; i++) {
                     formData.append('Files[]', this.form.Files[i]);
                     console.log(this.form.Files[i])
                 }
 
-                axios.post('/notices/0/form', formData)
+                axios.post('/notices/' + this.form.NoticeID + '/form', formData)
                 .then(function (response) {
-                    console.log(response);
                     location.href = '/notices'
                 })
                 .catch(function (error) {
-                    console.log(error.response);
                     if (error.response.status === 422) {
                         console.log(error.response);
                         this.validation = error.response.data.errors
                     }
                 }.bind(this));
+            },
+            tryDelete: function () {
+                
+                if (!confirm('정말 삭제하시겠습니까?')) return false
+                axios.post('/notices/' + this.form.NoticeID + '/delete')
+                .then(function (response) {
+                    alert('삭제 되었습니다')
+                    location.href = '/notices'
+                    
+                })
+                .catch(function (error) {
+                    console.log(error.response)
+                })
             }
         }
     })

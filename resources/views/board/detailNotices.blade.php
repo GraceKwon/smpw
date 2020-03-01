@@ -62,9 +62,15 @@
         </tbody>
     </table>
     <div class="btn-flex-area justify-content-end">
+        @if ($Notice->AdminID == session('auth.AdminID'))
+        <button type="button" 
+                class="btn btn-secondary" 
+                onclick="location.href='/notices/{{ $Notice->NoticeID }}/form'">수정</button>
+        @endif
         <button type="button" 
             class="btn btn-outline-secondary" 
             onclick="location.href='{{ url()->previous() }}'">목록</button>
+      
     </div> <!-- /.register-btn-area -->
 </section>
 @endsection
