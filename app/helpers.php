@@ -31,7 +31,7 @@ function getTopPath() {
 
 function getAffectedRows($res) {
 	foreach( reset($res) as $value){
-		return $value;
+		return (int)$value;
 	}
 	
 }
