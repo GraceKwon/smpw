@@ -132,7 +132,7 @@ class BoardController extends Controller
 
     public function deleteNotices($id)
     {
-        DB::select('uspSetStandingNoticeDelete ?',[$id]);
+        DB::statement('uspSetStandingNoticeDelete ?',[$id]);
         return;
     }
 
