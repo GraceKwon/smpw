@@ -133,11 +133,12 @@ class LoginController extends Controller
             'Account' => 'required', //8~12자리의 영문, 숫자, 특수문자 포함
             'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
         ]);
-
-        $res = DB::select('uspSetStandingAdminPasswordReset ?,?',
+        $Password = sprintf('%04d',rand(0,9999));
+        $res = DB::select('uspSetStandingAdminPasswordReset ?,?,?',
             [
                 $request->Account,
                 $request->Mobile,
+                $Password
             ]);
 
         if(getAffectedRows($res) === 0) 
@@ -145,7 +146,7 @@ class LoginController extends Controller
                 ->withErrors(['fail' => '비밀번호 초기화에 실패하였습니다. <br> 아이디 혹은 휴대폰번호를 확인해주세요.']);
         else
             return redirect('/login')
-                ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "11112222"로 변경되었습니다.']);
+                ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "'.$Password.'"로 변경되었습니다.']);
         
     }
 

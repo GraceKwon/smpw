@@ -97,7 +97,7 @@ class PublisherController extends Controller
         if($request->PublisherID === '0')
             $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherName,
-                    '11112222',//$request->UserPassword,
+                    $Password = sprintf('%04d',rand(0,9999)),//$request->UserPassword,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
@@ -152,13 +152,13 @@ class PublisherController extends Controller
     {
         $res = DB::select('uspSetPublisherPasswordReset ?,?', [
             $request->PublisherID,
-            '11112222',
+            $Password = sprintf('%04d',rand(0,9999)),
         ]);
         
         if( getAffectedRows($res) === 0 ) 
             return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
         else
-            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다.']);
+            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다. 임시비밀번호는 '. $Password.'입니다']);
 
         
     }
