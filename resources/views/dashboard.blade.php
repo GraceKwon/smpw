@@ -1,7 +1,7 @@
 @extends('layouts.frames.master')
 @section('content')
 <div class="row row-10px">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <section class="section">
             <div class="shadow mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
@@ -17,7 +17,7 @@
                         <div class="bubble-graph bubble-graph-lg">
                             <div>
                                 <label class="label">총인원</label>
-                                <div class="num">563</div>
+                                <div class="num">{{ $StatisticsCnt->PublisherCnt }}</div>
                             </div>
                         </div>
                     </div>
@@ -27,8 +27,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">정기참여</label>
-                                        <div class="num">321</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month1_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -36,8 +36,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">6개월내참여</label>
-                                        <div class="num">445</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month6_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -45,8 +45,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">1년내참여</label>
-                                        <div class="num">510</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month12_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -54,8 +54,8 @@
                                 <div class="bubble-graph">
                                     <div>
                                         <label class="label">장기미참여</label>
-                                        <div class="num">35</div>
-                                        <div class="percent">91.25%</div>
+                                        <div class="num">{{ $StatisticsCnt->Month12NO_Cnt }}</div>
+                                        {{-- <div class="percent">91.25%</div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -65,12 +65,12 @@
             </div>
         </section>
     </div>
-    <div class="col-lg-4">
+    {{-- <div class="col-lg-4">
         <section class="section">
             <div class="shadow mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
                     <h3 class="text-primary">
-                        구역별 통계
+                        봉사보고 현황
                     </h3>
                 </div>
                 <div class="row mt-3">
@@ -82,10 +82,10 @@
                 </div>
             </div>
         </section>
-    </div>
+    </div> --}}
 </div>
 <div class="row row-10px">
-    <div class="col-lg-4">
+    {{-- <div class="col-lg-4">
         <section class="section">
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
@@ -269,8 +269,8 @@
                 </div>
             </div>
         </section>
-    </div>
-    <div class="col-lg-4">
+    </div> --}}
+    <div class="col-lg-8">
         <section class="section">
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
@@ -280,62 +280,24 @@
                 </div>
                 <div class="content-area">
                     <div class="font-size-80 mb-2 text-right">
-                        <a href="#">
-                        + 더보기
+                        <a href="/notices">
+                            <span class="badge badge-secondary">+ 더보기</span>
                         </a>
                     </div>
                     <div class="table-area">
                         <table class="table">
+                            @foreach ($Notices as $Notice)
                             <tr>
                                 <td class="pl-0">
-                                    <a href="#">
-                                        봄꽃 축제 전시대 봉사 마련 광고
+                                    <a href="/notices/{{ $Notice->NoticeID }}">
+                                        {{ $Notice->Title }}
                                     </a>
                                 </td>
                                 <td class="text-right text-muted pr-0">
-                                    2019-05-05
+                                    {{ $Notice->CreateDate }}
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        봉사 중 우리의 안전에 유의함
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2019-04-15
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        전시대 보관 장소 변경 안내
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2019-03-01
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        새로운 봉사 구역이 등록되었습니다.
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2019-01-02
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <a href="#">
-                                        대특공 정기 교육 마련 광고
-                                    </a>
-                                </td>
-                                <td class="text-right text-muted pr-0">
-                                    2018-09-09
-                                </td>
-                            </tr>
+                            @endforeach
                         </table>
                     </div>
                 </div>
@@ -345,22 +307,22 @@
     <div class="col-lg-4">
         <section class="main-icon-link">
             <div class="shadow min-h-350px mb-4">
-                <a href="#">
+                <a href="/publishers">
                     <i class="fas fa-users"></i>
                     <span>봉사자 관리</span>
                 </a>
-                <a href="#">
+                <a href="/publishers/0">
                     <i class="fas fa-user"></i>
                     <span>신규봉사자 등록</span>
                 </a>
-                <a href="#">
+                <a href="/reports">
                     <i class="fas fa-file-signature"></i>
                     <span>봉사보고 관리</span>
                 </a>
-                <a href="#">
+                <a href="/inbox">
                     <i class="fas fa-envelope"></i>
                     <span>받은편지함</span>
-                    <span>(2)</span>
+                    {{-- <span class="badge badge-danger">2</span> --}}
                 </a>
             </div>
         </section>
