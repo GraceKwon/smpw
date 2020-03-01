@@ -133,6 +133,7 @@ class BoardController extends Controller
     public function deleteNotices($id)
     {
         DB::select('uspSetStandingNoticeDelete ?',[$id]);
+        return;
     }
 
     public function fileDownload($id, $fid)
