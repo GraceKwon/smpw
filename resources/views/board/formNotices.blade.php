@@ -128,7 +128,7 @@
                     v-html="validation.Contents[0]"
                     style="display: block">
                 </div>
-                <textarea v-model="form.Contents" class="form-control" name="notice-board" id="notice-board"></textarea>
+                <textarea class="form-control" name="notice-board" id="notice-board">{{ $Notice[0]->Contents ?? "" }}</textarea>
             </td>
         </tr>
         </tbody>
@@ -172,7 +172,6 @@
                 ReceiveGroupID: "{{ $Notice[0]->ReceiveGroupID ?? "" }}",
                 DisplayYn: {{ $Notice[0]->DisplayYn ?? 1 }},
                 Title: "{{ $Notice[0]->Title ?? "" }}",
-                Contents: "{!! $Notice[0]->Contents ?? "" !!}",
                 ReadCnt: {{ $Notice[0]->ReadCnt ?? 0 }},
                 Files: []
             },
