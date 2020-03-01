@@ -197,7 +197,7 @@ class CircuitController extends Controller
                     $request->MetroID,
                     $request->CircuitID,
                     $request->CongregationID,
-                    '11112222',// UserPassword
+                    sprintf('%04d',rand(0,9999)),// UserPassword
                     $request->AdminName,
                     $request->AdminRoleID,
                     1,// TempUseYn
@@ -238,16 +238,16 @@ class CircuitController extends Controller
 
     public function resetPwdAdmins(Request $request)
     {
-        $res = DB::table('Admins')
-            ->where('AdminID', $request->AdminID)
-            ->update([
-                'UserPassword' => DB::Raw("HASHBYTES('SHA2_512', CONVERT(nvarchar(100),'11112222') )"),
-                'TempPassYn' => 1,
+        $Password = sprintf('%04d',rand(0,9999));
+        $res = DB::select('uspSetStandingAdminPasswordResetNoneMobile ?,?',
+            [
+                $request->AdminID,
+                $Password
             ]);
-        if( $res === 0 ) 
+        if(getAffectedRows($res) === 0) 
             return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
         else
-            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다.']);
+            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다. 임시비밀번호는 '. $Password.'입니다']);
         
     }
 
