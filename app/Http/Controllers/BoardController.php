@@ -51,9 +51,8 @@ class BoardController extends Controller
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
         if (session('auth.AdminRoleID') == 1 || session('auth.AdminRoleID') == 2) $modify = true;
-        if (session('auth.MetroID') == $Notice[0]->MetroID) $modify = true;
-        if (session('auth.CircuitID') == $Notice[0]->CircuitID) $modify = true;
-        // dd($Files);
+        if (session('auth.MetroID') == $Notice[0]->MetroID && session('auth.CircuitID') == $Notice[0]->CircuitID) $modify = true;
+        // dd($Notice[0]->CircuitID);
         // dd(session('auth'));
         return view('board.detailNotices', [
             'Files' => $Files,
@@ -67,11 +66,14 @@ class BoardController extends Controller
         //TODO : 본인글이 아니면 제한 로직 추가
  
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
-        // dd($Notice);
+        $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
+
+        // dd(json_encode($Files));
         $MetroList = $common->getMetroList();
         $ReceiveGroupList = $common->getReceiveGroupList('form');
 
         return view('board.formNotices', [
+            'Files' => json_encode($Files),
             'Notice' => $Notice,
             'MetroList' => $MetroList,
             'ReceiveGroupList' => $ReceiveGroupList
@@ -86,6 +88,11 @@ class BoardController extends Controller
             'Title' => 'required|max:500',
             'Contents' => 'required'
         ]);
+
+        $delFiles =  explode(',', $request->delFiles);
+        for ($i=0; $i < count($delFiles); $i++) { 
+            DB::statement('uspSetStandingNoticeFileDelete ?',[$delFiles[$i]]);
+        }
 
         if ($request->Files !== null) {
             $files = [];
