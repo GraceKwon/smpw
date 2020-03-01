@@ -77,16 +77,7 @@ class BoardController extends Controller
             'Title' => 'required|max:500',
             'Contents' => 'required'
         ]);
-        $parameter = [
-            $request->MetroID,
-            $request->CircuitID,
-            $request->ReceiveGroupID,
-            $request->Title,
-            $request->Contents,
-            $request->DisplayYn,
-            $request->AdminID,
-            $request->ReadCnt
-        ];
+
         if ($request->Files !== null) {
             $files = [];
             for ($i=0; $i < count( $request->Files ); $i++) { 
@@ -97,18 +88,24 @@ class BoardController extends Controller
             }
         }
 
+        $parameter = [
+            $request->MetroID,
+            $request->CircuitID,
+            $request->ReceiveGroupID,
+            $request->Title,
+            $request->Contents,
+            $request->DisplayYn,
+            $request->AdminID,
+            $request->ReadCnt
+        ];
+
         if ($id > 0) {
             array_unshift($parameter, $request->NoticeID);
-            // return $parameter;
             $res = DB::select('uspSetStandingNoticeUpdate ?,?,?,?,?,?,?,?,?', $parameter);
         }
 
-        if ($id == 0) {
-            $res = DB::select('uspSetStandingNoticeInsert ?,?,?,?,?,?,?,?', $parameter);
-        }
+        if ($id == 0) $res = DB::select('uspSetStandingNoticeInsert ?,?,?,?,?,?,?,?', $parameter);
         
-        
-
         // $ID = $res[0]->computed; 이렇게하면 윈도우서버에서 오류납니다. 아래코드로 수정함
         $ID = getAffectedRows($res);
         if ($request->Files !== null) {
@@ -124,11 +121,18 @@ class BoardController extends Controller
 
         if($request->CircuitID && (int)$request->ReceiveGroupID === (int)getItemID('봉사자전체' , 'ReceiveGroupID')) 
         
-        $request->NoticeID = $ID; //PushService->sendToTopic에서 사용
-        // $PushService->newNotice(); //푸시발송
+        if ($id == 0) {
+            $request->NoticeID = $ID; //PushService->sendToTopic에서 사용
+            $PushService->newNotice(); //푸시발송
+        }
 
         return;
 
+    }
+
+    public function deleteNotices($id)
+    {
+        DB::select('uspSetStandingNoticeDelete ?',[$id]);
     }
 
     public function fileDownload($id, $fid)

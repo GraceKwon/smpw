@@ -138,10 +138,16 @@
             type="button" 
             class="btn btn-secondary"
             onclick="location.href='/notices'">취소</button>
+        @if (isset($Notice[0]->NoticeID))    
+        <button 
+            type="button" 
+            class="btn btn-danger" 
+            @click="tryDelete">삭제</button>
+        @endif
         <button 
             type="button" 
             class="btn btn-primary" 
-            @click="trySubmit">저장</button>
+            @click="trySubmit">{{ isset($Notice[0]->NoticeID) ? '수정' : '저장'}}</button>
     </div> <!-- /.register-btn-area -->
 </section>
 
@@ -244,11 +250,9 @@
                 };
                 axios.get('/getCircuitList', params)
                     .then(function (response) {
-                        console.log(response.data);
                         this.CircuitList = response.data;
                     }.bind(this))
                     .catch(function (error) {
-                        console.log(error.response)
                     });
             },
             pushFile: function(file) {
@@ -283,6 +287,7 @@
                 formData.append('ReceiveGroupID', this.form.ReceiveGroupID);
                 formData.append('DisplayYn', this.form.DisplayYn);
                 formData.append('Title', this.form.Title);
+                formData.append('ReadCnt', this.form.ReadCnt);
                 formData.append('Contents', CKEDITOR.instances['notice-board'].getData());
                 for (var i = 0; i < this.form.Files.length; i++) {
                     formData.append('Files[]', this.form.Files[i]);
@@ -291,16 +296,27 @@
 
                 axios.post('/notices/' + this.form.NoticeID + '/form', formData)
                 .then(function (response) {
-                    console.log(response);
-                    // location.href = '/notices'
+                    location.href = '/notices'
                 })
                 .catch(function (error) {
-                    console.log(error.response);
                     if (error.response.status === 422) {
                         console.log(error.response);
                         this.validation = error.response.data.errors
                     }
                 }.bind(this));
+            },
+            tryDelete: function () {
+                
+                if (!confirm('정말 삭제하시겠습니까?')) return false
+                axios.delete('/notices/' + this.form.NoticeID)
+                .then(function (response) {
+                    alert('삭제 되었습니다')
+                    location.href = '/notices'
+                    
+                })
+                .catch(function (error) {
+                    
+                })
             }
         }
     })
