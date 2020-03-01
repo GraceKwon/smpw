@@ -307,7 +307,7 @@
             tryDelete: function () {
                 
                 if (!confirm('정말 삭제하시겠습니까?')) return false
-                axios.delete('/notices/' + this.form.NoticeID)
+                axios.post('/notices/' + this.form.NoticeID + '/delete')
                 .then(function (response) {
                     alert('삭제 되었습니다')
                     location.href = '/notices'
