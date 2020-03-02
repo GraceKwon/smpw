@@ -204,7 +204,7 @@ class CircuitController extends Controller
                     $request->Mobile,
                 ]);
         else
-            $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?', [
+            $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?', [
                     $request->AdminID,
                     $request->MetroID,
                     $request->CircuitID,
