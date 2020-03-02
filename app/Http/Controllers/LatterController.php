@@ -27,13 +27,17 @@ class LatterController extends Controller
                 return $query->where('CircuitID', session('auth.CircuitID'))
                     ->orWhere('AdminRoleID', 2);
             })
+            ->where('UseYn', 1)
             ->orderBy('AdminRoleID', 'ASC')
             ->get();
+            
         $ReceiveAdminID = DB::table('Admins')
             ->when(session('auth.AdminRoleID') > 1, function ($query) {
                 return $query->where('AdminID', session('auth.AdminID'));
             })
+            ->where('UseYn', 1)
             ->get();
+
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
@@ -85,6 +89,7 @@ class LatterController extends Controller
             ->when(session('auth.AdminRoleID') > 1, function ($query) {
                 return $query->where('AdminID', session('auth.AdminID'));
             })
+            ->where('UseYn', 1)
             ->get();
 
         $ReceiveAdminID = DB::table('Admins')
@@ -96,6 +101,7 @@ class LatterController extends Controller
                 return $query->where('CircuitID', session('auth.CircuitID'))
                     ->orWhere('AdminRoleID', 2);
             })
+            ->where('UseYn', 1)
             ->orderBy('AdminRoleID', 'ASC')
             ->get();
 
