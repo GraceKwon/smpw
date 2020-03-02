@@ -10,6 +10,7 @@
             <td>
                 <div class="inline-responsive">
                     <select class="custom-select"
+                            :class="{'is-invalid': validation.MetroID}"
                             id="MetroID"
                             name="MetroID"
                             @if(session('auth.MetroID')) disabled @endif
@@ -19,6 +20,7 @@
                                 <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName}}</option>
                             @endforeach
                     </select>
+                    <div class="invalid-feedback" v-if="validation.MetroID" v-html="validation.MetroID[0]"></div>
                 </div>
             </td>
             <th>
@@ -103,11 +105,22 @@
             </th>
             <td colspan="3">    
                 <div id="drop-zone">
+                    <div v-for="(file) in OldFiles">
+                        <span style="font-size: 15px; color:#4b5aaa" 
+                            :class="{cancel: form.delFiles.indexOf(file.NoticeFileID) !== -1}" 
+                            v-html="file.FilePath" ></span>
+                        <i @click="delOldFile(file.NoticeFileID)"
+                            v-if="form.delFiles.indexOf(file.NoticeFileID) == -1"
+                            class="fas fa-times-circle pointer"></i>
+                        <i @click="delOldFile(file.NoticeFileID)"
+                            v-else
+                            class="fas fa-redo-alt pointer"></i>
+                    </div>
                     <div v-for="(file, index) in form.Files">
                         <span style="font-size: 15px; color:#4b5aaa" v-html="file.name"></span> 
                         <i @click="delFile(index)" class="fas fa-times-circle pointer"></i>
                     </div>
-                    <div class="here" v-if="form.Files.length === 0">
+                    <div class="here" v-if="form.Files.length === 0 && OldFiles.length === 0">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <br />
                         여기에 파일을 올려 놓으세요
@@ -164,6 +177,7 @@
         el:'#wrapper-body',
         data:{
             CircuitList: [],
+            OldFiles: {!! $Files !!},
             form: {
                 NoticeID: "{{ $Notice[0]->NoticeID ?? 0 }}",
                 AdminID: "{{ $Notice[0]->AdminID ?? session('auth.AdminID') }}",
@@ -173,9 +187,11 @@
                 DisplayYn: {{ $Notice[0]->DisplayYn ?? 1 }},
                 Title: "{{ $Notice[0]->Title ?? "" }}",
                 ReadCnt: {{ $Notice[0]->ReadCnt ?? 0 }},
-                Files: []
+                Files: [],
+                delFiles: []
             },
             validation: {
+                MetroID: false,
                 ReceiveGroupID: false,
                 Title: false,
                 Contents: false
@@ -239,6 +255,7 @@
                 };
             
             })
+
         },
         methods:{
             _getCircuitList: function () {
@@ -274,6 +291,19 @@
             delFile: function(index) {
                 this.form.Files.splice(index, 1)
             },
+            delOldFile: function(noticeFileID) {
+          
+                if (this.form.delFiles.indexOf(noticeFileID) !== -1) {
+                    this.form.delFiles.splice(this.form.delFiles.indexOf(noticeFileID),1);
+                } else {
+                    if (!confirm('기존 파일을 삭제 하시겠습니까?')) return false
+                    this.form.delFiles.push(noticeFileID)
+                }
+                
+                console.log(this.form.delFiles)
+           
+
+            },
             selFile: function() {
                 this.$refs.inputFile.click()
             },
@@ -287,6 +317,7 @@
                 formData.append('DisplayYn', this.form.DisplayYn);
                 formData.append('Title', this.form.Title);
                 formData.append('ReadCnt', this.form.ReadCnt);
+                formData.append('delFiles', this.form.delFiles.join());
                 formData.append('Contents', CKEDITOR.instances['notice-board'].getData());
                 for (var i = 0; i < this.form.Files.length; i++) {
                     formData.append('Files[]', this.form.Files[i]);
@@ -298,6 +329,8 @@
                     location.href = '/notices'
                 })
                 .catch(function (error) {
+                    console.log(error.response);
+
                     if (error.response.status === 422) {
                         console.log(error.response);
                         this.validation = error.response.data.errors

@@ -19,20 +19,21 @@ class BoardController extends Controller
     {
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
-        $ReceiveGroupList = $CommonService->getReceiveGroupList();
+        $ReceiveGroupList = $CommonService->getReceiveGroupList('list');
         $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
             $request->MetroID,
             $request->CircuitID,
-            $request->ReceiveGroupID
+            $request->ReceiveGroupID,
+            session('auth.AdminRoleID')
         ];
         
         if (session('auth.MetroID')) $parameter[0] = session('auth.MetroID');
         if (session('auth.CircuitID')) $parameter[1] = session('auth.CircuitID');
-        $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
+        $data = DB::select('uspGetStandingNoticeList_Dev ?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
-        $count = DB::select('uspGetStandingNoticeListCnt ?,?,?', $parameter);
+        $count = DB::select('uspGetStandingNoticeListCnt_Dev ?,?,?,?', $parameter);
         $NoticeList = setPaginator($paginate, $page, $data, $count);
 
         return view('board.notices', [
@@ -45,12 +46,25 @@ class BoardController extends Controller
 
     public function detailNotices($id)
     {
+        $modify = false;
         DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
+        // dd($Notice[0]->ReceiveGroupID);
+        // dd(session('auth.AdminRoleID'));
+        if (session('auth.AdminRoleID') == 1 || session('auth.AdminRoleID') == 2) $modify = true;
+        if (session('auth.CircuitID') == null && session('auth.MetroID') == $Notice[0]->MetroID) $modify = true;
+        if (session('auth.MetroID') == $Notice[0]->MetroID && session('auth.CircuitID') == $Notice[0]->CircuitID) $modify = true;
+        if (session('auth.AdminRoleID') == 3 && $Notice[0]->ReceiveGroupID == 41) $modify = false;
+        if (session('auth.AdminRoleID') == 5 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42)) $modify = false;
+        if (session('auth.AdminRoleID') == 4 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42|| $Notice[0]->ReceiveGroupID == 50)) $modify = false;
+        // dd($modify);
+        // dd(session('auth'));
+
         return view('board.detailNotices', [
             'Files' => $Files,
-            'Notice' => $Notice[0]
+            'Notice' => $Notice[0],
+            'modify' => $modify
         ]);
     }
 
@@ -59,11 +73,14 @@ class BoardController extends Controller
         //TODO : 본인글이 아니면 제한 로직 추가
  
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
-        // dd($Notice);
+        $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
+
+        // dd(json_encode($Files));
         $MetroList = $common->getMetroList();
-        $ReceiveGroupList = $common->getReceiveGroupList();
+        $ReceiveGroupList = $common->getReceiveGroupList('form');
 
         return view('board.formNotices', [
+            'Files' => json_encode($Files),
             'Notice' => $Notice,
             'MetroList' => $MetroList,
             'ReceiveGroupList' => $ReceiveGroupList
@@ -73,10 +90,16 @@ class BoardController extends Controller
     public function putNotices($id, Request $request, PushService $PushService)
     {   
         $request->validate([
+            'MetroID' => 'required',
             'ReceiveGroupID' => 'required',
             'Title' => 'required|max:500',
             'Contents' => 'required'
         ]);
+
+        $delFiles =  explode(',', $request->delFiles);
+        for ($i=0; $i < count($delFiles); $i++) { 
+            DB::statement('uspSetStandingNoticeFileDelete ?',[$delFiles[$i]]);
+        }
 
         if ($request->Files !== null) {
             $files = [];
