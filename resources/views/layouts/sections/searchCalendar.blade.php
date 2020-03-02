@@ -1,6 +1,5 @@
 <form method="GET" id="frm">
     <section class="search-section">
-
         @if(isset($MetroList))
         <div class="search-form-item">
             <label class="label" for="MetroID">도시</label>
@@ -24,7 +23,7 @@
         <div class="search-form-item">
             <label class="label" for="CircuitID">지역</label>
             <select class="custom-select" 
-                @if(session('auth.MetroID')) disabled  @endif
+                @if(session('auth.CircuitID')) disabled  @endif
                 id="CircuitID" name="CircuitID" 
                 onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
                     submit()">
