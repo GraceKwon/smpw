@@ -104,12 +104,16 @@ class CommonService
             ->when(session('auth.CircuitID'), function ($query) {
                 return $query->where('CircuitID', session('auth.CircuitID'));
             })
-            ->where('AdminName', 'LIKE', '%'.$request.'%')
+            ->where([
+                ['AdminName', 'LIKE', '%'.$request.'%'],
+                ['UseYn', '=', 1],
+            ])
             ->orWhere(function ($query) use ($request) {
                 $query->where('AdminRoleID', '=', 2)
+                    ->where('UseYn', 1)
                     ->where('AdminName', 'LIKE', '%'.$request.'%');
             })
-            ->orderBy('AdminRoleID', 'ASC')
+            ->orderBy('AdminName', 'ASC')
             ->get();
     }
 
