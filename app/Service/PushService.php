@@ -298,4 +298,64 @@ class PushService
         $this->sendToTopic('[공지사항]' ,$msg);
     }
 
+    public function sendToTopic_test()
+    {
+        $title = '테스트푸시발송';
+        $msg = 'Topic: ' . request()->topic;
+
+        $notificationBuilder = new PayloadNotificationBuilder($title);
+        $notificationBuilder->setBody($msg)
+                            ->setSound('default');
+        
+        $dataBuilder = new PayloadDataBuilder();
+
+        $addData = [
+            'title' => $title,
+            'body' => $msg
+        ];
+        if(request()->NoticeID) $addData['NoticeID'] = request()->NoticeID;
+        if(request()->ServiceDate) $addData['ServiceDate'] = request()->ServiceDate;
+        if(request()->ServiceZoneID) $addData['ServiceZoneID'] = request()->ServiceZoneID;
+
+        $dataBuilder->addData($addData);
+
+        $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
+
+        $topic = new Topics();
+        $topic->topic(request()->topic);
+        
+        $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
+        if(!$topicResponse->isSuccess() && $topicResponse->shouldRetry()){
+            echo('!$topicResponse->isSuccess() && $topicResponse->shouldRetry() === true');
+            $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
+        } 
+        
+        DB::table('Pushes')->insert([
+            'AdminID' => 281,
+            'PushTitle' => $title,
+            'PushMessage' => $msg,
+            'PushKindID' => 9999,
+            'Topic' => request()->topic,
+            'SendDate' => date('Y-m-d H:i:s'),
+            'CreateDate' => date('Y-m-d H:i:s')
+        ]);
+        echo('topic: '.request()->topic);
+        echo('<br>');
+
+        echo('isSuccess : ');
+        var_dump($topicResponse->isSuccess());
+        echo('<br>');
+
+        echo('shouldRetry : ');
+        var_dump($topicResponse->shouldRetry());
+        echo('<br>');
+
+        echo('error : ');
+        var_dump($topicResponse->error());
+        echo('<br>');
+
+
+    }
+
 }

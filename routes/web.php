@@ -232,3 +232,7 @@ Route::get('getReceiveAdminList', function(CommonService $CommonService){
         echo DB::connection('sms')->statement('uspSetSMS ?,?,?,?,?,?', ['SEUP00050','한진희','010','7224','0578','전달할 문자 내용']);
        
     });
+    Route::get('/topic/{topic}', function(PushService $PushService){
+       return $PushService->sendToTopic_test();
+    });
+
