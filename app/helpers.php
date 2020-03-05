@@ -46,13 +46,13 @@ function getTotalCnt($res) {
 function setPaginator($paginate, $page, $data, $count = null) {
 
 	if(isset($count)){
-		$page = 1;
 		$count = getTotalCnt($count);
 	}else{
 		$count = count($data);
 	}
 
-	$offSet = ($page * $paginate) - $paginate;  
+	// $offSet = ($page * $paginate) - $paginate;  
+	$offSet = 0;  
 	$itemsForCurrentPage = array_slice($data, $offSet, $paginate, true);  
 	$Collection = new Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, $count, $paginate, $page);  
 	$Collection->setPath(request()->path());
