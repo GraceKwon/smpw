@@ -13,13 +13,15 @@ class DashBoardController extends Controller
     }
     public function dashboard(Request $request)
     {
-        $Notices = DB::select('uspGetStandingNoticeList ?,?,?,?,?', 
+        // dd(session('auth.AdminRoleID'));
+        $Notices = DB::select('uspGetStandingNoticeList ?,?,?,?,?,?', 
             [
                 30,
                 1,
                 ( session('auth.MetroID') ?? $request->MetroID ),
                 ( session('auth.CircuitID') ?? $request->CircuitID ),
-                NULL
+                NULL,
+                session('auth.AdminRoleID')
             ]);
 
         $StatisticsCnt = DB::select('uspGetStandingStatisticsCnt ?,?', 
