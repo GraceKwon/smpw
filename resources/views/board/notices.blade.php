@@ -50,9 +50,11 @@
             </tr>
             </thead>
             <tbody>
+         
+
             @foreach ($NoticeList as $Notice)
                 <tr class="pointer"
-                    onclick="location.href = '/{{ request()->path() }}/{{ $Notice->NoticeID }}'">
+                    onclick="location.href = '/{{ request()->path() }}/{{ $Notice->NoticeID }}?page={{ request()->page }}&MetroID={{ request()->MetroID }}&CircuitID={{ request()->CircuitID }}&ReceiveGroupID={{ request()->ReceiveGroupID }}'">
                     <td>
                         {{ $Notice->NoticeID }}
                     </td>

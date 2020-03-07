@@ -22,6 +22,7 @@ class BoardController extends Controller
         $ReceiveGroupList = $CommonService->getReceiveGroupList('list');
         $paginate = 30;  
         $page = $request->input('page', '1');
+        // echo dd($page);
         $parameter = [
             $request->MetroID,
             $request->CircuitID,

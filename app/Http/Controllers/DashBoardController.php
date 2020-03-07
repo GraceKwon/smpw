@@ -13,7 +13,6 @@ class DashBoardController extends Controller
     }
     public function dashboard(Request $request)
     {
-        // dd(session('auth.AdminRoleID'));
         $Notices = DB::select('uspGetStandingNoticeList ?,?,?,?,?,?', 
             [
                 30,
