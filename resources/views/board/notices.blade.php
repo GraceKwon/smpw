@@ -54,7 +54,7 @@
 
             @foreach ($NoticeList as $Notice)
                 <tr class="pointer"
-                    onclick="location.href = '/{{ request()->path() }}/{{ $Notice->NoticeID }}?page={{ request()->page }}&MetroID={{ request()->MetroID }}&CircuitID={{ request()->CircuitID }}&ReceiveGroupID={{ request()->ReceiveGroupID }}'">
+                    onclick="location.href = '/{{ request()->path() }}/{{ $Notice->NoticeID }}?{{ http_build_query(request()->all()) }}'">
                     <td>
                         {{ $Notice->NoticeID }}
                     </td>

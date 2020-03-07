@@ -49,7 +49,7 @@
                 <label class="label">이전글</label>
             </th>
             <td>
-                <a href="/notices/{{ $noticePre[0]->NoticeID }}?page={{ request()->page }}&MetroID={{ request()->MetroID }}&CircuitID={{ request()->CircuitID }}&ReceiveGroupID={{ request()->ReceiveGroupID }}">{{ $noticePre[0]->Title }}</a>
+                <a href="/notices/{{ $noticePre[0]->NoticeID }}?{{ http_build_query(request()->all()) }}">{{ $noticePre[0]->Title }}</a>
             </td>
         </tr>
         @endif
@@ -59,7 +59,7 @@
                 <label class="label">다음글</label>
             </th>
             <td>
-                <a href="/notices/{{ $noticeNext[0]->NoticeID }}?page={{ request()->page }}&MetroID={{ request()->MetroID }}&CircuitID={{ request()->CircuitID }}&ReceiveGroupID={{ request()->ReceiveGroupID }}">{{ $noticeNext[0]->Title }}</a>
+                <a href="/notices/{{ $noticeNext[0]->NoticeID }}?{{ http_build_query(request()->all()) }}">{{ $noticeNext[0]->Title }}</a>
             </td>
         </tr>
         @endif
@@ -73,7 +73,7 @@
         @endif
         <button type="button" 
             class="btn btn-outline-secondary" 
-            onclick="location.href='/notices?page={{ request()->page ?? 1 }}&MetroID={{ request()->MetroID }}&CircuitID={{ request()->CircuitID }}&ReceiveGroupID={{ request()->ReceiveGroupID }}'">목록</button>
+            onclick="location.href='/notices?{{ http_build_query(request()->all()) }}'">목록</button>
       
     </div> <!-- /.register-btn-area -->
 </section>
