@@ -48,7 +48,7 @@
                 <label class="label">이전글</label>
             </th>
             <td>
-                <a href="#">이전글</a>
+                <a href="#">{{ $noticePre[0]->NoticeID ?? '' }}</a>
             </td>
         </tr>
         <tr>
@@ -56,7 +56,7 @@
                 <label class="label">다음글</label>
             </th>
             <td>
-                <a href="#">다음글</a>
+                <a href="#">{{ $noticeNext[0]->NoticeID ?? '' }}</a>
             </td>
         </tr>
         </tbody>

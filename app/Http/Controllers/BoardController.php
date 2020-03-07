@@ -31,9 +31,9 @@ class BoardController extends Controller
         
         if (session('auth.MetroID')) $parameter[0] = session('auth.MetroID');
         if (session('auth.CircuitID')) $parameter[1] = session('auth.CircuitID');
-        $data = DB::select('uspGetStandingNoticeList_Dev ?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
-        $count = DB::select('uspGetStandingNoticeListCnt_Dev ?,?,?,?', $parameter);
+        $count = DB::select('uspGetStandingNoticeListCnt ?,?,?,?', $parameter);
         $NoticeList = setPaginator($paginate, $page, $data, $count);
 
         return view('board.notices', [
@@ -44,27 +44,59 @@ class BoardController extends Controller
         ]);
     }
 
-    public function detailNotices($id)
+    public function detailNotices($id, Request $request)
     {
         $modify = false;
+        $parameter = [
+            $id,
+            $request->MetroID,
+            $request->CircuitID,
+            $request->ReceiveGroupID,
+            session('auth.AdminRoleID')
+        ];
+
+        $noticePre = DB::select('uspGetStandingNoticePre ?,?,?,?,?', $parameter);
+        $noticeNext = DB::select('uspGetStandingNoticeNext ?,?,?,?,?', $parameter);
+        // dd($noticeNext);
         DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
-        // dd($Notice[0]->ReceiveGroupID);
-        // dd(session('auth.AdminRoleID'));
+
         if (session('auth.AdminRoleID') == 1 || session('auth.AdminRoleID') == 2) $modify = true;
         if (session('auth.CircuitID') == null && session('auth.MetroID') == $Notice[0]->MetroID) $modify = true;
         if (session('auth.MetroID') == $Notice[0]->MetroID && session('auth.CircuitID') == $Notice[0]->CircuitID) $modify = true;
         if (session('auth.AdminRoleID') == 3 && $Notice[0]->ReceiveGroupID == 41) $modify = false;
         if (session('auth.AdminRoleID') == 5 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42)) $modify = false;
         if (session('auth.AdminRoleID') == 4 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42|| $Notice[0]->ReceiveGroupID == 50)) $modify = false;
-        // dd($modify);
-        // dd(session('auth'));
-
+        
+        /*
+        IF @MetroID IS NOT NULL BEGIN 														   
+            SELECT @sql = @sql + N' AND n.MetroID = @sMetroID		     	           '
+        END
+                                                                
+        IF @CircuitID IS NOT NULL BEGIN 													   
+            SELECT @sql = @sql + N' AND (n.CircuitID = @sCircuitID OR n.CircuitID IS NULL)				     	       '
+        END
+                                            
+        IF @ReceiveGroupID IS NOT NULL BEGIN 												   
+            SELECT @sql = @sql + N' AND n.ReceiveGroupID = @sReceiveGroupID			           '
+        END
+        ELSE BEGIN
+            IF @AdminRoleID = 5 BEGIN 												   
+                SELECT @sql = @sql + N' AND n.ReceiveGroupID IN (42, 50, 43)	                 '
+            END
+            IF @AdminRoleID = 4 BEGIN 												   
+                SELECT @sql = @sql + N' AND n.ReceiveGroupID IN (50, 43)	                 '
+            END
+        END
+        */
+ 
         return view('board.detailNotices', [
             'Files' => $Files,
             'Notice' => $Notice[0],
-            'modify' => $modify
+            'modify' => $modify,
+            'noticePre' => $noticePre,
+            'noticeNext' => $noticeNext,
         ]);
     }
 
