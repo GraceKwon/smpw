@@ -18,6 +18,7 @@ class StatisticController extends Controller
 
     public function publishers(Request $request)
     {
+        if(!$request->TypeID) $request->TypeID = '1';
         $MetroList = $this->CommonService->getMetroList();
         if($request->TypeID === '2' || $request->TypeID === '3') $CircuitList = $this->CommonService->getCircuitList();
         if($request->TypeID === '3') $CongregationList = $this->CommonService->getCongregationList();
@@ -25,7 +26,7 @@ class StatisticController extends Controller
         $request->paginate = $paginate = 30;  
         $page = $request->input('page', '1');
         $parameter = [
-            $request->TypeID ?? '1',
+            $request->TypeID,
             ( session('auth.MetroID') ?? $request->MetroID ),
             ( session('auth.CircuitID') ?? $request->CircuitID ),
             $request->CongregationID,
