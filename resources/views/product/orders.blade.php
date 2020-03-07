@@ -228,7 +228,7 @@
         computed:{
             query: function () {
                 var query = '?MetroID={{ request()->MetroID }}';
-                    query += '&CircuitID={{ request()->MetroID }}';
+                    query += '&CircuitID={{ request()->CircuitID }}';
                     query += '&ProductID={{ request()->ProductID }}';
                     query += '&StartDate=' + this.CreateDate[0];
                     query += '&EndDate=' + this.CreateDate[1];
