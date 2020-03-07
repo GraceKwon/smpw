@@ -57,7 +57,6 @@ class BoardController extends Controller
 
         $noticePre = DB::select('uspGetStandingNoticePre ?,?,?,?,?', $parameter);
         $noticeNext = DB::select('uspGetStandingNoticeNext ?,?,?,?,?', $parameter);
-        // dd($noticeNext);
         DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
@@ -68,28 +67,6 @@ class BoardController extends Controller
         if (session('auth.AdminRoleID') == 3 && $Notice[0]->ReceiveGroupID == 41) $modify = false;
         if (session('auth.AdminRoleID') == 5 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42)) $modify = false;
         if (session('auth.AdminRoleID') == 4 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42|| $Notice[0]->ReceiveGroupID == 50)) $modify = false;
-        
-        /*
-        IF @MetroID IS NOT NULL BEGIN 														   
-            SELECT @sql = @sql + N' AND n.MetroID = @sMetroID		     	           '
-        END
-                                                                
-        IF @CircuitID IS NOT NULL BEGIN 													   
-            SELECT @sql = @sql + N' AND (n.CircuitID = @sCircuitID OR n.CircuitID IS NULL)				     	       '
-        END
-                                            
-        IF @ReceiveGroupID IS NOT NULL BEGIN 												   
-            SELECT @sql = @sql + N' AND n.ReceiveGroupID = @sReceiveGroupID			           '
-        END
-        ELSE BEGIN
-            IF @AdminRoleID = 5 BEGIN 												   
-                SELECT @sql = @sql + N' AND n.ReceiveGroupID IN (42, 50, 43)	                 '
-            END
-            IF @AdminRoleID = 4 BEGIN 												   
-                SELECT @sql = @sql + N' AND n.ReceiveGroupID IN (50, 43)	                 '
-            END
-        END
-        */
  
         return view('board.detailNotices', [
             'Files' => $Files,
