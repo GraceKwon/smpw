@@ -6,18 +6,18 @@ use Illuminate\Http\Request;
 
 class StatisticController extends Controller
 {
-    public function view_STTST_publishers()
+    public function publishers()
     {
-        return view('statistic.STTST_publishers');
+        return view('statistic.publishers');
     }
 
-    public function view_STTST_reports()
+    public function reports()
     {
-        return view('statistic.STTST_reports');
+        return view('statistic.reports');
     }
 
-    public function view_STTST_products()
+    public function products()
     {
-        return view('statistic.STTST_products');
+        return view('statistic.products');
     }
 }

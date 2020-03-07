@@ -144,11 +144,11 @@ Route::view('/errors/auth', 'errors.auth');
         
 //봉사기록통계
     //봉사자통계
-    Route::get('STTST_publishers', 'StatisticController@view_STTST_publishers');
+    Route::get('statistic-publishers', 'StatisticController@publishers');
     //봉사보고통계
-    Route::get('STTST_reports', 'StatisticController@view_STTST_reports');
+    Route::get('statistic-reports', 'StatisticController@reports');
     //출판물배부통계
-    Route::get('STTST_products', 'StatisticController@view_STTST_products');
+    Route::get('statistic-products', 'StatisticController@products');
 
 //게시판관리
     //공지사항
