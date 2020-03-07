@@ -43,22 +43,26 @@
     </table>
     <table class="table table-register mt-3">
         <tbody>
+        @if (isset($noticePre[0]->NoticeID))
         <tr>
             <th>
                 <label class="label">이전글</label>
             </th>
             <td>
-                <a href="#">이전글</a>
+                <a href="/notices/{{ $noticePre[0]->NoticeID }}">{{ $noticePre[0]->Title }}</a>
             </td>
         </tr>
+        @endif
+        @if (isset($noticeNext[0]->NoticeID)) 
         <tr>
             <th>
                 <label class="label">다음글</label>
             </th>
             <td>
-                <a href="#">다음글</a>
+                <a href="/notices/{{ $noticeNext[0]->NoticeID }}">{{ $noticeNext[0]->Title }}</a>
             </td>
         </tr>
+        @endif
         </tbody>
     </table>
     <div class="btn-flex-area justify-content-end">
