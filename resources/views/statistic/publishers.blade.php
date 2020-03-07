@@ -13,7 +13,7 @@
                     value="2">
                 <label class="mr-3" for="radioCircuit">도시+지역</label>
 
-                <input type="radio" name="TypeID" 
+                <input type="radio" id="radioCong" name="TypeID" 
                     @if(request()->TypeID === '3') checked @endif
                     value="3">
                 <label class="mr-3" for="radioCong">도시+지역+회중</label>
