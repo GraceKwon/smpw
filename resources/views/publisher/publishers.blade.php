@@ -24,15 +24,15 @@
             ],
             [ 
                 'label' => '상태',
-                'id' => 'EndYn',
+                'id' => 'UseYn',
                 'options' => [
                     [
                         'label' => '봉사중',
-                        'value' => '0',
+                        'value' => '1',
                     ],
                     [
                         'label' => '중단',
-                        'value' => '1',
+                        'value' => '0',
                     ]
                 ] 
             ],
