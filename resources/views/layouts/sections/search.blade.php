@@ -193,6 +193,7 @@
         @endif
 
         @stack('slot')
+        
         <div class="search-btn-area">
             <button type="submit" class="btn btn-primary">조회</button>
         </div> <!-- /.search-btn-area -->

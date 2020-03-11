@@ -145,6 +145,7 @@ Route::view('/errors/auth', 'errors.auth');
 //봉사기록통계
     //봉사자통계
     Route::get('statistic-publishers', 'StatisticController@publishers');
+    Route::get('statistic-publishers/export', 'StatisticController@exportPublishers');
     //봉사보고통계
     Route::get('statistic-reports', 'StatisticController@reports');
     //출판물배부통계

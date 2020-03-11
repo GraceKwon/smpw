@@ -31,7 +31,7 @@ class PublisherController extends Controller
             $request->PublisherName,
             $request->Gender,
             $request->ServantTypeID,
-            $request->EndYn,
+            $request->UseYn,
         ];
         $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?', 
             array_merge( [$paginate, $page], $parameter ));
@@ -97,7 +97,7 @@ class PublisherController extends Controller
         if($request->PublisherID === '0')
             $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherName,
-                    $Password = sprintf('%04d',rand(0,9999)),//$request->UserPassword,
+                    sprintf('%04d',rand(0,9999)),//$request->UserPassword,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
@@ -117,10 +117,10 @@ class PublisherController extends Controller
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
-                    40,//$request->MobileOsKindID,
+                    40,
                     $request->PioneerTypeID,
                     $request->ServantTypeID,
-                    1,//$request->UseYn,
+                    $request->StopYn === '1' ? 0 : 1,
                     $request->SupportYn,
                     $request->Memo,
                     $request->EndDate,

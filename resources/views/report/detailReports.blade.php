@@ -239,7 +239,7 @@
             },
             query: function () {
                 var query = '?MetroID={{ request()->MetroID }}';
-                    query += '&CircuitID={{ request()->MetroID }}';
+                    query += '&CircuitID={{ request()->CircuitID }}';
                     query += '&ServiceZoneID={{ request()->ServiceZoneID }}';
                     query += '&ServiceDate=' + this.yyyymmdd;
                 return query;
