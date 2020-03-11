@@ -40,6 +40,14 @@
     color: #7b7b7b;
 }
 
+.progress {
+    border-radius: 0rem!important;
+}
+
+.progress-bar {
+    background-color: #4b5aaa !important;
+}
+
 .off input{
     background-color: #fff !important;
     border: 0

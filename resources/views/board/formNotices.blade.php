@@ -20,7 +20,9 @@
                                 <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName}}</option>
                             @endforeach
                     </select>
-                    <div class="invalid-feedback" v-if="validation.MetroID" v-html="validation.MetroID[0]"></div>
+                    <div class="invalid-feedback" 
+                        v-if="validation.MetroID" 
+                        v-html="validation.MetroID[0]"></div>
                 </div>
             </td>
             <th>
@@ -54,7 +56,9 @@
                             <option value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
                         @endforeach
                     </select>
-                    <div class="invalid-feedback" v-if="validation.ReceiveGroupID" v-html="validation.ReceiveGroupID[0]"></div>
+                    <div class="invalid-feedback" 
+                        v-if="validation.ReceiveGroupID" 
+                        v-html="validation.ReceiveGroupID[0]"></div>
                 </div>
             </td>
             <th>
@@ -94,7 +98,9 @@
                     :class="{'is-invalid': validation.Title}"
                     v-model="form.Title" 
                     placeholder="제목을 입력해 주세요">
-                <div class="invalid-feedback" v-if="validation.Title" v-html="validation.Title[0]">
+                <div class="invalid-feedback" 
+                    v-if="validation.Title" 
+                    v-html="validation.Title[0]">
                 </div>
             </td>
             
@@ -104,6 +110,12 @@
                 <label class="label">첨부파일</label>
             </th>
             <td colspan="3">    
+                <div class="progress" 
+                    v-if="form.Files.length > 0 || OldFiles.length > 0">
+                    <div class="progress-bar" 
+                        role="progressbar"
+                        :style="{ width: fileSizeP + '%' }">@{{ fileSizeP }}% @{{ setByte(fileSize) }} (@{{ form.Files.length }}/@{{ maxFileLeng }}) </div>
+                </div>
                 <div id="drop-zone">
                     <div v-for="(file) in OldFiles">
                         <span style="font-size: 15px; color:#4b5aaa" 
@@ -117,7 +129,8 @@
                             class="fas fa-redo-alt pointer"></i>
                     </div>
                     <div v-for="(file, index) in form.Files">
-                        <span style="font-size: 15px; color:#4b5aaa" v-html="file.name"></span> 
+                        <span style="font-size: 15px; color:#4b5aaa">@{{ file.name }}</span> 
+                        <span style="font-size: 12px; color:#7b7b7b">@{{ setByte(file.size)}}</span> 
                         <i @click="delFile(index)" class="fas fa-times-circle pointer"></i>
                     </div>
                     <div class="here" v-if="form.Files.length === 0 && OldFiles.length === 0">
@@ -126,9 +139,14 @@
                         여기에 파일을 올려 놓으세요
                     </div>
                 </div>
-                <button type="button" class="btn-primary mt-2" @click="selFile">파일선택</button>
 
-                <input type="file" class="hide" ref="inputFile" multiple>
+                <button type="button" 
+                    class="btn-primary mt-2" 
+                    @click="selFile">파일선택</button>
+
+                <input type="file" 
+                    class="hide" 
+                    ref="inputFile" multiple>
             </td>
         </tr>
         <tr>
@@ -141,7 +159,10 @@
                     v-html="validation.Contents[0]"
                     style="display: block">
                 </div>
-                <textarea class="form-control" name="notice-board" id="notice-board">{{ $Notice[0]->Contents ?? "" }}</textarea>
+                <textarea 
+                    class="form-control" 
+                    name="notice-board" 
+                    id="notice-board">{{ $Notice[0]->Contents ?? "" }}</textarea>
             </td>
         </tr>
         </tbody>
@@ -178,6 +199,8 @@
         data:{
             CircuitList: [],
             OldFiles: {!! $Files !!},
+            maxFileSize: 5000000,
+            maxFileLeng: 20,
             form: {
                 NoticeID: "{{ $Notice[0]->NoticeID ?? 0 }}",
                 AdminID: "{{ $Notice[0]->AdminID ?? session('auth.AdminID') }}",
@@ -201,9 +224,12 @@
             fileSize: function () {
                 var size = 0
                 for (let index = 0; index < this.form.Files .length; index++) {
-                    size += this.form.Files [index].size;
+                    size += this.form.Files[index].size;
                 }
                 return size
+            },
+            fileSizeP: function () {
+                return Math.round(this.fileSize / this.maxFileSize * 100)
             }
         },
         watch: {
@@ -235,7 +261,6 @@
                         for (var i = 0; i < data.items.length; i++) {
                             if (data.items[i].kind == "file") {
                                 var file = data.items[i].getAsFile();
-                                console.log(file)
                                 app.pushFile(file)    
                             }
                         }
@@ -272,11 +297,11 @@
                     });
             },
             pushFile: function(file) {
-                if (this.fileSize >= 20000000) {
-                    alert('용량이 초과 되었습니다.')
+                if (this.fileSize + file.size >= this.maxFileSize) {
+                    alert(this.setByte(this.maxFileSize) + '를 초과할 수 없습니다.')
                     return false
                 }
-                if (this.form.Files.length >= 20) {
+                if (this.form.Files.length >= this.maxFileLeng) {
                     alert('더이상 등록할 수 없습니다.')
                     return false
                 }
@@ -300,9 +325,6 @@
                     this.form.delFiles.push(noticeFileID)
                 }
                 
-                console.log(this.form.delFiles)
-           
-
             },
             selFile: function() {
                 this.$refs.inputFile.click()
@@ -321,7 +343,6 @@
                 formData.append('Contents', CKEDITOR.instances['notice-board'].getData());
                 for (var i = 0; i < this.form.Files.length; i++) {
                     formData.append('Files[]', this.form.Files[i]);
-                    console.log(this.form.Files[i])
                 }
 
                 axios.post('/notices/' + this.form.NoticeID + '/form', formData)
@@ -349,6 +370,16 @@
                 .catch(function (error) {
                     console.log(error.response)
                 })
+            },
+            setByte: function (size) {
+                if (size >= 1000000) {
+                    return (size / 1000000).toFixed(1) + 'MB'
+                }
+                if (size >= 1000) {
+                    return (size / 1000).toFixed(0) + 'KB'
+                } 
+                
+                return size + 'Byte'
             }
         }
     })
