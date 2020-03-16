@@ -85,12 +85,12 @@
     </div> --}}
 </div>
 <div class="row row-10px">
-    {{-- <div class="col-lg-4">
+    <div class="col-lg-3">
         <section class="section">
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
                     <h3 class="text-primary">
-                        순회구 활동 기록
+                        봉사보고 현황
                     </h3>
                 </div>
                 <div class="content-area mt-3">
@@ -107,7 +107,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="panel01" aria-labelledby="tab01">
-                            <div class="font-size-90">
+                            <div class="font-size-80">
                                 <table class="table">
                                     <tbody>
                                     <tr>
@@ -115,7 +115,7 @@
                                             <span>전체 봉사자 수</span>
                                         </th>
                                         <td class="text-right pr-0">
-                                            <span>563</span>
+                                            <span>{{ $MainActCntTypeID1->PublisherCnt }}</span>
                                             <small>명</small>
                                         </td>
                                     </tr>
@@ -124,7 +124,7 @@
                                             <span>신규 봉사자 수</span>
                                         </th>
                                         <td class="text-right pr-0">
-                                            <span>11</span>
+                                            <span>{{ $MainActCntTypeID1->NewPublisherCnt }}</span>
                                             <small>명</small>
                                         </td>
                                     </tr>
@@ -133,7 +133,7 @@
                                             <span>출판물 수</span>
                                         </th>
                                         <td class="text-right pr-0">
-                                            <span>39</span>
+                                            <span>{{ $MainActCntTypeID1->ProductCnt }}</span>
                                             <small>부</small>
                                         </td>
                                     </tr>
@@ -142,7 +142,7 @@
                                             <span>보여준 동영상 수</span>
                                         </th>
                                         <td class="text-right pr-0">
-                                            <span>9</span>
+                                            <span>{{ $MainActCntTypeID1->VideoCnt }}</span>
                                             <small>건</small>
                                         </td>
                                     </tr>
@@ -151,7 +151,7 @@
                                             <span>방문 요청 수</span>
                                         </th>
                                         <td class="text-right pr-0">
-                                            <span>2</span>
+                                            <span>{{ $MainActCntTypeID1->VisitCnt }}</span>
                                             <small>건</small>
                                         </td>
                                     </tr>
@@ -163,51 +163,51 @@
                             <div class="font-size-80">
                                 <table class="table">
                                     <tbody>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>전체 봉사자 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>563</span>
-                                            <small>명</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>신규 봉사자 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>11</span>
-                                            <small>명</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>출판물 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>39</span>
-                                            <small>부</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>보여준 동영상 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>9</span>
-                                            <small>건</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>방문 요청 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>2</span>
-                                            <small>건</small>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>전체 봉사자 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID2->PublisherCnt }}</span>
+                                                <small>명</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>신규 봉사자 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID2->NewPublisherCnt }}</span>
+                                                <small>명</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>출판물 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID2->ProductCnt }}</span>
+                                                <small>부</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>보여준 동영상 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID2->VideoCnt }}</span>
+                                                <small>건</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>방문 요청 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID2->VisitCnt }}</span>
+                                                <small>건</small>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -216,51 +216,51 @@
                             <div class="font-size-80">
                                 <table class="table">
                                     <tbody>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>전체 봉사자 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>563</span>
-                                            <small>명</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>신규 봉사자 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>11</span>
-                                            <small>명</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>출판물 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>39</span>
-                                            <small>부</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>보여준 동영상 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>9</span>
-                                            <small>건</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="pl-0">
-                                            <span>방문 요청 수</span>
-                                        </th>
-                                        <td class="text-right pr-0">
-                                            <span>2</span>
-                                            <small>건</small>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>전체 봉사자 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID3->PublisherCnt }}</span>
+                                                <small>명</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>신규 봉사자 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID3->NewPublisherCnt }}</span>
+                                                <small>명</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>출판물 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID3->ProductCnt }}</span>
+                                                <small>부</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>보여준 동영상 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID3->VideoCnt }}</span>
+                                                <small>건</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0">
+                                                <span>방문 요청 수</span>
+                                            </th>
+                                            <td class="text-right pr-0">
+                                                <span>{{ $MainActCntTypeID3->VisitCnt }}</span>
+                                                <small>건</small>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -269,8 +269,8 @@
                 </div>
             </div>
         </section>
-    </div> --}}
-    <div class="col-lg-8">
+    </div>
+    <div class="col-lg-6">
         <section class="section">
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
@@ -304,7 +304,7 @@
             </div>
         </section>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <section class="main-icon-link">
             <div class="shadow min-h-350px mb-4">
                 <a href="/publishers">

@@ -23,18 +23,42 @@ class DashBoardController extends Controller
                 session('auth.AdminRoleID')
             ]);
 
+        array_splice($Notices, 5);
+
         $StatisticsCnt = DB::select('uspGetStandingStatisticsCnt ?,?', 
             [
                 session('auth.MetroID'),
                 session('auth.CircuitID'),
             ]);
 
-        ;
-        array_splice($Notices, 5);
+        $MainActCntTypeID1 = DB::select('uspGetStandingStatisticsMainActsCnt ?,?,?', 
+            [
+                session('auth.MetroID'),
+                session('auth.CircuitID'),
+                1
+            ]);
+
+        $MainActCntTypeID2 = DB::select('uspGetStandingStatisticsMainActsCnt ?,?,?', 
+            [
+                session('auth.MetroID'),
+                session('auth.CircuitID'),
+                2
+            ]);
+            
+        $MainActCntTypeID3 = DB::select('uspGetStandingStatisticsMainActsCnt ?,?,?', 
+            [
+                session('auth.MetroID'),
+                session('auth.CircuitID'),
+                3
+            ]);
+
 
         return view('dashboard', [
             'Notices' => $Notices,
             'StatisticsCnt' => reset($StatisticsCnt),
+            'MainActCntTypeID1' => reset($MainActCntTypeID1),
+            'MainActCntTypeID2' => reset($MainActCntTypeID2),
+            'MainActCntTypeID3' => reset($MainActCntTypeID3),
         ]);
     }
 }
