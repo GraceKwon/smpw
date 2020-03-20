@@ -95,7 +95,7 @@ class ActService
                 request()->PublisherName,
                 null,
                 null,
-                0,
+                1,
             ];
 
             $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?', 
