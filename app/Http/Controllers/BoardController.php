@@ -54,7 +54,8 @@ class BoardController extends Controller
             $request->ReceiveGroupID,
             session('auth.AdminRoleID')
         ];
-
+        if (session('auth.MetroID')) $parameter[1] = session('auth.MetroID');
+        if (session('auth.CircuitID')) $parameter[2] = session('auth.CircuitID');
         $noticePre = DB::select('uspGetStandingNoticePre ?,?,?,?,?', $parameter);
         $noticeNext = DB::select('uspGetStandingNoticeNext ?,?,?,?,?', $parameter);
         DB::table('Notices')->where('NoticeID', $id)->increment('ReadCnt');
@@ -84,7 +85,6 @@ class BoardController extends Controller
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
 
-        // dd(json_encode($Files));
         $MetroList = $common->getMetroList();
         $ReceiveGroupList = $common->getReceiveGroupList('form');
 
