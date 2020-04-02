@@ -116,7 +116,7 @@
             </tbody>
         </table>
     </div>
-    <div class="btn-flex-area mt-3" id="bb">
+    <div class="btn-flex-area mt-3">
         <button type="button" class="btn btn-success"
             @if(!$StatisticListList->count())
                 disabled

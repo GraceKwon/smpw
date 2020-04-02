@@ -1,78 +1,62 @@
 @extends('layouts.frames.master')
 @section('content')
-<section class="search-section">
-    <div class="search-form-item">
-        <label class="label" for="city">도시</label>
-        <select class="custom-select" id="city">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="circuits">순회구</label>
-        <select class="custom-select" id="circuits">
-            <option selected>선택</option>
-            <option>option</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="type1">도시구분선택</label>
-        <select class="custom-select" id="type1">
-            <option selected>선택</option>
-            <option>도시집계</option>
-            <option>도시+순회구집계</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="type2">출판물구분선택</label>
-        <select class="custom-select" id="type2">
-            <option selected>선택</option>
-            <option>출판물집계</option>
-            <option>출판물상세</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="type3">언어구분선택</label>
-        <select class="custom-select" id="type3">
-            <option selected>선택</option>
-            <option>언어집계</option>
-            <option>언어별상세</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item d-none">
-        <label class="label" for="type4">언어별상세</label>
-        <select class="custom-select" id="type4">
-            <option selected>선택</option>
-            <option>한국어</option>
-            <option>영어</option>
-        </select>
-    </div> <!-- /.search-form-item -->
-    <div class="search-form-item">
-        <label class="label" for="date1">기간지정</label>
-        <div class="date-wrap">
-            <div class="input-group">
-                <input type="date" class="form-control" id="date1" placeholder="시작 날자를 선택해 주세요">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="div">~</div>
-            <div class="input-group">
-                <input type="date" class="form-control" id="date2" placeholder="마지막 날자를 선택해 주세요">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
-    </div> <!-- /.search-btn-area -->
-</section>
+    @push('slot')
+        <div class="search-form-item">
+            <label class="label">도시구분선택</label>
+                <input type="radio" class="custom-radio mt-2" id="radioMetro" name="TypeID" 
+                    @if(request()->TypeID === '1') checked @endif
+                    value="1">
+                <label class="mr-3  mt-2" for="radioMetro">도시</label>
+
+                <input type="radio" class="custom-radio" id="radioCircuit" name="TypeID" 
+                    @if(request()->TypeID === '2') checked @endif
+                    value="2">
+                <label class="mr-3" for="radioCircuit">도시+지역</label>
+        </div> 
+        {{-- <div class="search-form-item">
+            <label class="label">출판물구분선택</label>
+                <input type="radio" class="custom-radio mt-2" id="radioProduct" name="ProductTypeID" 
+                    @if(request()->ProductTypeID === '1') checked @endif
+                    value="1">
+                <label class="mr-3  mt-2" for="radioProduct">출판물집계</label>
+
+                <input type="radio" class="custom-radio" id="radioDetail" name="ProductTypeID" 
+                    @if(request()->ProductTypeID === '2') checked @endif
+                    value="2">
+                <label class="mr-3" for="radioDetail">출판물상세</label>
+        </div>  --}}
+        {{-- @if(isset($LanguageList))
+        <div class="search-form-item">
+            <label class="label" for="LanguageName">언어</label>
+            <select class="custom-select" 
+                id="LanguageName" name="LanguageName" 
+                onchange="submit()">
+                <option value="">전체</option>
+                @foreach ($LanguageList as $Language)
+                    <option @if(request()->LanguageName == $Language->LanguageName ) selected @endif
+                    value="{{ $Language->LanguageName }}">{{ $Language->LanguageName }}</option>
+                @endforeach
+            </select>
+        </div> <!-- /.search-form-item -->
+        @endif --}}
+        <div class="search-form-item">
+            <label class="label" for="CreateDate">집계기간</label>
+            <date-picker 
+                v-model="CreateDate" 
+                :input-id="'CreateDate'"
+                :input-name="'CreateDate'"
+                :input-class="'form-control'"
+                :value-type="'format'"
+                :icon-day="31"
+                {{-- :clearable="false" --}}
+                :lang="lang" 
+                :range="true"
+                width="260"
+                >
+            </date-picker>
+        </div> <!-- /.search-form-item -->
+    @endpush    
+    @include('layouts.sections.search')
 
 <section class="section-table-section">
     <div class="table-responsive">
@@ -91,12 +75,7 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>순회구</span>
-                    </div>
-                </th>
-                <th>
-                    <div class="min-width">
-                        <span>언어</span>
+                        <span>지역</span>
                     </div>
                 </th>
                 <th>
@@ -122,309 +101,98 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    201
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    202
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    203
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    204
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    205
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    206
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    207
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    208
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    209
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    210
-                </td>
-                <td>
-                    남양주
-                </td>
-                <td>
-                    경기18
-                </td>
-                <td>
-                    한국어
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    7
-                </td>
-            </tr>
+            @php($total = ['ProductCnt' => 0,'VideoCnt' => 0,'VisitRequestCnt' => 0,'ExperienceCnt' => 0])
+            @foreach ($List as $row)
+                @php($total['ProductCnt'] += $row->ProductCnt )
+                @php($total['VideoCnt'] += $row->VideoCnt )
+                @php($total['VisitRequestCnt'] += $row->VisitRequestCnt )
+                @php($total['ExperienceCnt'] += $row->ExperienceCnt )
+                <tr>
+                    <td>
+                        {{ ($loop->index + 1) + request()->paginate * (request()->input('page', '1')-1) }}
+                    </td>
+                    <td>
+                        {{ $row->MetroName }}
+                    </td>
+                    <td>
+                        {{ $row->CircuitName ?? '-' }}
+                    </td>
+                    <td>
+                        {{ $row->ProductCnt }}
+                    </td>
+                    <td>
+                        {{ $row->VideoCnt }}
+                    </td>
+                    <td>
+                        {{ $row->VisitRequestCnt }}
+                    </td>
+                    <td>
+                        {{ $row->ExperienceCnt }}
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="4">
+                <td colspan="3">
                     합계
                 </td>
                 <td>
-                    45
+                    {{ $total['ProductCnt'] }}
                 </td>
                 <td>
-                    30
+                    {{ $total['VideoCnt'] }}
                 </td>
                 <td>
-                    15
+                    {{ $total['VisitRequestCnt'] }}
                 </td>
                 <td>
-                    15
+                    {{ $total['ExperienceCnt'] }}
                 </td>
             </tr>
             </tfoot>
         </table>
     </div>
     <div class="btn-flex-area mt-3">
-        <button type="button" class="btn btn-success">
+        <button type="button" class="btn btn-success"
+            @if(!count($List))
+                disabled
+            @endif
+            @click="_export"
+        >
             엑셀파일 다운로드
         </button>
     </div>
-    <div>
-        <ul class="page">
-            <li class="active"><a>1</a></li>
-            <li><a>2</a></li>
-            <li><a>3</a></li>
-            <li><a>4</a></li>
-            <li><a>5</a></li>
-        </ul>
-    </div>
+
 </section>
 @endsection
 
-@section('popup')
-@endsection
-
-{{-- @section('script')
+@section('script')
 <script>
+    var app = new Vue({
+        el:'#wrapper-body',
+        mixins: [datepickerLang],
+        data:{
+            CreateDate: [
+                '{{ request()->StartDate }}', 
+                '{{ request()->EndDate }}', 
+            ],
+        },
+        computed:{
+            query: function () {
+                var query = '?MetroID={{ request()->MetroID }}';
+                    query += '&CircuitID={{ request()->CircuitID }}';
+                    query += '&TypeID={{ request()->TypeID }}';
+                    query += '&StartDate=' + this.CreateDate[0];
+                    query += '&EndDate=' + this.CreateDate[1];
+                return query;
+            }
+        },
+        methods:{
+            _export:function () {
+                location.href = '/{{ request()->path() }}/export' + this.query;
+            },
+        }
+    })
 </script>
-@endsection --}}
+@endsection

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StatisticPublisherExport;
+use App\Exports\StatisticReportExport;
 
 class StatisticController extends Controller
 {
@@ -18,21 +19,23 @@ class StatisticController extends Controller
 
     public function publishers(Request $request)
     {
-        if(!$request->TypeID) $request->TypeID = '1';
+        if (!$request->TypeID) $request->TypeID = '1';
         $MetroList = $this->CommonService->getMetroList();
-        if($request->TypeID === '2' || $request->TypeID === '3') $CircuitList = $this->CommonService->getCircuitList();
-        if($request->TypeID === '3') $CongregationList = $this->CommonService->getCongregationList();
+        if ($request->TypeID === '2' || $request->TypeID === '3') $CircuitList = $this->CommonService->getCircuitList();
+        if ($request->TypeID === '3') $CongregationList = $this->CommonService->getCongregationList();
 
-        $request->paginate = $paginate = 30;  
+        $request->paginate = $paginate = 30;
         $page = $request->input('page', '1');
         $parameter = [
             $request->TypeID,
-            ( session('auth.MetroID') ?? $request->MetroID ),
-            ( session('auth.CircuitID') ?? $request->CircuitID ),
+            (session('auth.MetroID') ?? $request->MetroID),
+            (session('auth.CircuitID') ?? $request->CircuitID),
             $request->CongregationID,
         ];
-        $data = DB::select('uspGetStandingStatisticsPublisherList ?,?,?,?,?,?', 
-            array_merge( [$paginate, $page], $parameter ));
+        $data = DB::select(
+            'uspGetStandingStatisticsPublisherList ?,?,?,?,?,?',
+            array_merge([$paginate, $page], $parameter)
+        );
         $count = DB::select('uspGetStandingStatisticsPublisherListCnt ?,?,?,?', $parameter);
         $StatisticListList = setPaginator($paginate, $page, $data, $count);
         // dd($StatisticListList);
@@ -44,16 +47,45 @@ class StatisticController extends Controller
         ]);
     }
 
-    public function exportPublishers(Request $request) 
+    public function exportPublishers(Request $request)
     {
         $fileName = '봉사자통계.xlsx';
-        
+
         return Excel::download(new StatisticPublisherExport, $fileName);
     }
 
-    public function reports()
+    public function reports(Request $request)
     {
-        return view('statistic.reports', []);
+        explodeRequestCreateDate();
+
+        if (!$request->TypeID) $request->TypeID = '1';
+        $parameter = [
+            $request->TypeID,
+            (session('auth.MetroID') ?? $request->MetroID),
+            (session('auth.CircuitID') ?? $request->CircuitID),
+            $request->StartDate,
+            $request->EndDate,
+        ];
+        $List = DB::select(
+            'uspGetStandingStatisticsReportList ?,?,?,?,?',
+            array_merge($parameter)
+        );
+
+
+        $MetroList = $this->CommonService->getMetroList();
+        if ($request->TypeID === '2') $CircuitList = $this->CommonService->getCircuitList();
+        return view('statistic.reports', [
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList ?? NULL,
+            'List' => $List ?? [],
+        ]);
+    }
+
+    public function exportReports(Request $request)
+    {
+        $fileName = '봉사보고통계.xlsx';
+
+        return Excel::download(new StatisticReportExport, $fileName);
     }
 
     public function products()

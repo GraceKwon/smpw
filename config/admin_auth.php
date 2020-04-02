@@ -92,12 +92,12 @@ return [
             'statistic-publishers' => [
                 'name' => '봉사자통계',
                 'auth' => [1,2,3,4,5]
-            ]
-            // 'statistics-reports' => [
-            //     'name' => '봉사보고통계',
-            //     'auth' => [1,2,3,4,5]
-            // ],
-            // 'statistics-products' => [
+            ],
+            'statistic-reports' => [
+                'name' => '봉사보고통계',
+                'auth' => [1,2,3,4,5]
+            ],
+            // 'statistic-products' => [
             //     'name' => '출판물배부통계',
             //     'auth' => [1,2,3,4,5]
             // ]
