@@ -65,11 +65,6 @@
             <tr>
                 <th>
                     <div class="min-width">
-                        <span>No</span>
-                    </div>
-                </th>
-                <th>
-                    <div class="min-width">
                         <span>도시</span>
                     </div>
                 </th>
@@ -109,9 +104,6 @@
                 @php($total['ExperienceCnt'] += $row->ExperienceCnt )
                 <tr>
                     <td>
-                        {{ ($loop->index + 1) + request()->paginate * (request()->input('page', '1')-1) }}
-                    </td>
-                    <td>
                         {{ $row->MetroName }}
                     </td>
                     <td>
@@ -134,7 +126,7 @@
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="3">
+                <td colspan="2">
                     합계
                 </td>
                 <td>

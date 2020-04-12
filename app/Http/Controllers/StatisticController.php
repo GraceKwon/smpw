@@ -8,6 +8,7 @@ use App\Service\CommonService;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StatisticPublisherExport;
 use App\Exports\StatisticReportExport;
+use App\Exports\StatisticProductExport;
 
 class StatisticController extends Controller
 {
@@ -88,8 +89,41 @@ class StatisticController extends Controller
         return Excel::download(new StatisticReportExport, $fileName);
     }
 
-    public function products()
+    public function products(Request $request)
     {
-        return view('statistic.products');
+        explodeRequestCreateDate();
+        if (!$request->TypeID) $request->TypeID = '1';
+        $parameter = [
+            $request->TypeID,
+            (session('auth.MetroID') ?? $request->MetroID),
+            (session('auth.CircuitID') ?? $request->CircuitID),
+            $request->LanguageName,
+            $request->StartDate,
+            $request->EndDate,
+        ];
+        $List = DB::select(
+            'uspGetStandingStatisticsProductList ?,?,?,?,?,?',
+            array_merge($parameter)
+        );
+
+        $MetroList = $this->CommonService->getMetroList();
+        $CircuitList = $this->CommonService->getCircuitList();
+        
+        return view('statistic.products', [
+            'MetroList' => $MetroList,
+            'CircuitList' => $CircuitList ?? NULL,
+            'LanguageList' => DB::select('uspGetStandingProductLanguageList'),
+            'List' => $List ?? [],
+        ]);
+    }
+
+    public function exportProducts(Request $request)
+    {
+        $fileName = (session('auth.MetroID') ?? $request->MetroID) ? getMetroName() . '_' : '' ;
+        $fileName .= (session('auth.CircuitID') ?? $request->CircuitID) ? getCircuitName() . '_' : '' ;
+        $fileName .= $request->Type === '1' ? '출판물상세_' : '언어상세_' ;
+        $fileName .= '출판물통계.xlsx';
+
+        return Excel::download(new StatisticProductExport, $fileName);
     }
 }

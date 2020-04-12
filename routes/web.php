@@ -151,6 +151,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('statistic-reports/export', 'StatisticController@exportReports');
     //출판물배부통계
     Route::get('statistic-products', 'StatisticController@products');
+    Route::get('statistic-products/export', 'StatisticController@exportProducts');
 
 //게시판관리
     //공지사항

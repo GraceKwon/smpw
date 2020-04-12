@@ -6,7 +6,7 @@
             <select class="custom-select" 
                 @if(session('auth.MetroID')) disabled  @endif
                 id="MetroID" name="MetroID" 
-                onchange="document.getElementById('CircuitID').value = '';
+                onchange="if(document.getElementById('CircuitID') !== null) document.getElementById('CircuitID').value = '';
                     if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
                     if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = ''; 
                     submit()"

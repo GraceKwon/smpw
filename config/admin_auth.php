@@ -97,10 +97,10 @@ return [
                 'name' => '봉사보고통계',
                 'auth' => [1,2,3,4,5]
             ],
-            // 'statistic-products' => [
-            //     'name' => '출판물배부통계',
-            //     'auth' => [1,2,3,4,5]
-            // ]
+            'statistic-products' => [
+                'name' => '출판물통계',
+                'auth' => [1,2,3,4,5]
+            ]
         ]
     ],
 
