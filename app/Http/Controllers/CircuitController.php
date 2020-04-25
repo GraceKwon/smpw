@@ -61,12 +61,16 @@ class CircuitController extends Controller
             'ZoneName' => [
                 'required',
                 'max:20',
-                Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')->where('UseYn', 1),
+                Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')
+                    ->where('UseYn', 1)
+                    ->where('CircuitID', session('auth.CircuitID')),
             ],
             'ZoneAlias' => [
                 'required',
                 'max:5',
-                Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')->where('UseYn', 1),
+                Rule::unique('ServiceZones')->ignore($request->ServiceZoneID, 'ServiceZoneID')
+                    ->where('UseYn', 1)
+                    ->where('CircuitID', session('auth.CircuitID')),
             ],
             'Latitude' => 'required',
             'Longitude' => 'required',
