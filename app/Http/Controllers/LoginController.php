@@ -172,6 +172,8 @@ class LoginController extends Controller
 
                 $result = json_decode($response);
 
+                Log::debug($result);
+
                 if ($result->resultCode === 0) {
                     return redirect('/login')
                         ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "'.$Password.'"로 변경되었습니다.']);
