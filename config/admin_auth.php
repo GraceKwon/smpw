@@ -1,7 +1,7 @@
 <?php
 
 return [
-   
+
     'circuits' => [
         'title' => '순회구관리',
         'submenus' => [
@@ -69,7 +69,7 @@ return [
             ],
         ]
     ],
-    
+
     'products' => [
         'title' => '출판물관리',
         'submenus' => [
@@ -85,7 +85,7 @@ return [
             ]
         ]
     ],
-    
+
     'statistics' => [
         'title' => '봉사기록통계',
         'submenus' => [
@@ -135,7 +135,5 @@ return [
             // ],
         ]
     ],
-
-
 
 ];

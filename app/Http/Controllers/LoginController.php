@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -153,7 +154,7 @@ class LoginController extends Controller
                 $client = new Client();
 
                 $body = [
-                    "version" => "1.0" ,
+                    "version" => "1.0",
                     "from" => "01087918350",
                     "to" => [$request->Mobile],
                     "text" => $msg,
@@ -161,7 +162,6 @@ class LoginController extends Controller
                 ];
 
                 $key = env('SMS_API_KEY').'&'.env('SMS_AUTH_KEY');
-
                 $response = $client->request('POST', env('SMS_HOST'), [
                     'headers' => [
                         'Content-Type' => 'application/json;charset=UTF-8',
@@ -172,16 +172,14 @@ class LoginController extends Controller
 
                 $result = json_decode($response);
 
-                Log::debug($result);
-
                 if ($result->resultCode === 0) {
                     return redirect('/login')
-                        ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "'.$Password.'"로 변경되었습니다.']);
+                        ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "' . $Password . '"로 변경되었습니다.']);
                 }
             }
         } catch (\Exception $e) {
             Log::error($e);
-            return false;
+//            return false;
         }
 
     }
