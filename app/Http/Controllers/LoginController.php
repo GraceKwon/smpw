@@ -5,6 +5,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -136,44 +137,49 @@ class LoginController extends Controller
         $Password = sprintf('%04d',rand(0, 9999));
         $msg = '대도시 특별 공개증거 아이디 '.$request->Account.' 의 비밀번호가 변경 되었습니다. 초기화 비밀번호는 '.$Password.' 입니다.';
 
-        $res = DB::select('uspSetStandingAdminPasswordReset ?,?,?',
-            [
-                $request->Account,
-                $request->Mobile,
-                $Password
-            ]);
+        try {
+            $res = DB::select('uspSetStandingAdminPasswordReset ?,?,?',
+                [
+                    $request->Account,
+                    $request->Mobile,
+                    $Password
+                ]);
 
-        if(getAffectedRows($res) === 0) {
-            return back()
-                ->withErrors(['fail' => '비밀번호 초기화에 실패하였습니다. <br> 아이디 혹은 휴대폰번호를 확인해주세요.']);
-        }
-        else {
-            $client = new Client();
-
-            $body = [
-                "version" => "1.0" ,
-                "from" => "01087918350",
-                "to" => [$request->Mobile],
-                "text" => $msg,
-                "date" => "null"
-            ];
-
-            $key = env('SMS_API_KEY').'&'.env('SMS_AUTH_KEY');
-
-            $response = $client->request('POST', env('SMS_HOST'), [
-                'headers' => [
-                    'Content-Type' => 'application/json;charset=UTF-8',
-                    'secret' => base64_encode($key),
-                ],
-                'body' => json_encode($body),
-            ])->getBody();
-
-            $result = json_decode($response);
-
-            if ($result->resultCode === 0) {
-                return redirect('/login')
-                    ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "'.$Password.'"로 변경되었습니다.']);
+            if(getAffectedRows($res) === 0) {
+                return back()
+                    ->withErrors(['fail' => '비밀번호 초기화에 실패하였습니다. <br> 아이디 혹은 휴대폰번호를 확인해주세요.']);
             }
+            else {
+                $client = new Client();
+
+                $body = [
+                    "version" => "1.0" ,
+                    "from" => "01087918350",
+                    "to" => [$request->Mobile],
+                    "text" => $msg,
+                    "date" => "null"
+                ];
+
+                $key = env('SMS_API_KEY').'&'.env('SMS_AUTH_KEY');
+
+                $response = $client->request('POST', env('SMS_HOST'), [
+                    'headers' => [
+                        'Content-Type' => 'application/json;charset=UTF-8',
+                        'secret' => base64_encode($key),
+                    ],
+                    'body' => json_encode($body),
+                ])->getBody();
+
+                $result = json_decode($response);
+
+                if ($result->resultCode === 0) {
+                    return redirect('/login')
+                        ->with(['message' => $request->Account . '(아이디)의 비밀번호가 "'.$Password.'"로 변경되었습니다.']);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+            return false;
         }
 
     }
