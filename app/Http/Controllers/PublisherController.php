@@ -120,7 +120,7 @@ class PublisherController extends Controller
                     ' 입니다. 임시 비밀번호: '.$password. '입니다. [대특공] 앱 설치 주소 입니다.';
                 $this->sendSms($request->Mobile, $msg);
                 sleep(3);
-                $addressLink = 'https://smpw.or.kr/home/appdownload ';
+                $addressLink = 'https://smpw.or.kr/home/appdownload';
                 $result = $this->sendSms($request->Mobile, $addressLink);
                 if ($result->resultCode !== 0) {
                     Log::error('봉사자 등록 문자 발송 에러');
