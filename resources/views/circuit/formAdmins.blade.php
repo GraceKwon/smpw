@@ -31,12 +31,12 @@
                     </th>
                     <td colspan="{{ ( isset($Admin->AdminID) ? 0 : 3 ) }}">
                         <div class="inline-responsive">
-                            <input type="text" 
+                            <input type="text"
                             class="form-control"
-                            id="Account" 
-                            name="Account" 
-                            v-model="Account" 
-                            placeholder="자동으로 생성됩니다" 
+                            id="Account"
+                            name="Account"
+                            v-model="Account"
+                            placeholder="자동으로 생성됩니다"
                             disabled>
                         </div>
                     </td>
@@ -58,10 +58,10 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <input type="text" 
-                            class="form-control @error('AdminName') is-invalid @enderror" 
-                            id="AdminName" 
-                            name="AdminName" 
+                        <input type="text"
+                            class="form-control @error('AdminName') is-invalid @enderror"
+                            id="AdminName"
+                            name="AdminName"
                             v-model="AdminName"
                             placeholder="이름을 입력해 주세요">
                         @error('AdminName')
@@ -74,13 +74,13 @@
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <select class="custom-select @error('AdminRoleID') is-invalid @enderror"  
+                        <select class="custom-select @error('AdminRoleID') is-invalid @enderror"
                             id="AdminRoleID"
                             name="AdminRoleID"
                             v-model="AdminRoleID">
                             <option value="">선택</option>
                             @foreach ($AdminRoleList as $AdminRole)
-                                {{-- @if( session('auth.AdminRoleID') === 1 
+                                {{-- @if( session('auth.AdminRoleID') === 1
                                 || ($AdminRole->Item === '순회감독자' || $AdminRole->Item === '순회구보조자' || $AdminRole->Item === '조정장로')
                                 ) --}}
                                 <option value="{{ $AdminRole->ID }}">{{ $AdminRole->Item }}</option>
@@ -152,29 +152,29 @@
                         @enderror --}}
                     </div>
                 </td>
-               
+
                 <th>
                     <label class="label" for="Mobile">연락처</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
-                        <input type="text" 
-                            class="form-control @error('Mobile') is-invalid @enderror" 
-                            :class="{ 
+                        <input type="text"
+                            class="form-control @error('Mobile') is-invalid @enderror"
+                            :class="{
                                 'is-valid' : !errors.has('Mobile') && Mobile
-                            }" 
-                            id="Mobile" 
-                            name="Mobile" 
-                            v-model="Mobile" 
-                            v-validate="{   
-                                rules: { 
+                            }"
+                            id="Mobile"
+                            name="Mobile"
+                            v-model="Mobile"
+                            v-validate="{
+                                rules: {
                                     regex:/^\d{2,3}-\d{3,4}-\d{4}$/,
                                 }
                             }"
                             placeholder="연락처 번호를 입력해 주세요">
                             @error('Mobile')
                                 <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror  
+                            @enderror
                     </div>
                 </td>
             </tr>
@@ -182,7 +182,7 @@
         </table>
 
         <div class="btn-flex-area justify-content-end">
-            <button type="button" class="btn btn-secondary" 
+            <button type="button" class="btn btn-secondary"
                 onclick="location.href = '/{{ getTopPath() }}'">취소</button>
             @if(isset($Admin->AdminID))
                 <button type="button" class="btn btn-point-sub"
@@ -199,6 +199,8 @@
     </form>
     <form ref="formResetPwd" method="POST">
         @csrf
+        <input type="hidden" name="Account" v-model="Account" />
+        <input type="hidden" name="Mobile" v-model="Mobile" />
     </form>
 </section>
 @endsection
@@ -241,7 +243,7 @@
             _getCircuitList: function () {
                 var params = {
                     params: {
-                        MetroID: this.MetroID 
+                        MetroID: this.MetroID
                     }
                 };
                 axios.get('/getCircuitList', params)
@@ -256,7 +258,7 @@
             _getCongregationList: function () {
                 var params = {
                     params: {
-                        CircuitID: this.CircuitID 
+                        CircuitID: this.CircuitID
                     }
                 };
                 axios.get('/getCongregationList', params)
@@ -273,7 +275,7 @@
                 if(!res){
                     e.preventDefault();
                 }
-                
+
             },
             _delete: function () {
                 if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()

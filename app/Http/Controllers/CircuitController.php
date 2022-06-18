@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use App\Service\CommonService;
 
@@ -17,22 +19,22 @@ class CircuitController extends Controller
 
     public function serviceZones(Request $request)
     {
-        if($request->MetroID === null 
+        if($request->MetroID === null
             && session('auth.MetroID') == null){
             $request->MetroID = $this->CommonService->getMetroList()[0]->MetroID ?? '';
         }
 
-        if($request->CircuitID === null 
+        if($request->CircuitID === null
             && session('auth.CircuitID') === null){
             $request->CircuitID = $this->CommonService->getCircuitList()[0]->CircuitID ?? '';
         }
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
-        
-        $ServiceZones = DB::select('uspGetStandingServiceZoneList ?', [ 
+
+        $ServiceZones = DB::select('uspGetStandingServiceZoneList ?', [
                 session('auth.CircuitID') ?? $request->CircuitID
             ]);
-        
+
         return view( 'circuit.serviceZones', [
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
@@ -51,7 +53,7 @@ class CircuitController extends Controller
         }
 
         return view( 'circuit.formServiceZones', [
-                'ServiceZone' => isset($ServiceZone) ? $ServiceZone : null, 
+                'ServiceZone' => isset($ServiceZone) ? $ServiceZone : null,
             ]);
     }
 
@@ -105,13 +107,13 @@ class CircuitController extends Controller
                     session('auth.AdminID'),
                     // session('auth.CircuitID')
                 ]);
-        
 
-        if(getAffectedRows($res) === 0) 
+
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
         else
             return redirect('/ServiceZones');
-        
+
     }
 
     public function deleteServiceZones(Request $request)
@@ -120,11 +122,11 @@ class CircuitController extends Controller
                 $request->ServiceZoneID,
             ]);
 
-        if( getAffectedRows($res) === 0 ) 
+        if( getAffectedRows($res) === 0 )
             return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
         else
             return redirect('/ServiceZones');
-        
+
     }
 
     public function admins(Request $request)
@@ -133,10 +135,10 @@ class CircuitController extends Controller
         $CircuitList = $this->CommonService->getCircuitList();
         // $CongregationList = $this->CommonService->getCongregationList();
         $AdminRoleList = $this->CommonService->getAdminRoleList();
-        
-        $paginate = 30;  
+
+        $paginate = 30;
         $page = $request->input('page', '1');
-    
+
         $parameter = [
                 ( session('auth.MetroID') ?? $request->MetroID ),
                 ( session('auth.CircuitID') ?? $request->CircuitID ),
@@ -145,11 +147,11 @@ class CircuitController extends Controller
                 $request->AdminName,
                 $request->Gender,
             ];
-        $data = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingAdminList ?,?,?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingAdminListCnt ?,?,?,?,?,?', $parameter);
         $AdminList = setPaginator($paginate, $page, $data, $count);
-   
+
         return view( 'circuit.admins', [
             'AdminList' => $AdminList,
             'MetroList' => $MetroList,
@@ -163,7 +165,7 @@ class CircuitController extends Controller
     {
         $AdminRoleList = $this->CommonService->getAdminRoleList();
         $MetroList = $this->CommonService->getMetroList();
-        
+
         if( $request->AdminID !== '0' ) {
             $res = DB::select( 'uspGetStandingAdminDetail ?', [
                     $request->AdminID
@@ -195,35 +197,51 @@ class CircuitController extends Controller
             // 'CircuitID' => 'required',
             'Mobile' => 'nullable|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
         ]);
-   
-        if($request->AdminID === '0')
-            $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
-                    $request->MetroID,
-                    $request->CircuitID,
-                    $request->CongregationID,
-                    sprintf('%04d',rand(0,9999)),// UserPassword
-                    $request->AdminName,
-                    $request->AdminRoleID,
-                    1,// TempUseYn
-                    $request->Mobile,
-                ]);
-        else
-            $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?', [
-                    $request->AdminID,
-                    $request->MetroID,
-                    $request->CircuitID,
-                    $request->CongregationID,
-                    $request->AdminName,
-                    $request->AdminRoleID,
-                    $request->Mobile,
-                ]);
-        
 
-        if(getAffectedRows($res) === 0) 
+        if($request->AdminID === '0') {
+            $password = sprintf('%04d',rand(0,9999));
+            $res = DB::select('uspSetStandingAdminInsert ?,?,?,?,?,?,?,?', [
+                $request->MetroID,
+                $request->CircuitID,
+                $request->CongregationID,
+                $password,// UserPassword
+                $request->AdminName,
+                $request->AdminRoleID,
+                1,// TempUseYn
+                $request->Mobile,
+            ]);
+
+            $msg = '[대특공] 계정이 발급되었습니다. 계정: '.trim($res[0]->AdminIDs).
+                ' 입니다. 임시 비밀번호: '.$password. '입니다. 관리자 주소 입니다.';
+            $this->sendSms($request->Mobile, $msg);
+            sleep(3);
+            $addressLink = 'https://smpw.or.kr/';
+            $result = $this->sendSms($request->Mobile, $addressLink);
+            if ($result->resultCode !== 0) {
+                Log::error('어드민 계정 등록 문자 발송 에러');
+                Log::error('에러 메시지 ===== '.$result);
+            }
+
+            $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
+        } else {
+            $res = DB::select('uspSetStandingAdminUpdate ?,?,?,?,?,?,?', [
+                $request->AdminID,
+                $request->MetroID,
+                $request->CircuitID,
+                $request->CongregationID,
+                $request->AdminName,
+                $request->AdminRoleID,
+                $request->Mobile,
+            ]);
+
+            $code = getAffectedRows($res);
+        }
+
+        if($code === 0) {
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
-        else
+        } else {
             return redirect('/admins');
-        
+        }
     }
 
     public function deleteAdmins(Request $request)
@@ -233,11 +251,11 @@ class CircuitController extends Controller
                 0
             ]);
 
-        if( getAffectedRows($res) === 0 ) 
+        if( getAffectedRows($res) === 0 )
             return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
         else
             return redirect('/admins');
-        
+
     }
 
     public function resetPwdAdmins(Request $request)
@@ -248,11 +266,19 @@ class CircuitController extends Controller
                 $request->AdminID,
                 $Password
             ]);
-        if(getAffectedRows($res) === 0) 
+
+        if(getAffectedRows($res) === 0) {
             return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
-        else
-            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다. 임시비밀번호는 '. $Password.'입니다']);
-        
+        } else {
+            $msg = '대도시 공개 증거 관리자 사이트 '.$request->Account.
+                ' 계정의 임시 비밀번호가 발급되었습니다. 임시비밀번호는 '. $Password.'입니다.';
+            $result = $this->sendSms($request->Mobile, $msg);
+
+            if ($result->resultCode === 0) {
+                return back()->with(['success' => '비밀번호 초기화를 성공하였습니다. 임시비밀번호는 '. $Password.'입니다']);
+            }
+        }
+
     }
 
     public function keepZones(Request $request)
@@ -260,7 +286,7 @@ class CircuitController extends Controller
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
         // $CongregationList = $this->CommonService->getCongregationList();
-        $paginate = 30;  
+        $paginate = 30;
         $page = $request->input('page', '1');
         $parameter = [
             ( session('auth.MetroID') ?? $request->MetroID ),
@@ -268,12 +294,12 @@ class CircuitController extends Controller
             $request->CongregationID,
             $request->AdminName,
         ];
-        $data = DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingProductKeepZoneList ?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingProductKeepZoneListCnt ?,?,?,?', $parameter);
 
         $KeepZoneList = setPaginator($paginate, $page, $data, $count);
-  
+
         return view( 'circuit.keepZones', [
             'KeepZoneList' => $KeepZoneList,
             'MetroList' => $MetroList,
@@ -293,7 +319,7 @@ class CircuitController extends Controller
         }
 
         return view( 'circuit.formKeepZones', [
-                'KeepZone' => isset($KeepZone) ? $KeepZone : null, 
+                'KeepZone' => isset($KeepZone) ? $KeepZone : null,
             ]);
     }
 
@@ -319,13 +345,13 @@ class CircuitController extends Controller
                     $request->ZoneAddress,
                     $request->ZoneAddressDetail,
                 ]);
-        
 
-        if(getAffectedRows($res) === 0) 
+
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
         else
             return redirect('/KeepZones');
-        
+
     }
 
     public function deleteKeepZones(Request $request)
@@ -335,10 +361,33 @@ class CircuitController extends Controller
                 0
             ]);
 
-        if( getAffectedRows($res) === 0 ) 
+        if( getAffectedRows($res) === 0 )
             return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
         else
             return redirect('/KeepZones');
-        
+
+    }
+
+    private function sendSms($mobile, $msg) {
+        $client = new Client();
+
+        $body = [
+            "version" => "1.0",
+            "from" => "01087918350",
+            "to" => [$mobile],
+            "text" => $msg,
+            "date" => "null"
+        ];
+
+        $key = env('SMS_API_KEY').'&'.env('SMS_AUTH_KEY');
+        $response = $client->request('POST', env('SMS_HOST'), [
+            'headers' => [
+                'Content-Type' => 'application/json;charset=UTF-8',
+                'secret' => base64_encode($key),
+            ],
+            'body' => json_encode($body),
+        ])->getBody();
+
+        return json_decode($response);
     }
 }

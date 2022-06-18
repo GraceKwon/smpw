@@ -10,7 +10,7 @@
         </div>
     @endif
     <form method="POST"
-    @submit="_confirm" 
+    @submit="_confirm"
     @keydown.enter.prevent>
     @method("PUT")
     @csrf
@@ -22,12 +22,12 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <input type="text" 
+                    <input type="text"
                         class="form-control"
-                        id="Account" 
-                        name="Account" 
-                        v-model="Account" 
-                        placeholder="자동으로 생성됩니다" 
+                        id="Account"
+                        name="Account"
+                        v-model="Account"
+                        placeholder="자동으로 생성됩니다"
                         disabled>
                 </div>
             </td>
@@ -50,7 +50,7 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <button type="button" class="btn btn-primary" 
+                    <button type="button" class="btn btn-primary"
                         @click="_resetPwd">비밀번호초기화</button>
                 </div>
             </td>
@@ -62,11 +62,11 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <input type="text" 
-                        class="form-control @error('PublisherName') is-invalid @enderror" 
-                        id="PublisherName" 
-                        name="PublisherName" 
-                        v-model="PublisherName" 
+                    <input type="text"
+                        class="form-control @error('PublisherName') is-invalid @enderror"
+                        id="PublisherName"
+                        name="PublisherName"
+                        v-model="PublisherName"
                         placeholder="이름을 입력해 주세요">
                         @error('PublisherName')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -80,9 +80,9 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select @error('CongregationID') is-invalid @enderror" 
-                        id="CongregationID" 
-                        v-model="CongregationID" 
+                    <select class="custom-select @error('CongregationID') is-invalid @enderror"
+                        id="CongregationID"
+                        v-model="CongregationID"
                         name="CongregationID">
                         <option value="">선택</option>
                         @foreach ($CongregationList as $Congregation)
@@ -102,20 +102,20 @@
             <td>
                 <div class="inline-responsive">
                     <div class="custom-control custom-radio">
-                        <input type="radio" 
+                        <input type="radio"
                             class="custom-control-input @error('Gender') is-invalid @enderror"
-                            id="M" 
-                            value="M" 
-                            v-model="Gender" 
+                            id="M"
+                            value="M"
+                            v-model="Gender"
                             name="Gender">
                         <label class="custom-control-label" for="M">형제</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" 
-                            class="custom-control-input @error('Gender') is-invalid @enderror" 
-                            id="F" 
-                            value="F" 
-                            v-model="Gender" 
+                        <input type="radio"
+                            class="custom-control-input @error('Gender') is-invalid @enderror"
+                            id="F"
+                            value="F"
+                            v-model="Gender"
                             name="Gender">
                         <label class="custom-control-label" for="F">자매</label>
                     </div>
@@ -128,11 +128,11 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <input type="text" 
+                    <input type="text"
                         class="form-control @error('Mobile') is-invalid @enderror"
-                        id="Mobile" 
-                        name="Mobile" 
-                        v-model="Mobile" 
+                        id="Mobile"
+                        name="Mobile"
+                        v-model="Mobile"
                         placeholder="연락처를 입력해 주세요">
                     @error('Mobile')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -146,7 +146,7 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select @error('ServantTypeID') is-invalid @enderror" 
+                    <select class="custom-select @error('ServantTypeID') is-invalid @enderror"
                         id="ServantTypeID"
                         name="ServantTypeID"
                         v-model="ServantTypeID">
@@ -157,7 +157,7 @@
                     </select>
                     @error('ServantTypeID')
                         <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror 
+                    @enderror
                 </div>
             </td>
             <th>
@@ -165,7 +165,7 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select @error('PioneerTypeID') is-invalid @enderror" 
+                    <select class="custom-select @error('PioneerTypeID') is-invalid @enderror"
                         id="PioneerTypeID"
                         name="PioneerTypeID"
                         v-model="PioneerTypeID">
@@ -176,7 +176,7 @@
                     </select>
                     @error('PioneerTypeID')
                         <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror 
+                    @enderror
                 </div>
             </td>
         </tr>
@@ -187,21 +187,21 @@
             <td>
                 <div class="inline-responsive">
                     <div class="custom-control custom-radio">
-                        <input type="radio" 
+                        <input type="radio"
                             class="custom-control-input"
-                            v-model="StopYn" 
-                            id="StopN" 
-                            name="StopYn" 
+                            v-model="StopYn"
+                            id="StopN"
+                            name="StopYn"
                             value="0"
                             name="StopYn">
                         <label class="custom-control-label" for="StopN">봉사중</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" 
-                            class="custom-control-input" 
-                            v-model="StopYn" 
-                            id="StopY" 
-                            name="StopYn" 
+                        <input type="radio"
+                            class="custom-control-input"
+                            v-model="StopYn"
+                            id="StopY"
+                            name="StopYn"
                             value="1"
                             name="StopYn">
                         <label class="custom-control-label" for="StopY">봉사중단</label>
@@ -215,19 +215,20 @@
                 <div class="inline-responsive">
                     <div class="check-group inline-responsive">
                         <div class="custom-control custom-radio">
-                        <input type="radio" 
-                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
-                            v-model="SupportYn" 
-                            id="SupportY" 
-                            value="1"
-                            name="SupportYn">
-                        <label class="custom-control-label" for="SupportY">가능</label>
+                            <input type="radio"
+                                class="custom-control-input @error('SupportYn') is-invalid @enderror"
+                                v-model="SupportYn"
+                                id="SupportY"
+                                value="1"
+                                name="SupportYn">
+                            <label class="custom-control-label" for="SupportY">가능</label>
+                        </div>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" 
-                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
-                            v-model="SupportYn" 
-                            id="SupportN" 
+                        <input type="radio"
+                            class="custom-control-input @error('SupportYn') is-invalid @enderror"
+                            v-model="SupportYn"
+                            id="SupportN"
                             value="0"
                             name="SupportYn">
                         <label class="custom-control-label" for="SupportN">불가능</label>
@@ -241,16 +242,16 @@
             </th>
             <td colspan="3">
                 <div class="inline-responsive">
-                    <textarea type="text" 
-                        class="form-control w-100 @error('Memo') is-invalid @enderror"  
-                        id="Memo" 
-                        name="Memo" 
+                    <textarea type="text"
+                        class="form-control w-100 @error('Memo') is-invalid @enderror"
+                        id="Memo"
+                        name="Memo"
                         {{-- v-model="Memo" --}}
-                        rows="5" 
+                        rows="5"
                         placeholder="메모를 입력해 주세요.">{{ old('Memo') ?? $Publisher->Memo  ?? '' }}</textarea>
                         @error('Memo')
                         <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror 
+                    @enderror
                 </div>
             </td>
         </tr>
@@ -261,16 +262,16 @@
             <td>
                 <div class="inline-responsive">
                     <div class="input-group max-w-250px-desktop">
-                        <input type="date" 
-                            class="form-control @error('EndDate') is-invalid @enderror" 
-                            id="EndDate" 
-                            name="EndDate" 
-                            v-model="EndDate" 
+                        <input type="date"
+                            class="form-control @error('EndDate') is-invalid @enderror"
+                            id="EndDate"
+                            name="EndDate"
+                            v-model="EndDate"
                             :disabled="StopYn === '0'"
                             placeholder="날자를 선택해 주세요">
                         @error('EndDate')
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror 
+                        @enderror
                     </div>
                 </div>
             </td>
@@ -279,7 +280,7 @@
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select class="custom-select @error('EndTypeID') is-invalid @enderror" 
+                    <select class="custom-select @error('EndTypeID') is-invalid @enderror"
                         id="EndTypeID"
                         name="EndTypeID"
                         :disabled="StopYn === '0'"
@@ -291,7 +292,7 @@
                     </select>
                     @error('EndTypeID')
                         <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror 
+                    @enderror
                 </div>
             </td>
         </tr>
@@ -307,6 +308,8 @@
     </form>
     <form ref="formResetPwd" method="POST">
         @csrf
+        <input type="hidden" name="Account" v-model="Account" />
+        <input type="hidden" name="Mobile" v-model="Mobile" />
     </form>
 </section>
 
@@ -340,11 +343,11 @@
             </span>
         </a>
         {{-- {{ $week }} ({{ $count }}), --}}
-        {{-- <button class="btn 
-            @if(request('ServiceYoil') === $week || !request('ServiceYoil') && $week === '월') btn-primary @else btn-secondary @endif 
+        {{-- <button class="btn
+            @if(request('ServiceYoil') === $week || !request('ServiceYoil') && $week === '월') btn-primary @else btn-secondary @endif
             mt-1 mt-sm-0 ml-sm-2 min-w-100px-desktop "
             onclick="location.href='?ServiceYoil={{ $week }}'">
-            {{ $week }} 
+            {{ $week }}
             @if(isset($SetTimeCount[$week]))
                 <span class="badge badge-light">{{ $SetTimeCount[$week] }}</span>
             @endif
@@ -380,7 +383,7 @@
                         </th>
                         @foreach ($ServiceTimes as $ServiceTime)
                         <td @if( empty($ServiceTime) )
-                            @elseif( $ServiceTime['ServiceSetType'] === '대기' )  
+                            @elseif( $ServiceTime['ServiceSetType'] === '대기' )
                                 class="state-publisher-wait"
                             @elseif( $ServiceTime['ServiceSetType'] === '봉사자' )
                                 class="state-publisher-set"
@@ -406,7 +409,7 @@
                                 </select>
                             </div>
                             <div class="mt-1 font-size-80">[{{ $ServiceTime['PublisherCnt'] }}/{{ session('auth.PublisherNumber') }}]</div>
-                        </td>  
+                        </td>
                         @endif
                         @endforeach
                     </tr>
@@ -417,13 +420,13 @@
         <div class="form-inline align-items-center mt-3">
             <div class="min-w-140px text-primary">스케줄 변경 시작일</div>
             <div class="input-group mt-2 mt-md-0">
-                <input type="date" class="form-control @error('SetStartDate') is-invalid @enderror"  
+                <input type="date" class="form-control @error('SetStartDate') is-invalid @enderror"
                     name="SetStartDate"
                     v-model="SetStartDate"
                     placeholder="날자를 선택해 주세요">
                 @error('SetStartDate')
                     <div class="invalid-feedback">{{ $message }}</div>
-                @enderror 
+                @enderror
                 {{-- <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
@@ -472,7 +475,7 @@
                 if(!res){
                     e.preventDefault();
                 }
-                
+
             },
             _delete: function () {
                 if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()

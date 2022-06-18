@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\PublisherService;
+use Illuminate\Support\Facades\Log;
 
 class PublisherController extends Controller
 {
@@ -22,7 +24,7 @@ class PublisherController extends Controller
         $CongregationList = $this->CommonService->getCongregationList();
         $ServantTypeList = $this->CommonService->getServantTypeList();
 // dd($CongregationList);
-        $paginate = 30;  
+        $paginate = 30;
         $page = $request->input('page', '1');
         $parameter = [
             ( session('auth.MetroID') ?? $request->MetroID ),
@@ -33,7 +35,7 @@ class PublisherController extends Controller
             $request->ServantTypeID,
             $request->UseYn,
         ];
-        $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingPublisherListCnt ?,?,?,?,?,?,?', $parameter);
 
@@ -56,14 +58,14 @@ class PublisherController extends Controller
                 ]);
                 $Publisher = reset($res); /* reset( [] ) === false */
                 if( empty($Publisher) ) abort(404); /* empty( false ) === true */
-                
+
                 $request->CircuitID = $Publisher->CircuitID;
             }
         $CongregationList = $this->CommonService->getCongregationList();
         $ServantTypeList = $this->CommonService->getServantTypeList();
         $PioneerTypeList = $this->CommonService->getPioneerTypeList();
         $EndTypeIDList = $this->CommonService->getEndTypeList();
-        
+
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
         $ServiceTimeList = $PublisherService->getServiceTimeList();
 
@@ -94,10 +96,13 @@ class PublisherController extends Controller
             'EndDate' => $request->StopYn === '1' ? 'required' : '' . '|date',
             'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
         ]);
-        if($request->PublisherID === '0')
-            $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?', [
+
+        try {
+            if($request->PublisherID === '0') {
+                $password = sprintf('%04d',rand(0,9999));
+                $res = DB::select('uspSetStandingPublisherInsert ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherName,
-                    sprintf('%04d',rand(0,9999)),//$request->UserPassword,
+                    $password,//$request->UserPassword,
                     $request->CongregationID,
                     $request->Gender,
                     $request->Mobile,
@@ -110,8 +115,21 @@ class PublisherController extends Controller
                     $request->EndDate,
                     $request->EndTypeID,
                 ]);
-        else
-            $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?', [
+
+                $msg = '[대특공]봉사자로 등록되었습니다. 아이디: '.trim($res[0]->pId).
+                    ' 입니다. 임시 비밀번호: '.$password. '입니다. [대특공] 앱 설치 주소 입니다.';
+                $this->sendSms($request->Mobile, $msg);
+                sleep(3);
+                $addressLink = 'https://smpw.or.kr/home/appdownload ';
+                $result = $this->sendSms($request->Mobile, $addressLink);
+                if ($result->resultCode !== 0) {
+                    Log::error('봉사자 등록 문자 발송 에러');
+                    Log::error('에러 메시지 ===== '.$result);
+                }
+
+                $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
+            } else {
+                $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
                     $request->PublisherName,
                     $request->CongregationID,
@@ -127,10 +145,17 @@ class PublisherController extends Controller
                     $request->EndTypeID,
                 ]);
 
-        if(getAffectedRows($res) === 0) 
-            return back()->withErrors(['fail' => '저장 실패하였습니다.'])->withInput();
-        else
-            return redirect('/publishers');
+                $code = getAffectedRows($res);
+            }
+
+            if($code === 0) {
+                return back()->withErrors(['fail' => '저장 실패하였습니다.'])->withInput();
+            } else {
+                return redirect('/publishers');
+            }
+        } catch (\Exception $e) {
+            Log::error('봉사자 등록 및 수정 에러 ========== '.$e);
+        }
 
     }
 
@@ -141,26 +166,34 @@ class PublisherController extends Controller
                 0,
             ]);
 
-        if( getAffectedRows($res) === 0 ) 
+        if( getAffectedRows($res) === 0 )
             return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
         else
             return redirect('/publishers');
-        
+
     }
 
     public function resetPwdPublishers(Request $request)
     {
-        $res = DB::select('uspSetPublisherPasswordReset ?,?', [
-            $request->PublisherID,
-            $Password = sprintf('%04d',rand(0,9999)),
-        ]);
-        
-        if( getAffectedRows($res) === 0 ) 
-            return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
-        else
-            return back()->with(['success' => '비밀번호 초기화를 성공하였습니다. 임시비밀번호는 '. $Password.'입니다']);
+        try {
+            $res = DB::select('uspSetPublisherPasswordReset ?,?', [
+                $request->PublisherID,
+                $Password = sprintf('%04d',rand(0,9999)),
+            ]);
 
-        
+            if( getAffectedRows($res) === 0 ) {
+                return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
+            } else {
+                $msg = '대도시 공개 증거 '.$request->Account.' 계정의 임시 비밀번호가 발급되었습니다. 임시비밀번호는 '. $Password.'입니다.';
+                $result = $this->sendSms($request->Mobile, $msg);
+
+                if ($result->resultCode === 0) {
+                    return back()->with(['success' => '비밀번호 초기화를 성공하였습니다. 임시비밀번호는 '. $Password.'입니다']);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('비밀번호 초기화 에러 === '.$e);
+        }
     }
 
     public function putServiceTimePublieher(Request $request)
@@ -173,26 +206,49 @@ class PublisherController extends Controller
             $SetStartDate = $request->SetStartDate;
             // DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
             // {
-                foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
-                    DB::statement('uspSetStandingServiceTimePublieherDelete ?,?', [
-                            $PublisherID,
-                            $ServiceTimeID,
+            foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
+                DB::statement('uspSetStandingServiceTimePublieherDelete ?,?', [
+                        $PublisherID,
+                        $ServiceTimeID,
+                    ]);
+
+                if($ServiceSetType !== '미지정')
+                    DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
+                        $PublisherID,
+                        $ServiceTimeID,
+                        ($ServiceSetType ==='인도자') ? 1 : 0,
+                        ($ServiceSetType ==='대기') ? 1 : 0,
+                        $SetStartDate,
                         ]);
-                            
-                    if($ServiceSetType !== '미지정')
-                        DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
-                            $PublisherID,
-                            $ServiceTimeID,
-                            ($ServiceSetType ==='인도자') ? 1 : 0,
-                            ($ServiceSetType ==='대기') ? 1 : 0,
-                            $SetStartDate,
-                            ]);
-                }
+            }
             // });
-                    
+
         // dd($request->all());
         return back();
-        
+
+    }
+
+    private function sendSms($mobile, $msg) {
+        $client = new Client();
+
+        $body = [
+            "version" => "1.0",
+            "from" => "01087918350",
+            "to" => [$mobile],
+            "text" => $msg,
+            "date" => "null"
+        ];
+
+        $key = env('SMS_API_KEY').'&'.env('SMS_AUTH_KEY');
+        $response = $client->request('POST', env('SMS_HOST'), [
+            'headers' => [
+                'Content-Type' => 'application/json;charset=UTF-8',
+                'secret' => base64_encode($key),
+            ],
+            'body' => json_encode($body),
+        ])->getBody();
+
+        return json_decode($response);
     }
 
 
