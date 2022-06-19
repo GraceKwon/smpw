@@ -1,5 +1,5 @@
 
-{{-- 
+{{--
 <!DOCTYPE html>
 
 <html lang="ko">
@@ -26,7 +26,7 @@
                 <span class="txt_point">
                     "새 버전을 설치해 주시기 바랍니다.<br>
                     만일 설치가 되지 않으면 기존에 설치된 앱을 삭제한 후 다시 설치해 주시기 바랍니다."<br>
-                </span> 
+                </span>
                 <br><br>
                 대도시 특별 공개증거 프로그램이<br>
                 새 버전으로 업그레이드 되었습니다.<br>
@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="login-form-wrap no-label">
                                     <div class="logo-wrap" style="padding:0">
-                                        <a href="/app/smpw.apk">
+                                        <a href="/app/smpwko_2206200004.apk">
                                             <img src="../img/android.png" alt="">
                                         </a>
                                         <a href="/app/smpw.apk">
