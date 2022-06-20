@@ -92,10 +92,10 @@
                                 </div>
                                 <div class="login-form-wrap no-label">
                                     <div class="logo-wrap" style="padding:0">
-                                        <a href="/app/smpwko_2206200004.apk">
+                                        <a href="/app/smpw.apk">
                                             <img src="../img/android.png" alt="">
                                         </a>
-                                        <a href="/app/smpwko_2206200004.apk">
+                                        <a href="/app/smpw.apk">
                                             <div class="typo-area">
                                                 <div class="font-size-120 opacity-70">안드로이드</div>
                                             </div>
