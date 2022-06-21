@@ -433,7 +433,7 @@
                     </div>
                 </div> --}}
             </div>
-            <button class="btn btn-primary mt-2 mt-md-0 ml-md-2">스케쥴 변경</button>
+            <button class="btn btn-primary mt-2 mt-md-0 ml-md-2">스케줄 변경</button>
         </div>
     </form>
 </section>
