@@ -76,7 +76,7 @@ function getServiceZoneName($ServiceZoneID = null)
 	return  DB::table('ServiceZones')->where( 'ServiceZoneID', $ServiceZoneID ?? request()->ServiceZoneID )->value('ZoneName');
 }
 
-function getServiceTime($ServiceTimes = null)
+function getServiceTime($ServiceTimeID = null)
 {
 	return  DB::table('ServiceTimes')->where( 'ServiceTimeID', $ServiceTimeID ?? request()->ServiceTimeID )->value('ServiceTime');
 }

@@ -16,11 +16,10 @@ class PushService
         $this->CommonService = $CommonService;
     }
 
-    public function sendToToken($msg, $PublisherIDs)
+    public function sendToToken($title, $msg, $PublisherIDs)
     {
         // $optionBuilder = new OptionsBuilder();
         // $optionBuilder->setTimeToLive(60*20);
-        $title = '[봉사취소안내]';
         $notificationBuilder = new PayloadNotificationBuilder($title);
         $notificationBuilder->setBody($msg)
                             ->setSound('default');
@@ -157,13 +156,14 @@ class PushService
     public function PublisherCancel()
     {
         $PublisherIDs = [request()->PublisherID];
+        $title = '[봉사취소안내]';
 
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         $msg .= sprintfServiceTime( getServiceTime() ). "\r\n";
         $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
 
-        $this->sendToToken($msg, $PublisherIDs);
+        $this->sendToToken($title, $msg, $PublisherIDs);
     }
 
     public function getPublisherIDsTimeCancel()
@@ -212,33 +212,36 @@ class PushService
 
     public function TimeCancel($PublisherIDs = [])
     {
+        $title = '[봉사취소안내]';
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         $msg .= sprintfServiceTime( getServiceTime() ). "\r\n";
         $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
 
-        $this->sendToToken($msg, $PublisherIDs);
+        $this->sendToToken($title, $msg, $PublisherIDs);
     }
 
     public function ZoneCancel($PublisherIDs = [])
     {
+        $title = '[봉사취소안내]';
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         $msg .= '전체시간'. "\r\n";
         $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
 
-        $this->sendToToken($msg, $PublisherIDs);
+        $this->sendToToken($title, $msg, $PublisherIDs);
     }
 
 
     public function DayCancel($PublisherIDs = [])
     {
+        $title = '[봉사취소안내]';
         $msg = request()->ServiceDate . "\r\n";
         $msg .= '전체구역' . "\r\n";
         $msg .= '전체시간'. "\r\n";
         $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
 
-        $this->sendToToken($msg, $PublisherIDs);
+        $this->sendToToken($title, $msg, $PublisherIDs);
     }
 
     public function getArrayForRequestJoin($ServiceZoneID = null)
@@ -296,6 +299,22 @@ class PushService
         $msg = '새로운 공지사항이 등록되었습니다.' . "\r\n";
   
         $this->sendToTopic('[공지사항]' ,$msg);
+    }
+
+    public function PublisherServiceTimeSet($arrayForPush)
+    {
+        $PublisherIDs = [request()->PublisherID];
+        $title = '[봉사일정알림]';
+        $msg = "다음과 같이 봉사일정이 등록되었습니다.";
+        foreach ($arrayForPush as $ServiceTimeID => $value) {
+            $msg .= "\r\n".$value['ZoneName'];
+            $msg .= " ".$value['ServiceYoil'];
+            $msg .= " ".sprintfServiceTime($value['ServiceTime']);
+            $msg .= " ".$value['ServiceSetType'];
+        }
+        $msg .= "\r\n스케줄 변경 시작일: ".request()->SetStartDate;
+
+        $this->sendToToken($title, $msg, $PublisherIDs);
     }
 
     public function sendToTopic_test()

@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\PublisherService;
 use Illuminate\Support\Facades\Log;
+use App\Service\PushService;
 
 class PublisherController extends Controller
 {
-    public function __construct(CommonService $CommonService)
+    public function __construct(CommonService $CommonService, PushService $PushService)
     {
         $this->CommonService = $CommonService;
+        $this->PushService = $PushService;
         $this->middleware('admin_auth');
     }
 
@@ -206,13 +208,16 @@ class PublisherController extends Controller
             $SetStartDate = $request->SetStartDate;
             // DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
             // {
+            $arrayForPush = [];
             foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
                 DB::statement('uspSetStandingServiceTimePublieherDelete ?,?', [
                         $PublisherID,
                         $ServiceTimeID,
                     ]);
 
-                if($ServiceSetType !== '미지정')
+                if($ServiceSetType !== '미지정'){
+                    $arrayForPush[$ServiceTimeID]["ServiceSetType"] = $ServiceSetType;
+                    
                     DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
                         $PublisherID,
                         $ServiceTimeID,
@@ -220,9 +225,31 @@ class PublisherController extends Controller
                         ($ServiceSetType ==='대기') ? 1 : 0,
                         $SetStartDate,
                         ]);
+                }
             }
             // });
+            if(!empty($arrayForPush)){
 
+                foreach ($arrayForPush as $ServiceTimeID => $ServiceSetType) {
+                    
+                    $res =  DB::table('ServiceTimes')
+                    ->select(
+                        'ServiceTimes.ServiceTime',
+                        'ServiceTimes.ServiceYoil',
+                        'ServiceZones.ZoneName'
+                        )
+                        ->where([
+                            ['ServiceTimes.ServiceTimeID', $ServiceTimeID],
+                            ])
+                            ->leftJoin('ServiceZones', 'ServiceTimes.ServiceZoneID', 'ServiceZones.ServiceZoneID')
+                            ->first();
+                    $arrayForPush[$ServiceTimeID]["ServiceTime"] = $res->ServiceTime;
+                    $arrayForPush[$ServiceTimeID]["ServiceYoil"] = $res->ServiceYoil;
+                    $arrayForPush[$ServiceTimeID]["ZoneName"] = $res->ZoneName;
+                }
+                // dd($arrayForPush);
+                $this->PushService->PublisherServiceTimeSet($arrayForPush);
+            }
         // dd($request->all());
         return back();
 
