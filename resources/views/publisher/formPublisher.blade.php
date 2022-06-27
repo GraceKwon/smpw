@@ -257,7 +257,7 @@
         </tr>
         <tr>
             <th>
-                <label class="label" for="EndDate">계정중단일</label>
+                <label class="label" for="EndDate">계정삭제일</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -276,7 +276,7 @@
                 </div>
             </td>
             <th>
-                <label class="label" for="register09">계정중단사유</label>
+                <label class="label" for="register09">계정삭제사유</label>
             </th>
             <td>
                 <div class="inline-responsive">
