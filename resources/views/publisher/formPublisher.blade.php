@@ -192,7 +192,7 @@
                             v-model="StopYn"
                             id="StopN"
                             name="StopYn"
-                            value="0"
+                            value="1"
                             name="StopYn">
                         <label class="custom-control-label" for="StopN">봉사중</label>
                     </div>
@@ -202,7 +202,7 @@
                             v-model="StopYn"
                             id="StopY"
                             name="StopYn"
-                            value="1"
+                            value="0"
                             name="StopYn">
                         <label class="custom-control-label" for="StopY">봉사중단</label>
                     </div>
@@ -454,7 +454,7 @@
             PhotoFilePath: "{{ old('PhotoFilePath') ?? $Publisher->PhotoFilePath ?? '' }}",
             PioneerTypeID: "{{ old('PioneerTypeID') ?? $Publisher->PioneerTypeID ?? '' }}",
             ServantTypeID: "{{ old('ServantTypeID') ?? $Publisher->ServantTypeID ?? '' }}",
-            StopYn: "{{ old('StopYn') ?? isset($Publisher->EndDate) ? '1' : '0' }}",
+            StopYn: "{{ old('StopYn') ?? $Publisher->UseYn ?? '1' }}",
             SupportYn: "{{ old('SupportYn') ?? $Publisher->SupportYn ?? '1' }}",
             // Memo: "",
             EndDate: "{{ old('EndDate') ?? $Publisher->EndDate ?? '' }}",

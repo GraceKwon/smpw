@@ -73,6 +73,7 @@ class PublisherController extends Controller
 
         $SetTimeCount = $PublisherService->getServiceYoilSetTimeCount();
         // dd($SetTimeCount);
+//        dd($Publisher);
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
@@ -95,8 +96,8 @@ class PublisherController extends Controller
             'PioneerTypeID' => 'required',
             'ServantTypeID' => 'required',
             'SupportYn' => 'required',
-            'EndDate' => $request->StopYn === '1' ? 'required' : '' . '|date',
-            'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
+//            'EndDate' => $request->StopYn === '1' ? 'required' : '' . '|date',
+//            'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
         ]);
 
         try {
@@ -140,7 +141,8 @@ class PublisherController extends Controller
                     40,
                     $request->PioneerTypeID,
                     $request->ServantTypeID,
-                    $request->StopYn === '1' ? 0 : 1,
+                    $request->StopYn,
+//                    $request->StopYn === '1' ? 0 : 1,
                     $request->SupportYn,
                     $request->Memo,
                     $request->EndDate,
@@ -217,7 +219,7 @@ class PublisherController extends Controller
 
                 if($ServiceSetType !== '미지정'){
                     $arrayForPush[$ServiceTimeID]["ServiceSetType"] = $ServiceSetType;
-                    
+
                     DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
                         $PublisherID,
                         $ServiceTimeID,
@@ -231,7 +233,7 @@ class PublisherController extends Controller
             if(!empty($arrayForPush)){
 
                 foreach ($arrayForPush as $ServiceTimeID => $ServiceSetType) {
-                    
+
                     $res =  DB::table('ServiceTimes')
                     ->select(
                         'ServiceTimes.ServiceTime',
