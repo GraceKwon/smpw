@@ -37,8 +37,11 @@
             <td rowspan="{{ 5 + ( isset($Publisher->PublisherID) ? 1 : 0 ) }}">
                 <div class="photo-container">
                     <div class="photo-wrap">
-{{--                        <img :src="http://cdn.newspenguin.com/news/photo/201912/839_1396_1530.jpg || '../img/demo/demo-profile-thumbnail.png'" class="thumbnail">--}}
-                        <img :src="'{{env('PROFILE_PHOTO').$Publisher->PhotoFilePath}}' || '../img/demo/demo-profile-thumbnail.png'" class="thumbnail">
+                        @if($Publisher->PhotoFilePath)
+                            <img :src="'{{env('PROFILE_PHOTO').$Publisher->PhotoFilePath}}'" class="thumbnail">
+                        @else
+                            <img :src="'../img/demo/demo-profile-thumbnail.png'" class="thumbnail">
+                        @endif
                         <input type="hidden" name="PhotoFilePath" v-model="PhotoFilePath">
                     </div>
                 </div>
