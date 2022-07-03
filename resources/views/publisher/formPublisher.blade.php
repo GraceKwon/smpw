@@ -37,7 +37,7 @@
             <td rowspan="{{ 5 + ( isset($Publisher->PublisherID) ? 1 : 0 ) }}">
                 <div class="photo-container">
                     <div class="photo-wrap">
-                        @if($Publisher->PhotoFilePath)
+                        @if($Publisher && $Publisher->PhotoFilePath)
                             <img :src="'{{env('PROFILE_PHOTO').$Publisher->PhotoFilePath}}'" class="thumbnail">
                         @else
                             <img :src="'../img/demo/demo-profile-thumbnail.png'" class="thumbnail">
