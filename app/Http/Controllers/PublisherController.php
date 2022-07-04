@@ -212,9 +212,10 @@ class PublisherController extends Controller
             // {
             $arrayForPush = [];
             foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
-                DB::statement('uspSetStandingServiceTimePublieherDelete ?,?', [
+                DB::statement('uspSetStandingServiceTimePublieherDelete ?,?,?', [
                         $PublisherID,
                         $ServiceTimeID,
+                        date('Y-m-d H:i:s')
                     ]);
 
                 if($ServiceSetType !== '미지정'){
