@@ -266,6 +266,36 @@ class PushService
        
     }
 
+    public function RequestJoinTime()
+    {
+        $res = DB::table('ServiceActs')
+            ->select(
+                'ServiceTimes.ServiceTime',
+                DB::raw('COUNT(*) AS Cnt')
+            )
+            ->leftJoin('ServiceTimes', 'ServiceTimes.ServiceTimeID', 'ServiceActs.ServiceTimeID')
+            ->where([
+                [ 'ServiceActs.ServiceTimeID', request()->ServiceTimeID ],
+                [ 'ServiceActs.ServiceZoneID', request()->ServiceZoneID ],
+                [ 'ServiceActs.ServiceDate', date ('Y-m-d H:i:s' , strtotime(request()->ServiceDate) ) ],
+            ])
+            ->when( request()->ServiceDate === date('Y-m-d') , function ($query) {
+                return $query->where('ServiceTimes.ServiceTime', '>', (int)date('H') );
+            })
+            ->havingRaw('COUNT(*) < ' . session('auth.PublisherNumber'))
+            ->whereNull('ServiceActs.CancelDate')
+            ->groupBy(['ServiceActs.ServiceTimeID', 'ServiceTimes.ServiceTime'])
+            ->get();
+
+        $msg = request()->ServiceDate . "\r\n";
+        $msg .= getServiceZoneName() . "\r\n";
+        foreach ($res as $row) {
+            $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
+        }
+        // return $msg;
+        if( count($res) ) $this->sendToTopic('[봉사지원요청]' ,$msg);
+    }
+
     public function RequestJoin()
     {
         $res = $this->getArrayForRequestJoin();

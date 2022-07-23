@@ -21,6 +21,7 @@ class ActController extends Controller
                 'modalTimeCancel',
                 'modalZoneCancel',
                 'modalDayCancel',
+                'modalPushTime',
                 'modalPush',
                 'modalPushAllZones',
                 ]);
@@ -111,16 +112,19 @@ class ActController extends Controller
         
     }
 
+    public function modalPushTime()
+    {
+        return $this->PushService->RequestJoinTime();
+    }
+
     public function modalPush()
     {
-        if($this->ActService->setServiceTimeCancel())
-            return $this->PushService->RequestJoin();
+        return $this->PushService->RequestJoin();
     }
 
     public function modalPushAllZones()
     {
-        if($this->ActService->setServiceTimeCancel())
-            return $this->PushService->RequestJoinAllZones();
+        return $this->PushService->RequestJoinAllZones();
     }
 
 }

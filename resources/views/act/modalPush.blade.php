@@ -13,11 +13,11 @@
                     </div>
                     <div class="mlp-content text-center">
                         <div class="text-danger font-size-90 mb-3">
-                                순회구 내의 봉사 지원이 가능한 모든 봉사자에게 지원 요청 메세지가 전달됩니다.
+                            순회구 내의 봉사 지원이 가능한 모든 봉사자에게 지원 요청 메세지가 전달됩니다.
                         </div>
                         <div class="border p-3">
                             요청정보 :
-                            <span class="text-primary">@{{ ServiceDate }}  @{{ ZoneName }}</span>
+                            <span class="text-primary">@{{ ServiceDate }}  @{{ ZoneName }} @{{ ServiceTime }}</span>
                             구역
                         </div>
                         </div>
@@ -41,30 +41,26 @@
             'ZoneName',
             'ServiceZoneId',
             'ServiceDate',
+            'PushUrl',
+            'ServiceTimeId',
+            'ServiceTime',
         ],
-        computed: {
-            url: function () {
-                if(this.ZoneName === '전체')
-                    return 'modalPushAllZones'   
-                else   
-                    return 'modalPush' 
-            },
-        },
         methods:{
             _submit: function(){
                 var formData = {
                     CircuitID: this.CircuitId,
                     ServiceZoneID: this.ServiceZoneId,
                     ServiceDate: this.ServiceDate,
+                    ServiceTimeID: this.ServiceTimeId,
                 };
-                axios.post('/' + this.url , formData)
+                axios.post('/' + this.PushUrl , formData)
                     .then(function (response) {
                         console.log(response.data);
                         this.$emit('close');
 
                     }.bind(this))
                     .catch(function (error) {
-                        console.log(error);
+                        console.log(error.response);
                     });
             },
         }

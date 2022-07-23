@@ -52,6 +52,7 @@
             :disabled="Passing"
             @click="_setParams({
                 ZoneName: '전체',
+                PushUrl: 'modalPushAllZones'
                 });_showModal('modalPush')">지원요청하기</button>
     </div>
 </section>
@@ -100,6 +101,7 @@
                             @click="_setParams({
                                 ServiceZoneID: '{{$ServiceZoneID}}',
                                 ZoneName: '{{ $ArrayTimeID['ZoneName'] }}',
+                                PushUrl: 'modalPush'
                                 });_showModal('modalPush')">
                             지원요청하기
                         </button>
@@ -152,6 +154,18 @@
                                 _showModal('modalCancel')">
                             봉사취소
                         </button>
+                        <button class="btn btn-outline-primary btn-block btn-sm"
+                            @if(empty($ServicePlanDetail[$ServiceZoneID][$time]) 
+                                || count($ServicePlanDetail[$ServiceZoneID][$time]) >= session('auth.PublisherNumber'))
+                                disabled
+                            @endif
+                            @click="_setParams({
+                                    ServiceZoneID: '{{$ServiceZoneID}}',
+                                    ZoneName: '{{ $ArrayTimeID['ZoneName'] }}',
+                                    PushUrl: 'modalPushTime',
+                                    ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
+                                    ServiceTime: '{{ sprintfServiceTime($time) }}',
+                                    });_showModal('modalPush')" >지원요청하기</button>
                     </div>
                 </td>
                 @endfor
@@ -194,6 +208,9 @@
         :service-zone-id="ServiceZoneID"
         :service-date="yyyymmdd"
         :zone-name="ZoneName"
+        :push-url="PushUrl"
+        :service-time-id="ServiceTimeID"
+        :service-time="ServiceTime"
         @close="showModal = ''" >
     </modal-push>
 @endsection
@@ -213,10 +230,12 @@
             showModal: '',
             CircuitID: "{{ session('auth.CircuitID') ?? request()->CircuitID }}",
             ServiceTimeID: null,
+            ServiceTime: null,
             ServiceZoneID: null,
             PublisherID: null,
             CancelRange: null,
-            ZoneName: null
+            ZoneName: null,
+            PushUrl: null
         },
         watch: {
             today: function(){
