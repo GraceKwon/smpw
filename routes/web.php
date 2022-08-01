@@ -24,6 +24,10 @@ Route::get('/Home/AppDownload', function(){
     return view('download');
 });
 
+Route::get('/policy', function () {
+    return view('policy');
+});
+
 //어드민
     //로그인
     Route::get('/login', 'LoginController@login');
@@ -93,7 +97,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::put('create', 'ActController@putCreate');
     Route::get('fcm', 'ActController@fcm');
     Route::get('fcmtopic', 'ActController@fcmtopic');
-    
+
 
 //봉사보고관리
     //봉사보고관리
@@ -141,7 +145,7 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('orders/{ProductOrderID}', 'ProductController@formOrders');
     Route::put('orders/{ProductOrderID}', 'ProductController@putOrders');
     Route::delete('orders/{ProductOrderID}', 'ProductController@deleteOrders');
-        
+
 //봉사기록통계
     //봉사자통계
     Route::get('statistic-publishers', 'StatisticController@publishers');
@@ -172,10 +176,10 @@ Route::view('/errors/auth', 'errors.auth');
     Route::get('sent', 'LatterController@sent');
     Route::get('sent/{id}', 'LatterController@formSent');
     Route::post('sent/{id}/form', 'LatterController@putSent');
-    
+
     //푸시메세지발송
     Route::get('pushes', 'LatterController@pushes');
-    
+
 /*
 비동기
 */
@@ -234,7 +238,7 @@ Route::get('getReceiveAdminList', function(CommonService $CommonService){
 
     Route::get('/sms', function(){
         echo DB::connection('sms')->statement('uspSetSMS ?,?,?,?,?,?', ['SEUP00050','한진희','010','7224','0578','전달할 문자 내용']);
-       
+
     });
     Route::get('/topic/{topic}', function(PushService $PushService){
        return $PushService->sendToTopic_test();
