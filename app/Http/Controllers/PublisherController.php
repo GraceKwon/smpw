@@ -215,7 +215,7 @@ class PublisherController extends Controller
                 DB::statement('uspSetStandingServiceTimePublieherDelete ?,?,?', [
                         $PublisherID,
                         $ServiceTimeID,
-                        date('Y-m-d H:i:s')
+                        $SetStartDate
                     ]);
 
                 if($ServiceSetType !== '미지정'){
