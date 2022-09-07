@@ -11,7 +11,7 @@ class ProductService
 
     public function getProductStockList()
     {
-        $paginate = 30;  
+        $paginate = 100;
         $page = request()->input('page', 1);
 
         $parameter = [
@@ -22,7 +22,7 @@ class ProductService
                 request()->EndDate,
             ];
 
-        $data = DB::select('uspGetStandingProductStockList ?,?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingProductStockList ?,?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
 
         $count = DB::select('uspGetStandingProductStockListCnt ?,?,?,?,?', $parameter);
@@ -34,12 +34,12 @@ class ProductService
         return DB::select('uspGetStandingProductList ?', [
             request()->LanguageName ?? '한국어',
         ]);
-       
+
     }
 
     public function getProductOrderList()
     {
-        $paginate = 30;  
+        $paginate = 100;
         $page = request()->input('page', 1);
 
         $parameter = [
@@ -50,7 +50,7 @@ class ProductService
                 request()->EndDate,
             ];
 
-        $data = DB::select('uspGetStandingProductOrderList ?,?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingProductOrderList ?,?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
 
         $count = DB::select('uspGetStandingProductOrderListCnt ?,?,?,?,?', $parameter);
@@ -64,7 +64,7 @@ class ProductService
             ( session('auth.CircuitID') ?? request()->CircuitID ),
             request()->ProductID
         ]);
-       
+
     }
 
     public function putProductOrderInvoice($ProductOrderID = null)
@@ -74,13 +74,13 @@ class ProductService
             request()->InvoiceCode,
         ]);
 
-        if( getAffectedRows($res) === 1 
-            && DB::table('ProductStocks')->where('ProductOrderID', $ProductOrderID ?? request()->ProductOrderID)->doesntExist() ) 
+        if( getAffectedRows($res) === 1
+            && DB::table('ProductStocks')->where('ProductOrderID', $ProductOrderID ?? request()->ProductOrderID)->doesntExist() )
             $res =  DB::select('uspSetStandingProductStockInsert ?', [
                 $ProductOrderID ?? request()->ProductOrderID
             ]);
         return $res;
-       
+
     }
 
 
