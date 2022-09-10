@@ -137,12 +137,17 @@
             </tbody>
         </table>
     </div>
-    @if(session('auth.CircuitID'))
+    @if(session('auth.MetroID') === 1 && session('auth.AdminRoleID') === 5)
         @include('layouts.sections.registrationButton', [
             'label' => '봉사자 등록',
         ])
+    @else
+        @if(session('auth.CircuitID'))
+            @include('layouts.sections.registrationButton', [
+                'label' => '봉사자 등록',
+            ])
+        @endif
     @endif
-
     {{ $PublisherList->appends( request()->all() )->links() }}
 
 </section>

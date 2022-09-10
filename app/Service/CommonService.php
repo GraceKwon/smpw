@@ -26,6 +26,22 @@ class CommonService
             [ ( session('auth.CircuitID') ?? request()->CircuitID ) ]);
     }
 
+    // For서울지역 조정장로 봉사자등록 대응
+    public function getMetroCongregationList()
+    {
+        $arrCircuitIDs = [];
+        $CircuitIDs = DB::table('Circuits')
+            ->select('CircuitID')
+            ->where('MetroID', session('auth.MetroID'))
+            ->get();
+        
+        foreach($CircuitIDs as $CircuitID) {
+            $arrCircuitIDs[] .= $CircuitID->CircuitID;
+        }
+        return DB::table('Congregations')->whereIn('CircuitID', $arrCircuitIDs)->get();
+    }
+    // For서울지역 조정장로 봉사자등록 대응
+    
     public function getServiceZoneList()
     {
         return  DB::select('uspGetStandingServiceZoneList ?', 

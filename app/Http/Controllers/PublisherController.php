@@ -63,7 +63,16 @@ class PublisherController extends Controller
 
                 $request->CircuitID = $Publisher->CircuitID;
             }
-        $CongregationList = $this->CommonService->getCongregationList();
+
+         // For서울지역 조정장로 봉사자등록 대응
+        if(session('auth.MetroID') === 1){
+            $CongregationList = $this->CommonService->getMetroCongregationList();
+
+        } else {
+            $CongregationList = $this->CommonService->getCongregationList();
+        }
+        // For서울지역 조정장로 봉사자등록 대응
+  
         $ServantTypeList = $this->CommonService->getServantTypeList();
         $PioneerTypeList = $this->CommonService->getPioneerTypeList();
         $EndTypeIDList = $this->CommonService->getEndTypeList();
