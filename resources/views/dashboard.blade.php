@@ -311,10 +311,21 @@
                     <i class="fas fa-users"></i>
                     <span>봉사자 관리</span>
                 </a>
-                <a href="/publishers/0">
-                    <i class="fas fa-user"></i>
-                    <span>신규봉사자 등록</span>
-                </a>
+                @if(session('auth.MetroID') === 1)
+                    @if(session('auth.AdminRoleID') === 5)
+                        <a href="/publishers/0">
+                            <i class="fas fa-user"></i>
+                            <span>신규봉사자 등록</span>
+                        </a>
+                    @endif
+                @else
+                    @if(session('auth.CircuitID'))
+                        <a href="/publishers/0">
+                            <i class="fas fa-user"></i>
+                            <span>신규봉사자 등록</span>
+                        </a>
+                    @endif
+                @endif
                 <a href="/reports">
                     <i class="fas fa-file-signature"></i>
                     <span>봉사보고 관리</span>
