@@ -8,7 +8,7 @@
             ]
         ],
         'selectBoxs' => [
-            [ 
+            [
                 'label' => '성별',
                 'id' => 'Gender',
                 'options' => [
@@ -20,9 +20,9 @@
                         'label' => '자매',
                         'value' => 'F',
                     ]
-                ] 
+                ]
             ],
-            [ 
+            [
                 'label' => '상태',
                 'id' => 'UseYn',
                 'options' => [
@@ -34,7 +34,7 @@
                         'label' => '중단',
                         'value' => '0',
                     ]
-                ] 
+                ]
             ],
         ]
     ])
@@ -143,6 +143,10 @@
                 'label' => '봉사자 등록',
             ])
         @endif
+    @elseif(empty(session('auth.CircuitID')))
+        @include('layouts.sections.registrationButton', [
+                'label' => '봉사자 등록',
+            ])
     @else
         @if(session('auth.CircuitID'))
             @include('layouts.sections.registrationButton', [
