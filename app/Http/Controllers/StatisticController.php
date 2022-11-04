@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
@@ -53,6 +54,29 @@ class StatisticController extends Controller
         $fileName = '봉사자통계.xlsx';
 
         return Excel::download(new StatisticPublisherExport, $fileName);
+    }
+
+    public function monthlyPublishers(Request $request)
+    {
+        $sDate = Carbon::now()->subMonth()->format('Y-m');
+        $eDate = Carbon::now()->format('Y-m');
+
+        $startDate = $sDate.'-01';
+        $endDate = $eDate.'-01';
+
+        $parameter = [
+            (session('auth.CircuitID') ?? $request->CircuitID),
+            $startDate,
+            $endDate
+        ];
+        $data = DB::select(
+            'uspGetStaticsReportMonthly ?,?,?',
+            $parameter
+        );
+
+        return view('statistic.monthlyReport', [
+            'StatisticList' => $data[0] ?? NULL
+        ]);
     }
 
     public function reports(Request $request)
@@ -108,7 +132,7 @@ class StatisticController extends Controller
 
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
-        
+
         return view('statistic.products', [
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList ?? NULL,

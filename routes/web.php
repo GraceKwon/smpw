@@ -150,6 +150,9 @@ Route::view('/errors/auth', 'errors.auth');
     //봉사자통계
     Route::get('statistic-publishers', 'StatisticController@publishers');
     Route::get('statistic-publishers/export', 'StatisticController@exportPublishers');
+    //봉사자월별통계
+    Route::get('statistic-monthly-publishers', 'StatisticController@monthlyPublishers');
+    Route::get('statistic-monthly-publishers/export', 'StatisticController@monthlyExportPublishers');
     //봉사보고통계
     Route::get('statistic-reports', 'StatisticController@reports');
     Route::get('statistic-reports/export', 'StatisticController@exportReports');

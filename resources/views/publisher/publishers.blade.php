@@ -154,7 +154,8 @@
             ])
         @endif
     @endif
-    {{ $PublisherList->appends( request()->all() )->links() }}
+    {{ $PublisherList->links() }}
+{{--    {{ $PublisherList->appends( request()->all() )->links() }}--}}
 
 </section>
 @endsection

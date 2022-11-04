@@ -93,6 +93,10 @@ return [
                 'name' => '봉사자통계',
                 'auth' => [1,2,3,4,5]
             ],
+            'statistic-monthly-publishers' => [
+                'name' => '봉사자월통계',
+                'auth' => [1,2,3,4,5]
+            ],
             'statistic-reports' => [
                 'name' => '봉사보고통계',
                 'auth' => [1,2,3,4,5]
