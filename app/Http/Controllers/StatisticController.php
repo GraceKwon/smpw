@@ -60,6 +60,7 @@ class StatisticController extends Controller
     {
         $sDate = Carbon::now()->subMonth()->format('Y-m');
         $eDate = Carbon::now()->format('Y-m');
+        $month = Carbon::now()->subMonth()->format('m');
 
         $startDate = $sDate.'-01';
         $endDate = $eDate.'-01';
@@ -75,7 +76,8 @@ class StatisticController extends Controller
         );
 
         return view('statistic.monthlyReport', [
-            'StatisticList' => $data[0] ?? NULL
+            'StatisticList' => $data[0] ?? NULL,
+            'month' => $month
         ]);
     }
 

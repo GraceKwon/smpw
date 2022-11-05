@@ -1,5 +1,9 @@
 @extends('layouts.frames.master')
 @section('content')
+    <div class="search-form-item">
+        <label class="label" for="CreateDate">집계기간 : </label>
+        <strong> {{$month}} 월 </strong>
+    </div> <!-- /.search-form-item -->
 
     <section class="section-table-section">
         <div class="table-responsive">
