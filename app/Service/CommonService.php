@@ -16,13 +16,13 @@ class CommonService
 
     public function getCircuitList()
     {
-        return DB::select('uspGetStandingSearchCircuitList ?', 
+        return DB::select('uspGetStandingSearchCircuitList ?',
             [ ( session('auth.MetroID') ?? request()->MetroID ) ]);
     }
 
     public function getCongregationList()
     {
-        return  DB::select('uspGetStandingSearchCongregationList ?', 
+        return  DB::select('uspGetStandingSearchCongregationList ?',
             [ ( session('auth.CircuitID') ?? request()->CircuitID ) ]);
     }
 
@@ -33,18 +33,19 @@ class CommonService
         $CircuitIDs = DB::table('Circuits')
             ->select('CircuitID')
             ->where('MetroID', session('auth.MetroID'))
+            ->orderBy('CircuitID')
             ->get();
-        
+
         foreach($CircuitIDs as $CircuitID) {
             $arrCircuitIDs[] .= $CircuitID->CircuitID;
         }
         return DB::table('Congregations')->whereIn('CircuitID', $arrCircuitIDs)->get();
     }
     // For서울지역 조정장로 봉사자등록 대응
-    
+
     public function getServiceZoneList()
     {
-        return  DB::select('uspGetStandingServiceZoneList ?', 
+        return  DB::select('uspGetStandingServiceZoneList ?',
             [ ( session('auth.CircuitID') ?? request()->CircuitID ) ]);
     }
 
@@ -75,7 +76,7 @@ class CommonService
 
     public function getReceiveGroupList($view)
     {
-        /* 
+        /*
         AdminRoleID 1 관리자
         AdminRoleID 2 지부사무실
         AdminRoleID 3 순회감독자
@@ -87,7 +88,7 @@ class CommonService
         ReceiveGroupID 42 조정장로
         ReceiveGroupID 50 순회구보조자
         ReceiveGroupID 43 봉사자전체
-      
+
         */
         if (session('auth.AdminRoleID') == 1) $ReceiveGroupID = [41, 42, 50, 43];
         if (session('auth.AdminRoleID') == 2) $ReceiveGroupID = [41, 42, 50, 43];
@@ -101,7 +102,7 @@ class CommonService
             if (session('auth.AdminRoleID') == 5) $ReceiveGroupID = [42, 50, 43];
             if (session('auth.AdminRoleID') == 4) $ReceiveGroupID = [50, 43];
         }
-    
+
         return DB::table('ItemCodes')
             ->where('Separate', 'ReceiveGroupID')
             ->whereIn('ID', $ReceiveGroupID)
