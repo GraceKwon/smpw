@@ -33,13 +33,15 @@ class CommonService
         $CircuitIDs = DB::table('Circuits')
             ->select('CircuitID')
             ->where('MetroID', session('auth.MetroID'))
-            ->orderBy('CircuitID')
             ->get();
 
         foreach($CircuitIDs as $CircuitID) {
             $arrCircuitIDs[] .= $CircuitID->CircuitID;
         }
-        return DB::table('Congregations')->whereIn('CircuitID', $arrCircuitIDs)->get();
+        return DB::table('Congregations')
+            ->whereIn('CircuitID', $arrCircuitIDs)
+            ->orderBy('CircuitID')
+            ->get();
     }
     // For서울지역 조정장로 봉사자등록 대응
 
