@@ -9,6 +9,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use Illuminate\Support\Facades\App;
+
 //공통
 Route::get('/phpinfo', function(){
     phpinfo();
@@ -26,6 +29,16 @@ Route::get('/Home/AppDownload', function(){
 
 Route::get('/policy', function () {
     return view('policy');
+});
+
+Route::get('/greeting/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'ko'])) {
+        App::setLocale('en');
+    }
+
+    App::setLocale($locale);
+
+    //
 });
 
 //어드민

@@ -5,9 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 
 <head profile="http://www.w3.org/2005/10/profile">
-    
+
     @include('layouts.sections.header')
-    <title>대도시 특별 공개증거 - ERROR</title>
+    <title>{{ __('msg.SMPW') }} - ERROR</title>
 
 </head>
 
@@ -23,7 +23,7 @@
                                 <img src="../img/brand/brand-logo.png" class="logo" alt="">
                             </a>
                             <div class="slogan for-desktop">
-                                여호와의 증인 <span class="font-weight-600">대도시 특별 공개증거</span>
+                                {{ __('msg.JW') }} <span class="font-weight-600">{{ __('msg.SMPW') }}</span>
                             </div>
                             <div class="icon-wrap for-mobile">
                                 <div class="btn-top-toggle angle-toggle">
@@ -38,8 +38,8 @@
                     <div class="wrap-content">
                         <div class="container-fluid">
                             <section class="soc-container">
-                            
-                            
+
+
                             </section>
                         </div> <!-- /.container -->
                     </div> <!-- /.wrap-content -->

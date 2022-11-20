@@ -5,9 +5,8 @@
     <div class="route">
         <a href="/">홈</a>
             @foreach ( $breadcrumb as $menu)
-                <a @if($menu['path'] !== null) href="/{{ $menu['path'] }}" @endif>{{ $menu['name'] }}</a>
+                <a @if($menu['path'] !== null) href="/{{ $menu['path'] }}" @endif>{{ __($menu['name']) }}</a>
             @endforeach
         </div>
     </div>
 @endif
-    

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -45,7 +46,11 @@ class LoginController extends Controller
             $CongregationID = $res[0]->CongregationID ? (int)$res[0]->CongregationID : null;
             $TempPassYn = $res[0]->TempPassYn ? (int)$res[0]->TempPassYn : null;
             $PublisherNumber = $res[0]->PublisherNumber ? (int)$res[0]->PublisherNumber : 6;
-            $admin_auth = config('admin_auth');
+            if (App::getLocale() === 'ko') {
+                $admin_auth = config('admin_auth');
+            } else {
+                $admin_auth = config('admin_auth_en');
+            }
             $gnb = [];
             $auth_path = [];
             $breadcrumb = [];

@@ -6,7 +6,7 @@
             <div class="shadow mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
                     <h3 class="text-primary mr-2">
-                        봉사자 현황
+                        {{ __('msg.PS') }}
                     </h3>
                     <div class="text-muted font-size-80">
                         (2019년 08월 기준)
@@ -16,7 +16,7 @@
                     <div class="col-sm-6 col-lg-5">
                         <div class="bubble-graph bubble-graph-lg">
                             <div>
-                                <label class="label">총인원</label>
+                                <label class="label">{{ __('msg.TOTAL') }}</label>
                                 <div class="num">{{ $StatisticsCnt->PublisherCnt }}</div>
                             </div>
                         </div>
@@ -26,7 +26,7 @@
                             <div class="col">
                                 <div class="bubble-graph">
                                     <div>
-                                        <label class="label">정기참여</label>
+                                        <label class="label">{{ __('msg.RP') }}</label>
                                         <div class="num">{{ $StatisticsCnt->Month1_Cnt }}</div>
                                         {{-- <div class="percent">91.25%</div> --}}
                                     </div>
@@ -35,7 +35,7 @@
                             <div class="col">
                                 <div class="bubble-graph">
                                     <div>
-                                        <label class="label">6개월내참여</label>
+                                        <label class="label">{{ __('msg.PWM6') }}</label>
                                         <div class="num">{{ $StatisticsCnt->Month6_Cnt }}</div>
                                         {{-- <div class="percent">91.25%</div> --}}
                                     </div>
@@ -44,7 +44,7 @@
                             <div class="col">
                                 <div class="bubble-graph">
                                     <div>
-                                        <label class="label">1년내참여</label>
+                                        <label class="label">{{ __('msg.PWY1') }}</label>
                                         <div class="num">{{ $StatisticsCnt->Month12_Cnt }}</div>
                                         {{-- <div class="percent">91.25%</div> --}}
                                     </div>
@@ -53,7 +53,7 @@
                             <div class="col">
                                 <div class="bubble-graph">
                                     <div>
-                                        <label class="label">장기미참여</label>
+                                        <label class="label">{{ __('msg.LTNP') }}</label>
                                         <div class="num">{{ $StatisticsCnt->Month12NO_Cnt }}</div>
                                         {{-- <div class="percent">91.25%</div> --}}
                                     </div>
@@ -90,19 +90,19 @@
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
                     <h3 class="text-primary">
-                        봉사보고 현황
+                        {{ __('msg.VRS') }}
                     </h3>
                 </div>
                 <div class="content-area mt-3">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" id="tab01" data-toggle="tab" href="#panel01">이번 달</a>
+                            <a class="nav-link active" id="tab01" data-toggle="tab" href="#panel01">{{ __('msg.THIS MONTH') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="tab02" data-toggle="tab" href="#panel02">연간</a>
+                            <a class="nav-link" id="tab02" data-toggle="tab" href="#panel02">{{ __('msg.YEAR') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="tab03" data-toggle="tab" href="#panel03">누적</a>
+                            <a class="nav-link" id="tab03" data-toggle="tab" href="#panel03">{{ __('msg.AS') }}</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -112,47 +112,47 @@
                                     <tbody>
                                     <tr>
                                         <th class="pl-0">
-                                            <span>전체 봉사자 수</span>
+                                            <span>{{ __('msg.TOTAL PUB') }}</span>
                                         </th>
                                         <td class="text-right pr-0">
                                             <span>{{ $MainActCntTypeID1->PublisherCnt }}</span>
-                                            <small>명</small>
+                                            <small>{{ __('msg.P') }}</small>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="pl-0">
-                                            <span>신규 봉사자 수</span>
+                                            <span>{{ __('msg.NEW PUB') }}</span>
                                         </th>
                                         <td class="text-right pr-0">
                                             <span>{{ $MainActCntTypeID1->NewPublisherCnt }}</span>
-                                            <small>명</small>
+                                            <small>{{ __('msg.P') }}</small>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="pl-0">
-                                            <span>출판물 수</span>
+                                            <span>{{ __('msg.COUNT MAGAZINE') }}</span>
                                         </th>
                                         <td class="text-right pr-0">
                                             <span>{{ $MainActCntTypeID1->ProductCnt }}</span>
-                                            <small>부</small>
+                                            <small>{{ __('msg.COPIES') }}</small>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="pl-0">
-                                            <span>보여준 동영상 수</span>
+                                            <span>{{ __('msg.SHOW VIDEO') }}</span>
                                         </th>
                                         <td class="text-right pr-0">
                                             <span>{{ $MainActCntTypeID1->VideoCnt }}</span>
-                                            <small>건</small>
+                                            <small>{{ __('msg.COUNT SHOW VIDEO') }}</small>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="pl-0">
-                                            <span>방문 요청 수</span>
+                                            <span>{{ __('msg.VR') }}</span>
                                         </th>
                                         <td class="text-right pr-0">
                                             <span>{{ $MainActCntTypeID1->VisitCnt }}</span>
-                                            <small>건</small>
+                                            <small>{{ __('msg.COUNT VISIT REQUEST') }}</small>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -165,47 +165,47 @@
                                     <tbody>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>전체 봉사자 수</span>
+                                                <span>{{ __('msg.TOTAL PUB') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID2->PublisherCnt }}</span>
-                                                <small>명</small>
+                                                <small>{{ __('msg.P') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>신규 봉사자 수</span>
+                                                <span>{{ __('msg.NEW PUB') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID2->NewPublisherCnt }}</span>
-                                                <small>명</small>
+                                                <small>{{ __('msg.P') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>출판물 수</span>
+                                                <span>{{ __('msg.COUNT MAGAZINE') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID2->ProductCnt }}</span>
-                                                <small>부</small>
+                                                <small>{{ __('msg.COPIES') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>보여준 동영상 수</span>
+                                                <span>{{ __('msg.SHOW VIDEO') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID2->VideoCnt }}</span>
-                                                <small>건</small>
+                                                <small>{{ __('msg.COUNT SHOW VIDEO') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>방문 요청 수</span>
+                                                <span>{{ __('msg.VR') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID2->VisitCnt }}</span>
-                                                <small>건</small>
+                                                <small>{{ __('msg.COUNT VISIT REQUEST') }}</small>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -218,47 +218,47 @@
                                     <tbody>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>전체 봉사자 수</span>
+                                                <span>{{ __('msg.TOTAL PUB') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID3->PublisherCnt }}</span>
-                                                <small>명</small>
+                                                <small>{{ __('msg.P') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>신규 봉사자 수</span>
+                                                <span>{{ __('msg.NEW PUB') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID3->NewPublisherCnt }}</span>
-                                                <small>명</small>
+                                                <small>{{ __('msg.P') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>출판물 수</span>
+                                                <span>{{ __('msg.COUNT MAGAZINE') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID3->ProductCnt }}</span>
-                                                <small>부</small>
+                                                <small>{{ __('msg.COPIES') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>보여준 동영상 수</span>
+                                                <span>{{ __('msg.SHOW VIDEO') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID3->VideoCnt }}</span>
-                                                <small>건</small>
+                                                <small>{{ __('msg.COUNT SHOW VIDEO') }}</small>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>방문 요청 수</span>
+                                                <span>{{ __('msg.VR') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID3->VisitCnt }}</span>
-                                                <small>건</small>
+                                                <small>{{ __('msg.COUNT VISIT REQUEST') }}</small>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -275,13 +275,13 @@
             <div class="shadow min-h-350px mb-4 p-5">
                 <div class="d-sm-flex align-items-center">
                     <h3 class="text-primary">
-                        공지사항
+                        {{ __('msg.NOTICE') }}
                     </h3>
                 </div>
                 <div class="content-area">
                     <div class="font-size-80 mb-2 text-right">
                         <a href="/notices">
-                            <span class="badge badge-secondary">+ 더보기</span>
+                            <span class="badge badge-secondary">+ {{ __('msg.SEE MORE') }}</span>
                         </a>
                     </div>
                     <div class="table-area">
@@ -309,30 +309,30 @@
             <div class="shadow min-h-350px mb-4">
                 <a href="/publishers">
                     <i class="fas fa-users"></i>
-                    <span>봉사자 관리</span>
+                    <span>{{ __('msg.PM') }}</span>
                 </a>
                 @if(session('auth.MetroID') === 1)
                     @if(session('auth.AdminRoleID') === 5)
                         <a href="/publishers/0">
                             <i class="fas fa-user"></i>
-                            <span>신규봉사자 등록</span>
+                            <span>{{ __('msg.NPW') }}</span>
                         </a>
                     @endif
                 @else
                     @if(session('auth.CircuitID'))
                         <a href="/publishers/0">
                             <i class="fas fa-user"></i>
-                            <span>신규봉사자 등록</span>
+                            <span>{{ __('msg.NPW') }}</span>
                         </a>
                     @endif
                 @endif
                 <a href="/reports">
                     <i class="fas fa-file-signature"></i>
-                    <span>봉사보고 관리</span>
+                    <span>{{ __('msg.SRM') }}</span>
                 </a>
                 <a href="/inbox">
                     <i class="fas fa-envelope"></i>
-                    <span>받은편지함</span>
+                    <span>{{ __('msg.INBOX') }}</span>
                     {{-- <span class="badge badge-danger">2</span> --}}
                 </a>
             </div>

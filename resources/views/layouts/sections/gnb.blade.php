@@ -7,7 +7,7 @@
                     <img src="/img/brand/brand-logo.png" class="logo" alt="">
                 </a>
                 <div class="slogan for-desktop">
-                    여호와의 증인 <span class="font-weight-600">대도시 특별 공개증거</span>
+                    {{ __('msg.JW') }} <span class="font-weight-600">{{ __('msg.SMPW') }}</span>
                 </div>
                 <div class="icon-wrap for-mobile">
                     <div class="btn-top-toggle angle-toggle">
@@ -27,8 +27,8 @@
                             <ul class="nav-depth-one">
                             @if( session('gnb') !== null )
                                 @foreach ( session('gnb') as $title => $submenus)
-                                <li @if(array_key_exists( getTopPath(), $submenus)) 
-                                    class="active" 
+                                <li @if(array_key_exists( getTopPath(), $submenus))
+                                    class="active"
                                 @endif>
                                     <a>
                                         <span>{{ $title }}</span>
@@ -63,10 +63,10 @@
                                         <a>내 정보 수정</a>
                                     </li> --}}
                                     <li class="split">
-                                        <a href="/ResetPwd">비밀번호초기화</a>
+                                        <a href="/ResetPwd">{{ __('msg.PWS') }}</a>
                                     </li>
                                     <li class="split">
-                                        <a href="/logOut">로그아웃</a>
+                                        <a href="/logOut">{{ __('msg.LOGOUT') }}</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="soc-footer for-mobile">
-                        <a class="btn-log" href="/logOut">로그아웃</a>
+                        <a class="btn-log" href="/logOut">{{ __('msg.LOGOUT') }}</a>
                     </div>
                 </section>
             </div> <!-- /.container -->

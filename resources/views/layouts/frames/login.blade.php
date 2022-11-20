@@ -5,9 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 
 <head profile="http://www.w3.org/2005/10/profile">
-    
+
     @include('layouts.sections.header')
-    <title>대도시 특별 공개증거</title>
+    <title>{{ __('msg.SMPW') }}</title>
 
 </head>
 

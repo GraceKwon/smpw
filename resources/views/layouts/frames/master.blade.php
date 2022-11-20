@@ -4,10 +4,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 <head profile="http://www.w3.org/2005/10/profile">
-    
+
     @include('layouts.sections.header')
     {{-- @php(dd($breadcrumb)) --}}
-    <title> {{ isset($breadcrumb) ? $breadcrumb[ count($breadcrumb) - 1 ]['name'] : '대도시 특별 공개증거' }}</title>
+    <title> {{ isset($breadcrumb) ? $breadcrumb[ count($breadcrumb) - 1 ]['name'] : __('msg.SMPW') }}</title>
 
 </head>
 <body class="body">
@@ -22,14 +22,14 @@
                             <div class="col">
                                 <!-- article section -->
                                 <article class="article">
-                                
+
                                     @include('layouts.sections.breadcrumb')
-                                
+
                                     @yield('content')
-                                
+
                                 </article>
                                 <!-- /.article -->
-            
+
                             </div> <!-- /.col -->
                         </div> <!-- /.row -->
                     </div> <!-- /.container -->
@@ -37,7 +37,7 @@
                 <!-- end : content section -->
             </div> <!-- /.content-section -->
             @include('layouts.sections.footer')
-            
+
             @yield('popup')
         </section>
     </section>
