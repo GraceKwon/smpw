@@ -8,17 +8,17 @@ return [
             'ServiceZones' => [
                 'name' => 'zone',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['구역 등록','구역 상세'],
+                'subpage' => ['register','detail'],
             ],
             'admins' => [
                 'name' => 'account',
                 'auth' => [1,2],
-                'subpage' => ['사용자 등록','사용자 상세'],
+                'subpage' => ['register','detail'],
             ],
             'KeepZones' => [
                 'name' => 'storage place',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['보관장소 등록', '보관장소 상세'],
+                'subpage' => ['register', 'detail'],
             ]
         ]
     ],
@@ -35,15 +35,15 @@ return [
     ],
 
     'acts' => [
-        'title' => '봉사일정관리',
+        'title' => 'service schedule management',
         'submenus' => [
             'acts' => [
-                'name' => '봉사일정관리',
+                'name' => 'service schedule',
                 'auth' => [1,2,3,4,5],
-                'subpage' => '상세보기',
+                'subpage' => 'detail',
             ],
             'create' => [
-                'name' => '봉사일정생성',
+                'name' => 'register service schedule',
                 'auth' => [1,2,3,4,5]
             ]
         ]
@@ -79,58 +79,58 @@ return [
                 'subpage' => 'Inventory quantity',
             ],
             'orders' => [
-                'name' => '출판물신청관리',
+                'name' => 'Publication request management',
                 'auth' => [1,2,3,4,5],
-                'subpage' => '출판물신청',
+                'subpage' => 'Publication request',
             ]
         ]
     ],
 
     'statistics' => [
-        'title' => '봉사기록통계',
+        'title' => 'statistics',
         'submenus' => [
             'statistic-publishers' => [
-                'name' => '봉사자통계',
+                'name' => 'publisher statistics',
                 'auth' => [1,2,3,4,5]
             ],
             'statistic-monthly-publishers' => [
-                'name' => '봉사자월통계',
+                'name' => 'publisher monthly statistics',
                 'auth' => [1,2,3,4,5]
             ],
             'statistic-reports' => [
-                'name' => '봉사보고통계',
+                'name' => 'service report statistics',
                 'auth' => [1,2,3,4,5]
             ],
             'statistic-products' => [
-                'name' => '출판물통계',
+                'name' => 'Publication statistics',
                 'auth' => [1,2,3,4,5]
             ]
         ]
     ],
 
     'boards' => [
-        'title' => '게시판관리',
+        'title' => 'Notice management',
         'submenus' => [
             'notices' => [
-                'name' => '공지사항',
+                'name' => 'Notice',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['신규등록', '공지사항보기'],
+                'subpage' => ['register', 'view'],
             ]
         ]
     ],
 
     'latters' => [
-        'title' => '메세지함',
+        'title' => 'Inbox',
         'submenus' => [
             'inbox' => [
-                'name' => '받은메세지함',
+                'name' => 'Inbox',
                 'auth' => [1,2,3,4,5],
-                'subpage' => '상세보기',
+                'subpage' => 'detail',
             ],
             'sent' => [
-                'name' => '보낸메세지함',
+                'name' => 'Sent',
                 'auth' => [1,2,3,4,5],
-                'subpage' => ['글쓰기', '상세보기'],
+                'subpage' => ['writing', 'view'],
             ],
             // 'pushes' => [
             //     'name' => '푸시메세지발송',

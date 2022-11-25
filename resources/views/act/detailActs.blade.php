@@ -1,7 +1,7 @@
 @extends('layouts.frames.master')
 @section('content')
 @if(!count($ServicePlanDetail))
-    <div class="alert alert-danger">봉사일정이 없습니다.</div>
+    <div class="alert alert-danger">{{ __('msg.NO_SERVICE') }}</div>
 @endif
 <section class="calender-section justify-content-between">
     <div class="container-cancel">
@@ -12,7 +12,7 @@
             @click="_setParams({
                 CancelRange: 'today',
             });_showModal('modalCancel')">
-            요일봉사취소</button>
+            {{ __('msg.CANCEL_SERVICE_DAY') }}</button>
     </div>
     <!-- start : common elements wrap -->
     <div class="select-date-wrap">
@@ -29,14 +29,14 @@
             </button>
         </div>
         <div class="btn-area">
-            <date-picker 
-                v-model="today" 
+            <date-picker
+                v-model="today"
                 :input-name="'ServiceDate'"
                 width="0"
-                ref="datepicker" 
+                ref="datepicker"
                 :clearable="false"
-                :input-class="'hide'" 
-                :lang="lang" 
+                :input-class="'hide'"
+                :lang="lang"
                 >
             </date-picker>
             <button class="btn btn-outline-secondary btn-today btn-sm"
@@ -48,12 +48,12 @@
     </div>
     <!-- end : common elements wrap -->
     <div class="container-ask">
-        <button class="btn btn-primary btn-sm" 
+        <button class="btn btn-primary btn-sm"
             :disabled="Passing"
             @click="_setParams({
                 ZoneName: '전체',
                 PushUrl: 'modalPushAllZones'
-                });_showModal('modalPush')">지원요청하기</button>
+                });_showModal('modalPush')">{{ __('msg.RS') }}</button>
     </div>
 </section>
 
@@ -65,7 +65,7 @@
                 <tr>
                     <th class="text-center">
                         <div class="min-width">
-                            <span>봉사타임</span>
+                            <span>{{ __('msg.ST') }}</span>
                         </div>
                     </th>
                     @for ($time = $min ; $time <= $max ; $time ++)
@@ -86,7 +86,7 @@
                         {{ $ArrayTimeID['ZoneName'] ?? ''}}
                     </div>
                     <div class="btn-area">
-                        <button class="btn btn-outline-danger btn-block btn-sm" 
+                        <button class="btn btn-outline-danger btn-block btn-sm"
                             @if(empty($ServicePlanDetail[$ServiceZoneID]))
                                 disabled
                             @endif
@@ -96,14 +96,14 @@
                             });_showModal('modalCancel')">
                             구역봉사취소
                         </button>
-                        <button class="btn btn-outline-primary btn-block btn-sm" 
+                        <button class="btn btn-outline-primary btn-block btn-sm"
                             :disabled="Passing"
                             @click="_setParams({
                                 ServiceZoneID: '{{$ServiceZoneID}}',
                                 ZoneName: '{{ $ArrayTimeID['ZoneName'] }}',
                                 PushUrl: 'modalPush'
                                 });_showModal('modalPush')">
-                            지원요청하기
+                            {{ __('msg.RS') }}
                         </button>
                     </div>
                 </td>
@@ -131,7 +131,7 @@
                     @endif
                     </div>
                     <div class="btn-area">
-                        <button class="btn btn-outline-secondary btn-block btn-sm" 
+                        <button class="btn btn-outline-secondary btn-block btn-sm"
                             @if( isset($ServicePlanDetail[$ServiceZoneID][$time]) && count($ServicePlanDetail[$ServiceZoneID][$time]) >= session('auth.PublisherNumber'))
                                 disabled
                             @endif
@@ -140,9 +140,9 @@
                                     ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
                                 });
                                 _showModal('modalPublisherSet')">
-                            임의배정
+                            {{ __('msg.RA') }}
                         </button>
-                        <button class="btn btn-outline-danger btn-block btn-sm" 
+                        <button class="btn btn-outline-danger btn-block btn-sm"
                             @if(empty($ServicePlanDetail[$ServiceZoneID][$time]))
                                 disabled
                             @endif
@@ -155,7 +155,7 @@
                             봉사취소
                         </button>
                         <button class="btn btn-outline-primary btn-block btn-sm"
-                            @if(empty($ServicePlanDetail[$ServiceZoneID][$time]) 
+                            @if(empty($ServicePlanDetail[$ServiceZoneID][$time])
                                 || count($ServicePlanDetail[$ServiceZoneID][$time]) >= session('auth.PublisherNumber'))
                                 disabled
                             @endif
@@ -165,7 +165,7 @@
                                     PushUrl: 'modalPushTime',
                                     ServiceTimeID: '{{ $ArrayTimeID[$time] }}',
                                     ServiceTime: '{{ sprintfServiceTime($time) }}',
-                                    });_showModal('modalPush')" >지원요청하기</button>
+                                    });_showModal('modalPush')" >{{ __('msg.RS') }}</button>
                     </div>
                 </td>
                 @endfor
@@ -178,32 +178,32 @@
 @endsection
 
 @section('popup')
-    <modal-publisher-set v-if="showModal === 'modalPublisherSet'" 
+    <modal-publisher-set v-if="showModal === 'modalPublisherSet'"
         :circuit-id="CircuitID"
-        :service-date="yyyymmdd" 
-        :service-time-id="ServiceTimeID" 
+        :service-date="yyyymmdd"
+        :service-time-id="ServiceTimeID"
         :service-zone-id="ServiceZoneID"
         @close="showModal = ''" >
     </modal-publisher-set>
 
-    <modal-publisher-cancel v-if="showModal === 'modalPublisherCancel'" 
+    <modal-publisher-cancel v-if="showModal === 'modalPublisherCancel'"
         :service-zone-id="ServiceZoneID"
-        :service-time-id="ServiceTimeID" 
-        :service-date="yyyymmdd" 
+        :service-time-id="ServiceTimeID"
+        :service-date="yyyymmdd"
         :publisher-id="PublisherID"
         @close="showModal = ''" >
     </modal-publisher-cancel>
 
-    <modal-cancel v-if="showModal === 'modalCancel'" 
+    <modal-cancel v-if="showModal === 'modalCancel'"
         :circuit-id="CircuitID"
         :service-zone-id="ServiceZoneID"
-        :service-time-id="ServiceTimeID" 
+        :service-time-id="ServiceTimeID"
         :service-date="yyyymmdd"
         :cancel-range="CancelRange"
         @close="showModal = ''" >
     </modal-cancel>
 
-    <modal-push v-if="showModal === 'modalPush'" 
+    <modal-push v-if="showModal === 'modalPush'"
         :circuit-id="CircuitID"
         :service-zone-id="ServiceZoneID"
         :service-date="yyyymmdd"
@@ -250,13 +250,13 @@
                 return this.today.getFullYear();
             },
             month: function(){
-                return this.today.getMonth() + 1;  
+                return this.today.getMonth() + 1;
             },
             day: function(){
-                return this.today.getDate();  
+                return this.today.getDate();
             },
             weekday: function(){
-                return this.lang.days[this.today.getDay()];  
+                return this.lang.days[this.today.getDay()];
             },
             yyyymmdd:function(){
                 var yyyy = this.today.getFullYear();
@@ -271,7 +271,7 @@
                 var dd = ('0' + today.getDate()).slice(-2);
                 today = new Date(yyyy + '-' + mm + '-' + dd);
                 if( this.today.getTime() >= today.getTime() ) return false
-           
+
                 return true;
             }
         },
@@ -295,6 +295,6 @@
             },
         }
     })
-    
+
     </script>
 @endsection

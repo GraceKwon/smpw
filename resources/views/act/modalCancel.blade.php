@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            봉사 취소
+                            {{ __('msg.CANCEL_SERVICE') }}
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -14,23 +14,23 @@
                     <div class="mlp-content text-center">
                         <div class="text-danger font-size-90 mb-3">
                             <div class="mb-1">
-                                취소한 타임 스케줄은 복원할 수 없으며,<br/>
-                                계확된 모든 봉사자에게 취소 메시지가 전송됩니다.
+                                {{ __('msg.AC1') }}<br/>
+                                {{ __('msg.AC2') }}
                             </div>
                             <div>
-                                사유를 선택하신 후 신중히 취소를 수행해 주시길 바랍니다.
+                                {{ __('msg.AC3') }}
                             </div>
                         </div>
                         <div class="table-area">
                             <table class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <th>취소 사유</th>
+                                    <th>{{ __('msg.CR') }}</th>
                                     <td>
                                         <select class="custom-select custom-select-sm"
                                             v-model="CancelTypeID">
                                             @foreach ($CancelTypeList as $CancelType)
-                                                @if($CancelType->Item === '날씨' 
+                                                @if($CancelType->Item === '날씨'
                                                 || $CancelType->Item === '인원부족'
                                                 || $CancelType->Item === '구역문제'
                                                 || $CancelType->Item === '신권활동'

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\PublisherService;
@@ -28,6 +29,7 @@ class PublisherController extends Controller
 // dd(session('auth.AdminRoleID'));
         $paginate = 30;
         $page = $request->input('page', '1');
+        $getLocal = App::getLocale();
         $parameter = [
             ( session('auth.MetroID') ?? $request->MetroID ),
             ( session('auth.CircuitID') ?? $request->CircuitID ),
@@ -49,6 +51,7 @@ class PublisherController extends Controller
             'CircuitList' => $CircuitList,
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
+            'getLocal' => $getLocal,
         ]);
     }
 
@@ -72,7 +75,7 @@ class PublisherController extends Controller
             $CongregationList = $this->CommonService->getCongregationList();
         }
         // For서울지역 조정장로 봉사자등록 대응
-  
+
         $ServantTypeList = $this->CommonService->getServantTypeList();
         $PioneerTypeList = $this->CommonService->getPioneerTypeList();
         $EndTypeIDList = $this->CommonService->getEndTypeList();

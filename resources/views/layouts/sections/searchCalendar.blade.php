@@ -2,12 +2,12 @@
     <section class="search-section">
         @if(isset($MetroList))
         <div class="search-form-item">
-            <label class="label" for="MetroID">도시</label>
-            <select class="custom-select" 
+            <label class="label" for="MetroID">{{ __('msg.CITY') }}</label>
+            <select class="custom-select"
                 @if(session('auth.MetroID')) disabled  @endif
-                id="MetroID" name="MetroID" 
+                id="MetroID" name="MetroID"
                 onchange="document.getElementById('CircuitID').value = '';
-                    if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
+                    if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = '';
                     submit()"
                     >
                 {{-- <option value="">선택</option> --}}
@@ -21,13 +21,13 @@
 
         @if(isset($CircuitList))
         <div class="search-form-item">
-            <label class="label" for="CircuitID">지역</label>
-            <select class="custom-select" 
+            <label class="label" for="CircuitID">{{ __('msg.AREA') }}</label>
+            <select class="custom-select"
                 @if(session('auth.CircuitID')) disabled  @endif
-                id="CircuitID" name="CircuitID" 
-                onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
+                id="CircuitID" name="CircuitID"
+                onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = '';
                     submit()">
-                <option value="">선택</option>
+                <option value="">{{ __('msg.SELECT') }}</option>
                 @foreach ($CircuitList as $Circuit)
                     <option @if(session('auth.CircuitID') ==  $Circuit->CircuitID || request()->CircuitID == $Circuit->CircuitID ) selected @endif
                     value="{{ $Circuit->CircuitID }}">{{ $Circuit->CircuitName }}</option>

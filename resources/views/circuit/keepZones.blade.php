@@ -4,7 +4,7 @@
     @include('layouts.sections.search', [
         'inputTexts' => [
             [
-                'label' => '이름',
+                'label' => __('msg.NAME'),
                 'id' =>'keepZoneName'
             ]
         ]
@@ -21,32 +21,32 @@
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>도시</span>
+                            <span>{{ __('msg.CITY') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>순회구</span>
+                            <span>{{ __('msg.AREA') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>관리자 이름</span>
+                            <span>{{ __('msg.SN') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>연락처</span>
+                            <span>{{ __('msg.TEL') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>보관장소 주소</span>
+                            <span>{{ __('msg.SPA') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>지정일자</span>
+                            <span>{{ __('msg.SD') }}</span>
                         </div>
                     </th>
                 </tr>
@@ -83,7 +83,7 @@
         </div>
         @if(session('auth.CircuitID'))
             @include('layouts.sections.registrationButton', [
-                'label' => '보관장소 등록',
+                'label' => __('msg.SPR'),
             ])
         @endif
 

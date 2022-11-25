@@ -9,27 +9,27 @@
                 <tr>
                     <th>
                         <div class="min-width">
-                            <span>우선 순위</span>
+                            <span>{{ __('msg.PRI') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>구역 명칭</span>
+                            <span>{{ __('msg.AREA_NAME') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>구역 약호</span>
+                            <span>{{ __('msg.AREA_CODE') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>등록자</span>
+                            <span>{{ __('msg.REGT') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>등록 일자</span>
+                            <span>{{ __('msg.CREATE_AT') }}</span>
                         </div>
                     </th>
                 </tr>
@@ -60,11 +60,11 @@
         </div>
         @if(session('auth.CircuitID'))
             @include('layouts.sections.registrationButton', [
-                'label' => '구역 등록',
+                'label' => __('msg.AREA_REG'),
             ])
         @endif
         {{-- {{ $ServiceZoneList->links() }} --}}
-        
+
 
     </section>
 @endsection

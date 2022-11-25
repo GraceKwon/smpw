@@ -1,7 +1,7 @@
 @extends('layouts.frames.master')
 @section('content')
 @if( !session('auth.CircuitID') && !request()->CircuitID )
-    <div class="alert alert-danger">지역이 선택되지 않습니다.</div>
+    <div class="alert alert-danger">{{ __('msg.NO_DIST') }}</div>
 @endif
 @include('layouts.sections.searchCalendar')
 <section class="calender-section justify-content-center">
@@ -20,7 +20,7 @@
         <div class="btn-area">
             <button class="btn btn-outline-secondary btn-today btn-sm"
             @click="_today">
-                오늘
+                {{ __('msg.TODAY') }}
             </button>
         </div>
     </div>
@@ -34,37 +34,37 @@
             <tr>
                 <th class="text-center">
                     <div class="min-width sun">
-                        <span>일</span>
+                        <span>{{ __('msg.SU') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>월</span>
+                        <span>{{ __('msg.MO') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>화</span>
+                        <span>{{ __('msg.TU') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>수</span>
+                        <span>{{ __('msg.WE') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>목</span>
+                        <span>{{ __('msg.TH') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>금</span>
+                        <span>{{ __('msg.FR') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width sat">
-                        <span>토</span>
+                        <span>{{ __('msg.FR') }}</span>
                     </div>
                 </th>
             </tr>
@@ -83,24 +83,24 @@
                             class="isToday"
                         @endif
                         >
-                        <div class="day 
+                        <div class="day
                             @if( $i % 7 === 0 ) sun @endif
                             @if( ($i+1) % 7 === 0 ) sat @endif">
                             {{$day}}
                         </div>
                         @if(session('auth.CircuitID') || request()->CircuitID)
                             <div class="cal-item">
-                                <div class="cal-label">구역 수</div>
+                                <div class="cal-label">{{ __('msg.NT') }}</div>
                             <i class="fas fa-map-marked-alt"></i>
                             <div class="cal-value">{{ $dailyServicePlanCnt[$day]->ServiceZoneCnt ?? 0}}</div>
                             </div>
                             <div class="cal-item">
-                                <div class="cal-label">봉사자 수</div>
+                                <div class="cal-label">{{ __('msg.NP') }}</div>
                                 <i class="fas fa-user-friends"></i>
                                 <div class="cal-value">{{$dailyServicePlanCnt[$day]->PublisherCnt ?? 0}}</div>
                             </div>
                             <div class="cal-item">
-                                <div class="cal-label">인도자</div>
+                                <div class="cal-label">{{ __('msg.CON') }}</div>
                                 <i class="fas fa-user-tie"></i>
                                 <div class="cal-value">{{$dailyServicePlanCnt[$day]->LeaderCnt ?? 0}}</div>
                             </div>
@@ -131,7 +131,7 @@
                 return this.today.getFullYear();
             },
             month: function(){
-                return this.today.getMonth() + 1;  
+                return this.today.getMonth() + 1;
             },
             yyyymm:function(){
                 var yyyy = this.today.getFullYear();

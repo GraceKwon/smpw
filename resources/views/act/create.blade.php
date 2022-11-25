@@ -2,24 +2,24 @@
 @section('content')
 <section class="section-wrap schedule-reset">
     <div class="notice">
-        <div>선택한 일자 이후로 기존에 생성된 모든 일정이 삭제되고 다시 생성됩니다.</div>
-        <div>일정 재생성은 신중히 진행해 주시기 바랍니다.</div>
+        <div>{{ __('msg.SCH_DEL_REC') }}</div>
+        <div>{{ __('msg.PW') }}</div>
     </div>
     <form method="POST"
-    @submit="_confirm" 
+    @submit="_confirm"
     @keydown.enter.prevent>
     @method("PUT")
     @csrf
         <div class="item-wrap">
-            <label class="label">일정 재생성 시작일</label>
+            <label class="label">{{ __('msg.SCH_RESET_DATE') }}</label>
             <div class="input-group max-w-250px-desktop">
                 <input type="date"
-                    class="form-control @error('ReSetStartDate') is-invalid @enderror"  
+                    class="form-control @error('ReSetStartDate') is-invalid @enderror"
                     name="ReSetStartDate"
-                    placeholder="날자를 선택해 주세요">
+                    placeholder={{ __('msg.PSTD') }}>
                 @error('ReSetStartDate')
                     <div class="invalid-feedback">{{ $message }}</div>
-                @enderror 
+                @enderror
                 {{-- <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
@@ -27,7 +27,7 @@
                 </div> --}}
             </div>
             <div class="btn-area">
-                <button class="btn btn-primary">일정 재생성</button>
+                <button class="btn btn-primary">{{ __('msg.SCH_RESET_DATE') }}</button>
             </div>
         </div>
     </form>
@@ -40,13 +40,12 @@
         el:'#wrapper-body',
         methods:{
             _confirm: function (e) {
-                var res = confirm('일정을 재생성 하시겠습니까?');
-                if(!res){
+                let res = confirm('{{ __('msg.SCH_DEL_REC_Q') }}');
+                if(!res) {
                     e.preventDefault();
                 }
-                
             },
-
+        }
     })
 
 </script>

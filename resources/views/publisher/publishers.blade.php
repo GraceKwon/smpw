@@ -3,35 +3,35 @@
     @include('layouts.sections.search', [
         'inputTexts' => [
             [
-                'label' => '이름',
+                'label' => __('msg.NAME'),
                 'id' =>'PublisherName'
             ]
         ],
         'selectBoxs' => [
             [
-                'label' => '성별',
+                'label' => __('msg.GENDER'),
                 'id' => 'Gender',
                 'options' => [
                     [
-                        'label' => '형제',
+                        'label' => __('msg.BRO'),
                         'value' => 'M',
                     ],
                     [
-                        'label' => '자매',
+                        'label' => __('msg.SIS'),
                         'value' => 'F',
                     ]
                 ]
             ],
             [
-                'label' => '상태',
+                'label' => __('msg.STATUS'),
                 'id' => 'UseYn',
                 'options' => [
                     [
-                        'label' => '봉사중',
+                        'label' => __('msg.IS'),
                         'value' => '1',
                     ],
                     [
-                        'label' => '중단',
+                        'label' => __('msg.SS'),
                         'value' => '0',
                     ]
                 ]
@@ -52,47 +52,47 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>도시</span>
+                        <span>{{ __('msg.CITY') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>순회구</span>
+                        <span>{{ __('msg.AREA') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>회중</span>
+                        <span>{{ __('msg.CGN') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>이름</span>
+                        <span>{{ __('msg.NAME') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>성별</span>
+                        <span>{{ __('msg.GENDER') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>신분</span>
+                        <span>{{ __('msg.PS') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>상태</span>
+                        <span>{{ __('msg.STATUS') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>연락처</span>
+                        <span>{{ __('msg.TEL') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>등록일자</span>
+                        <span>{{ __('msg.CREATE_AT') }}</span>
                     </div>
                 </th>
             </tr>
@@ -140,17 +140,17 @@
     @if(session('auth.MetroID') === 1)
         @if(session('auth.AdminRoleID') === 5)
             @include('layouts.sections.registrationButton', [
-                'label' => '봉사자 등록',
+                'label' => __('msg.REP'),
             ])
         @endif
     @elseif(empty(session('auth.CircuitID')))
         @include('layouts.sections.registrationButton', [
-                'label' => '봉사자 등록',
+                'label' => __('msg.REP'),
             ])
     @else
         @if(session('auth.CircuitID'))
             @include('layouts.sections.registrationButton', [
-                'label' => '봉사자 등록',
+                'label' => __('msg.REP'),
             ])
         @endif
     @endif
