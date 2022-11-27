@@ -148,7 +148,7 @@
                                     </tr>
                                     <tr>
                                         <th class="pl-0">
-                                            <span>{{ __('msg.VR') }}</span>
+                                            <span>{{ __('msg.NVR') }}</span>
                                         </th>
                                         <td class="text-right pr-0">
                                             <span>{{ $MainActCntTypeID1->VisitCnt }}</span>
@@ -201,7 +201,7 @@
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>{{ __('msg.VR') }}</span>
+                                                <span>{{ __('msg.NVR') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID2->VisitCnt }}</span>
@@ -254,7 +254,7 @@
                                         </tr>
                                         <tr>
                                             <th class="pl-0">
-                                                <span>{{ __('msg.VR') }}</span>
+                                                <span>{{ __('msg.NVR') }}</span>
                                             </th>
                                             <td class="text-right pr-0">
                                                 <span>{{ $MainActCntTypeID3->VisitCnt }}</span>

@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            스케줄 삭제
+                            {{ __('msg.DS') }}
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -14,20 +14,21 @@
                     <div class="mlp-content text-center">
                         <div class="text-danger font-size-90 mb-3">
                             <div>
-                                해당 봉사자의 스케줄 취소 사유를 선택해 주십시오.
+                                {{ __('msg.REASON_CANCEL') }}
                             </div>
                         </div>
                         <div class="table-area">
                             <table class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <th>취소 사유</th>
+                                    <th>{{ __('msg.CR') }}</th>
                                     <td>
                                         <select class="custom-select custom-select-sm"
                                             v-model="CancelTypeID">
                                             @foreach ($CancelTypeList as $CancelType)
-                                            @if($CancelType->Item === '본인불참' || $CancelType->Item === '생성오류')
-                                            <option value="{{$CancelType->ID}}">{{$CancelType->Item}}</option>
+                                            @if ($CancelType->Item === __('msg.PR') ||
+                                                    $CancelType->Item === __('msg.SYS_ERROR'))
+                                                <option value="{{$CancelType->ID}}">{{$CancelType->Item}}</option>
                                             @endif
                                             @endforeach
                                         </select>
@@ -38,8 +39,8 @@
                         </div>
                     </div>
                     <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
-                        <button class="btn btn-primary btn-sm" @click="_submit">일정 삭제</button>
+                        <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">{{ __('msg.CLOSE') }}</button>
+                        <button class="btn btn-primary btn-sm" @click="_submit">{{ __('msg.DS') }}</button>
                     </div>
                 </div>
             </div> <!-- /.mlp-wrap -->
