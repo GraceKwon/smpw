@@ -117,8 +117,8 @@
                         {{ $Publisher->PublisherName }}
                     </td>
                     <td>
-                        @if($Publisher->Gender === 'M') 형제
-                        @elseif($Publisher->Gender === 'F') 자매 @endif
+                        @if($Publisher->Gender === 'M') {{ __('msg.BRO') }}
+                        @elseif($Publisher->Gender === 'F') {{ __('msg.SIS') }} @endif
                     </td>
                     <td>
                         {{ $Publisher->ServantType }}

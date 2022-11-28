@@ -18,8 +18,8 @@
                                 <div class="logo-wrap">
                                     <img src="../img/brand/brand-logo.png" class="logo" alt="">
                                     <div class="typo-area">
-                                        <div class="font-size-120 opacity-70">여호와의 증인</div>
-                                        <div class="font-size-180 font-weight-600">대도시 특별 공개증거</div>
+                                        <div class="font-size-120 opacity-70">{{ __('msg.JW') }}</div>
+                                        <div class="font-size-180 font-weight-600">{{ __('msg.SMPW') }}</div>
                                     </div>
                                 </div>
                                 @error('fail')
@@ -30,48 +30,48 @@
                                         @method("PUT")
                                         @csrf
                                         <div class="text-area">
-                                            <div class="font-size-120 text-primary">비밀번호 초기화를 요청하시겠습니까?</div>
-                                            <div class="mt-1">아이디와 연락처 번호를 입력해 주십시오. </div>
+                                            <div class="font-size-120 text-primary">{{ __('msg.PW_RESET') }}</div>
+                                            <div class="mt-1">{{ __('msg.ID_PHONE_INPUT') }}</div>
                                         </div>
                                         <div class="border-top my-4"></div>
                                         <div class="input-area">
                                             <div class="input-flex-group">
-                                                <input type="text" 
-                                                    id="Account" 
-                                                    name="Account" 
-                                                    v-model="Account" 
-                                                    class="form-control" 
-                                                    :class="{ 'is-invalid' : errors.has('Account') }" 
+                                                <input type="text"
+                                                    id="Account"
+                                                    name="Account"
+                                                    v-model="Account"
+                                                    class="form-control"
+                                                    :class="{ 'is-invalid' : errors.has('Account') }"
                                                     v-validate="'required'"
-                                                    placeholder="사용하실 아이디를 입력해 주세요">
-                                                <label for="Account">아이디</label>
-                                                <div class="invalid-feedback">아이디를 입력해 주세요.</div>
+                                                    placeholder="{{ __('msg.ID_USE') }}">
+                                                <label for="Account">{{ __('msg.ID') }}</label>
+                                                <div class="invalid-feedback">{{ __('msg.ID_INPUT') }}</div>
                                             </div>
                                             <div class="input-flex-group">
-                                                <input type="text" 
-                                                    id="Mobile" 
-                                                    name="Mobile" 
-                                                    v-model="Mobile" 
-                                                    class="form-control" 
-                                                    :class="{ 
-                                                        'is-invalid' : errors.has('Mobile'), 
+                                                <input type="text"
+                                                    id="Mobile"
+                                                    name="Mobile"
+                                                    v-model="Mobile"
+                                                    class="form-control"
+                                                    :class="{
+                                                        'is-invalid' : errors.has('Mobile'),
                                                         'is-valid' : !errors.has('Mobile') && Mobile
-                                                    }" 
-                                                    v-validate="{   
-                                                        rules: { 
+                                                    }"
+                                                    v-validate="{
+                                                        rules: {
                                                             required: true,
                                                             regex:/^\d{2,3}-\d{3,4}-\d{4}$/,
                                                         }
                                                     }"
                                                     placeholder="연락처 번호를 입력해 주세요">
-                                                <label for="Mobile">연락처 번호</label>
-                                                <div class="info-feedback">숫자만 입력 가능합니다.</div>
+                                                <label for="Mobile">{{ __('msg.PN') }}</label>
+                                                <div class="info-feedback">{{ __('msg.ONLY_NUMBER') }}</div>
                                             </div>
                                         </div>
                                         <div class="btn-area text-right mt-3">
-                                            <button type="button" class="btn btn-secondary" 
-                                                onclick="location.href='/login'">취소</button>
-                                            <button class="btn btn-primary">확인</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                onclick="location.href='/login'">{{ __('msg.CANCEL') }}</button>
+                                            <button class="btn btn-primary">{{ __('msg.CONFIRM') }}</button>
                                         </div>
                                     </form>
                                 </div> <!-- /.login-form-wrap -->
@@ -112,12 +112,12 @@
                     console.log(result);
                     if (!result) {
                         e.preventDefault();
-                    } 
+                    }
                 })
                 .catch(function (error) {
                     e.preventDefault();
                 });
-                
+
             },
         }
     })
