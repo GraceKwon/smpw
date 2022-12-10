@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            출판물신청 목록
+                            {{ __('msg.PUB_REQUEST_LIST') }}
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -17,13 +17,13 @@
                                 <tbody>
                                     <tr>
                                         <th>
-                                            <label class="label">도시</label>
+                                            <label class="label">{{ __('msg.CITY') }}</label>
                                         </th>
                                         <td>
                                             <div>{{ $ProductOrder->MetroName ?? getMetroName() }}</div>
                                         </td>
                                         <th>
-                                            <label class="label">지역</label>
+                                            <label class="label">{{ __('msg.A') }}</label>
                                         </th>
                                         <td>
                                             <div>{{ $ProductOrder->CircuitName ?? getCircuitName() }}</div>
@@ -31,13 +31,13 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            <label class="label">신청자이름</label>
+                                            <label class="label">{{ __('msg.AN') }}</label>
                                         </th>
                                         <td>
                                             <div>{{ $ProductOrder->AdminName ?? session('auth.AdminName')}}</div>
                                         </td>
                                         <th>
-                                            <label class="label">연락처</label>
+                                            <label class="label">{{ __('msg.TEL') }}</label>
                                         </th>
                                         <td>
                                             <div>{{ $ProductOrder->Mobile ?? getMobile() }}</div>
@@ -45,7 +45,7 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            <label class="label">신청일자</label>
+                                            <label class="label">{{ __('msg.AD') }}</label>
                                         </th>
                                         <td colspan="3">
                                             <div>{{ $ProductOrder->CreateDate ?? date('Y-m-d')}}</div>
@@ -58,12 +58,12 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>분류</th>
-                                    <th>약호</th>
-                                    <th>출판물명</th>
-                                    <th>현재재고량</th>
-                                    <th>신청수량</th>
-                                    <th>수령 후 재고량</th>
+                                    <th>{{ __('msg.C') }}</th>
+                                    <th>{{ __('msg.CODE') }}</th>
+                                    <th>{{ __('msg.PUB_NAME') }}</th>
+                                    <th>{{ __('msg.CS') }}</th>
+                                    <th>{{ __('msg.AQ') }}</th>
+                                    <th>{{ __('msg.SAR') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -84,10 +84,10 @@
                         </div>
                     </div>
                     <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-outline-secondary btn-sm" 
-                            @click="$emit('close')">수정</button>
-                        <button class="btn btn-primary btn-sm" 
-                            @click="$emit('submit')">확인</button>
+                        <button class="btn btn-outline-secondary btn-sm"
+                            @click="$emit('close')">{{ __('msg.EDIT') }}</button>
+                        <button class="btn btn-primary btn-sm"
+                            @click="$emit('submit')">{{ __('msg.CONFIRM') }}</button>
                     </div>
                 </div>
             </div> <!-- /.mlp-wrap -->
@@ -95,7 +95,7 @@
     </section>
 </script>
 <script>
-    Vue.component('modal-order-comfirm', {
+    Vue.component('modal-order-confirm', {
         template: '#modalOrderConfirm',
         props: [
             'array',

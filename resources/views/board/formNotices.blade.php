@@ -5,7 +5,7 @@
         <tbody>
         <tr>
             <th>
-                <label class="label">도시</label>
+                <label class="label">{{ __('msg.CITY') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -15,13 +15,13 @@
                             name="MetroID"
                             @if(session('auth.MetroID')) disabled @endif
                             v-model="form.MetroID">
-                            <option value="">전체</option>
+                            <option value="">{{ __('msg.ALL') }}</option>
                             @foreach ($MetroList as $Metro)
                                 <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName}}</option>
                             @endforeach
                     </select>
-                    <div class="invalid-feedback" 
-                        v-if="validation.MetroID" 
+                    <div class="invalid-feedback"
+                        v-if="validation.MetroID"
                         v-html="validation.MetroID[0]"></div>
                 </div>
             </td>
@@ -35,7 +35,7 @@
                         name="CircuitID"
                         @if(session('auth.CircuitID')) disabled @endif
                         v-model="form.CircuitID">
-                        <option value="">전체</option>
+                        <option value="">{{ __('msg.ALL') }}</option>
                         <option v-for="Circuit in CircuitList"
                             :value="Circuit.CircuitID">@{{ Circuit.CircuitName }}</option>
                     </select>
@@ -44,82 +44,84 @@
         </tr>
         <tr>
             <th>
-                <label class="label">열람대상선택</label>
+                <label class="label">{{ __('msg.CHOOSE_RT') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
                     <select class="custom-select"
                         :class="{'is-invalid': validation.ReceiveGroupID}"
                         v-model="form.ReceiveGroupID">
-                        <option value="">선택</option>
+                        <option value="">{{ __('msg.SELECT') }}</option>
                         @foreach ($ReceiveGroupList as $ReceiveGroup)
                             <option value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
                         @endforeach
                     </select>
-                    <div class="invalid-feedback" 
-                        v-if="validation.ReceiveGroupID" 
+                    <div class="invalid-feedback"
+                        v-if="validation.ReceiveGroupID"
                         v-html="validation.ReceiveGroupID[0]"></div>
                 </div>
             </td>
             <th>
-                <label class="label">화면표시여부</label>
+                <label class="label">{{ __('msg.SV') }}</label>
             </th>
             <td>
             <div class="inline-responsive">
                 <div class="check-group inline-responsive">
                     <div class="custom-control custom-radio">
-                        <input type="radio" 
-                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
-                            v-model="form.DisplayYn" 
-                            id="DisplayY" 
+                        <input type="radio"
+                            class="custom-control-input @error('SupportYn') is-invalid @enderror"
+                            v-model="form.DisplayYn"
+                            id="DisplayY"
                             value="1"
                             name="DisplayYn">
-                        <label class="custom-control-label" for="DisplayY">표시함</label>
+                        <label class="custom-control-label" for="DisplayY">{{ __('msg.MK') }}</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" 
-                            class="custom-control-input @error('SupportYn') is-invalid @enderror" 
-                            v-model="form.DisplayYn" 
-                            id="DisplayN" 
+                        <input type="radio"
+                            class="custom-control-input @error('SupportYn') is-invalid @enderror"
+                            v-model="form.DisplayYn"
+                            id="DisplayN"
                             value="0"
                             name="DisplayYn">
-                        <label class="custom-control-label" for="DisplayN">표시 안 함</label>
+                        <label class="custom-control-label" for="DisplayN">{{ __('msg.UMK') }}</label>
                     </div>
                 </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label">제목</label>
+                <label class="label">{{ __('msg.TITLE') }}</label>
             </th>
             <td colspan="3">
-                <input type="text" 
+                <input type="text"
                     class="form-control"
                     :class="{'is-invalid': validation.Title}"
-                    v-model="form.Title" 
-                    placeholder="제목을 입력해 주세요">
-                <div class="invalid-feedback" 
-                    v-if="validation.Title" 
+                    v-model="form.Title"
+                    placeholder="{{ __('msg.INPUT_SUBJECT') }}">
+                <div class="invalid-feedback"
+                    v-if="validation.Title"
                     v-html="validation.Title[0]">
                 </div>
             </td>
-            
+
         </tr>
         <tr>
             <th>
-                <label class="label">첨부파일</label>
+                <label class="label">{{ __('msg.ATT_FILE') }}</label>
             </th>
-            <td colspan="3">    
-                <div class="progress" 
+            <td colspan="3">
+                <div class="progress"
                     v-if="form.Files.length > 0 || OldFiles.length > 0">
-                    <div class="progress-bar" 
+                    <div class="progress-bar"
                         role="progressbar"
-                        :style="{ width: fileSizeP + '%' }">@{{ fileSizeP }}% @{{ setByte(fileSize) }} (@{{ form.Files.length }}/@{{ maxFileLeng }}) </div>
+                        :style="{ width: fileSizeP + '%' }">
+                        @{{ fileSizeP }}% @{{ setByte(fileSize) }} (@{{ form.Files.length }}/@{{ maxFileLeng }})
+                    </div>
                 </div>
                 <div id="drop-zone">
                     <div v-for="(file) in OldFiles">
-                        <span style="font-size: 15px; color:#4b5aaa" 
-                            :class="{cancel: form.delFiles.indexOf(file.NoticeFileID) !== -1}" 
+                        <span style="font-size: 15px; color:#4b5aaa"
+                            :class="{cancel: form.delFiles.indexOf(file.NoticeFileID) !== -1}"
                             v-html="file.FilePath" ></span>
                         <i @click="delOldFile(file.NoticeFileID)"
                             v-if="form.delFiles.indexOf(file.NoticeFileID) == -1"
@@ -129,59 +131,59 @@
                             class="fas fa-redo-alt pointer"></i>
                     </div>
                     <div v-for="(file, index) in form.Files">
-                        <span style="font-size: 15px; color:#4b5aaa">@{{ file.name }}</span> 
-                        <span style="font-size: 12px; color:#7b7b7b">@{{ setByte(file.size)}}</span> 
+                        <span style="font-size: 15px; color:#4b5aaa">@{{ file.name }}</span>
+                        <span style="font-size: 12px; color:#7b7b7b">@{{ setByte(file.size)}}</span>
                         <i @click="delFile(index)" class="fas fa-times-circle pointer"></i>
                     </div>
                     <div class="here" v-if="form.Files.length === 0 && OldFiles.length === 0">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <br />
-                        여기에 파일을 올려 놓으세요
+                        {{ __('msg.PUT_UR_FILE') }}
                     </div>
                 </div>
 
-                <button type="button" 
-                    class="btn-primary mt-2" 
-                    @click="selFile">파일선택</button>
+                <button type="button"
+                    class="btn-primary mt-2"
+                    @click="selFile">{{ __('msg.SF') }}</button>
 
-                <input type="file" 
-                    class="hide" 
+                <input type="file"
+                    class="hide"
                     ref="inputFile" multiple>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label">내용</label>
+                <label class="label">{{ __('msg.CT') }}</label>
             </th>
             <td colspan="3">
-                <div class="invalid-feedback" 
-                    v-if="validation.Contents" 
+                <div class="invalid-feedback"
+                    v-if="validation.Contents"
                     v-html="validation.Contents[0]"
                     style="display: block">
                 </div>
-                <textarea 
-                    class="form-control" 
-                    name="notice-board" 
+                <textarea
+                    class="form-control"
+                    name="notice-board"
                     id="notice-board">{{ $Notice[0]->Contents ?? "" }}</textarea>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="btn-flex-area justify-content-end">
-        <button 
-            type="button" 
+        <button
+            type="button"
             class="btn btn-secondary"
-            onclick="location.href='/notices'">취소</button>
-        @if (isset($Notice[0]->NoticeID))    
-        <button 
-            type="button" 
-            class="btn btn-danger" 
+            onclick="location.href='/notices'">{{ __('msg.CANCEL') }}</button>
+        @if (isset($Notice[0]->NoticeID))
+        <button
+            type="button"
+            class="btn btn-danger"
             @click="tryDelete">삭제</button>
         @endif
-        <button 
-            type="button" 
-            class="btn btn-primary" 
-            @click="trySubmit">{{ isset($Notice[0]->NoticeID) ? '수정' : '저장'}}</button>
+        <button
+            type="button"
+            class="btn btn-primary"
+            @click="trySubmit">{{ isset($Notice[0]->NoticeID) ? __('msg.EDIT') : __('msg.SAVE') }}</button>
     </div> <!-- /.register-btn-area -->
 </section>
 
@@ -261,7 +263,7 @@
                         for (var i = 0; i < data.items.length; i++) {
                             if (data.items[i].kind == "file") {
                                 var file = data.items[i].getAsFile();
-                                app.pushFile(file)    
+                                app.pushFile(file)
                             }
                         }
                     } else {
@@ -275,10 +277,10 @@
                 file.onchange = function () {
                     var fileList = file.files;
                     for (var i = 0; i < fileList.length; i++) {
-                        app.pushFile(fileList[i])         
+                        app.pushFile(fileList[i])
                     }
                 };
-            
+
             })
 
         },
@@ -286,7 +288,7 @@
             _getCircuitList: function () {
                 var params = {
                     params: {
-                        MetroID: this.form.MetroID 
+                        MetroID: this.form.MetroID
                     }
                 };
                 axios.get('/getCircuitList', params)
@@ -298,17 +300,17 @@
             },
             pushFile: function(file) {
                 if (this.fileSize + file.size >= this.maxFileSize) {
-                    alert(this.setByte(this.maxFileSize) + '를 초과할 수 없습니다.')
+                    alert(this.setByte(this.maxFileSize) + '{{ __('msg.CANNOT_EXCEED') }}')
                     return false
                 }
                 if (this.form.Files.length >= this.maxFileLeng) {
-                    alert('더이상 등록할 수 없습니다.')
+                    alert({{ __('msg.NO_LONGER') }})
                     return false
                 }
                 for (let index = 0; index < this.form.Files.length; index++) {
                     if (this.form.Files[index].name == file.name) {
-                        alert('이미 등록된 파일입니다.')
-                        return false                                            
+                        alert({{ __('msg.ALREADY_REGISTER') }})
+                        return false
                     }
                 }
                 this.form.Files.push(file)
@@ -317,14 +319,14 @@
                 this.form.Files.splice(index, 1)
             },
             delOldFile: function(noticeFileID) {
-          
+
                 if (this.form.delFiles.indexOf(noticeFileID) !== -1) {
                     this.form.delFiles.splice(this.form.delFiles.indexOf(noticeFileID),1);
                 } else {
-                    if (!confirm('기존 파일을 삭제 하시겠습니까?')) return false
+                    if (!confirm('{{ __('msg.WANT_DEL') }}')) return false
                     this.form.delFiles.push(noticeFileID)
                 }
-                
+
             },
             selFile: function() {
                 this.$refs.inputFile.click()
@@ -359,13 +361,13 @@
                 }.bind(this));
             },
             tryDelete: function () {
-                
-                if (!confirm('정말 삭제하시겠습니까?')) return false
+
+                if (!confirm('{{ __('msg.WISH_DELETE') }}')) return false
                 axios.post('/notices/' + this.form.NoticeID + '/delete')
                 .then(function (response) {
-                    alert('삭제 되었습니다')
+                    alert('{{ __('msg.BEEN_DEL') }}')
                     location.href = '/notices'
-                    
+
                 })
                 .catch(function (error) {
                     console.log(error.response)
@@ -377,8 +379,8 @@
                 }
                 if (size >= 1000) {
                     return (size / 1000).toFixed(0) + 'KB'
-                } 
-                
+                }
+
                 return size + 'Byte'
             }
         }

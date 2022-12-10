@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            봉사자 검색
+                            {{ __('msg.PUBS') }}
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -16,17 +16,17 @@
                             <table class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <th>봉사자 조회</th>
+                                    <th>{{ __('msg.PUBS') }}</th>
                                     <td>
                                         <div class="d-flex justify-content-between">
-                                            <input class="form-control form-control-sm mr-1" 
+                                            <input class="form-control form-control-sm mr-1"
                                                 ref="PublisherName"
                                                 v-model="PublisherName"
                                                 @keypress.enter="_search"
-                                                placeholder="이름 입력">
+                                                placeholder="{{ __('msg.ENTER_INPUT_NAME') }}">
                                             <button class="btn btn-outline-secondary btn-sm"
                                                 @click="_search">
-                                                검색
+                                                {{ __('msg.SEARCH') }}
                                             </button>
                                         </div>
                                     </td>
@@ -39,18 +39,18 @@
                                 <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>성명</th>
-                                    <th>성별</th>
-                                    <th>회중</th>
+                                    <th>{{ __('msg.NAME') }}</th>
+                                    <th>{{ __('msg.GENDER') }}</th>
+                                    <th>{{ __('msg.CGN') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-if="!PublisherList.length">
                                     <td colspan="4">
                                         <div class="text-muted text-center">
-                                            검색 결과가 없습니다.
+                                            {{ __('msg.NO_RESULT') }}
                                         </div>
-                                    </td> 
+                                    </td>
                                 </tr>
                                 <tr v-for="Publisher in PublisherList" >
                                     <td>@{{ Publisher.PublisherID }}</td>
@@ -67,10 +67,10 @@
                                 <i class="fas fa-angle-right" @click="_nextPage"></i>
                             </span>
                         </div>
-                        
+
                     </div>
                     <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
+                        <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">{{ __('msg.CLOSE') }}</button>
                     </div>
                 </div> <!-- /.mlp-wrap -->
             </div>
@@ -141,13 +141,13 @@
                 if(this.page > 1){
                     this.page --;
                     this._getList()
-                } 
+                }
             },
             _nextPage: function(){
                 if(this.page < this.lastPage){
                     this.page ++;
                     this._getList()
-                } 
+                }
             },
         }
     })

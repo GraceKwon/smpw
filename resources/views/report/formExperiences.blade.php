@@ -7,7 +7,7 @@
         {{ session("success") }}
     </div>
     @endif @error('PublisherID')
-    <div class="alert alert-danger">봉사자를 조회하여 선택해 주세요</div>
+    <div class="alert alert-danger">{{ __('msg.SELECT_VOL') }}</div>
     @enderror
     <form method="POST" @submit="_confirm" @keydown.enter.prevent>
         @method("PUT") @csrf
@@ -15,7 +15,7 @@
             <tbody>
                 <tr>
                     <th>
-                        <label class="label">작성자이름</label>
+                        <label class="label">{{ __('msg.WN') }}</label>
                     </th>
                     <td>
                         <div>
@@ -23,7 +23,7 @@
                         </div>
                     </td>
                     <th>
-                        <label class="label">연락처</label>
+                        <label class="label">{{ __('msg.TEL') }}</label>
                     </th>
                     <td>
                         <div>{{ $Experience->AdminMobile ?? getMobile() }}</div>
@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label class="label">도시</label>
+                        <label class="label">{{ __('msg.CITY') }}</label>
                     </th>
                     <td>
                         <div>
@@ -39,7 +39,7 @@
                         </div>
                     </td>
                     <th>
-                        <label class="label">지역</label>
+                        <label class="label">{{ __('msg.A') }}</label>
                     </th>
                     <td>
                         <div>
@@ -49,7 +49,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label class="label">작성일자</label>
+                        <label class="label">{{ __('msg.DATE_OF_PRE') }}</label>
                     </th>
                     <td colspan="3">
                         <div>
@@ -61,7 +61,7 @@
             <tbody :class="{ off : !modify }">
                 <tr>
                     <th>
-                        <label class="label">전도인이름</label>
+                        <label class="label">{{ __('msg.PLISH_NAME') }}</label>
                     </th>
                     <td>
                         <div class="inline-responsive">
@@ -79,7 +79,7 @@
                                 :disabled="!modify"
                                 @click="_showModal('modalSearch')"
                             >
-                                봉사자 조회
+                                {{ __('msg.PUBS') }}
                             </button>
                         </div>
                         <input
@@ -89,7 +89,7 @@
                         />
                     </td>
                     <th>
-                        <label class="label">성별</label>
+                        <label class="label">{{ __('msg.GENDER') }}</label>
                     </th>
                     <td>
                         <div class="inline-responsive off">
@@ -105,7 +105,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label class="label">회중명</label>
+                        <label class="label">{{ __('msg.CGN') }}</label>
                     </th>
                     <td>
                         <div class="inline-responsive off">
@@ -119,7 +119,7 @@
                         </div>
                     </td>
                     <th>
-                        <label class="label">연락처</label>
+                        <label class="label">{{ __('msg.TEL') }}</label>
                     </th>
                     <td colspan="3">
                         <div class="inline-responsive off">
@@ -135,7 +135,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label class="label">경험담내용</label>
+                        <label class="label">{{ __('msg.EX') }}</label>
                     </th>
                     <td colspan="3">
                         <textarea
@@ -145,12 +145,12 @@
                             v-model="Contents"
                             :disabled="!modify"
                             rows="5"
-                            placeholder="경험담을 입력해 주세요."
+                            placeholder="{{ __('msg.ENTER_EX') }}"
                         >
                         </textarea>
                         @error('Contents')
                         <div class="invalid-feedback">
-                            경험담을 입력해 주세요.
+                            {{ __('msg.ENTER_EX') }}
                         </div>
                         @enderror
                     </td>
@@ -160,53 +160,53 @@
         <div class="btn-flex-area btn-flex-row justify-content-between mt-3">
             <div class="d-flex">
                 @if( isset($Experience->ExperienceID) )
-                <button type="button" 
+                <button type="button"
                     class="btn btn-success"
                     v-if="!modify"
                     @click="_export">
-                    엑셀파일 다운로드
+                    {{ __('msg.EXCEL_DOWN') }}
                 </button>
                 @endif
             </div>
             <div class="d-flex">
             @if( isset($Experience->ExperienceID) )
-                <button type="button" 
+                <button type="button"
                     class="btn btn-outline-secondary"
                     v-if="!modify"
-                    onclick="location.href='/{{ getTopPath() }}'">목록</button>
-                <button type="button" 
+                    onclick="location.href='/{{ getTopPath() }}'">{{ __('msg.LIST') }}</button>
+                <button type="button"
                     class="btn btn-secondary"
                     v-if="!modify"
-                    @click="modify = true">수정</button>
+                    @click="modify = true">{{ __('msg.EDIT') }}</button>
                 <button class="btn btn-outline-secondary"
                     type="button"
                     v-if="modify"
-                    @click="this.location.reload()">취소</button>
+                    @click="this.location.reload()">{{ __('msg.CANCEL') }}</button>
                 <button type="button" class="btn btn-point-sub"
                     v-if="modify"
-                    @click="_delete">삭제</button>
+                    @click="_delete">{{ __('msg.DEL') }}</button>
                 <button class="btn btn-primary"
-                    v-if="modify">저장</button>
+                    v-if="modify">{{ __('msg.SAVE') }}</button>
                 @if($Experience->CircuitConfirmYn === 0
                     && session('auth.AdminRoleID') === 3 )
-                    <button type="button" 
+                    <button type="button"
                         v-if="!modify"
                         @click="_setCircuitConfirm"
-                        class="btn btn-primary">제출</button>
+                        class="btn btn-primary">{{ __('msg.SUBMIT') }}</button>
                 @endif
-                @if($Experience->CircuitConfirmYn === 1 
+                @if($Experience->CircuitConfirmYn === 1
                     && $Experience->BranchConfirmYn === 0
                     && session('auth.AdminRoleID') === 2)
-                    <button type="button" 
+                    <button type="button"
                         v-if="!modify"
                         @click="_setBranchConfirm"
-                        class="btn btn-primary">열람내용확인</button>
+                        class="btn btn-primary">{{ __('msg.REVIEW_INFO') }}</button>
                 @endif
             @else
-                <button type="button" class="btn btn-secondary" 
-                    onclick="location.href = '/{{ getTopPath() }}'">취소</button>
+                <button type="button" class="btn btn-secondary"
+                    onclick="location.href = '/{{ getTopPath() }}'">{{ __('msg.CANCEL') }}</button>
                 <button type="submit" class="btn btn-primary">
-                    저장</button>
+                    {{ __('msg.SAVE') }} </button>
             @endif
             </div>
         </div>
@@ -223,7 +223,7 @@
         @csrf
     </form>
 </section>
-@endsection 
+@endsection
 @section('popup')
 <modal-search
     v-if="showModal === 'modalSearch'"
@@ -234,7 +234,7 @@
 {{--  {{  dd($Experience) }}  --}}
 </modal-search>
 @endsection
-@section('script') 
+@section('script')
 @include('report.modalSearch')
 <script>
     var app = new Vue({
@@ -258,7 +258,7 @@
         },
         methods: {
             _confirm: function(e) {
-                var res = confirm('{{ isset($Experience->ExperienceID) ? '수정 ' : '저장 ' }} 하시겠습니까?');
+                var res = confirm('{{ isset($Experience->ExperienceID) ? __('msg.EDIT') : __('msg.SAVE') }} ?');
                 if (!res) {
                     e.preventDefault();
                 }
@@ -276,13 +276,13 @@
                 location.href = '/{{ request()->path() }}/export';
             },
             _delete: function () {
-                if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()
+                if( confirm( '{{ __('msg.WISH_DELETE') }}' )) this.$refs.formDelete.submit()
             },
             _setCircuitConfirm: function () {
-                if( confirm('제출 하시겠습니까?') ) this.$refs.formCircuitConfirm.submit()
+                if( confirm( '{{ __('msg.WISH_SUBMIT')}}' )) this.$refs.formCircuitConfirm.submit()
             },
             _setBranchConfirm: function () {
-                if( confirm('열람내용확인 하시겠습니까?') ) this.$refs.formBranchConfirm.submit()
+                if( confirm( '{{ __('msg.WISH_REVIEW') }}' )) this.$refs.formBranchConfirm.submit()
             }
 
         }

@@ -10,7 +10,7 @@
     </div>
 @endif
     <form method="POST"
-        @submit="_confirm" 
+        @submit="_confirm"
         @keydown.enter.prevent>
         @method("PUT")
         @csrf
@@ -18,13 +18,13 @@
             <tbody>
             <tr>
                 <th>
-                    <label class="label">작성자이름</label>
+                    <label class="label">{{ __('msg.WN') }}</label>
                 </th>
                 <td>
                     <div>{{ $VisitRequest->PublisherName }}</div>
                 </td>
                 <th>
-                    <label class="label">성별</label>
+                    <label class="label">{{ __('msg.GENDER') }}</label>
                 </th>
                 <td>
                     <div>{{ $VisitRequest->PublisherGender }}</div>
@@ -66,14 +66,14 @@
                     </th>
                     <td>
                         <div class="inline-responsive">
-                            <input type="text" 
+                            <input type="text"
                                 name="InsteresterName"
-                                class="form-control @error('InsteresterName') is-invalid @enderror"  
+                                class="form-control @error('InsteresterName') is-invalid @enderror"
                                 :disabled="!modify"
                                 v-model="InsteresterName">
                             @error('SetStartDate')
                                 <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror 
+                            @enderror
                         </div>
                     </td>
                     <th>
@@ -82,21 +82,21 @@
                     <td>
                         <div class="check-group inline-responsive">
                             <div class="custom-control custom-radio" v-show="modify || Gender === 'M'">
-                                <input type="radio" 
+                                <input type="radio"
                                     class="custom-control-input @error('Gender') is-invalid @enderror"
-                                    id="M" 
-                                    value="M" 
-                                    v-model="Gender" 
+                                    id="M"
+                                    value="M"
+                                    v-model="Gender"
                                     name="Gender">
-                                <label class="custom-control-label" 
+                                <label class="custom-control-label"
                                     for="M">남자</label>
                             </div>
                             <div class="custom-control custom-radio" v-show="modify || Gender === 'F'">
-                                <input type="radio" 
-                                    class="custom-control-input @error('Gender') is-invalid @enderror" 
-                                    id="F" 
-                                    value="F" 
-                                    v-model="Gender" 
+                                <input type="radio"
+                                    class="custom-control-input @error('Gender') is-invalid @enderror"
+                                    id="F"
+                                    value="F"
+                                    v-model="Gender"
                                     name="Gender">
                                 <label class="custom-control-label" for="F">여자</label>
                             </div>
@@ -125,14 +125,14 @@
                     </th>
                     <td>
                         <div class="inline-responsive">
-                            <input type="text" 
-                                class="form-control @error('ZipCode') is-invalid @enderror"  
+                            <input type="text"
+                                class="form-control @error('ZipCode') is-invalid @enderror"
                                 name="ZipCode"
                                 v-model="ZipCode"
                                 :disabled="!modify"
                                 @click="_execDaumPostcode"
                                 readonly>
-                            <button type="button" class="btn btn-secondary" 
+                            <button type="button" class="btn btn-secondary"
                                 :disabled="!modify"
                                 @click="_execDaumPostcode">주소검색</button>
                         </div>
@@ -144,8 +144,8 @@
                         </th>
                         <td>
                             <div class="inline-responsive">
-                                <input type="text" 
-                                    class="form-control @error('Sido') is-invalid @enderror"  
+                                <input type="text"
+                                    class="form-control @error('Sido') is-invalid @enderror"
                                     name="Sido"
                                     v-model="Sido"
                                     :disabled="!modify"
@@ -158,8 +158,8 @@
                     </th>
                     <td>
                         <div class="inline-responsive">
-                            <input type="text" 
-                                class="form-control @error('Sigungu') is-invalid @enderror"  
+                            <input type="text"
+                                class="form-control @error('Sigungu') is-invalid @enderror"
                                 name="Sigungu"
                                 v-model="Sigungu"
                                 :disabled="!modify"
@@ -174,8 +174,8 @@
                         </th>
                         <td>
                             {{-- <div class="inline-responsive"> --}}
-                                <input type="text" 
-                                    class="form-control @error('AddressMain') is-invalid @enderror"  
+                                <input type="text"
+                                    class="form-control @error('AddressMain') is-invalid @enderror"
                                     name="AddressMain"
                                     v-model="AddressMain"
                                     :disabled="!modify"
@@ -185,10 +185,10 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             {{-- </div> --}}
-                            <div ref="layer" 
+                            <div ref="layer"
                                 style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
-                                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" 
-                                    style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" 
+                                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer"
+                                    style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1"
                                     @click="_closeDaumPostcode" alt="닫기 버튼">
                             </div>
                         </td>
@@ -197,8 +197,8 @@
                     </th>
                     <td>
                         <div class="inline-responsive">
-                            <input type="text" 
-                                class="form-control @error('AddressDetail') is-invalid @enderror"  
+                            <input type="text"
+                                class="form-control @error('AddressDetail') is-invalid @enderror"
                                 name="AddressDetail"
                                 ref="AddressDetail"
                                 :disabled="!modify"
@@ -215,28 +215,28 @@
                     </th>
                     <td>
                         <div class="inline-responsive">
-                            <input type="text" 
-                                class="form-control @error('Mobile') is-invalid @enderror"  
+                            <input type="text"
+                                class="form-control @error('Mobile') is-invalid @enderror"
                                 name="Mobile"
                                 :disabled="!modify"
                                 v-model="Mobile">
                             @error('Mobile')
                                 <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror                    
+                            @enderror
                         </div>
                     </td>
                     <th>
                         <label class="label">이메일</label>
                     </th>
                     <td>
-                        <input type="text" 
-                            class="form-control @error('Email') is-invalid @enderror"  
+                        <input type="text"
+                            class="form-control @error('Email') is-invalid @enderror"
                             name="Email"
                             :disabled="!modify"
                             v-model="Email">
                         @error('Email')
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror                     
+                        @enderror
                     </td>
                 </tr>
                 <tr>
@@ -257,7 +257,7 @@
                                 <option value="금">금</option>
                                 <option value="토">토</option>
                             </select>
-                            <select class="custom-select" 
+                            <select class="custom-select"
                                 name="RequestTime"
                                 :disabled="!modify"
                                 v-model="RequestTime">
@@ -308,53 +308,53 @@
                         <label class="label">전도인의 설명</label>
                     </th>
                     <td colspan="3">
-                        <textarea type="text" 
+                        <textarea type="text"
                             class="form-control w-100"
-                            name="Contents" 
-                            v-model="Contents" 
+                            name="Contents"
+                            v-model="Contents"
                             :disabled="!modify"
-                            rows="5" 
+                            rows="5"
                             placeholder="내용을 입력해 주세요."></textarea>
                     </td>
                 </tr>
             </tbody>
         </table>
-        
+
         <div class="btn-flex-area btn-flex-row justify-content-between mt-3">
             <div class="d-flex">
-                <button type="button" 
+                <button type="button"
                     class="btn btn-outline-secondary"
                     v-if="!modify"
-                    onclick="location.href='/{{ getTopPath() }}'">목록</button>
+                    onclick="location.href='/{{ getTopPath() }}'">{{ __('msg.LIST') }}</button>
                 @if(session('auth.AdminRoleID') >= 3)
-                    <button type="button" 
+                    <button type="button"
                         class="btn btn-secondary"
                         v-if="!modify"
-                        @click="modify = true">수정</button>
+                        @click="modify = true">{{ __('msg.EDIT') }}</button>
                     <button class="btn btn-outline-secondary"
                         type="button"
                         v-if="modify"
-                        @click="this.location.reload()">취소</button>
+                        @click="this.location.reload()">{{ __('msg.CANCEL') }}</button>
                     <button class="btn btn-primary"
-                        v-if="modify">저장</button>
+                        v-if="modify">{{ __('msg.SAVE') }}</button>
                 @endif
             </div>
             <div class="d-flex">
                 @if(empty($VisitRequest->AdminID)
                     && session('auth.AdminRoleID') >= 3)
-                <button type="button" 
+                <button type="button"
                     v-if="!modify"
                     @click="_setConfirm"
-                    class="btn btn-primary">보조자확인</button>
+                    class="btn btn-primary">{{ __('msg.AC') }}</button>
                 @endif
 
-                @if(isset($VisitRequest->AdminID) 
+                @if(isset($VisitRequest->AdminID)
                 && session('auth.AdminRoleID') === 2
                 && empty($VisitRequest->AdminReceiptDate))
-                <button type="button" 
+                <button type="button"
                     v-if="!modify"
                     @click="_setReceip"
-                    class="btn btn-primary">전달처리</button>
+                    class="btn btn-primary">{{ __('msg.TP') }}</button>
                 @endif
             </div>
         </div>
@@ -496,7 +496,7 @@
                 if(!res){
                     e.preventDefault();
                 }
-                
+
             },
             _setConfirm: function () {
                 if( confirm('방문요청을 확인처리 하시겠습니까?') ) this.$refs.formConfirm.submit()

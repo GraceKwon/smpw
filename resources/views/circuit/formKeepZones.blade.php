@@ -12,13 +12,13 @@
             <tbody>
             <tr>
                 <th>
-                    <label class="label">담당자 이름</label>
+                    <label class="label">{{ __('msg.NAME_PERSON') }} {{ __('msg.NAME') }}</label>
                 </th>
                 <td>
                     {{ $KeepZone->AdminName ?? session('auth.AdminName') }}
                 </td>
                 <th>
-                    <label class="label">도시</label>
+                    <label class="label">{{ __('msg.CITY') }}</label>
                 </th>
                 <td>
                     {{ $KeepZone->MetroName ?? getMetroName() }}
@@ -26,13 +26,13 @@
             </tr>
             <tr>
                 <th>
-                    <label class="label">순회구(지역)</label>
+                    <label class="label">{{ __('msg.AREA') }}({{ __('msg.A') }})</label>
                 </th>
                 <td>
                     {{ $KeepZone->CircuitName ?? getCircuitName() }}
                 </td>
                 <th>
-                    <label class="label">회중</label>
+                    <label class="label">{{ __('msg.CGN') }}</label>
                 </th>
                 <td>
                     {{ $KeepZone->CongregationName ?? getCongregationName() }}
@@ -45,7 +45,7 @@
                 <td>
                 </td> --}}
                 <th>
-                    <label class="label">연락처</label>
+                    <label class="label">{{ __('msg.TEL') }}</label>
                 </th>
                 <td>
                     {{ $KeepZone->Mobile ?? getMobile() }}
@@ -53,39 +53,39 @@
             </tr>
             <tr>
                 <th rowspan="2">
-                    <label class="label">주소</label>
+                    <label class="label">{{ __('msg.ADDR') }}</label>
                 </th>
                 <td colspan="3">
                     <div class="inline-responsive">
                         <div class="search-form flex">
-                            <input type="text" class="form-control @error('ZipCode') is-invalid @enderror"  
-                                name="ZipCode" 
-                                v-model="ZipCode" 
-                                placeholder="우편번호"
+                            <input type="text" class="form-control @error('ZipCode') is-invalid @enderror"
+                                name="ZipCode"
+                                v-model="ZipCode"
+                                placeholder="{{ __('msg.ZIP') }}"
                                 @click="_execDaumPostcode"
                                 readonly>
-                            <button type="button" class="btn btn-secondary" 
-                                @click="_execDaumPostcode">우편번호 찾기</button>
+                            <button type="button" class="btn btn-secondary"
+                                @click="_execDaumPostcode">{{ __('msg.FIND_ZIP') }}</button>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td class="pt-0-mobile" colspan="3">
-                    <input type="text" class="form-control @error('ZoneAddress') is-invalid @enderror"  
-                        name="ZoneAddress" 
-                        v-model="ZoneAddress" 
-                        placeholder="주소"
+                    <input type="text" class="form-control @error('ZoneAddress') is-invalid @enderror"
+                        name="ZoneAddress"
+                        v-model="ZoneAddress"
+                        placeholder="{{ __('msg.ADDR') }}"
                         readonly>
                     @error('ZoneAddress')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <div class="inline-responsive">
-                        <input type="text" class="form-control @error('ZoneAddressDetail') is-invalid @enderror"  
-                            ref="ZoneAddressDetail" 
-                            name="ZoneAddressDetail" 
-                            v-model="ZoneAddressDetail" 
-                            placeholder="상세주소">
+                        <input type="text" class="form-control @error('ZoneAddressDetail') is-invalid @enderror"
+                            ref="ZoneAddressDetail"
+                            name="ZoneAddressDetail"
+                            v-model="ZoneAddressDetail"
+                            placeholder="{{ __('msg.DETAIL_ADDR') }}">
                         @error('ZoneAddressDetail')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -95,11 +95,11 @@
             </tbody>
         </table>
         <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
-        <div ref="layer" 
+        <div ref="layer"
             style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
-            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" 
-                style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" 
-                @click="_closeDaumPostcode" alt="닫기 버튼">
+            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer"
+                style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1"
+                @click="_closeDaumPostcode" alt="{{ __('msg.CLOSE') }}">
         </div>
         @include('layouts.sections.formButton', [
                 'id' => isset($KeepZone->KeepZoneID) ? true : false,

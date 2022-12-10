@@ -18,7 +18,7 @@
         <tbody>
         <tr>
             <th>
-                <label class="label" for="Account">아이디</label>
+                <label class="label" for="Account">{{ __('msg.ID') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -27,7 +27,7 @@
                         id="Account"
                         name="Account"
                         v-model="Account"
-                        placeholder="자동으로 생성됩니다"
+                        placeholder="{{ __('msg.CREATE_AUTO') }}"
                         disabled>
                 </div>
             </td>
@@ -50,19 +50,19 @@
         @if(isset($Publisher->PublisherID))
         <tr>
             <th>
-                <label class="label" for="register02">비밀번호초기화</label>
+                <label class="label" for="register02">{{ __('msg.PWS') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
                     <button type="button" class="btn btn-primary"
-                        @click="_resetPwd">비밀번호초기화</button>
+                        @click="_resetPwd">{{ __('msg.PWS') }}</button>
                 </div>
             </td>
         </tr>
         @endif
         <tr>
             <th>
-                <label class="label" for="PublisherName">이름</label>
+                <label class="label" for="PublisherName">{{ __('msg.NAME') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -71,7 +71,7 @@
                         id="PublisherName"
                         name="PublisherName"
                         v-model="PublisherName"
-                        placeholder="이름을 입력해 주세요">
+                        placeholder="{{ __('msg.ENTER_UR_NAME') }}">
                         @error('PublisherName')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -80,7 +80,7 @@
         </tr>
         <tr>
             <th>
-                <label class="label" for="CongregationID">회중</label>
+                <label class="label" for="CongregationID">{{ __('msg.CGN') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -88,7 +88,7 @@
                         id="CongregationID"
                         v-model="CongregationID"
                         name="CongregationID">
-                        <option value="">선택</option>
+                        <option value="">{{ __('msg.SELECT') }}</option>
                         @foreach ($CongregationList as $Congregation)
                             <option value="{{ $Congregation->CongregationID }}">{{ $Congregation->CongregationName }}</option>
                         @endforeach
@@ -101,7 +101,7 @@
         </tr>
         <tr>
             <th>
-                <label class="label">성별</label>
+                <label class="label">{{ __('msg.GENDER') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -112,7 +112,7 @@
                             value="M"
                             v-model="Gender"
                             name="Gender">
-                        <label class="custom-control-label" for="M">형제</label>
+                        <label class="custom-control-label" for="M">{{ __('msg.BRO') }}</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input type="radio"
@@ -121,14 +121,14 @@
                             value="F"
                             v-model="Gender"
                             name="Gender">
-                        <label class="custom-control-label" for="F">자매</label>
+                        <label class="custom-control-label" for="F">{{ __('msg.SIS') }}</label>
                     </div>
                 </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label" for="Mobile">연락처</label>
+                <label class="label" for="Mobile">{{ __('msg.TEL') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -137,7 +137,7 @@
                         id="Mobile"
                         name="Mobile"
                         v-model="Mobile"
-                        placeholder="연락처를 입력해 주세요">
+                        placeholder="{{ __('msg.ENTER_UR_CONTACT_INFO') }}">
                     @error('Mobile')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -146,7 +146,7 @@
         </tr>
         <tr>
             <th>
-                <label class="label" for="register05">봉사자 신분</label>
+                <label class="label" for="register05">{{ __('msg.PUB_STATUS') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -154,7 +154,7 @@
                         id="ServantTypeID"
                         name="ServantTypeID"
                         v-model="ServantTypeID">
-                        <option value="">선택</option>
+                        <option value="">{{ __('msg.SELECT') }}</option>
                         @foreach ($ServantTypeList as $ServantType)
                             <option value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
                         @endforeach
@@ -165,7 +165,7 @@
                 </div>
             </td>
             <th>
-                <label class="label" for="PioneerTypeID">봉사자 특권</label>
+                <label class="label" for="PioneerTypeID">{{ __('msg.PUB_PRI') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -173,7 +173,7 @@
                         id="PioneerTypeID"
                         name="PioneerTypeID"
                         v-model="PioneerTypeID">
-                        <option value="">선택</option>
+                        <option value="">{{ __('msg.SELECT') }}</option>
                         @foreach ($PioneerTypeList as $PioneerType)
                             <option value="{{ $PioneerType->ID }}">{{ $PioneerType->Item }}</option>
                         @endforeach
@@ -186,7 +186,7 @@
         </tr>
         <tr>
             <th>
-                <label class="label">봉사상태</label>
+                <label class="label">{{ __('msg.SERVICE_STATUS') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -198,7 +198,7 @@
                             name="StopYn"
                             value="1"
                             name="StopYn">
-                        <label class="custom-control-label" for="StopN">봉사중</label>
+                        <label class="custom-control-label" for="StopN">{{ __('msg.IS') }}</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input type="radio"
@@ -208,12 +208,12 @@
                             name="StopYn"
                             value="0"
                             name="StopYn">
-                        <label class="custom-control-label" for="StopY">봉사중단</label>
+                        <label class="custom-control-label" for="StopY">{{ __('msg.SS') }}</label>
                     </div>
                 </div>
             </td>
             <th>
-                <label class="label">지원가능여부</label>
+                <label class="label">{{ __('msg.SUPPORT_AVAIL') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -225,7 +225,7 @@
                                 id="SupportY"
                                 value="1"
                                 name="SupportYn">
-                            <label class="custom-control-label" for="SupportY">가능</label>
+                            <label class="custom-control-label" for="SupportY">{{ __('msg.PO') }}</label>
                         </div>
                     </div>
                     <div class="custom-control custom-radio">
@@ -235,14 +235,14 @@
                             id="SupportN"
                             value="0"
                             name="SupportYn">
-                        <label class="custom-control-label" for="SupportN">불가능</label>
+                        <label class="custom-control-label" for="SupportN">{{ __('msg.IMP') }}</label>
                     </div>
                 </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label" for="register07">메모</label>
+                <label class="label" for="register07">{{ __('msg.MEMO') }}</label>
             </th>
             <td colspan="3">
                 <div class="inline-responsive">
@@ -252,7 +252,7 @@
                         name="Memo"
                         {{-- v-model="Memo" --}}
                         rows="5"
-                        placeholder="메모를 입력해 주세요.">{{ old('Memo') ?? $Publisher->Memo  ?? '' }}</textarea>
+                        placeholder="{{ __('msg.ENTER_MEMO') }}">{{ old('Memo') ?? $Publisher->Memo  ?? '' }}</textarea>
                         @error('Memo')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -261,7 +261,7 @@
         </tr>
         <tr>
             <th>
-                <label class="label" for="EndDate">계정삭제일</label>
+                <label class="label" for="EndDate">{{ __('msg.ACCOUNT_DEL_DATE') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -272,7 +272,7 @@
                             name="EndDate"
                             v-model="EndDate"
                             :disabled="StopYn === '0'"
-                            placeholder="날자를 선택해 주세요">
+                            placeholder="{{ __('msg.PSTD') }}">
                         @error('EndDate')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -280,7 +280,7 @@
                 </div>
             </td>
             <th>
-                <label class="label" for="register09">계정삭제사유</label>
+                <label class="label" for="register09">{{ __('msg.RES_ACCOUNT_DEL') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
@@ -289,7 +289,7 @@
                         name="EndTypeID"
                         :disabled="StopYn === '0'"
                         v-model="EndTypeID">
-                        <option value="">선택</option>
+                        <option value="">{{ __('msg.SELECT') }}</option>
                         @foreach ($EndTypeIDList as $EndTypeID)
                             <option value="{{ $EndTypeID->ID }}">{{ $EndTypeID->Item }}</option>
                         @endforeach
@@ -319,20 +319,20 @@
 
 @if(isset($ServiceTimeList) && isset($Publisher->PublisherID))
 <section class="table-section mt-6">
-    <h4 class="text-primary">봉사 타임 지정</h4>
+    <h4 class="text-primary">{{ __('msg.SERVICE_TIME_SELECT') }}</h4>
     <div class="inline-responsive">
         <form method="get">
             <select class="custom-select"
                 onchange="submit()"
                 name="ServiceYoil"
                 v-model="ServiceYoil">
-                <option value="월">월요일</option>
-                <option value="화">화요일</option>
-                <option value="수">수요일</option>
-                <option value="목">목요일</option>
-                <option value="금">금요일</option>
-                <option value="토">토요일</option>
-                <option value="일">일요일</option>
+                <option value="{{ __('msg.MO') }}">{{ __('msg.MO') }}</option>
+                <option value="{{ __('msg.TU') }}">{{ __('msg.TU') }}</option>
+                <option value="{{ __('msg.WE') }}">{{ __('msg.WE') }}</option>
+                <option value="{{ __('msg.TH') }}">{{ __('msg.TH') }}</option>
+                <option value="{{ __('msg.FR') }}">{{ __('msg.FR') }}</option>
+                <option value="{{ __('msg.SA') }}">{{ __('msg.SA') }}</option>
+                <option value="{{ __('msg.SU') }}">{{ __('msg.SU') }}</option>
             </select>
         </form>
         {{-- <div class="btn-flex-area"> --}}
@@ -368,12 +368,12 @@
                 <thead>
                 <tr>
                     <th>
-                        <label class="label">봉사타임</label>
+                        <label class="label">{{ __('msg.ST') }} </label>
                     </th>
                     @foreach ($ServiceZoneList as $ServiceZone)
                     <th>
                         <div class="min-w-100px">
-                        <label class="label">{{ $ServiceZone->ZoneName }}</label>
+                        <label class="label">{{ $ServiceZone->ZoneName }}   </label>
                         </div>
                     </th>
                     @endforeach
@@ -399,13 +399,16 @@
                                 <select class="custom-select mx-auto"
                                     name="ServiceSetType[{{ $ServiceTime['ServiceTimeID'] }}]">
                                     <option value="미지정" @if( $ServiceTime['ServiceSetType'] === '미지정' ) selected @endif>
-                                        미지정
+                                        {{ __('msg.UNS') }}
                                     </option>
                                     @if($ServiceTime['PublisherCnt'] < session('auth.PublisherNumber') )
-                                        <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>대기</option>
-                                        <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>봉사자</option>
+                                        <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>
+                                            {{ __('msg.W') }}</option>
+                                        <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>
+                                            {{ __('msg.PUB') }}</option>
                                         @if($ServiceTime['ServiceSetType'] === '인도자' || $ServiceTime['LeaderCnt'] < 1)
-                                            <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>인도자</option>
+                                            <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>
+                                                {{ __('msg.CON') }}</option>
                                         @endif
                                     @elseif($ServiceTime['ServiceSetType'] !== '미지정')
                                         <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
@@ -422,12 +425,12 @@
             </table>
         </div>
         <div class="form-inline align-items-center mt-3">
-            <div class="min-w-140px text-primary">스케줄 변경 시작일</div>
+            <div class="min-w-140px text-primary">{{ __('msg.START_CHANGE_SCH') }}</div>
             <div class="input-group mt-2 mt-md-0">
                 <input type="date" class="form-control @error('SetStartDate') is-invalid @enderror"
                     name="SetStartDate"
                     v-model="SetStartDate"
-                    placeholder="날자를 선택해 주세요">
+                    placeholder="{{ __('msg.PSTD') }}">
                 @error('SetStartDate')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -437,7 +440,7 @@
                     </div>
                 </div> --}}
             </div>
-            <button class="btn btn-primary mt-2 mt-md-0 ml-md-2">스케줄 변경</button>
+            <button class="btn btn-primary mt-2 mt-md-0 ml-md-2">{{ __('msg.SC') }}</button>
         </div>
     </form>
 </section>
@@ -475,17 +478,17 @@
         },
         methods:{
             _confirm: function (e) {
-                var res = confirm('{{ isset($ServiceZone->ServiceZoneID) ? '수정' : '저장' }} 하시겠습니까?');
+                var res = confirm('{{ isset($ServiceZone->ServiceZoneID) ? '수정' : '저장' }} ?');
                 if(!res){
                     e.preventDefault();
                 }
 
             },
             _delete: function () {
-                if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()
+                if( confirm('{{ __('msg.WISH_DELETE') }}') ) this.$refs.formDelete.submit()
             },
             _resetPwd: function () {
-                if( confirm('비밀번호를 초기화 하시겠습니까?') ) this.$refs.formResetPwd.submit()
+                if( confirm('{{ __('msg.WANT_RESET_PW') }}') ) this.$refs.formResetPwd.submit()
             }
         }
     })

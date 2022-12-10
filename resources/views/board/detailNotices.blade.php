@@ -22,7 +22,7 @@
         <tr>
             <td>
                 <div class="d-flex">
-                    <label class="label">첨부파일</label>
+                    <label class="label">{{ __('msg.ATT_FILE') }}</label>
                     <div>
                         @foreach ($Files as $File)
                             <a class="file" href="/notices/{{ request('id') }}/file/{{ $File->NoticeFileID }}">{{ $File->FilePath }}</a>
@@ -46,17 +46,17 @@
         @if (isset($noticePre[0]->NoticeID))
         <tr>
             <th>
-                <label class="label">이전글</label>
+                <label class="label">{{ __('msg.PRE_POST') }}</label>
             </th>
             <td>
                 <a href="/notices/{{ $noticePre[0]->NoticeID }}?{{ http_build_query(request()->all()) }}">{{ $noticePre[0]->Title }}</a>
             </td>
         </tr>
         @endif
-        @if (isset($noticeNext[0]->NoticeID)) 
+        @if (isset($noticeNext[0]->NoticeID))
         <tr>
             <th>
-                <label class="label">다음글</label>
+                <label class="label">{{ __('msg.NEXT_POST') }}</label>
             </th>
             <td>
                 <a href="/notices/{{ $noticeNext[0]->NoticeID }}?{{ http_build_query(request()->all()) }}">{{ $noticeNext[0]->Title }}</a>
@@ -67,14 +67,14 @@
     </table>
     <div class="btn-flex-area justify-content-end">
         @if ($modify)
-        <button type="button" 
-                class="btn btn-secondary" 
-                onclick="location.href='/notices/{{ $Notice->NoticeID }}/form'">수정</button>
+        <button type="button"
+                class="btn btn-secondary"
+                onclick="location.href='/notices/{{ $Notice->NoticeID }}/form'">{{ __('msg.EDIT') }}</button>
         @endif
-        <button type="button" 
-            class="btn btn-outline-secondary" 
-            onclick="location.href='/notices?{{ http_build_query(request()->all()) }}'">목록</button>
-      
+        <button type="button"
+            class="btn btn-outline-secondary"
+            onclick="location.href='/notices?{{ http_build_query(request()->all()) }}'">{{ __('msg.LIST') }}</button>
+
     </div> <!-- /.register-btn-area -->
 </section>
 @endsection

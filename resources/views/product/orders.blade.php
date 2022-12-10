@@ -4,9 +4,9 @@
 @push('slot')
 @if(isset($ProductList))
 <div class="search-form-item">
-    <label class="label" for="ServiceZoneID">출판물명</label>
+    <label class="label" for="ServiceZoneID">{{ __('msg.PUB_NAME') }}</label>
     <select class="custom-select" id="" name="ProductID" onchange="submit()">
-        <option value="">전체</option>
+        <option value="">{{ __('msg.ALL') }}</option>
         @foreach ($ProductList as $Product)
             <option @if(request()->ProductID == $Product->ProductID ) selected @endif
             value="{{ $Product->ProductID }}">{{ $Product->ProductName }}</option>
@@ -15,16 +15,16 @@
 </div> <!-- /.search-form-item -->
 @endif
 <div class="search-form-item">
-    <label class="label" for="CreateDate">신청일자</label>
-    <date-picker 
-        v-model="CreateDate" 
+    <label class="label" for="CreateDate">{{ __('msg.AD') }}</label>
+    <date-picker
+        v-model="CreateDate"
         :input-id="'CreateDate'"
         :input-name="'CreateDate'"
         :input-class="'form-control'"
         :value-type="'format'"
         :icon-day="31"
         {{-- :clearable="false" --}}
-        :lang="lang" 
+        :lang="lang"
         :range="true"
         width="260"
         >
@@ -50,52 +50,52 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>도시</span>
+                        <span>{{ __('msg.CITY') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>순회구</span>
+                        <span>{{ __('msg.AREA') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>담당자</span>
+                        <span>{{ __('msg.NAME_PERSON') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>연락처</span>
+                        <span>{{ __('msg.TEL') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>분류</span>
+                        <span>{{ __('msg.C') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>약호</span>
+                        <span>{{ __('msg.CODE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>출판물명</span>
+                        <span>{{ __('msg.PUB_NAME') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>주문수량</span>
+                        <span>{{ __('msg.ORDER_QU') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>신청일자</span>
+                        <span>{{ __('msg.AD') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>배송조회</span>
+                        <span>{{ __('msg.DT') }}</span>
                     </div>
                 </th>
             </tr>
@@ -104,13 +104,13 @@
                 {{--  {{ dd( count( $ProductOrderList) ) }}  --}}
                 @if( count( $ProductOrderList) === 0)
                 <tr>
-                    <td 
+                    <td
                     @if( session('auth.AdminRoleID') === 2)
                         colspan="12"
-                    @else 
+                    @else
                         colspan="11"
                     @endif
-                    >조회 결과가 없습니다.</td>
+                    >{{ __('msg.NO_SEARCH_RESULTS') }}</td>
                 </tr>
                 @endif
                 @foreach ($ProductOrderList as $ProductOrder)
@@ -118,7 +118,7 @@
                     @if( session('auth.AdminRoleID') === 2)
                     <td>
                         <input name="ProductOrderID[]"
-                            type="checkbox" 
+                            type="checkbox"
                             value="{{ $ProductOrder->ProductOrderID }}" @change="_change">
                     </td>
                     @endif
@@ -176,20 +176,20 @@
                 @if(!$ProductOrderList->count())
                     disabled
                 @endif
-                @click="_export">엑셀파일 다운로드</button>
+                @click="_export">{{ __('msg.EXCEL_DOWN') }}</button>
             @if( session('auth.AdminRoleID') === 2)
             <button type="button" class="btn btn-info"
                 :disabled="checkedRow.length === 0"
                 @click="_showModal('modalInvoiceCode')">
-                송장정보입력
+                {{ __('msg.ENTER_IN_NUM') }}
             </button>
             @endif
         </div>
         @if(session('auth.CircuitID'))
             @include('layouts.sections.registrationButton', [
-                'label' => '출판물신청',
+                'label' => __('msg.PUB_REQUEST'),
             ])
-        @endif    
+        @endif
     </div>
     {{ $ProductOrderList->appends( request()->all() )->links() }}
 
@@ -198,12 +198,12 @@
 @endsection
 
 @section('popup')
-<modal-invoice-code v-if="showModal === 'modalInvoiceCode'" 
+<modal-invoice-code v-if="showModal === 'modalInvoiceCode'"
     :array="checkedRow"
     @submit="_setInvoiceCode"
     @close="showModal = ''">
 </modal-invoice-code>
-<modal-delivery-tracking v-if="showModal === 'modalDeliveryTracking'" 
+<modal-delivery-tracking v-if="showModal === 'modalDeliveryTracking'"
     :tracks="tracks"
     @close="showModal = ''">
 </modal-delivery-tracking>
@@ -220,8 +220,8 @@
             showModal: '',
             tracks: '',
             CreateDate: [
-                '{{ request()->StartDate }}', 
-                '{{ request()->EndDate }}', 
+                '{{ request()->StartDate }}',
+                '{{ request()->EndDate }}',
             ],
             checkedRow: [],
         },
@@ -252,10 +252,10 @@
                 if(e.target.checked)
                     this.checkedRow.push(Number(e.target.value))
                 else{
-                    var idx = this.checkedRow.indexOf(Number(e.target.value)) 
+                    var idx = this.checkedRow.indexOf(Number(e.target.value))
                     if (idx > -1) this.checkedRow.splice(idx, 1)
 
-                }  
+                }
                 this.checkedRow.sort(function(a, b) { // 내림차순
                     return b - a;
                 });
@@ -271,7 +271,7 @@
                         location.reload()
                     })
                     .catch(function (error) {
-                        alert('실패했습니다.')
+                        alert( __('msg.F') );
                         console.log(error);
                         console.log(error.response);
                     });

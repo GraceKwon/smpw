@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            전달사항
+                            {{ __('msg.NOTICE') }}
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -16,15 +16,15 @@
                             <table class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <th>도시</th>
+                                    <th>{{ __('msg.CITY') }}</th>
                                     <td>{{ getMetroName() }}</td>
-                                    <th>지역</th>
+                                    <th>{{ __('msg.A') }}</th>
                                     <td>{{ getCircuitName() }}</td>
                                 </tr>
                                 <tr>
-                                    <th>구역</th>
+                                    <th>{{ __('msg.ZONE') }}</th>
                                     <td>@{{ ZoneName }}</td>
-                                    <th>봉사일시</th>
+                                    <th>{{ __('msg.SERVICE_DATE') }}</th>
                                     <td>@{{ ServiceDate + ' ' +ServiceTime }}</td>
                                 </tr>
                                 </tbody>
@@ -35,8 +35,8 @@
                                 <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>보고자</th>
-                                    <th>전달사항</th>
+                                    <th>{{ __('msg.REPORTER') }}</th>
+                                    <th>{{ __('msg.NOTICE') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,8 +54,8 @@
                         </div>
                     </div>
                     <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-outline-secondary btn-sm" 
-                            @click="$emit('close')">닫기</button>
+                        <button class="btn btn-outline-secondary btn-sm"
+                            @click="$emit('close')">{{ __('msg.CLOSE') }}</button>
                     </div>
                 </div>
             </div> <!-- /.mlp-wrap -->

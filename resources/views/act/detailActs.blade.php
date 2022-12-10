@@ -94,7 +94,7 @@
                                 ServiceZoneID: '{{$ServiceZoneID}}',
                                 CancelRange: 'zone',
                             });_showModal('modalCancel')">
-                            구역봉사취소
+                            {{ __('msg.ZONE') }} {{ __('msg.CANCEL_SERVICE') }}
                         </button>
                         <button class="btn btn-outline-primary btn-block btn-sm"
                             :disabled="Passing"
@@ -152,7 +152,7 @@
                                     CancelRange: 'time',
                                 });
                                 _showModal('modalCancel')">
-                            봉사취소
+                            {{ __('msg.CANCEL_SERVICE') }}
                         </button>
                         <button class="btn btn-outline-primary btn-block btn-sm"
                             @if(empty($ServicePlanDetail[$ServiceZoneID][$time])

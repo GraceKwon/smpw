@@ -20,7 +20,7 @@
         <div class="btn-area">
             <button class="btn btn-outline-secondary btn-today btn-sm"
             @click="_today">
-                오늘
+                {{ __('msg.TODAY') }}
             </button>
         </div>
     </div>
@@ -34,37 +34,37 @@
             <tr>
                 <th class="text-center">
                     <div class="min-width sun">
-                        <span>일</span>
+                        <span>{{ __('msg.SU') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>월</span>
+                        <span>{{ __('msg.MO') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>화</span>
+                        <span>{{ __('msg.TU') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>수</span>
+                        <span>{{ __('msg.WE') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>목</span>
+                        <span>{{ __('msg.TH') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width">
-                        <span>금</span>
+                        <span>{{ __('msg.FR') }}</span>
                     </div>
                 </th>
                 <th class="text-center">
                     <div class="min-width sat">
-                        <span>토</span>
+                        <span>{{ __('msg.SA') }}</span>
                     </div>
                 </th>
             </tr>
@@ -83,29 +83,29 @@
                             class="isToday"
                         @endif
                         >
-                        <div class="day 
+                        <div class="day
                             @if( $i % 7 === 0 ) sun @endif
                             @if( ($i+1) % 7 === 0 ) sat @endif">
                             {{$day}}
                         </div>
                         @if(session('auth.CircuitID') || request()->CircuitID)
                             <div class="cal-item">
-                                <div class="cal-label">출판물</div>
+                                <div class="cal-label">{{ __('msg.PUBLICATIONS') }}</div>
                                 <i class="fas fa-book"></i>
                                 <div class="cal-value">{{ $dailyServiceReportCnt[$day]->PlacementQty ?? 0}}</div>
                             </div>
                             <div class="cal-item">
-                                <div class="cal-label">동영상</div>
+                                <div class="cal-label">{{ __('msg.VIDEO') }}</div>
                                 <i class="fas fa-video"></i>
                                 <div class="cal-value">{{$dailyServiceReportCnt[$day]->VideoShowQty ?? 0}}</div>
                             </div>
                             <div class="cal-item">
-                                <div class="cal-label">방문요청</div>
+                                <div class="cal-label">{{ __('msg.VR') }}</div>
                                 <i class="fas fa-clipboard-list"></i>
                                 <div class="cal-value">{{$dailyServiceReportCnt[$day]->VisitRequestQty ?? 0}}</div>
                             </div>
                             <div class="cal-item">
-                                <div class="cal-label">전달사항</div>
+                                <div class="cal-label">{{ __('msg.NOTICE') }}</div>
                                 <i class="fas fa-edit"></i>
                                 <div class="cal-value">{{$dailyServiceReportCnt[$day]->MemoQty ?? 0}}</div>
                             </div>
@@ -137,7 +137,7 @@
                 return this.today.getFullYear();
             },
             month: function(){
-                return this.today.getMonth() + 1;  
+                return this.today.getMonth() + 1;
             },
             yyyymm:function(){
                 var yyyy = this.today.getFullYear();

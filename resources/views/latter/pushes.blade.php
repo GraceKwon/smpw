@@ -2,24 +2,24 @@
 @section('content')
 <section class="search-section">
     <div class="search-form-item">
-        <label class="label" for="send">발신</label>
+        <label class="label" for="send">{{ __('msg.SENDING') }}</label>
         <select class="custom-select" id="send">
-            <option selected>선택</option>
+            <option selected>{{ __('msg.SELECT') }}</option>
             <option>option</option>
         </select>
     </div> <!-- /.search-form-item -->
     <div class="search-form-item">
-        <label class="label" for="reserve">수신</label>
+        <label class="label" for="reserve">{{ __('msg.RECEIVE') }}</label>
         <select class="custom-select" id="reserve">
-            <option selected>선택</option>
+            <option selected>{{ __('msg.SELECT') }}</option>
             <option>option</option>
         </select>
     </div> <!-- /.search-form-item -->
     <div class="search-form-item">
-        <label class="label" for="date1">수신일자</label>
+        <label class="label" for="date1">{{ __('msg.RV_DATE') }}</label>
         <div class="date-wrap">
             <div class="input-group">
-                <input type="date" class="form-control" id="date1" placeholder="시작 날자를 선택해 주세요">
+                <input type="date" class="form-control" id="date1" placeholder="{{ __('msg.SELECT_DATE') }}">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
@@ -28,7 +28,7 @@
             </div>
             <div class="div">~</div>
             <div class="input-group">
-                <input type="date" class="form-control" id="date2" placeholder="마지막 날자를 선택해 주세요">
+                <input type="date" class="form-control" id="date2" placeholder="{{ __('msg.SELECT_END_DATE') }}">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="search-btn-area">
-        <button type="button" class="btn btn-primary">조회</button>
+        <button type="button" class="btn btn-primary">{{ __('msg.SE') }}</button>
     </div> <!-- /.search-btn-area -->
 </section>
 
@@ -54,22 +54,22 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>보내는 사람</span>
+                        <span>{{ __('msg.SENDER') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>받는 사람</span>
+                        <span>{{ __('msg.RECIPIENT') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>메시지 내용</span>
+                        <span>{{ __('msg.MSG_CONTENT') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>발송 일시</span>
+                        <span>{{ __('msg.SEND_DATE') }}</span>
                     </div>
                 </th>
             </tr>

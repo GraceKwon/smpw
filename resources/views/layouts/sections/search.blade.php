@@ -162,7 +162,7 @@
             @foreach ($inputTexts as $inputText)
                 <div class="search-form-item">
                     <label class="label" for="{{ $inputText['id'] }}">{{ $inputText['label'] }}</label>
-                    <input type="text" class="form-control" id="{{ $inputText['id'] }}" name="{{ $inputText['id'] }}" value="{{ request($inputText['id']) }}" placeholder="입력해 주세요">
+                    <input type="text" class="form-control" id="{{ $inputText['id'] }}" name="{{ $inputText['id'] }}" value="{{ request($inputText['id']) }}" placeholder="{{ __('msg.ENTER_INPUT_NAME') }}">
                 </div> <!-- /.search-form-item -->
             @endforeach
         @endif
@@ -172,7 +172,7 @@
             <label class="label" for="Start{{ $inputDate['id'] }}">{{ $inputDate['label'] }}</label>
             <div class="date-wrap">
                 <div class="input-group">
-                    <input type="date" class="form-control" id="{{ 'Start' . $inputDate['id'] }}" name="{{ 'Start' . $inputDate['id'] }}" value="{{ request('Start'.$inputDate['id']) }}" placeholder="시작 날자를 전체해 주세요">
+                    <input type="date" class="form-control" id="{{ 'Start' . $inputDate['id'] }}" name="{{ 'Start' . $inputDate['id'] }}" value="{{ request('Start'.$inputDate['id']) }}" placeholder="{{ __('msg.SELECT_START_DATE') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <i class="far fa-calendar-alt"></i>
@@ -181,7 +181,7 @@
                 </div>
                 <div class="div">~</div>
                 <div class="input-group">
-                    <input type="date" class="form-control" id="{{ 'End' . $inputDate['id'] }}" name="{{ 'End' . $inputDate['id'] }}" value="{{ request('End'.$inputDate['id']) }}" placeholder="마지막 날자를 전체해 주세요">
+                    <input type="date" class="form-control" id="{{ 'End' . $inputDate['id'] }}" name="{{ 'End' . $inputDate['id'] }}" value="{{ request('End'.$inputDate['id']) }}" placeholder="{{ __('msg.SELECT_END_DATE') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <i class="far fa-calendar-alt"></i>

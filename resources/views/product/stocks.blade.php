@@ -4,9 +4,9 @@
 @push('slot')
 @if(isset($ProductList))
 <div class="search-form-item">
-    <label class="label" for="ServiceZoneID">출판물명</label>
+    <label class="label" for="ServiceZoneID">{{ __('msg.PUB_NAME') }}</label>
     <select class="custom-select" id="" name="ProductID" onchange="submit()">
-        <option value="">전체</option>
+        <option value="">{{ __('msg.ALL') }}</option>
         @foreach ($ProductList as $Product)
             <option @if(request()->ProductID == $Product->ProductID ) selected @endif
             value="{{ $Product->ProductID }}">{{ $Product->ProductName }}</option>
@@ -15,16 +15,16 @@
 </div> <!-- /.search-form-item -->
 @endif
 <div class="search-form-item">
-    <label class="label" for="CreateDate">최근배송일자</label>
-    <date-picker 
-        v-model="CreateDate" 
+    <label class="label" for="CreateDate">{{ __('msg.L_DELIVERY_DATE') }}</label>
+    <date-picker
+        v-model="CreateDate"
         :input-id="'CreateDate'"
         :input-name="'CreateDate'"
         :input-class="'form-control'"
         :value-type="'format'"
         :icon-day="31"
         {{-- :clearable="false" --}}
-        :lang="lang" 
+        :lang="lang"
         :range="true"
         width="260"
         >
@@ -46,37 +46,37 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>도시</span>
+                        <span>{{ __('msg.CITY') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>지역</span>
+                        <span>{{ __('msg.A') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>분류</span>
+                        <span>{{ __('msg.C') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>약호</span>
+                        <span>{{ __('msg.CODE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>출판물명</span>
+                        <span>{{ __('msg.PUB_NAME') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>수량</span>
+                        <span>{{ __('msg.Q') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>최근배송일자</span>
+                        <span>{{ __('msg.L_DELIVERY_DATE') }}</span>
                     </div>
                 </th>
             </tr>
@@ -85,7 +85,7 @@
                 {{--  {{ dd( count( $ProductStockList) ) }}  --}}
                 @if( count( $ProductStockList) === 0)
                 <tr>
-                    <td colspan="11">조회 결과가 없습니다.</td>
+                    <td colspan="11">{{ __('msg.NO_SEARCH_RESULTS') }}</td>
                 </tr>
                 @endif
                 @foreach ($ProductStockList as $ProductStock)
@@ -121,20 +121,20 @@
     </div>
     <div class="btn-flex-area btn-flex-row justify-content-between mt-3">
         <div class="d-flex">
-            <button type="button" 
+            <button type="button"
                 class="btn btn-success"
                 @if(!$ProductStockList->count())
-                    disabled 
+                    disabled
                 @endif
                 @click="_export">
-                엑셀파일 다운로드
+                {{ __('msg.EXCEL_DOWN') }}
             </button>
         </div>
         <div class="d-flex">
-            @if( (session('auth.CircuitID') ?? request()->CircuitID) ) 
+            @if( (session('auth.CircuitID') ?? request()->CircuitID) )
                 <button type="button" class="btn btn-primary"
                 onclick="location.href='/{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}'">
-                    재고수량관리</button>
+                    {{ __('msg.재고수량관리') }}</button>
             @endif
         </div>
     </div>
@@ -150,8 +150,8 @@
         mixins: [datepickerLang],
         data:{
             CreateDate: [
-                '{{ request()->StartDate }}', 
-                '{{ request()->EndDate }}', 
+                '{{ request()->StartDate }}',
+                '{{ request()->EndDate }}',
             ],
         },
         computed:{

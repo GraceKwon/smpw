@@ -14,13 +14,13 @@
         <tbody>
         <tr>
             <th>
-                <label class="label">보낸사람</label>
+                <label class="label">{{ __('msg.SENDER') }}</label>
             </th>
             <td>
                 <div>{{ $letter->AdminName }}</div>
             </td>
             <th>
-                <label class="label">받는사람</label>
+                <label class="label">{{ __('msg.RECIPIENT') }}</label>
             </th>
             <td>
                 <div>{{ $letter->ReceiveAdminName }}</div>
@@ -28,17 +28,17 @@
         </tr>
         <tr>
             <th>
-                <label class="label">제목</label>
+                <label class="label">{{ __('msg.TITLE') }}</label>
             </th>
             <td colspan="3">
                 <div class="text-primary font-weight-bold">{{ $letter->Title }}</div>
             </td>
         </tr>
-        
+
         @if ( count($Files) )
         <tr>
             <th>
-                <label class="label">첨부파일</label>
+                <label class="label">{{ __('msg.ATT_FILE') }}</label>
             </th>
             <td colspan="3">
                 @foreach ($Files as $File)
@@ -49,7 +49,7 @@
         @endif
         <tr>
             <th>
-                <label class="label">메시지</label>
+                <label class="label">{{ __('msg.MSG_CONTENT') }}</label>
             </th>
             <td colspan="3">
                 <div>
@@ -60,14 +60,14 @@
         </tbody>
     </table>
     <div class="btn-flex-area justify-content-end mt-3">
-            <button 
-                type="button" 
+            <button
+                type="button"
                 class="btn btn-secondary"
-                onclick="location.href='{{ url()->previous() }}'">취소</button>
-            <button 
-                type="button" 
+                onclick="location.href='{{ url()->previous() }}'">{{ __('msg.CANCEL') }}</button>
+            <button
+                type="button"
                 class="btn btn-primary"
-                onclick="location.href='/sent/0'">메시지보내기</button>
+                onclick="location.href='/sent/0'">{{ __('msg.SEND_MSG') }}</button>
     </div>
 </section>
 @endsection

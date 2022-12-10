@@ -2,25 +2,25 @@
 @section('content')
     @push('slot')
         <div class="search-form-item">
-            <label class="label">집계 조건</label>
-                <input type="radio" class="custom-radio mt-2" id="radioMetro" name="TypeID" 
+            <label class="label">{{ __('msg.COUNT_PRE') }}</label>
+                <input type="radio" class="custom-radio mt-2" id="radioMetro" name="TypeID"
                     @if(request()->TypeID === '1') checked @endif
                     value="1">
-                <label class="mr-3  mt-2" for="radioMetro">도시</label>
+                <label class="mr-3  mt-2" for="radioMetro">{{ __('msg.CITY') }}</label>
 
-                <input type="radio" class="custom-radio" id="radioCircuit" name="TypeID" 
+                <input type="radio" class="custom-radio" id="radioCircuit" name="TypeID"
                     @if(request()->TypeID === '2') checked @endif
                     value="2">
-                <label class="mr-3" for="radioCircuit">도시+지역</label>
+                <label class="mr-3" for="radioCircuit">{{ __('msg.CITY') }}+{{ __('msg.A') }}</label>
 
-                <input type="radio" id="radioCong" name="TypeID" 
+                <input type="radio" id="radioCong" name="TypeID"
                     @if(request()->TypeID === '3') checked @endif
                     value="3">
-                <label class="mr-3" for="radioCong">도시+지역+회중</label>
-        </div> 
-    @endpush    
+                <label class="mr-3" for="radioCong">{{ __('msg.CITY') }}+{{ __('msg.A') }}+{{ __('msg.CGN') }}</label>
+        </div>
+    @endpush
     @include('layouts.sections.search')
-                
+
 <section class="section-table-section">
     <div class="table-responsive">
         <table class="table table-center table-font-size-90">
@@ -33,47 +33,47 @@
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>도시</span>
+                            <span>{{ __('msg.CITY') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>지역</span>
+                            <span>{{ __('msg.A') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>회중</span>
+                            <span>{{ __('msg.CGN') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>형제</span>
+                            <span>{{ __('msg.BRO') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>자매</span>
+                            <span>{{ __('msg.SIS') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>졍규</span>
+                            <span>{{ __('msg.REGULAR') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>고정봉사자</span>
+                            <span>{{ __('msg.FP') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>1년내참여자</span>
+                            <span>{{ __('msg.PW1') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>장기미참여자</span>
+                            <span>{{ __('msg.NON_PARTI') }}</span>
                         </div>
                     </th>
                 </tr>
@@ -123,7 +123,7 @@
             @endif
             @click="_export"
         >
-            엑셀파일 다운로드
+            {{ __('msg.EXCEL_DOWN') }}
         </button>
     </div>
     {{ $StatisticListList->appends( request()->all() )->links() }}

@@ -13,7 +13,7 @@
             <tbody>
             <tr>
                 <th>
-                    <label class="label" for="OrderNum">우선 순위</label>
+                    <label class="label" for="OrderNum">{{ __('msg.PRI') }}</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
@@ -21,7 +21,7 @@
                             id="OrderNum"
                             name="OrderNum"
                             v-model="OrderNum">
-                            <option value="" selected>선택해 주세요</option>
+                            <option value="" selected>{{ __('msg.P_SELECT') }}</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -44,7 +44,7 @@
                     </div>
                 </td>
                 <th>
-                    <label class="label" for="ZoneAlias">구역 약호</label>
+                    <label class="label" for="ZoneAlias">{{ __('msg.AREA_CODE') }}</label>
                 </th>
                 <td>
                     <input type="text"
@@ -52,7 +52,7 @@
                         id="ZoneAlias"
                         name="ZoneAlias"
                         v-model="ZoneAlias"
-                        placeholder="구역 약호를 입력해 주세요">
+                        placeholder="{{ __('msg.ENTER_CODE') }}">
                     @error('ZoneAlias')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -60,7 +60,7 @@
             </tr>
             <tr>
                 <th>
-                    <label class="label" for="ZoneName">구역 명칭</label>
+                    <label class="label" for="ZoneName">{{ __('msg.AREA_NAME') }}</label>
                 </th>
                 <td colspan="3">
                     <input type="text"
@@ -68,7 +68,7 @@
                         id="ZoneName"
                         name="ZoneName"
                         v-model="ZoneName"
-                        placeholder="구역명칭을 입력해 주세요">
+                        placeholder="{{ __('msg.ENTER_NAME') }}">
                     @error('ZoneName')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -76,7 +76,7 @@
             </tr>
             <tr>
                 <th>
-                    <label class="label" for="Latitude">위도</label>
+                    <label class="label" for="Latitude">{{ __('msg.LA') }}</label>
                 </th>
                 <td>
                     <div class="register-form-container inline-responsive">
@@ -85,7 +85,7 @@
                             id="Latitude"
                             name="Latitude"
                             v-model="Latitude"
-                            placeholder="지도에 선택된 구역의 위도가 표시됩니다."
+                            placeholder="{{ __('msg.LA_MAP_SELECT') }}"
                             readonly>
                         @error('Latitude')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -93,7 +93,7 @@
                     </div>
                 </td>
                 <th>
-                    <label class="label" for="Longitude">경도</label>
+                    <label class="label" for="Longitude">{{ __('msg.LO') }}</label>
                 </th>
                 <td>
                     <div class="register-form-container inline-responsive">
@@ -102,7 +102,7 @@
                             id="Longitude"
                             name="Longitude"
                             v-model="Longitude"
-                            placeholder="지도에 선택된 구역의 경도가 표시됩니다."
+                            placeholder="{{ __('msg.LO_MAP_SELECT') }}"
                             readonly>
                         @error('Longitude')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -112,23 +112,23 @@
             </tr>
             <tr>
                 <th>
-                    <label class="label">지도에서 선택</label>
+                    <label class="label">{{ __('msg.CHOOSE_MAP') }}</label>
                 </th>
                 <td colspan="3" style="position:relative">
                     <div ref="map" class="map p-3 text-muted font-size-80"></div>
                     <div>
-                        <input type="text" placeholder="주소만 입력 가능합니다."
+                        <input type="text" placeholder="{{ __('msg.ONLY_ADDR_ENTER') }}"
                             @keyup.enter="_addressSearch"
                             v-model="search">
                         <button type="button" class="btn-xsm btn-primary"
-                            @click="_addressSearch">검색</button>
+                            @click="_addressSearch">{{ __('msg.SEARCH') }}</button>
                         <span class="text-center" v-html="alertMessage"></span>
                     </div>
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label class="label" for="ZoneAddress">구역 주소</label>
+                    <label class="label" for="ZoneAddress">{{ __('msg.AA') }}</label>
                 </th>
                 <td colspan="3">
                     <input type="text"
@@ -136,7 +136,7 @@
                         id="ZoneAddress"
                         name="ZoneAddress"
                         v-model="ZoneAddress"
-                        placeholder="지도에 선택된 구역의 주소가 표시됩니다."
+                        placeholder="{{ __('msg.DISPLAY_MAP_ADDR_SELECTED') }}"
                         readonly>
                     @error('ZoneAddress')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -161,6 +161,7 @@
 @section('script')
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1a62bf5219322c8e2986927437b48d8d&libraries=services"></script>
 <script>
+    //TODO MAP 에 대한 지원을 어떻게 할건인가?
     var app = new Vue({
         el:'#wrapper-body',
         data:{

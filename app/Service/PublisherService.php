@@ -27,11 +27,11 @@ class PublisherService
         $ServiceYoil = request()->ServiceYoil ?? '월';
         $ArrayServiceTimePublisher = $this->getArrayServiceTimePublisher();
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
-        $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
+        $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [
                 session('auth.CircuitID') ?? request()->CircuitID,
                 request()->ServiceYoil ?? '월',
             ]);
-        
+
         foreach ((array) $res as $key => $ServiceTime) {
             $sort[$key] = $ServiceTime->ServiceTime;
         }
@@ -48,16 +48,14 @@ class PublisherService
                         'PublisherCnt' => $ServiceTime->PublisherCnt,
                         'LeaderCnt' => $ServiceTime->LeaderCnt,
                         'ServiceTimeID' => $ServiceTime->ServiceTimeID,
-                        'ServiceSetType' => 
-                            isset( $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key] )
-                            ? $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key]
-                            : '미지정',
+                        'ServiceSetType' =>
+                            $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key] ??
+                            __('msg.ServiceTimeSets'),
                     ];
-                
 
                 if( empty( $array[$key][$ServiceZone->ServiceZoneID] ) )
                     $array[$key][$ServiceZone->ServiceZoneID] = [];
- 
+
             }
         }
         return $array ?? null;
@@ -84,9 +82,9 @@ class PublisherService
         foreach( ['월', '화', '수', '목', '금', '토', '일'] as $weekday ){
             if( isset($array[$weekday]) ) $sort_array[$weekday] = $array[$weekday];
         }
-        
+
         return $sort_array ?? [];
-        
+
     }
 
 }

@@ -3,16 +3,16 @@
 
         @if(isset($MetroList))
         <div class="search-form-item">
-            <label class="label" for="MetroID">도시</label>
-            <select class="custom-select" 
+            <label class="label" for="MetroID">{{ __('msg.CITY') }}</label>
+            <select class="custom-select"
             {{-- @if(session('auth.MetroID')) disabled  @endif --}}
-                id="MetroID" name="MetroID" 
+                id="MetroID" name="MetroID"
                 onchange="document.getElementById('CircuitID').value = '';
-                    if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
-                    if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = ''; 
+                    if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = '';
+                    if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = '';
                     submit()"
                     >
-                @if(!session('auth.MetroID')) <option value="">선택</option>  @endif
+                @if(!session('auth.MetroID')) <option value="">{{ __('msg.SELECT') }}</option>  @endif
                 @foreach ($MetroList as $Metro)
                     @if(!session('auth.MetroID') || session('auth.MetroID') ==  $Metro->MetroID)
                         <option @if(session('auth.MetroID') == $Metro->MetroID || request()->MetroID == $Metro->MetroID) selected @endif
@@ -25,14 +25,14 @@
 
         @if(isset($CircuitList))
         <div class="search-form-item">
-            <label class="label" for="CircuitID">지역</label>
-            <select class="custom-select" 
+            <label class="label" for="CircuitID">{{ __('msg.A') }}</label>
+            <select class="custom-select"
                 {{-- @if(session('auth.CircuitID')) disabled  @endif --}}
-                id="CircuitID" name="CircuitID" 
-                onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = ''; 
-                    if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = ''; 
+                id="CircuitID" name="CircuitID"
+                onchange="if(document.getElementById('CongregationID') !== null) document.getElementById('CongregationID').value = '';
+                    if(document.getElementById('ServiceZoneID') !== null) document.getElementById('ServiceZoneID').value = '';
                     submit()">
-                @if(!session('auth.CircuitID')) <option value="">선택</option>  @endif
+                @if(!session('auth.CircuitID')) <option value="">{{ __('msg.SELECT') }}</option>  @endif
                 @foreach ($CircuitList as $Circuit)
                     @if(!session('auth.CircuitID') || session('auth.CircuitID') == $Circuit->CircuitID)
                         <option @if(session('auth.CircuitID') == $Circuit->CircuitID || request()->CircuitID == $Circuit->CircuitID) selected @endif
@@ -45,9 +45,9 @@
 
         @if(isset($ReceiveGroupList))
         <div class="search-form-item">
-            <label class="label" for="ReceiveGroupID">대상</label>
+            <label class="label" for="ReceiveGroupID">{{ __('msg.TG') }}</label>
             <select class="custom-select" id="ReceiveGroupID" name="ReceiveGroupID" onchange="submit()">
-                <option value="">선택</option>
+                <option value="">{{ __('msg.SELECT') }}</option>
                 @foreach ($ReceiveGroupList as $ReceiveGroup)
                     <option @if(request()->ReceiveGroupID == $ReceiveGroup->ID ) selected @endif
                         value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
@@ -58,7 +58,7 @@
 
         @stack('slot')
         <div class="search-btn-area">
-            <button type="submit" class="btn btn-primary">조회</button>
+            <button type="submit" class="btn btn-primary">{{ __('msg.SE') }}</button>
         </div> <!-- /.search-btn-area -->
 
     </section>

@@ -29,6 +29,7 @@
                                     <td>
                                         <select class="custom-select custom-select-sm"
                                             v-model="CancelTypeID">
+                                            <!-- TODO 취소사유.. DB에서 한글로 내려주는 듯 -->
                                             @foreach ($CancelTypeList as $CancelType)
                                                 @if($CancelType->Item === '날씨'
                                                 || $CancelType->Item === '인원부족'
@@ -46,8 +47,8 @@
                         </div>
                     </div>
                     <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">닫기</button>
-                        <button class="btn btn-primary btn-sm" @click="_submit">일정 삭제</button>
+                        <button class="btn btn-outline-secondary btn-sm" @click="$emit('close')">{{ __('msg.CLOSE') }}</button>
+                        <button class="btn btn-primary btn-sm" @click="_submit">{{ __('msg.CANCEL_SERVICE') }}</button>
                     </div>
                 </div>
             </div> <!-- /.mlp-wrap -->

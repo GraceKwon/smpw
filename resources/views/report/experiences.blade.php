@@ -3,16 +3,16 @@
 
 @push('slot')
 <div class="search-form-item">
-        <label class="label" for="CreateDate">작성일자</label>
-        <date-picker 
-            v-model="CreateDate" 
+        <label class="label" for="CreateDate">{{ __('msg.DP') }}</label>
+        <date-picker
+            v-model="CreateDate"
             :input-id="'CreateDate'"
             :input-name="'CreateDate'"
             :input-class="'form-control'"
             :value-type="'format'"
             :icon-day="31"
             {{-- :clearable="false" --}}
-            :lang="lang" 
+            :lang="lang"
             :range="true"
             width="260"
             >
@@ -22,28 +22,28 @@
 @include('layouts.sections.search', [
     'inputTexts' => [
             [
-                'label' => '보조자이름',
+                'label' => __('msg.ANAME'),
                 'id' =>'AdminName'
             ],
             [
-                'label' => '전도인이름',
+                'label' => __('msg.PLISH_NAME'),
                 'id' =>'PublisherName'
             ]
     ],
     'selectBoxs' => [
-            [ 
-                'label' => '확인여부',
+            [
+                'label' => __('msg.REV'),
                 'id' => 'BranchConfirmYn',
                 'options' => [
                     [
-                        'label' => '열람',
+                        'label' => __('msg.YES'),
                         'value' => '1',
                     ],
                     [
-                        'label' => '미열람',
+                        'label' => __('msg.NO'),
                         'value' => '0',
                     ]
-                ] 
+                ]
             ],
     ]
 
@@ -62,47 +62,47 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>도시</span>
+                        <span>{{ __('msg.CITY') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>지역</span>
+                        <span>{{ __('msg.A') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>보조자이름</span>
+                        <span>{{ __('msg.ANAME') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>전도인이름</span>
+                        <span>{{ __('msg.PLISH_NAME') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>성별</span>
+                        <span>{{ __('msg.GENDER') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>회중명</span>
+                        <span>{{ __('msg.CGN') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>연락처</span>
+                        <span>{{ __('msg.TEL') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>작성일자</span>
+                        <span>{{ __('msg.DATE_OF_PRE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>확인여부</span>
+                        <span>{{ __('msg.REV') }}</span>
                     </div>
                 </th>
             </tr>
@@ -150,7 +150,7 @@
     </div>
     @if(session('auth.CircuitID'))
         @include('layouts.sections.registrationButton', [
-                'label' => '경험담 보고',
+                'label' => __('msg.RO'),
             ])
     @endif
     {{ $ExperienceList->appends( request()->all() )->links() }}
@@ -166,8 +166,8 @@
         mixins: [datepickerLang],
         data:{
             CreateDate: [
-                    '{{ request()->StartDate }}', 
-                    '{{ request()->EndDate }}', 
+                    '{{ request()->StartDate }}',
+                    '{{ request()->EndDate }}',
                 ],
         },
     })

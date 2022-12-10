@@ -3,15 +3,15 @@
 @push('slot')
 <div class="search-form-item">
         <label class="label" for="CreateDate">요청일자</label>
-        <date-picker 
-            v-model="CreateDate" 
+        <date-picker
+            v-model="CreateDate"
             :input-id="'CreateDate'"
             :input-name="'CreateDate'"
             :input-class="'form-control'"
             :value-type="'format'"
             :icon-day="31"
             {{-- :clearable="false" --}}
-            :lang="lang" 
+            :lang="lang"
             :range="true"
             width="260"
             >
@@ -21,11 +21,11 @@
 @include('layouts.sections.search', [
     'inputTexts' => [
             [
-                'label' => '전도인이름',
+                'label' => __('ms   g.PLISH_NAME'),
                 'id' =>'PublisherName'
             ],
             [
-                'label' => '관심자이름',
+                'label' => __('msg.INTEREST_ONE_NAME'),
                 'id' =>'InsteresterName'
             ]
         ]
@@ -43,67 +43,67 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>도시</span>
+                        <span>{{ __('msg.CITY') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>순회구</span>
+                        <span>{{ __('msg.AREA') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>회중</span>
+                        <span>{{ __('msg.CGN') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>이름</span>
+                        <span>{{ __('msg.NAME') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>성별</span>
+                        <span>{{ __('msg.GENDER') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>연락처</span>
+                        <span>{{ __('msg.TEL') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>관심자이름</span>
+                        <span>{{ __('msg.INTEREST_ONE_NAME') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>성별</span>
+                        <span>{{ __('msg.GENDER') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>거주지역</span>
+                        <span>{{ __('msg.RD') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>연락처</span>
+                        <span>{{ __('msg.TEL') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>작성일자</span>
+                        <span>{{ __('msg.DP') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>보조자확인</span>
+                        <span>{{ __('msg.AC') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>처리일자</span>
+                        <span>{{ __('msg.PDATA') }}</span>
                     </div>
                 </th>
             </tr>
@@ -173,8 +173,8 @@
         mixins: [datepickerLang],
         data:{
             CreateDate: [
-                    '{{ request()->StartDate }}', 
-                    '{{ request()->EndDate }}', 
+                    '{{ request()->StartDate }}',
+                    '{{ request()->EndDate }}',
                 ],
         }
     })

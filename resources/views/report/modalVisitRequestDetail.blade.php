@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            방문요청 목록
+                            {{ __('msg.LIST_VISIT_REQUEST') }}
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -16,15 +16,15 @@
                             <table class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <th>도시</th>
+                                    <th>{{ __('msg.CITY') }}</th>
                                     <td>{{ getMetroName() }}</td>
-                                    <th>지역</th>
+                                    <th>{{ __('msg.A') }}</th>
                                     <td>{{ getCircuitName() }}</td>
                                 </tr>
                                 <tr>
-                                    <th>구역</th>
+                                    <th>{{ __('msg.ZONE') }}</th>
                                     <td>@{{ ZoneName }}</td>
-                                    <th>시간대</th>
+                                    <th>{{ __('msg.SLOT') }}</th>
                                     <td>@{{ ServiceTime }}</td>
                                 </tr>
                                 </tbody>
@@ -35,10 +35,10 @@
                                 <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>보고자</th>
-                                    <th>관심자</th>
-                                    <th>성별</th>
-                                    <th>주소</th>
+                                    <th>{{ __('msg.REPORTER') }}</th>
+                                    <th>{{ __('msg.INTEREST_ONE') }}</th>
+                                    <th>{{ __('msg.GENDER') }}</th>
+                                    <th>{{ __('msg.ADDR') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -62,8 +62,8 @@
                         </div>
                     </div>
                     <div class="mlp-footer justify-content-end">
-                        <button class="btn btn-outline-secondary btn-sm" 
-                            @click="$emit('close')">닫기</button>
+                        <button class="btn btn-outline-secondary btn-sm"
+                            @click="$emit('close')">{{ __('msg.CLOSE') }}</button>
                     </div>
                 </div>
             </div> <!-- /.mlp-wrap -->

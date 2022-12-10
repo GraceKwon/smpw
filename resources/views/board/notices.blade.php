@@ -14,43 +14,43 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>도시</span>
+                        <span>{{ __('msg.CITY') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>지역(순회구)</span>
+                        <span>{{ __('msg.A') }}({{ __('msg.AREA') }})</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>열람대상</span>
+                        <span>{{ __('msg.RT') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>제목</span>
+                        <span>{{ __('msg.TITLE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>작성자</span>
+                        <span>{{ __('msg.WRITER') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>조회수</span>
+                        <span>{{ __('msg.VIEWS') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>작성일자</span>
+                        <span>{{ __('msg.DATE_OF_PRE') }}</span>
                     </div>
                 </th>
             </tr>
             </thead>
             <tbody>
-         
+
 
             @foreach ($NoticeList as $Notice)
                 <tr class="pointer"
@@ -92,18 +92,18 @@
             @endforeach
             @if (count($NoticeList) === 0)
                 <tr>
-                    <td colspan="8">데이터가 없습니다.</td>
+                    <td colspan="8">{{ __('msg.NO_DATA') }}</td>
                 </tr>
-            @endif  
+            @endif
             </tbody>
         </table>
     </div>
     <div class="btn-flex-area justify-content-end mt-3">
-        <button 
-            type="button" 
-            class="btn btn-primary" 
+        <button
+            type="button"
+            class="btn btn-primary"
             onclick="location.href='/notices/0/form'">
-            공지사항 등록
+            {{ __('msg.NOTICE_REG') }}
         </button>
     </div>
     {{ $NoticeList->appends( request()->all() )->links() }}

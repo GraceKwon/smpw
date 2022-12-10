@@ -6,7 +6,7 @@
         <div class="alert alert-danger">{!! $message !!}</div>
     @enderror
     <form method="POST"
-        @submit="_confirm" 
+        @submit="_confirm"
         @keydown.enter.prevent>
         @method("PUT")
         @csrf
@@ -16,27 +16,27 @@
                 <tr>
                     <th>
                         <div class="min-width">
-                            <span>분류</span>
+                            <span>{{ __('msg.C') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>약호</span>
+                            <span>{{ __('msg.CODE') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>출판물명</span>
+                            <span>{{ __('msg.PUB_NAME') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>현재 재고량</span>
+                            <span>{{ __('msg.CS') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>변경</span>
+                            <span>{{ __('msg.CHANGES') }}</span>
                         </div>
                     </th>
                 </tr>
@@ -45,7 +45,7 @@
                     {{--  {{ dd( count( $ProductStockList) ) }}  --}}
                     @if( count( $ProductStockList) === 0)
                     <tr>
-                        <td colspan="5">조회 결과가 없습니다.</td>
+                        <td colspan="5">{{ __('msg.NO_SEARCH_RESULTS') }}</td>
                     </tr>
                     @endif
                     @foreach ($ProductStockList as $ProductStock)
@@ -66,7 +66,7 @@
                                 value="{{ $ProductStock->StockCnt }}">
                         </td>
                         <td>
-                            <input type="text" 
+                            <input type="text"
                                 class="form-control"
                                 @keyup="_qty"
                                 name="Qty[]">
@@ -80,10 +80,10 @@
             </table>
         </div>
         <div class="btn-flex-area justify-content-end mt-3">
-            <button type="button" class="btn btn-secondary" 
-            onclick="location.href = '/{{ getTopPath() }}'">취소</button>
+            <button type="button" class="btn btn-secondary"
+            onclick="location.href = '/{{ getTopPath() }}'">{{ __('msg.CANCEL') }}</button>
             <button type="submit" class="btn btn-primary">
-                저장</button> 
+                {{ __('msg.SAVE') }}</button>
         </div>
     </form>
     {{ $ProductStockList->appends( request()->all() )->links() }}
@@ -99,8 +99,8 @@
         mixins: [datepickerLang],
         data:{
             CreateDate: [
-                '{{ request()->StartDate }}', 
-                '{{ request()->EndDate }}', 
+                '{{ request()->StartDate }}',
+                '{{ request()->EndDate }}',
             ],
         },
         methods:{
@@ -108,11 +108,11 @@
                 e.target.value = e.target.value.replace(/[^0-9]/g, '')
             },
             _confirm: function (e) {
-                var res = confirm('저장 하시겠습니까?');
+                var res = confirm('{{ __('msg.YOU_SAVE') }}');
                 if(!res){
                     e.preventDefault();
                 }
-                
+
             },
 
         }

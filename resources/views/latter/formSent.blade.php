@@ -5,14 +5,14 @@
         <tbody>
         <tr>
             <th>
-                <label class="label">보내는사람</label>
+                <label class="label">{{ __('msg.SENDER') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">
-                    <select 
+                    <select
                         class="custom-select"
                         v-model="form.AdminID">
-                        <option value="{{ session('auth.AdminID') }}" 
+                        <option value="{{ session('auth.AdminID') }}"
                             selected>{{ session('auth.AdminName') }}</option>
                     </select>
                 </div>
@@ -25,90 +25,90 @@
                     <input type="text"
                         class="form-control mr-1"
                         v-model="searchAdmin"
-                        placeholder="수신대상 검색">
-                    <select 
+                        placeholder="{{ __('msg.RECI_SEARCH') }}">
+                    <select
                         id="ReceiveAdminID"
                         style="width: 200px"
                         class="custom-select"
                         :class="{'is-invalid': validation.ReceiveAdminID}"
                         v-model="form.ReceiveAdminID">
-                        <option value="">선택</option>
+                        <option value="">{{ __('msg.SELECT') }}</option>
                         <option v-for="(receiveAdmin, index) in receiveAdmins"
                             :value="receiveAdmin.AdminID">@{{receiveAdmin.AdminName }}</option>
-                      
+
                     </select>
                     <div class="invalid-feedback" v-if="validation.Title">
                         @{{ validation.ReceiveAdminID[0] }}
-                    </div> 
-                    
+                    </div>
+
                 </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label">제목</label>
+                <label class="label">{{ __('msg.TITLE') }}</label>
             </th>
             <td colspan="3">
-                <input type="text" 
+                <input type="text"
                     class="form-control"
                     :class="{'is-invalid': validation.Title}"
-                    v-model="form.Title" 
-                    placeholder="제목을 입력해 주세요">
+                    v-model="form.Title"
+                    placeholder="{{ __('msg.INPUT_SUBJECT') }}">
                 <div class="invalid-feedback" v-if="validation.Title">
                     @{{ validation.Title[0] }}
-                </div>            
+                </div>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label">첨부파일</label>
+                <label class="label">{{ __('msg.ATT_FILE') }}</label>
             </th>
-            <td colspan="3">    
+            <td colspan="3">
                 <div id="drop-zone">
                     <div v-for="(file, index) in form.Files">
-                        <span style="font-size: 15px; color:#4b5aaa">@{{ file.name }}</span> 
+                        <span style="font-size: 15px; color:#4b5aaa">@{{ file.name }}</span>
                         <i @click="delFile(index)" class="fas fa-times-circle pointer"></i>
                     </div>
                     <div class="here" v-if="form.Files.length === 0">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <br />
-                        여기에 파일을 올려 놓으세요
+                        {{ __('msg.PUT_UR_FILE') }}
                     </div>
                 </div>
-                <button type="button" class="btn-primary mt-2" @click="selFile">파일선택</button>
+                <button type="button" class="btn-primary mt-2" @click="selFile">{{ __('msg.SF') }}</button>
 
                 <input type="file" class="hide" ref="inputFile" multiple>
             </td>
         </tr>
         <tr>
             <th>
-                <label class="label">메시지 입력</label>
+                <label class="label">{{ __('msg.MSG_CONTENT') }}</label>
             </th>
             <td colspan="3">
-                <div 
-                    class="invalid-feedback" 
-                    v-if="validation.Contents" 
+                <div
+                    class="invalid-feedback"
+                    v-if="validation.Contents"
                     style="display: block">
                     @{{ validation.Contents[0] }}
                 </div>
-                <textarea 
-                    v-model="form.Contents" 
-                    class="form-control" 
-                    name="notice-board" 
+                <textarea
+                    v-model="form.Contents"
+                    class="form-control"
+                    name="notice-board"
                     id="notice-board"></textarea>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="btn-flex-area justify-content-end">
-        <button 
-            type="button" 
+        <button
+            type="button"
             class="btn btn-secondary"
-            onclick="location.href='/sent'">취소</button>
-        <button 
-            type="button" 
-            class="btn btn-primary" 
-            @click="trySubmit">보내기</button>
+            onclick="location.href='/sent'">{{ __('msg.CANCEL') }}</button>
+        <button
+            type="button"
+            class="btn btn-primary"
+            @click="trySubmit">{{ __('msg.SEND_MSG') }}</button>
     </div> <!-- /.register-btn-area -->
 </section>
 @endsection
@@ -177,7 +177,7 @@
                             if (data.items[i].kind == "file") {
                                 var file = data.items[i].getAsFile();
                                 console.log(file)
-                                app.pushFile(file)    
+                                app.pushFile(file)
                             }
                         }
                     } else {
@@ -191,10 +191,10 @@
                 file.onchange = function () {
                     var fileList = file.files;
                     for (var i = 0; i < fileList.length; i++) {
-                        app.pushFile(fileList[i])         
+                        app.pushFile(fileList[i])
                     }
                 };
-            
+
             })
         },
         methods:{
@@ -211,17 +211,17 @@
             },
             pushFile: function(file) {
                 if (this.fileSize >= 20000000) {
-                    alert('용량이 초과 되었습니다.')
+                    alert('{{ __('msg.CAP_BEEN_EXCEED') }}')
                     return false
                 }
                 if (this.form.Files.length >= 20) {
-                    alert('더이상 등록할 수 없습니다.')
+                    alert('{{ __('msg.NO_LONGER') }}')
                     return false
                 }
                 for (let index = 0; index < this.form.Files.length; index++) {
                     if (this.form.Files[index].name == file.name) {
-                        alert('이미 등록된 파일입니다.')
-                        return false                                            
+                        alert('{{ __('msg.ALREADY_REGISTER') }}')
+                        return false
                     }
                 }
                 this.form.Files.push(file)

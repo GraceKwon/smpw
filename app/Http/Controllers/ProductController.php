@@ -32,7 +32,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function exportStocks(Request $request) 
+    public function exportStocks(Request $request)
     {
         $fileName = (session('auth.MetroID') ?? $request->MetroID) ? getMetroName() . '_' : '' ;
         $fileName .= (session('auth.CircuitID') ?? $request->CircuitID) ? getCircuitName() . '_' : '' ;
@@ -64,10 +64,10 @@ class ProductController extends Controller
             }
         }
 
-        if( getAffectedRows($res) === 0 ) 
-            return back()->withErrors(['fail' => '변경 실패하였습니다.']);
+        if( getAffectedRows($res) === 0 )
+            return back()->withErrors(['fail' => __('msg.FAIL_CHANGE')]);
         else
-            return redirect('/stocks');  
+            return redirect('/stocks');
     }
 
     public function orders()
@@ -101,21 +101,17 @@ class ProductController extends Controller
 
     public function putOrders(Request $request)
     {
-        if( $request->ProductOrderID !== '0' 
-            && isset($request->InvoiceCode) ){
-
+        if( $request->ProductOrderID !== '0'
+            && isset($request->InvoiceCode) ) {
             $res =  $this->ProductService->putProductOrderInvoice();
 
-            if( getAffectedRows($res) === 0 ) 
-                return back()->withErrors(['fail' => '송장번호 저장 실패하였습니다.']);
-            else
-                return back()->with(['success' => '송장번호 저장 성공하였습니다.']);
-
-        }else if($request->ProductOrderID === '0'){
-
-         
+            if( getAffectedRows($res) === 0 ) {
+                return back()->withErrors(['fail' => __('msg.FAIL_INVOICE_NUM') ]);
+            } else {
+                return back()->with(['success' => __('msg.SAVE_SUCCESS') ]);
+            }
+        } else if($request->ProductOrderID === '0') {
             foreach ($request->ProductID as $index => $ProductID) {
-                
                 $res = DB::select('uspSetStandingProductOrderInsert ?,?,?,?', [
                     session('auth.CircuitID'),
                     session('auth.AdminID'),
@@ -124,27 +120,24 @@ class ProductController extends Controller
                 ]);
             }
 
-            if( getAffectedRows($res) === 0 ) 
-                return back()->withErrors(['fail' => '신청 실패하였습니다.']);
-            else
-                return redirect('/orders');  
-
-        }else{
-
+            if( getAffectedRows($res) === 0 ) {
+                return back()->withErrors(['fail' => __('msg.UR_APPLICATION_FAILED') ]);
+            } else {
+                return redirect('/orders');
+            }
+        } else {
             $res =  DB::select('uspSetStandingProductOrderUpdate ?,?,?', [
                     $request->ProductOrderID,
                     $request->ProductID[0],
                     $request->OrderCnt[0],
                 ]);
-            
-            if( getAffectedRows($res) === 0 ) 
-                return back()->withErrors(['fail' => '수정 실패하였습니다.']);
-            else
-                return back()->with(['success' => '수정 성공하였습니다.']);
 
+            if( getAffectedRows($res) === 0 ) {
+                return back()->withErrors(['fail' => __('msg.MF') ]);
+            } else {
+                return back()->with(['success' => __('msg.MS') ]);
+            }
         }
-                        
-     
     }
 
     public function putMutipleInvoiceCode(Request $request)
@@ -156,7 +149,7 @@ class ProductController extends Controller
                 $this->ProductService->putProductOrderInvoice($ProductOrderID);
             }
         });
-         
+
     }
 
     public function deleteOrders(Request $request)
@@ -165,19 +158,19 @@ class ProductController extends Controller
             $request->ProductOrderID,
         ]);
 
-        if( getAffectedRows($res) === 0 ) 
-            return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
+        if( getAffectedRows($res) === 0 )
+            return back()->withErrors(['fail' => __('msg.DF') ]);
         else
-            return redirect('/orders');   
-     
+            return redirect('/orders');
+
     }
 
-    public function exportOrders(Request $request) 
+    public function exportOrders(Request $request)
     {
         $fileName = (session('auth.MetroID') ?? $request->MetroID) ? getMetroName() . '_' : '' ;
         $fileName .= (session('auth.CircuitID') ?? $request->CircuitID) ? getCircuitName() . '_' : '' ;
         $fileName .= $request->ProductID ? getProductAlias() . '_' : '' ;
-        $fileName .= '출판물신청.xlsx';
+        $fileName .= __('msg.PUB_RE_EXCEL');
 
         return Excel::download(new ProductOrderExport, $fileName);
     }

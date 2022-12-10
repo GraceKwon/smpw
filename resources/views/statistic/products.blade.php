@@ -3,24 +3,24 @@
 @push('slot')
 
     <div class="search-form-item">
-        <label class="label">출판물구분선택</label>
-            <input type="radio" class="custom-radio mt-2" id="radioProduct" name="TypeID" 
+        <label class="label">{{ __('msg.SPC') }}</label>
+            <input type="radio" class="custom-radio mt-2" id="radioProduct" name="TypeID"
                 @if(request()->TypeID === '1') checked @endif
                 value="1">
-            <label class="mr-3  mt-2" for="radioProduct">출판물상세</label>
+            <label class="mr-3  mt-2" for="radioProduct">{{ __('msg.PD') }}</label>
 
-            <input type="radio" class="custom-radio" id="radioLang" name="TypeID" 
+            <input type="radio" class="custom-radio" id="radioLang" name="TypeID"
                 @if(request()->TypeID === '2') checked @endif
                 value="2">
-            <label class="mr-3" for="radioLang">언어상세</label>
-    </div> 
+            <label class="mr-3" for="radioLang">{{ __('msg.LD') }}</label>
+    </div>
     @if(isset($LanguageList))
     <div class="search-form-item">
-        <label class="label" for="LanguageName">언어</label>
-        <select class="custom-select" 
-            id="LanguageName" name="LanguageName" 
+        <label class="label" for="LanguageName">{{ __('msg.LANG') }}</label>
+        <select class="custom-select"
+            id="LanguageName" name="LanguageName"
             onchange="submit()">
-            <option value="">전체</option>
+            <option value="">{{ __('msg.ALL') }}</option>
             @foreach ($LanguageList as $Language)
                 <option @if(request()->LanguageName == $Language->LanguageName ) selected @endif
                 value="{{ $Language->LanguageName }}">{{ $Language->LanguageName }}</option>
@@ -29,22 +29,22 @@
     </div> <!-- /.search-form-item -->
     @endif
     <div class="search-form-item">
-        <label class="label" for="CreateDate">집계기간</label>
-        <date-picker 
-            v-model="CreateDate" 
+        <label class="label" for="CreateDate">{{ __('msg.CP') }}</label>
+        <date-picker
+            v-model="CreateDate"
             :input-id="'CreateDate'"
             :input-name="'CreateDate'"
             :input-class="'form-control'"
             :value-type="'format'"
             :icon-day="31"
             {{-- :clearable="false" --}}
-            :lang="lang" 
+            :lang="lang"
             :range="true"
             width="260"
             >
         </date-picker>
     </div> <!-- /.search-form-item -->
-@endpush    
+@endpush
 @include('layouts.sections.search')
 
 <section class="section-table-section">
@@ -65,31 +65,31 @@
                 @if(request()->TypeID === '1')
                 <th>
                     <div class="min-width">
-                        <span>출판물</span>
+                        <span>{{ __('msg.PUBLICATIONS') }}</span>
                     </div>
                 </th>
                 @endif
                 <th>
                     <div class="min-width">
-                        <span>언어</span>
+                        <span>{{ __('msg.LANG') }}</span>
                     </div>
                 </th>
                 @if(request()->TypeID === '1')
                 <th>
                     <div class="min-width">
-                        <span>배부/방영</span>
+                        <span>{{ __('msg.DB') }}</span>
                     </div>
                 </th>
                 @endif
                 @if(request()->TypeID === '2')
                 <th>
                     <div class="min-width">
-                        <span>출판물배부</span>
+                        <span>{{ __('msg.DOP') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>동영상방영</span>
+                        <span>{{ __('msg.VB') }}</span>
                     </div>
                 </th>
                 @endif
@@ -110,7 +110,7 @@
                 </td>
                 @endif
                 <td>
-                    {{ $row->LanguageName ?? '전체' }}
+                    {{ $row->LanguageName ?? __('msg.ALL') }}
                 </td>
                 <td>
                     {{ $row->ProductQty }}
@@ -132,10 +132,10 @@
             @endif
             @click="_export"
         >
-            엑셀파일 다운로드
+            {{ __('msg.EXCEL_DOWN') }}
         </button>
     </div>
-    
+
 </section>
 @endsection
 
@@ -146,8 +146,8 @@
         mixins: [datepickerLang],
         data:{
             CreateDate: [
-                '{{ request()->StartDate }}', 
-                '{{ request()->EndDate }}', 
+                '{{ request()->StartDate }}',
+                '{{ request()->EndDate }}',
             ],
         },
         computed:{

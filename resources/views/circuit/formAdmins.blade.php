@@ -27,7 +27,7 @@
             <tbody>
                 <tr>
                     <th>
-                        <label class="label" for="Account">아이디</label>
+                        <label class="label" for="Account">{{ __('msg.ID') }}</label>
                     </th>
                     <td colspan="{{ ( isset($Admin->AdminID) ? 0 : 3 ) }}">
                         <div class="inline-responsive">
@@ -36,25 +36,25 @@
                             id="Account"
                             name="Account"
                             v-model="Account"
-                            placeholder="자동으로 생성됩니다"
+                            placeholder="{{ __('msg.CREATE_AUTO') }}"
                             disabled>
                         </div>
                     </td>
                 @if(isset($Admin->AdminID))
                 <th>
-                    <label class="label" for="nameSearch">비밀번호초기화</label>
+                    <label class="label" for="nameSearch">{{ __('msg.PWS') }}</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
                         <button type="button" class="btn btn-primary"
-                            @click="_resetPwd">비밀번호초기화</button>
+                            @click="_resetPwd">{{ __('msg.PWS') }}</button>
                     </div>
                 </td>
                 @endif
             </tr>
             <tr>
                 <th>
-                    <label class="label" for="AdminName">이름</label>
+                    <label class="label" for="AdminName">{{ __('msg.NAME') }}</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
@@ -63,14 +63,14 @@
                             id="AdminName"
                             name="AdminName"
                             v-model="AdminName"
-                            placeholder="이름을 입력해 주세요">
+                            placeholder="{{ __('msg.ENTER_UR_NAME') }}">
                         @error('AdminName')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                 </td>
                 <th>
-                    <label class="label" for="AdminRoleID">권한</label>
+                    <label class="label" for="AdminRoleID">{{ __('msg.PER') }}</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
@@ -78,7 +78,7 @@
                             id="AdminRoleID"
                             name="AdminRoleID"
                             v-model="AdminRoleID">
-                            <option value="">선택</option>
+                            <option value="">{{ __('msg.SELECT') }}</option>
                             @foreach ($AdminRoleList as $AdminRole)
                                 {{-- @if( session('auth.AdminRoleID') === 1
                                 || ($AdminRole->Item === '순회감독자' || $AdminRole->Item === '순회구보조자' || $AdminRole->Item === '조정장로')
@@ -95,7 +95,7 @@
             </tr>
             <tr>
                 <th>
-                    <label class="label" for="MetroID">도시</label>
+                    <label class="label" for="MetroID">{{ __('msg.CITY') }}</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
@@ -103,7 +103,7 @@
                             id="MetroID"
                             name="MetroID"
                             v-model="MetroID">
-                            <option value="">선택</option>
+                            <option value="">{{ __('msg.SELECT') }}</option>
                             @foreach ($MetroList as $Metro)
                                 <option value="{{ $Metro->MetroID }}">{{ $Metro->MetroName }}</option>
                             @endforeach
@@ -114,7 +114,7 @@
                     </div>
                 </td>
                 <th>
-                    <label class="label" for="CircuitID">순회구(지역)</label>
+                    <label class="label" for="CircuitID">{{ __('msg.AREA') }}({{ __('msg.A') }})</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
@@ -122,7 +122,7 @@
                             id="CircuitID"
                             name="CircuitID"
                             v-model="CircuitID">
-                            <option value="">선택</option>
+                            <option value="">{{ __('msg.SELECT') }}</option>
                             <option v-for="Circuit in CircuitList"
                                 :value="Circuit.CircuitID">@{{ Circuit.CircuitName }}</option>
                         </select>
@@ -134,7 +134,7 @@
             </tr>
             <tr>
                 <th>
-                    <label class="label" for="CongregationID">회중</label>
+                    <label class="label" for="CongregationID">{{ __('msg.CGN') }}</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
@@ -143,7 +143,7 @@
                             id="CongregationID"
                             name="CongregationID"
                             v-model="CongregationID">
-                            <option value="">선택</option>
+                            <option value="">{{ __('msg.SELECT') }}</option>
                             <option v-for="Congregation in CongregationList"
                                 :value="Congregation.CongregationID">@{{ Congregation.CongregationName }}</option>
                         </select>
@@ -154,7 +154,7 @@
                 </td>
 
                 <th>
-                    <label class="label" for="Mobile">연락처</label>
+                    <label class="label" for="Mobile">{{ __('msg.TEL') }}</label>
                 </th>
                 <td>
                     <div class="inline-responsive">
@@ -171,7 +171,7 @@
                                     regex:/^\d{2,3}-\d{3,4}-\d{4}$/,
                                 }
                             }"
-                            placeholder="연락처 번호를 입력해 주세요">
+                            placeholder="{{ __('msg.ENTER_UR_PHONE_NUM') }}">
                             @error('Mobile')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -183,13 +183,13 @@
 
         <div class="btn-flex-area justify-content-end">
             <button type="button" class="btn btn-secondary"
-                onclick="location.href = '/{{ getTopPath() }}'">취소</button>
+                onclick="location.href = '/{{ getTopPath() }}'">{{ __('msg.CANCEL') }}</button>
             @if(isset($Admin->AdminID))
                 <button type="button" class="btn btn-point-sub"
-                    @click="_delete">삭제</button>
+                    @click="_delete">{{ __('msg.DEL') }}</button>
             @endif
                 <button type="submit" class="btn btn-primary">
-                    {{ isset($Admin->AdminID) ? '수정' : '저장' }}</button>
+                    {{ isset($Admin->AdminID) ? __('msg.EDIT') : __('msg.SAVE') }}</button>
         </div>
 
     </form>
@@ -271,17 +271,21 @@
                     });
             },
             _confirm: function (e) {
-                var res = confirm('{{ isset($Admin->AdminID) ? '수정' : '저장' }} 하시겠습니까?');
+                var res = confirm('{{ isset($Admin->AdminID) ? __('msg.EDIT') : __('msg.SAVE') }} ?');
                 if(!res){
                     e.preventDefault();
                 }
 
             },
             _delete: function () {
-                if( confirm('삭제 하시겠습니까?') ) this.$refs.formDelete.submit()
+                if (confirm( '{{ __('msg.WISH_DELETE')}}' )) {
+                    this.$refs.formDelete.submit()
+                }
             },
             _resetPwd: function () {
-                if( confirm('비밀번호를 초기화 하시겠습니까?') ) this.$refs.formResetPwd.submit()
+                if( confirm( '{{ __('msg.WANT_RESET_PW') }}' ) ) {
+                    this.$refs.formResetPwd.submit()
+                }
             }
         }
     })

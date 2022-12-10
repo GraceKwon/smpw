@@ -55,7 +55,9 @@
                                     <td>@{{ Publisher.PublisherID }}</td>
                                     <td class="pointer" @click="PublisherID = Publisher.PublisherID">@{{ Publisher.PublisherName }}</td>
                                     <td>@{{ Publisher.CongregationName }}</td>
-                                    <td>@{{ Publisher.SupportYn ? '{{ __('msg.RAP') }}' : '{{ __('msg.RAI') }}' }}</td>
+                                    <td>@{{ Publisher.SupportYn ? '임의배정가능해요' : '임의배정불가요' }}</td>
+                                    <!-- TODO -->
+{{--                                    <td>@{{ Publisher.SupportYn ? }} @php(__('msg.RAP')) @{{ : }} @php(__('msg.RAI')) </td>--}}
                                 </tr>
                                 </tbody>
                             </table>

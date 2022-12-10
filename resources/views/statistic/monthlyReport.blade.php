@@ -1,8 +1,8 @@
 @extends('layouts.frames.master')
 @section('content')
     <div class="search-form-item">
-        <label class="label" for="CreateDate">집계기간 : </label>
-        <strong> {{$month}} 월 </strong>
+        <label class="label" for="CreateDate">{{ __('msg.CP') }} : </label>
+        <strong> {{$month}} {{ __('msg.MONTH') }} </strong>
     </div> <!-- /.search-form-item -->
 
     <section class="section-table-section">
@@ -12,32 +12,32 @@
                 <tr>
                     <th>
                         <div class="min-width">
-                            <span>인원(형제)</span>
+                            <span>{{ __('msg.NOP') }}({{ __('msg.BRO') }})</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>인원(자매)</span>
+                            <span>{{ __('msg.NOP') }}({{ __('msg.SIS') }})</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>참여자수(형제)</span>
+                            <span>{{ __('msg.NOPS') }}({{ __('msg.BRO') }})</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>참여자수(자매)</span>
+                            <span>{{ __('msg.NOPS') }}({{ __('msg.SIS') }})</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>총참여횟수(형제)</span>
+                            <span>{{ __('msg.TNOP') }}({{ __('msg.BRO') }})</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>총참여횟수(자매)</span>
+                            <span>{{ __('msg.TNOP') }}({{ __('msg.SIS') }})</span>
                         </div>
                     </th>
                 </tr>

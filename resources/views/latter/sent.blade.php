@@ -3,15 +3,15 @@
 @push('slot')
 <div class="search-form-item">
         <label class="label" for="CreateDate">발송일자</label>
-        <date-picker 
-            v-model="CreateDate" 
+        <date-picker
+            v-model="CreateDate"
             :input-id="'CreateDate'"
             :input-name="'CreateDate'"
             :input-class="'form-control'"
             :value-type="'format'"
             :icon-day="31"
             {{-- :clearable="false" --}}
-            :lang="lang" 
+            :lang="lang"
             :range="true"
             width="260"
             >
@@ -20,7 +20,7 @@
 @endpush
 @include('layouts.sections.search', [
     'selectBoxs' => [
-        [ 
+        [
             'label' => '상태',
             'id' => 'ReadYn',
             'options' => [
@@ -32,7 +32,7 @@
                     'label' => '안읽음',
                     'value' => '0',
                 ]
-            ] 
+            ]
         ]
     ]
 ])
@@ -49,38 +49,38 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>발신</span>
+                        <span>{{ __('msg.SENDING') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>수신</span>
+                        <span>{{ __('msg.RECEIVE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>메시지 제목</span>
+                        <span>{{ __('msg.MSG_TITLE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>발송일자</span>
+                        <span>{{ __('msg.SEND_DATE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>상태</span>
+                        <span>{{ __('msg.STATUS') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>확인일자</span>
+                        <span>{{ __('msg.CONFIRM_DATE') }}</span>
                     </div>
                 </th>
             </tr>
             </thead>
             <tbody>
-            @foreach ($LetterList as $Letter) 
+            @foreach ($LetterList as $Letter)
             <tr class="pointer"
                 onclick="location.href='/inbox/{{ $Letter->LetterID }}'">
                 <td>
@@ -88,7 +88,7 @@
                 </td>
                 <td>
                     {{ $Letter->AdminName }}
-                    @if ($Letter->AdminRoleID > 2) 
+                    @if ($Letter->AdminRoleID > 2)
                         <br>
                         <small>
                             ( {{ $Letter->MetroName . ' > ' . $Letter->CircuitName . ' > ' . $Letter->AdminRole }} )
@@ -97,7 +97,7 @@
                 </td>
                 <td>
                     {{ $Letter->ReceiveAdminName }}
-                    @if ($Letter->rAdminRoleID > 2) 
+                    @if ($Letter->rAdminRoleID > 2)
                         <br>
                         <small>
                             ( {{ $Letter->rMetroName . ' > ' . $Letter->rCircuitName . ' > ' . $Letter->rAdminRole }} )
@@ -116,7 +116,7 @@
                 </td>
                 <td>
                     <div class="state-no-read">
-                        {{ $Letter->ReadYn ? '읽음' : '안읽음' }}
+                        {{ $Letter->ReadYn ? __('msg.READ') : __('msg.UNREAD') }}
                     </div>
                 </td>
                 <td>
@@ -126,15 +126,15 @@
             @endforeach
             @if (count($LetterList) === 0)
                 <tr>
-                    <td colspan="8">데이터가 없습니다.</td>
+                    <td colspan="8">{{ __('msg.NO_DATA') }}</td>
                 </tr>
             @endif
             </tbody>
         </table>
     </div>
     <div class="btn-flex-area justify-content-end mt-3">
-        <button 
-            type="button" 
+        <button
+            type="button"
             class="btn btn-primary"
             onclick="location.href='/sent/0'">
             메시지 보내기
@@ -155,8 +155,8 @@
         mixins: [datepickerLang],
         data:{
             CreateDate: [
-                    '{{ request()->StartDate }}', 
-                    '{{ request()->EndDate }}', 
+                    '{{ request()->StartDate }}',
+                    '{{ request()->EndDate }}',
                 ],
         }
     })

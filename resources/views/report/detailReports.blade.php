@@ -17,14 +17,14 @@
                     </button>
                 </div>
                 <div class="btn-area">
-                    <date-picker 
-                        v-model="today" 
+                    <date-picker
+                        v-model="today"
                         :input-name="'ServiceDate'"
                         width="0"
-                        ref="datepicker" 
+                        ref="datepicker"
                         :clearable="false"
-                        :input-class="'hide'" 
-                        :lang="lang" 
+                        :input-class="'hide'"
+                        :lang="lang"
                         >
                     </date-picker>
                     <button class="btn btn-outline-secondary btn-today btn-sm"
@@ -51,37 +51,37 @@
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>시간대</span>
+                        <span>{{ __('msg.SLOT') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>보고</span>
+                        <span>{{ __('msg.REPORT') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>구역</span>
+                        <span>{{ __('msg.ZONE') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>출판물</span>
+                        <span>{{ __('msg.PUBLICATIONS') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>동영상</span>
+                        <span>{{ __('msg.VIDEO') }}</span>
                     </div>
                 </th>
                 <th>
                     <div class="min-width">
-                        <span>방문요청</span>
+                        <span>{{ __('msg.VR') }}</span>
                     </div>
                 </th>
                 <th>
                 <div class="min-width">
-                    <span>전달사항</span>
+                    <span>{{ __('msg.NOTICE') }}</span>
                 </div>
             </th>
             </tr>
@@ -134,7 +134,7 @@
                         @endif>
                         <a >{{ $Report->VisitRequestQty }}</a>
                     </td>
-                    <td 
+                    <td
                     @if($Report->MemoQty > 0)
                         class="pointer"
                         @click="_setParams({
@@ -151,7 +151,7 @@
                 @endforeach
                 @if(!$ReportList->count())
                 <tr>
-                    <td colspan="8">조회 결과가 없습니다.</td>
+                    <td colspan="8">{{ __('msg.NO_SEARCH_RESULTS') }}</td>
                 </tr>
                 @endif
             </tbody>
@@ -163,7 +163,7 @@
                 disabled
             @endif
             @click="_export">
-            엑셀파일 다운로드
+            {{ __('msg.EXCEL_DOWN') }}
         </button>
     </div>
     {{ $ReportList->appends( request()->all() )->links() }}
@@ -172,22 +172,22 @@
 @endsection
 
 @section('popup')
-<modal-product-detail v-if="showModal === 'modalProductDetail'" 
-    :service-time-id="ServiceTimeID" 
-    :service-time="ServiceTime" 
-    :zone-name="ZoneName" 
+<modal-product-detail v-if="showModal === 'modalProductDetail'"
+    :service-time-id="ServiceTimeID"
+    :service-time="ServiceTime"
+    :zone-name="ZoneName"
     @close="showModal = ''" >
 </modal-product-detail>
-<modal-visit-request-detail v-if="showModal === 'modalVisitRequestDetail'" 
-    :service-time-id="ServiceTimeID" 
-    :service-time="ServiceTime" 
-    :zone-name="ZoneName" 
+<modal-visit-request-detail v-if="showModal === 'modalVisitRequestDetail'"
+    :service-time-id="ServiceTimeID"
+    :service-time="ServiceTime"
+    :zone-name="ZoneName"
     @close="showModal = ''" >
 </modal-visit-request-detail>
-<modal-memo-detail v-if="showModal === 'modalMemoDetail'" 
-    :service-time-id="ServiceTimeID" 
-    :service-time="ServiceTime" 
-    :zone-name="ZoneName" 
+<modal-memo-detail v-if="showModal === 'modalMemoDetail'"
+    :service-time-id="ServiceTimeID"
+    :service-time="ServiceTime"
+    :zone-name="ZoneName"
     @close="showModal = ''" >
 </modal-memo-detail>
 @endsection
@@ -223,13 +223,13 @@
                 return this.today.getFullYear();
             },
             month: function(){
-                return this.today.getMonth() + 1;  
+                return this.today.getMonth() + 1;
             },
             day: function(){
-                return this.today.getDate();  
+                return this.today.getDate();
             },
             weekday: function(){
-                return this.lang.days[this.today.getDay()];  
+                return this.lang.days[this.today.getDay()];
             },
             yyyymmdd:function(){
                 var yyyy = this.today.getFullYear();

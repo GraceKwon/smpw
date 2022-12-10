@@ -4,7 +4,7 @@
     @include('layouts.sections.search', [
         'inputTexts' => [
             [
-                'label' => '이름',
+                'label' => __('msg.NAME'),
                 'id' =>'AdminName'
             ]
         ]
@@ -22,12 +22,12 @@
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>도시</span>
+                            <span>{{ __('msg.CITY') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>순회구</span>
+                            <span>{{ __('msg.AREA') }}</span>
                         </div>
                     </th>
                     {{-- <th>
@@ -37,22 +37,22 @@
                     </th> --}}
                     <th>
                         <div class="min-width">
-                            <span>이름</span>
+                            <span>{{ __('msg.NAME') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>연락처</span>
+                            <span>{{ __('msg.TEL') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>권한</span>
+                            <span>{{ __('msg.PER') }}</span>
                         </div>
                     </th>
                     <th>
                         <div class="min-width">
-                            <span>지정일자</span>
+                            <span>{{ __('msg.SD') }}</span>
                         </div>
                     </th>
                 </tr>
@@ -91,7 +91,7 @@
             </table>
         </div>
         @include('layouts.sections.registrationButton', [
-            'label' => '사용자 등록',
+            'label' => __('msg.UR'),
         ])
 
         {{ $AdminList->appends( request()->all() )->links() }}
@@ -119,7 +119,7 @@
                         <button class="btn btn-primary btn-sm">확인</button>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     </section> -->
 @endsection

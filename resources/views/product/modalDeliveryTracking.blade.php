@@ -5,7 +5,7 @@
                 <div class="max-w-auto">
                     <div class="mlp-header">
                         <div class="mlp-title">
-                            배송 조회
+                            {{ __('msg.DT') }}
                         </div>
                         <div class="mlp-close" @click="$emit('close')">
                             <i class="fas fa-times"></i>
@@ -14,10 +14,10 @@
                     <div class="mlp-content text-center min-w-500px-desktop">
                         <div class="table-area">
                             <table class="table table-bordered">
-                                </thead>
+                                <thead></thead>
                                 <tbody>
                                 <tr>
-                                    <th>송장번호</th>
+                                    <th>{{ __('msg.IN_VOICE_NUN') }}</th>
                                     <td colspan="2">
                                         @{{ tracks }}
                                     </td>
@@ -27,7 +27,7 @@
                                         @{{ progresses.location.name }}
                                     </th>
                                     <th>
-                                        @{{ progresses.time }} 
+                                        @{{ progresses.time }}
                                     </th>
                                     <td>
                                         @{{ progresses.description }}
@@ -46,7 +46,7 @@
                     </div>
                     <div class="mlp-footer justify-content-end">
                         <button class="btn btn-outline-secondary btn-sm"
-                            @click="$emit('close')">닫기</button>
+                            @click="$emit('close')">{{ __('msg.CLOSE') }}</button>
                         {{-- <button class="btn btn-primary btn-sm">확인</button> --}}
                     </div>
                 </div> <!-- /.mlp-wrap -->
@@ -78,7 +78,7 @@
                         this.trackingInfo = response.data.progresses;
                     }.bind(this))
                     .catch(function (error) {
-                        this.error = '요청실패';
+                        this.error = '{{ __('msg.RF') }}';
                         console.log(error.response)
                     }.bind(this));
             },
