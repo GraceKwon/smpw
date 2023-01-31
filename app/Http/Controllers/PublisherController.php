@@ -224,7 +224,6 @@ class PublisherController extends Controller
     public function resetPwdPublishers(Request $request)
     {
         $locate = App::getLocale();
-        \Log::error($locate);
         try {
             $res = DB::select('uspSetPublisherPasswordReset ?,?', [
                 $request->PublisherID,
