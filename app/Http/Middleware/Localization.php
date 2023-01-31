@@ -19,11 +19,10 @@ class Localization
      */
     public function handle(Request $request, Closure $next)
     {
-        $checkIp = $_SERVER['REMOTE_ADDR'];
+        $checkIp = $request->header('x-real-ip');
 //        $checkIp = '211.234.188.150';
 //        $checkIp = '196.201.141.224';
         $getLocation = Location::get($checkIp);
-        \Log::info($request->header());
         \Log::info('=========OTHER===========');
         \Log::info($checkIp);
         \Log::info('======IP===========');
