@@ -31,16 +31,6 @@ Route::get('/policy', function () {
     return view('policy');
 });
 
-Route::get('/greeting/{locale}', function ($locale) {
-    if (! in_array($locale, ['en', 'ko'])) {
-        App::setLocale('en');
-    }
-
-    App::setLocale($locale);
-
-    //
-});
-
 //어드민
     //로그인
     Route::get('/login', 'LoginController@login');

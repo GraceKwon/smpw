@@ -21,7 +21,7 @@
 @include('layouts.sections.search', [
     'selectBoxs' => [
         [
-            'label' => '상태',
+            'label' =>  __('msg.STATUS'),
             'id' => 'ReadYn',
             'options' => [
                 [

@@ -2,7 +2,7 @@
 @section('content')
 @push('slot')
 <div class="search-form-item">
-        <label class="label" for="CreateDate">발송일자</label>
+        <label class="label" for="CreateDate">{{ __('msg.SEND_DATE') }}</label>
         <date-picker
             v-model="CreateDate"
             :input-id="'CreateDate'"
@@ -21,15 +21,15 @@
 @include('layouts.sections.search', [
     'selectBoxs' => [
         [
-            'label' => '상태',
+            'label' => __('msg.STATUS'),
             'id' => 'ReadYn',
             'options' => [
                 [
-                    'label' => '읽음',
+                    'label' => __('msg.READ'),
                     'value' => '1',
                 ],
                 [
-                    'label' => '안읽음',
+                    'label' => __('msg.UNREAD'),
                     'value' => '0',
                 ]
             ]
@@ -137,7 +137,7 @@
             type="button"
             class="btn btn-primary"
             onclick="location.href='/sent/0'">
-            메시지 보내기
+            {{ __('msg.SEND_MSG') }}
         </button>
     </div>
     {{ $LetterList->appends( request()->all() )->links() }}

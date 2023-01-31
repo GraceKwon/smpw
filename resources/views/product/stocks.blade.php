@@ -134,7 +134,7 @@
             @if( (session('auth.CircuitID') ?? request()->CircuitID) )
                 <button type="button" class="btn btn-primary"
                 onclick="location.href='/{{ request()->path() }}/{{ session('auth.CircuitID') ?? request()->CircuitID }}'">
-                    {{ __('msg.재고수량관리') }}</button>
+                    {{ __('msg.INVENTORY_Q_MANAGE') }}</button>
             @endif
         </div>
     </div>

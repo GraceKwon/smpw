@@ -258,7 +258,7 @@
         },
         methods: {
             _confirm: function(e) {
-                var res = confirm('{{ isset($Experience->ExperienceID) ? __('msg.EDIT') : __('msg.SAVE') }} ?');
+                var res = confirm('{{ isset($Experience->ExperienceID) ? __('msg.EDIT') : __('msg.SAVE') }}');
                 if (!res) {
                     e.preventDefault();
                 }

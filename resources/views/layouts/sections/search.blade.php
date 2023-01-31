@@ -105,7 +105,7 @@
 
         @if(isset($AdminID))
         <div class="search-form-item">
-            <label class="label" for="AdminID">발신</label>
+            <label class="label" for="AdminID">{{ __('msg.SENDING') }}</label>
             <select class="custom-select"
                 id="AdminID"
                 name="AdminID"
@@ -127,7 +127,7 @@
 
         @if(isset($ReceiveAdminID))
         <div class="search-form-item">
-            <label class="label" for="ReceiveAdminID">수신</label>
+            <label class="label" for="ReceiveAdminID">{{ __('msg.RECEIVE') }}</label>
             <select class="custom-select" id="ReceiveAdminID" name="ReceiveAdminID" onchange="submit()">
                 <option value="">{{ __('msg.ALL') }}</option>
                 @foreach ($ReceiveAdminID as $Admin)

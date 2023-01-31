@@ -18,7 +18,7 @@
                 </div>
             </td>
             <th>
-                <label class="label">수신대상선택</label>
+                <label class="label">{{ __('msg.RECI_SELECT') }}</label>
             </th>
             <td>
                 <div class="inline-responsive">

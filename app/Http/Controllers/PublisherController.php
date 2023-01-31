@@ -100,6 +100,7 @@ class PublisherController extends Controller
 
     public function putPublishers(Request $request)
     {
+        $locate = App::getLocale();
         $request->validate([
             'PublisherName' => 'required',
             'CongregationID' => 'required',
@@ -110,7 +111,27 @@ class PublisherController extends Controller
             'SupportYn' => 'required',
 //            'EndDate' => $request->StopYn === '1' ? 'required' : '' . '|date',
 //            'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
-        ]);
+         ]);
+
+
+//        $client = new Client();
+//
+//        $body = [
+//            "message" => "This is test and \n this is a new line",
+//            "to" => "+258852000268",
+//            "bypass_optout" => true,
+//            "sender_id" => "SMPW",
+//        ];
+//
+//        $response = $client->request('POST', 'https://api.sms.to/sms/send', [
+//            'headers' => [
+//                'Authorization' => 'Bearer '.env('EN_SMS_API_KEY'),
+//                'Content-Type' => 'application/json'
+//            ],
+//            'body' => json_encode($body),
+//        ])->getBody();
+//
+//        return json_decode($response);
 
         try {
             if($request->PublisherID === '0') {
@@ -131,13 +152,24 @@ class PublisherController extends Controller
                     $request->EndTypeID,
                 ]);
 
-                $msg = '[대특공]봉사자로 등록되었습니다. 아이디: '.trim($res[0]->pId).
-                    ' 입니다. 임시 비밀번호: '.$password. '입니다. [대특공] 앱 설치 주소 입니다.';
-                $this->sendSms($request->Mobile, $msg);
-                sleep(3);
-                $addressLink = 'https://smpw.or.kr/home/appdownload';
-                $result = $this->sendSms($request->Mobile, $addressLink);
-                if ($result->resultCode !== 0) {
+                $msg = __('msg.SMS_1').trim($res[0]->pId).
+                    __('msg.SMS_2').$password;
+
+                if ($locate === 'ko') {
+                    $msg = $msg.__('msg.SMS_3');
+                    $result = $this->sendSms($request->Mobile, $msg);
+                    $result->resultCode === 0 ? $smsCode = 200 : $smsCode = 500;
+                } else {
+                    $accessToken = $this->getSmsTokenKey();
+                    sleep(2);
+                    $result = $this->sendSmsEn($accessToken['access_token'], $request->Mobile, $msg);
+                    $smsCode = $result['code'];
+                }
+
+//                sleep(3);
+//                $addressLink = 'https://smpw.or.kr/home/appdownload';
+//                $result = $this->sendSms($request->Mobile, $addressLink);
+                if ($smsCode !== 200) {
                     Log::error('봉사자 등록 문자 발송 에러');
                     Log::error('에러 메시지 ===== '.$result);
                 }
@@ -165,7 +197,7 @@ class PublisherController extends Controller
             }
 
             if($code === 0) {
-                return back()->withErrors(['fail' => '저장 실패하였습니다.'])->withInput();
+                return back()->withErrors(['fail' => __('msg.FAIL_SAVE')])->withInput();
             } else {
                 return redirect('/publishers');
             }
@@ -183,7 +215,7 @@ class PublisherController extends Controller
             ]);
 
         if( getAffectedRows($res) === 0 )
-            return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
+            return back()->withErrors(['fail' => __('msg.DF')]);
         else
             return redirect('/publishers');
 
@@ -191,6 +223,7 @@ class PublisherController extends Controller
 
     public function resetPwdPublishers(Request $request)
     {
+        $locate = App::getLocale();
         try {
             $res = DB::select('uspSetPublisherPasswordReset ?,?', [
                 $request->PublisherID,
@@ -198,15 +231,25 @@ class PublisherController extends Controller
             ]);
 
             if( getAffectedRows($res) === 0 ) {
-                return back()->withErrors(['fail' => '비밀번호 초기화를 실패하였습니다.']);
+                return back()->withErrors(['fail' => __('msg.FAIL_RESET_PASSWORD')]);
             } else {
-                $msg = '대도시 공개 증거 '.$request->Account.' 계정의 임시 비밀번호가 발급되었습니다. 임시비밀번호는 '. $Password.'입니다.';
-                $result = $this->sendSms($request->Mobile, $msg);
+                if ($locate === 'kr') {
+                    $msg = __('msg.SMPW') . $request->Account . __('msg.TEMP_PASSWORD') . $Password;
+                    $result = $this->sendSms($request->Mobile, $msg);
+                    $result->resultCode === 0 ? $smsCode = 200 : $smsCode = 500;
+                } else {
+                    $accessToken = $this->getSmsTokenKey();
+                    sleep(2);
+                    $msg = '[SMPW] ID ' . $request->Account . ' A temporary password is ' . $Password;
+                    $result = $this->sendSmsEn($accessToken['access_token'], $request->Mobile, $msg);
+                    $smsCode = $result['code'];
+                }
 
-                if ($result->resultCode === 0) {
-                    return back()->with(['success' => '비밀번호 초기화를 성공하였습니다. 임시비밀번호는 '. $Password.'입니다']);
+                if ($smsCode === 200) {
+                    return back()->with(['success' => __('msg.SUCCESS_RESET_PASSWORD').' '.__('msg.TPI'). $Password]);
                 }
             }
+
         } catch (\Exception $e) {
             Log::error('비밀번호 초기화 에러 === '.$e);
         }
@@ -216,58 +259,131 @@ class PublisherController extends Controller
     {
         $request->validate([
             'SetStartDate' => 'required|date',
+        ]);
+        $ServiceSetType = $request->ServiceSetType;
+        $PublisherID = $request->PublisherID;
+        $SetStartDate = $request->SetStartDate;
+        // DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
+        // {
+        $arrayForPush = [];
+        foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
+            DB::statement('uspSetStandingServiceTimePublieherDelete ?,?,?', [
+                $PublisherID,
+                $ServiceTimeID,
+                $SetStartDate
             ]);
-            $ServiceSetType = $request->ServiceSetType;
-            $PublisherID = $request->PublisherID;
-            $SetStartDate = $request->SetStartDate;
-            // DB::transaction(function() use ($ServiceSetType, $PublisherID, $SetStartDate)
-            // {
-            $arrayForPush = [];
-            foreach ($ServiceSetType as $ServiceTimeID => $ServiceSetType) {
-                DB::statement('uspSetStandingServiceTimePublieherDelete ?,?,?', [
-                        $PublisherID,
-                        $ServiceTimeID,
-                        $SetStartDate
-                    ]);
 
-                if($ServiceSetType !== '미지정'){
-                    $arrayForPush[$ServiceTimeID]["ServiceSetType"] = $ServiceSetType;
+            if ($ServiceSetType !== '미지정') {
+                $arrayForPush[$ServiceTimeID]["ServiceSetType"] = $ServiceSetType;
 
-                    DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
-                        $PublisherID,
-                        $ServiceTimeID,
-                        ($ServiceSetType ==='인도자') ? 1 : 0,
-                        ($ServiceSetType ==='대기') ? 1 : 0,
-                        $SetStartDate,
-                        ]);
-                }
+                DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
+                    $PublisherID,
+                    $ServiceTimeID,
+                    ($ServiceSetType === '인도자') ? 1 : 0,
+                    ($ServiceSetType === '대기') ? 1 : 0,
+                    $SetStartDate,
+                ]);
             }
-            // });
-            if(!empty($arrayForPush)){
-
-                foreach ($arrayForPush as $ServiceTimeID => $ServiceSetType) {
-
-                    $res =  DB::table('ServiceTimes')
+        }
+        // });
+        if (!empty($arrayForPush)) {
+            foreach ($arrayForPush as $ServiceTimeID => $ServiceSetType) {
+                $res = DB::table('ServiceTimes')
                     ->select(
                         'ServiceTimes.ServiceTime',
                         'ServiceTimes.ServiceYoil',
                         'ServiceZones.ZoneName'
-                        )
-                        ->where([
-                            ['ServiceTimes.ServiceTimeID', $ServiceTimeID],
-                            ])
-                            ->leftJoin('ServiceZones', 'ServiceTimes.ServiceZoneID', 'ServiceZones.ServiceZoneID')
-                            ->first();
-                    $arrayForPush[$ServiceTimeID]["ServiceTime"] = $res->ServiceTime;
-                    $arrayForPush[$ServiceTimeID]["ServiceYoil"] = $res->ServiceYoil;
-                    $arrayForPush[$ServiceTimeID]["ZoneName"] = $res->ZoneName;
-                }
-                // dd($arrayForPush);
-                $this->PushService->PublisherServiceTimeSet($arrayForPush);
+                    )
+                    ->where([
+                        ['ServiceTimes.ServiceTimeID', $ServiceTimeID],
+                    ])
+                    ->leftJoin('ServiceZones', 'ServiceTimes.ServiceZoneID', 'ServiceZones.ServiceZoneID')
+                    ->first();
+                $arrayForPush[$ServiceTimeID]["ServiceTime"] = $res->ServiceTime;
+                $arrayForPush[$ServiceTimeID]["ServiceYoil"] = $res->ServiceYoil;
+                $arrayForPush[$ServiceTimeID]["ZoneName"] = $res->ZoneName;
             }
+            // dd($arrayForPush);
+            $this->PushService->PublisherServiceTimeSet($arrayForPush);
+        }
         // dd($request->all());
         return back();
+    }
 
+//MOZAD1000001
+
+    private function getSmsTokenKey() {
+        $curl = curl_init();
+        $base64Key = base64_encode(env('EN_SMS_ID').':'.env('EN_SMS_API_KEY'));
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('EN_SMS_HOST_TOKEN'),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "grant_type=client_credentials",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/x-www-form-urlencoded",
+                "Authorization: Basic ".$base64Key
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            \Log::error( "cURL Error #:" . $err);
+        }
+
+        return json_decode($response, true);
+
+    }
+
+    private function sendSmsEn($tokenKey, $mobile, $msg) {
+        $curl = curl_init();
+
+        $authKey = base64_encode(env('EN_SMS_ID').':'.$tokenKey);
+        $refKey = now().'_'.$mobile;
+        $callback = '01087918350';
+        $subject = 'Special Metropolitan Public Witnessing';
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('EN_SMS_HOST'),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "phone=".$mobile.
+                "&callback=".$callback.
+                "&message=".$msg.
+                "&refkey=".$refKey.
+                "&is_foreign=Y",
+//                "&subject=".$subject,
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/x-www-form-urlencoded",
+                "Authorization: Basic ".$authKey
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        }
+
+        return json_decode($response, true);
     }
 
     private function sendSms($mobile, $msg) {
@@ -281,7 +397,7 @@ class PublisherController extends Controller
             "date" => "null"
         ];
 
-        $key = env('SMS_API_KEY').'&'.env('SMS_AUTH_KEY');
+        $key = $key = env('SMS_API_KEY').'&'.env('SMS_AUTH_KEY');
         $response = $client->request('POST', env('SMS_HOST'), [
             'headers' => [
                 'Content-Type' => 'application/json;charset=UTF-8',

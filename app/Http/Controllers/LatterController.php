@@ -19,6 +19,7 @@ class LatterController extends Controller
         if (session('auth.AdminRoleID') > 1) request()->ReceiveAdminID = session('auth.AdminID');
 
         $AdminID = DB::table('Admins')
+            ->where('UseYn', 1)
             ->when(session('auth.MetroID'), function ($query) {
                 return $query->where('MetroID', session('auth.MetroID'))
                     ->orWhere('AdminRoleID', 2);
@@ -27,10 +28,9 @@ class LatterController extends Controller
                 return $query->where('CircuitID', session('auth.CircuitID'))
                     ->orWhere('AdminRoleID', 2);
             })
-            ->where('UseYn', 1)
             ->orderBy('AdminRoleID', 'ASC')
             ->get();
-            
+
         $ReceiveAdminID = DB::table('Admins')
             ->when(session('auth.AdminRoleID') > 1, function ($query) {
                 return $query->where('AdminID', session('auth.AdminID'));
@@ -38,7 +38,8 @@ class LatterController extends Controller
             ->where('UseYn', 1)
             ->get();
 
-        $paginate = 30;  
+
+        $paginate = 30;
         $page = $request->input('page', '1');
         $parameter = [
             $request->AdminID,
@@ -48,7 +49,7 @@ class LatterController extends Controller
             $request->ReadYn
         ];
 
-        $data = DB::select('uspGetStandingLetterReceiveList ?,?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingLetterReceiveList ?,?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingLetterReceiveListCnt ?,?,?,?,?', $parameter);
         $LetterList = setPaginator($paginate, $page, $data, $count);
@@ -76,7 +77,7 @@ class LatterController extends Controller
 
         return view('latter.detailInbox', [
             'letter' => $letter[0],
-            'Files' => $Files 
+            'Files' => $Files
         ]);
     }
 
@@ -84,7 +85,7 @@ class LatterController extends Controller
     {
         explodeRequestCreateDate();
         if (session('auth.AdminRoleID') > 1) request()->AdminID = session('auth.AdminID');
-        
+
         $AdminID = DB::table('Admins')
             ->when(session('auth.AdminRoleID') > 1, function ($query) {
                 return $query->where('AdminID', session('auth.AdminID'));
@@ -105,7 +106,7 @@ class LatterController extends Controller
             ->orderBy('AdminRoleID', 'ASC')
             ->get();
 
-        $paginate = 30;  
+        $paginate = 30;
         $page = $request->input('page', '1');
         $parameter = [
             $request->AdminID,
@@ -115,7 +116,7 @@ class LatterController extends Controller
             $request->ReadYn
         ];
 
-        $data = DB::select('uspGetStandingLetterSendList ?,?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingLetterSendList ?,?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingLetterSendListCnt ?,?,?,?,?', $parameter);
         $LetterList = setPaginator($paginate, $page, $data, $count);
@@ -125,7 +126,7 @@ class LatterController extends Controller
             'LetterList' => $LetterList
         ]);
     }
-    
+
     public function putSent(Request $request)
     {
         $request->validate([
@@ -136,7 +137,7 @@ class LatterController extends Controller
 
         if ($request->Files !== null) {
             $files = [];
-            for ($i=0; $i < count( $request->Files ); $i++) { 
+            for ($i=0; $i < count( $request->Files ); $i++) {
                 $files[] = [
                     'path' => $request->Files[$i]->store('files'),
                     'name' => $request->Files[$i]->getClientOriginalName()
