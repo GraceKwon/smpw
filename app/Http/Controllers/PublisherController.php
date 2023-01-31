@@ -234,7 +234,7 @@ class PublisherController extends Controller
             if( getAffectedRows($res) === 0 ) {
                 return back()->withErrors(['fail' => __('msg.FAIL_RESET_PASSWORD')]);
             } else {
-                if ($locate === 'kr') {
+                if ($locate === 'ko') {
                     $msg = __('msg.SMPW') . $request->Account . __('msg.TEMP_PASSWORD') . $Password;
                     $result = $this->sendSms($request->Mobile, $msg);
                     $result->resultCode === 0 ? $smsCode = 200 : $smsCode = 500;
