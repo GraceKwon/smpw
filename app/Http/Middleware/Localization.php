@@ -23,10 +23,7 @@ class Localization
 //        $checkIp = '211.234.188.150';
 //        $checkIp = '196.201.141.224';
         $getLocation = Location::get($checkIp);
-        \Log::info('=========OTHER===========');
-        \Log::info($checkIp);
-        \Log::info('======IP===========');
-        \Log::info($getLocation);
+        \Log::info('IP is --------- '.$checkIp);
 
         if ($getLocation->countryCode === 'KR') {
             $locale = 'ko';
