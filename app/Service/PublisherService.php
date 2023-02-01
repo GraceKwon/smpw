@@ -50,7 +50,7 @@ class PublisherService
                         'ServiceTimeID' => $ServiceTime->ServiceTimeID,
                         'ServiceSetType' =>
                             $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key] ??
-                            __('msg.ServiceTimeSets'),
+                            __('msg.UNS'),
                     ];
 
                 if( empty( $array[$key][$ServiceZone->ServiceZoneID] ) )
