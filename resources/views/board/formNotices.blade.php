@@ -304,12 +304,12 @@
                     return false
                 }
                 if (this.form.Files.length >= this.maxFileLeng) {
-                    alert({{ __('msg.NO_LONGER') }})
+                    alert('{{ __('msg.NO_LONGER') }}')
                     return false
                 }
                 for (let index = 0; index < this.form.Files.length; index++) {
                     if (this.form.Files[index].name == file.name) {
-                        alert({{ __('msg.ALREADY_REGISTER') }})
+                        alert('{{ __('msg.ALREADY_REGISTER') }}')
                         return false
                     }
                 }
