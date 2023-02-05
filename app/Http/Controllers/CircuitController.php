@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -163,6 +164,7 @@ class CircuitController extends Controller
 
     public function formAdmins(Request $request)
     {
+        $locale = App::getLocale();
         $AdminRoleList = $this->CommonService->getAdminRoleList();
         $MetroList = $this->CommonService->getMetroList();
 
@@ -179,6 +181,7 @@ class CircuitController extends Controller
             'Admin' => $Admin ?? null,
             'AdminRoleList' => $AdminRoleList,
             'MetroList' => $MetroList,
+            'location' => $locale,
         ]);
     }
 

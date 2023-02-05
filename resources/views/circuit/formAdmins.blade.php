@@ -207,6 +207,8 @@
 
 @section('script')
 <script>
+    const locale = '{{ $location }}';
+
     var app = new Vue({
         el:'#wrapper-body',
         data:{
@@ -227,8 +229,10 @@
         },
         watch: {
             Mobile: function () {
-                this.Mobile = this.Mobile.replace(/[^0-9]/g, '');
-                this.Mobile = this.Mobile.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3")
+                if (locale === 'ko') {
+                    this.Mobile = this.Mobile.replace(/[^0-9]/g, '');
+                    this.Mobile = this.Mobile.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3")
+                }
             },
             MetroID: function () {
                 this.CircuitID = '';
