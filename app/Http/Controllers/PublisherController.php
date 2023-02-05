@@ -57,6 +57,7 @@ class PublisherController extends Controller
 
     public function formPublishers(Request $request, PublisherService $PublisherService)
     {
+        $locale = App::getLocale();
         if( $request->PublisherID !== '0' ) {
             $res = DB::select( 'uspGetStandingPublisherDetail ?', [
                 $request->PublisherID
@@ -95,6 +96,7 @@ class PublisherController extends Controller
             'ServiceZoneList' => $ServiceZoneList,
             'ServiceTimeList' => $ServiceTimeList,
             'SetTimeCount' => $SetTimeCount,
+            'location' => $locale,
         ]);
     }
 
