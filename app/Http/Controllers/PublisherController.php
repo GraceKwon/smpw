@@ -103,11 +103,17 @@ class PublisherController extends Controller
     public function putPublishers(Request $request)
     {
         $locate = App::getLocale();
+        if ($locate === 'ko') {
+            $regex = 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/';
+        } else {
+            $regex = 'required';
+        }
+
         $request->validate([
             'PublisherName' => 'required',
             'CongregationID' => 'required',
             'Gender' => 'required',
-            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+            'Mobile' => $regex,
             'PioneerTypeID' => 'required',
             'ServantTypeID' => 'required',
             'SupportYn' => 'required',

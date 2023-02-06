@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\ReportService;
@@ -23,12 +24,12 @@ class ReportController extends Controller
     {
         if($request->SetMonth === null) $request->SetMonth = date('Y-m');
 
-        if($request->MetroID === null 
+        if($request->MetroID === null
             && session('auth.MetroID') == null){
             $request->MetroID = $this->CommonService->getMetroList()[0]->MetroID ?? '';
         }
 
-        if($request->CircuitID === null 
+        if($request->CircuitID === null
             && session('auth.CircuitID') === null){
             $request->CircuitID = $this->CommonService->getCircuitList()[0]->CircuitID ?? '';
         }
@@ -47,7 +48,7 @@ class ReportController extends Controller
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
-      
+
         return view('report.detailReports', [
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
@@ -55,7 +56,7 @@ class ReportController extends Controller
             'ReportList' => $this->ReportService->getDailyServiceReportList(),
         ]);
     }
-    public function exportReports(Request $request) 
+    public function exportReports(Request $request)
     {
         $fileName = (session('auth.MetroID') ?? $request->MetroID) ? getMetroName() . '_' : '' ;
         $fileName .= (session('auth.CircuitID') ?? $request->CircuitID) ? getCircuitName() . '_' : '' ;
@@ -97,6 +98,13 @@ class ReportController extends Controller
 
     public function putRequests(Request $request)
     {
+        $locate = App::getLocale();
+        if ($locate === 'ko') {
+            $regex = 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/';
+        } else {
+            $regex = 'required';
+        }
+
         $request->validate([
             'InsteresterName' => 'required',
             'Gender' => 'required',
@@ -106,7 +114,7 @@ class ReportController extends Controller
             'Sigungu' => 'required',
             'AddressMain' => 'required',
             'AddressDetail' => 'required',
-            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+            'Mobile' => $regex,
             'Email' => 'nullable|email',
             'RequestWeekday' => 'required',
             'RequestTime' => 'required',
@@ -129,7 +137,7 @@ class ReportController extends Controller
             $request->Contents,
         ]);
         // dd($res);
-        if(getAffectedRows($res) === 0) 
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '수정 실패하였습니다.']);
         else
             return back()->with(['success' => '수정 되었습니다.']);
@@ -142,7 +150,7 @@ class ReportController extends Controller
             session('auth.AdminID'),
         ]);
         // dd($res);
-        if(getAffectedRows($res) === 0) 
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '실패하였습니다.']);
         else
             return back()->with(['success' => '성공하였습니다']);
@@ -154,7 +162,7 @@ class ReportController extends Controller
             $request->VisitRequestID,
         ]);
         // dd($res);
-        if(getAffectedRows($res) === 0) 
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '실패하였습니다.']);
         else
             return back()->with(['success' => '성공하였습니다']);
@@ -201,14 +209,14 @@ class ReportController extends Controller
                 $request->PublisherID,
                 $request->Contents,
                 ]);
-        else 
+        else
             $res = DB::select('uspSetStandingServiceExperienceUpdate ?,?,?', [
                 $request->ExperienceID,
                 $request->PublisherID,
                 $request->Contents,
                 ]);
-   
-        if(getAffectedRows($res) === 0) 
+
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '저장 실패하였습니다.']);
         else
             if($request->ExperienceID === '0')
@@ -224,11 +232,11 @@ class ReportController extends Controller
                 0,
             ]);
 
-        if( getAffectedRows($res) === 0 ) 
+        if( getAffectedRows($res) === 0 )
             return back()->withErrors(['fail' => '삭제 실패하였습니다.']);
         else
             return redirect('/experiences');
-        
+
     }
 
     public function circuitConfirmExperiences(Request $request)
@@ -238,7 +246,7 @@ class ReportController extends Controller
             1,
         ]);
         // dd($res);
-        if(getAffectedRows($res) === 0) 
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '실패하였습니다.']);
         else
             return back()->with(['success' => '성공하였습니다']);
@@ -251,12 +259,12 @@ class ReportController extends Controller
             1,
         ]);
         // dd($res);
-        if(getAffectedRows($res) === 0) 
+        if(getAffectedRows($res) === 0)
             return back()->withErrors(['fail' => '실패하였습니다.']);
         else
             return back()->with(['success' => '성공하였습니다']);
     }
-    public function exportExperiences(Request $request) 
+    public function exportExperiences(Request $request)
     {
         if( $request->ExperienceID !== '0' ) {
             $res = DB::select( 'uspGetStandingServiceExperienceDetail ?', [
@@ -265,12 +273,12 @@ class ReportController extends Controller
             $Experience = reset($res); /* reset( [] ) === false */
             if( empty($Experience) ) abort(404); /* empty( false ) === true */
         }
-    
+
         $fileName = $Experience->MetroName . '_' ;
         $fileName .= $Experience->CircuitName . '_' ;
         $fileName .= $Experience->PublisherName . '_' ;
         $fileName .= '경험담보고.xlsx';
-        
+
         return Excel::download(new ExperienceExport($Experience), $fileName);
     }
 }

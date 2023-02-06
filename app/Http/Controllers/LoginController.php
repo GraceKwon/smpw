@@ -136,9 +136,16 @@ class LoginController extends Controller
 
     public function putResetPwd(Request $request)
     {
+        $locate = App::getLocale();
+        if ($locate === 'ko') {
+            $regex = 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/';
+        } else {
+            $regex = 'required';
+        }
+
         $request->validate([
             'Account' => 'required', //8~12자리의 영문, 숫자, 특수문자 포함
-            'Mobile' => 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+            'Mobile' => $regex,
         ]);
         $Password = sprintf('%04d',rand(0, 9999));
         $msg = '대도시 특별 공개증거 아이디 '.$request->Account.' 의 비밀번호가 변경 되었습니다. 초기화 비밀번호는 '.$Password.' 입니다.';

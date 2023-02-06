@@ -187,6 +187,13 @@ class CircuitController extends Controller
 
     public function putAdmins(Request $request)
     {
+        $locate = App::getLocale();
+        if ($locate === 'ko') {
+            $regex = 'nullable|regex:/^\d{2,3}-\d{3,4}-\d{4}$/';
+        } else {
+            $regex = 'nullable';
+        }
+
         $request->validate([
             'AdminName' => 'required|min:2|max:12',
             // 'AdminName' => [
@@ -198,7 +205,7 @@ class CircuitController extends Controller
             'AdminRoleID' => 'required',
             // 'MetroID' => 'required',
             // 'CircuitID' => 'required',
-            'Mobile' => 'nullable|regex:/^\d{2,3}-\d{3,4}-\d{4}$/',
+            'Mobile' => $regex,
         ]);
 
         if($request->AdminID === '0') {
