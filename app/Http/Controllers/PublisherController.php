@@ -358,6 +358,7 @@ class PublisherController extends Controller
 
         $authKey = base64_encode(env('EN_SMS_ID').':'.$tokenKey);
         $refKey = now().'_'.$mobile;
+        $toMobile = '+'.$mobile;
         $callback = '01087918350';
         $subject = 'Special Metropolitan Public Witnessing';
 
@@ -370,7 +371,7 @@ class PublisherController extends Controller
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "phone=".$mobile.
+            CURLOPT_POSTFIELDS => "phone=".$toMobile.
                 "&callback=".$callback.
                 "&message=".$msg.
                 "&refkey=".$refKey.
