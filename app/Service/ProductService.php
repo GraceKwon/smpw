@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
@@ -11,7 +12,7 @@ class ProductService
 
     public function getProductStockList()
     {
-        $paginate = 100;
+        $paginate = 1000;
         $page = request()->input('page', 1);
 
         $parameter = [
@@ -31,8 +32,15 @@ class ProductService
 
     public function getProductList()
     {
+        $lang = App::getLocale();
+        if ($lang === 'ko') {
+            $requestLang = '한국어';
+        } else {
+            $requestLang = 'Mozambique';
+        }
+
         return DB::select('uspGetStandingProductList ?', [
-            request()->LanguageName ?? '한국어',
+            request()->LanguageName ?? $requestLang,
         ]);
 
     }

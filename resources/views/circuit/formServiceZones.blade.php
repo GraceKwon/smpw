@@ -86,7 +86,7 @@
                             name="Latitude"
                             v-model="Latitude"
                             placeholder="{{ __('msg.LA_MAP_SELECT') }}"
-                            readonly>
+                            >
                         @error('Latitude')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -103,7 +103,7 @@
                             name="Longitude"
                             v-model="Longitude"
                             placeholder="{{ __('msg.LO_MAP_SELECT') }}"
-                            readonly>
+                            >
                         @error('Longitude')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -137,7 +137,7 @@
                         name="ZoneAddress"
                         v-model="ZoneAddress"
                         placeholder="{{ __('msg.DISPLAY_MAP_ADDR_SELECTED') }}"
-                        readonly>
+                        >
                     @error('ZoneAddress')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
