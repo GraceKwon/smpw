@@ -253,7 +253,7 @@ class PublisherController extends Controller
                     $smsCode = $result['code'];
                 }
 
-                if ($smsCode === 200) {
+                if ($smsCode == 200) {
                     return back()->with(['success' => __('msg.SUCCESS_RESET_PASSWORD').' '.__('msg.TPI'). $Password]);
                 }
             }
