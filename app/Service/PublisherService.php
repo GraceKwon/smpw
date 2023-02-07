@@ -25,7 +25,10 @@ class PublisherService
 
     public function getServiceTimeList()
     {
-        if (!App::isLocale('ko')) {
+        if (App::isLocale('ko')) {
+            $ServiceYoil = request()->ServiceYoil ?? '월';
+            
+        } else {
             switch (request()->ServiceYoil) {
                 case 'Monday':
                     $ServiceYoil = '월';
@@ -49,7 +52,7 @@ class PublisherService
                     $ServiceYoil = '일';
                     break;
                 default:
-                $ServiceYoil = '월';
+                    $ServiceYoil = '월';
                     break;
             }
         }
