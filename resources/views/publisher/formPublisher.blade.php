@@ -468,8 +468,8 @@
             // Memo: "",
             EndDate: "{{ old('EndDate') ?? $Publisher->EndDate ?? '' }}",
             EndTypeID: "{{ old('EndTypeID') ?? $Publisher->EndTypeID ?? '' }}",
-            ServiceYoil: "{{ request('ServiceYoil') ?? '월' }}",
-            ServiceSetType: "{{ request('ServiceYoil') ?? '월' }}",
+            ServiceYoil: "{{ request('ServiceYoil') ?? __('msg.MO') }}",
+            ServiceSetType: "{{ request('ServiceYoil') ?? __('msg.MO') }}",
             SetStartDate: "{{ date('Y-m-d') }}",
         },
         watch: {

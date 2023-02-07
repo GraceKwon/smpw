@@ -3,6 +3,7 @@
 namespace App\Service;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
+use Illuminate\Support\Facades\App;
 
 class PublisherService
 {
@@ -24,12 +25,40 @@ class PublisherService
 
     public function getServiceTimeList()
     {
-        $ServiceYoil = request()->ServiceYoil ?? '월';
+        if (!App::isLocale('ko')) {
+            switch (request()->ServiceYoil) {
+                case 'Monday':
+                    $ServiceYoil = '월';
+                    break;
+                case 'Tuesday':
+                    $ServiceYoil = '화';
+                    break;
+                case 'Wednesday':
+                    $ServiceYoil = '수';
+                    break;
+                case 'Thursday':
+                    $ServiceYoil = '목';
+                    break;
+                case 'Friday':
+                    $ServiceYoil = '금';
+                    break;
+                case 'Saturday':
+                    $ServiceYoil = '토';
+                    break;                     
+                case 'Sunday':
+                    $ServiceYoil = '일';
+                    break;
+                default:
+                $ServiceYoil = '월';
+                    break;
+            }
+        }
+        // $ServiceYoil = request()->ServiceYoil ?? '월';
         $ArrayServiceTimePublisher = $this->getArrayServiceTimePublisher();
         $ServiceZoneList = $this->CommonService->getServiceZoneList();
         $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [
                 session('auth.CircuitID') ?? request()->CircuitID,
-                request()->ServiceYoil ?? '월',
+                $ServiceYoil,
             ]);
 
         foreach ((array) $res as $key => $ServiceTime) {
@@ -63,7 +92,6 @@ class PublisherService
 
     public function getServiceYoilSetTimeCount()
     {
-
         $res =  DB::table('ServiceTimeSets')
             ->select(
                 'ServiceTimes.ServiceYoil',
