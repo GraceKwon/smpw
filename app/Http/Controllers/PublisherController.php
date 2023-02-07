@@ -174,6 +174,7 @@ class PublisherController extends Controller
                     \Log::info($accessToken['access_token']);
                     $result = $this->sendSmsEn($accessToken['access_token'], $request->Mobile, $msg);
                     $smsCode = $result['code'];
+                    \Log::info('sms result code is '.$smsCode);
                 }
 
 //                sleep(3);
