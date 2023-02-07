@@ -85,7 +85,7 @@ class PublisherController extends Controller
         $ServiceTimeList = $PublisherService->getServiceTimeList();
 
         $SetTimeCount = $PublisherService->getServiceYoilSetTimeCount();
-        // dd($SetTimeCount);
+//         dd($ServiceTimeList);
 //        dd($Publisher);
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
@@ -170,6 +170,8 @@ class PublisherController extends Controller
                 } else {
                     $accessToken = $this->getSmsTokenKey();
                     sleep(2);
+                    \Log::info('token key ===== ');
+                    \Log::info($accessToken['access_token']);
                     $result = $this->sendSmsEn($accessToken['access_token'], $request->Mobile, $msg);
                     $smsCode = $result['code'];
                 }
