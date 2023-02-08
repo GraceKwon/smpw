@@ -164,7 +164,7 @@ class PublisherController extends Controller
                     __('msg.SMS_2').$password;
 
                 if ($locate === 'ko') {
-                    $msg = $msg.__('msg.SMS_3');
+                    $msg .= __('msg.SMS_3');
                     $result = $this->sendSms($request->Mobile, $msg);
                     $result->resultCode === 0 ? $smsCode = 200 : $smsCode = 500;
                 } else {
@@ -181,11 +181,11 @@ class PublisherController extends Controller
 //                $addressLink = 'https://smpw.or.kr/home/appdownload';
 //                $result = $this->sendSms($request->Mobile, $addressLink);
                 if ($smsCode !== 200) {
+                    $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
+                } else {
                     Log::error('봉사자 등록 문자 발송 에러');
                     Log::error('에러 메시지 ===== '.$result);
                 }
-
-                $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
             } else {
                 $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
