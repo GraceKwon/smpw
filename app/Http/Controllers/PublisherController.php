@@ -85,7 +85,7 @@ class PublisherController extends Controller
         $ServiceTimeList = $PublisherService->getServiceTimeList();
 
         $SetTimeCount = $PublisherService->getServiceYoilSetTimeCount();
-        // dd($SetTimeCount);
+//         dd($ServiceTimeList);
 //        dd($Publisher);
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
@@ -164,25 +164,28 @@ class PublisherController extends Controller
                     __('msg.SMS_2').$password;
 
                 if ($locate === 'ko') {
-                    $msg = $msg.__('msg.SMS_3');
+                    $msg .= __('msg.SMS_3');
                     $result = $this->sendSms($request->Mobile, $msg);
                     $result->resultCode === 0 ? $smsCode = 200 : $smsCode = 500;
                 } else {
                     $accessToken = $this->getSmsTokenKey();
                     sleep(2);
+                    \Log::info('token key ===== ');
+                    \Log::info($accessToken['access_token']);
                     $result = $this->sendSmsEn($accessToken['access_token'], $request->Mobile, $msg);
                     $smsCode = $result['code'];
+                    \Log::info('sms result code is '.$smsCode);
                 }
 
 //                sleep(3);
 //                $addressLink = 'https://smpw.or.kr/home/appdownload';
 //                $result = $this->sendSms($request->Mobile, $addressLink);
                 if ($smsCode !== 200) {
+                    $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
+                } else {
                     Log::error('봉사자 등록 문자 발송 에러');
                     Log::error('에러 메시지 ===== '. json_encode($result));
                 }
-
-                $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
             } else {
                 $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
