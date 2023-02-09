@@ -13,6 +13,38 @@ class DashBoardController extends Controller
     }
     public function dashboard(Request $request)
     {
+    //    장기 미참여
+        // $lastService = DB::table('ServiceActs')
+        //     ->select('PublisherID', DB::raw('MAX(ServiceDate) as last_service_date'))
+        //     ->whereNotNull('CancelDate')
+        //     ->groupBy('PublisherID');
+    
+        // $dd = DB::table('Publishers')
+        //         ->select('Publishers.*','last_service.last_service_date')
+        //             ->leftJoin('Congregations', 'Publishers.CongregationID', '=', 'Congregations.CongregationID')
+        //             ->leftJoin('Circuits', 'Congregations.CircuitID', '=', 'Circuits.CircuitID')
+        //             ->leftJoin('Metros', 'Circuits.MetroID', '=', 'Metros.MetroID')
+
+        //            ->leftJoinSub($lastService, 'last_service', function ($join) {
+        //                $join->on('Publishers.PublisherID', '=', 'last_service.PublisherID');
+        //            })
+        //            ->where([
+        //             ['UseYn', '=', 1],
+        //             ['Circuits.CircuitID', '=', session('auth.CircuitID')],
+        //             ['Metros.MetroID', '=', session('auth.MetroID')],
+        //             // ['last_service_date', '=', null],
+        //             ['last_service_date', '<', '2022-06-30'],
+        //             ])
+        //             ->orWhere([
+        //                 ['UseYn', '=', 1],
+        //                 ['Circuits.CircuitID', '=', session('auth.CircuitID')],
+        //                 ['Metros.MetroID', '=', session('auth.MetroID')],
+        //                 ['last_service_date', '=', null],
+        //                 // ['last_service_date', '>', '2022-06-30'],
+        //                 ])
+        //             ->orderBy('last_service_date', 'desc')
+        //             ->get();
+        // dd($dd);
         $Notices = DB::select('uspGetStandingNoticeList ?,?,?,?,?,?', 
             [
                 30,

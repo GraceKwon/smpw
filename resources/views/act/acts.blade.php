@@ -64,7 +64,7 @@
                 </th>
                 <th class="text-center">
                     <div class="min-width sat">
-                        <span>{{ __('msg.FR') }}</span>
+                        <span>{{ __('msg.SA') }}</span>
                     </div>
                 </th>
             </tr>

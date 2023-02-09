@@ -179,7 +179,7 @@ class PublisherController extends Controller
 //                $result = $this->sendSms($request->Mobile, $addressLink);
                 if ($smsCode !== 200) {
                     Log::error('봉사자 등록 문자 발송 에러');
-                    Log::error('에러 메시지 ===== '.$result);
+                    Log::error('에러 메시지 ===== '. json_encode($result));
                 }
 
                 $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
