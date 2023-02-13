@@ -213,6 +213,7 @@ return [
     'INVENTORY_Q_MANAGE' => '재고수량관리',
     'CHANGES' => '변경',
     'YOU_SAVE' => '저장 하시겠습니까?',
+    'YOU_EDIT' => '수정 하시겠습니까?',
     'DT' => '배송 조회',
     'RF' => '요청실패',
     'NAME_PERSON' => '담당자',

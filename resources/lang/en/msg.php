@@ -223,6 +223,7 @@ return [
     'INVENTORY_Q_MANAGE' => 'Inventory quantity management',
     'CHANGES' => 'changes',
     'YOU_SAVE' => 'Would you like to save?',
+    'YOU_EDIT' => 'Would you like to edit?',
     'DT' => 'delivery tracking',
     'RF' => 'request failed',
     'NAME_PERSON' => 'name of the person in charge',

@@ -159,7 +159,6 @@ class PublisherController extends Controller
                     $request->EndDate,
                     $request->EndTypeID,
                 ]);
-
                 $msg = __('msg.SMS_1').trim($res[0]->pId).
                     __('msg.SMS_2').$password;
 
@@ -180,12 +179,12 @@ class PublisherController extends Controller
 //                sleep(3);
 //                $addressLink = 'https://smpw.or.kr/home/appdownload';
 //                $result = $this->sendSms($request->Mobile, $addressLink);
+                $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
                 if ($smsCode !== 200) {
-                    $code = getAffectedRows($res) === 0 ? 1 : getAffectedRows($res);
-                } else {
                     Log::error('봉사자 등록 문자 발송 에러');
                     Log::error('에러 메시지 ===== '. json_encode($result));
                 }
+                
             } else {
                 $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,

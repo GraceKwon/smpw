@@ -482,7 +482,7 @@
         },
         methods:{
             _confirm: function (e) {
-                var res = confirm('{{ isset($ServiceZone->ServiceZoneID) ? '수정' : '저장' }} ?');
+                var res = confirm('{{ isset($ServiceZone->ServiceZoneID) ? __('msg.YOU_EDIT') : __('msg.YOU_SAVE') }}');
                 if(!res){
                     e.preventDefault();
                 }
