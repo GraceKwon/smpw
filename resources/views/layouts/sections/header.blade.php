@@ -5,7 +5,7 @@
 <meta name="author" content="">
 <meta name="description" content="">
 
-<meta name="theme-color" content="#e64628">
+<meta name="theme-color" content="gray">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="csrf-token" content="{{ csrf_token() }}">
