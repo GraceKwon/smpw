@@ -45,12 +45,18 @@
 
         @if(isset($ReceiveGroupList))
         <div class="search-form-item">
-            <label class="label" for="ReceiveGroupID">{{ __('msg.TG') }}</label>
+            <label class="label" for="ReceiveGroupID">{{ __('msg.TAR') }}</label>
             <select class="custom-select" id="ReceiveGroupID" name="ReceiveGroupID" onchange="submit()">
                 <option value="">{{ __('msg.SELECT') }}</option>
                 @foreach ($ReceiveGroupList as $ReceiveGroup)
-                    <option @if(request()->ReceiveGroupID == $ReceiveGroup->ID ) selected @endif
-                        value="{{ $ReceiveGroup->ID }}">{{ $ReceiveGroup->Item }}</option>
+                    <option @if(request()->ReceiveGroupID === $ReceiveGroup->ID ) selected @endif
+                        value="{{ $ReceiveGroup->ID }}">
+                        @if($locale === 'kr')
+                            {{ $ReceiveGroup->Item }}
+                        @else
+                            {{ $ReceiveGroup->ItemEng }}
+                        @endif
+                    </option>
                 @endforeach
             </select>
         </div> <!-- /.search-form-item -->

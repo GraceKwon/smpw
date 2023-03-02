@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Service\CommonService;
@@ -17,10 +18,11 @@ class BoardController extends Controller
 
     public function notices(Request $request, CommonService $CommonService)
     {
+        $locale = App::getLocale();
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
         $ReceiveGroupList = $CommonService->getReceiveGroupList('list');
-        $paginate = 30;  
+        $paginate = 30;
         $page = $request->input('page', '1');
         $parameter = [
             $request->MetroID,
@@ -28,10 +30,10 @@ class BoardController extends Controller
             $request->ReceiveGroupID,
             session('auth.AdminRoleID')
         ];
-        
+
         if (session('auth.MetroID')) $parameter[0] = session('auth.MetroID');
         if (session('auth.CircuitID')) $parameter[1] = session('auth.CircuitID');
-        $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?,?', 
+        $data = DB::select('uspGetStandingNoticeList ?,?,?,?,?,?',
             array_merge( [$paginate, $page], $parameter ));
         $count = DB::select('uspGetStandingNoticeListCnt ?,?,?,?', $parameter);
         $NoticeList = setPaginator($paginate, $page, $data, $count);
@@ -40,7 +42,8 @@ class BoardController extends Controller
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
             'ReceiveGroupList' => $ReceiveGroupList,
-            'NoticeList' => $NoticeList
+            'NoticeList' => $NoticeList,
+            'locale' => $locale,
         ]);
     }
 
@@ -68,7 +71,7 @@ class BoardController extends Controller
         if (session('auth.AdminRoleID') == 3 && $Notice[0]->ReceiveGroupID == 41) $modify = false;
         if (session('auth.AdminRoleID') == 5 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42)) $modify = false;
         if (session('auth.AdminRoleID') == 4 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42|| $Notice[0]->ReceiveGroupID == 50)) $modify = false;
- 
+
         return view('board.detailNotices', [
             'Files' => $Files,
             'Notice' => $Notice[0],
@@ -81,7 +84,7 @@ class BoardController extends Controller
     public function formNotices($id, CommonService $common)
     {
         //TODO : 본인글이 아니면 제한 로직 추가
- 
+
         $Notice = DB::select('uspGetStandingNoticeDetail ?', [$id]);
         $Files = DB::select('uspGetStandingNoticeFile ?', [$id]);
 
@@ -97,7 +100,7 @@ class BoardController extends Controller
     }
 
     public function putNotices($id, Request $request, PushService $PushService)
-    {   
+    {
         $request->validate([
             'MetroID' => 'required',
             'ReceiveGroupID' => 'required',
@@ -106,13 +109,13 @@ class BoardController extends Controller
         ]);
 
         $delFiles =  explode(',', $request->delFiles);
-        for ($i=0; $i < count($delFiles); $i++) { 
+        for ($i=0; $i < count($delFiles); $i++) {
             DB::statement('uspSetStandingNoticeFileDelete ?',[$delFiles[$i]]);
         }
 
         if ($request->Files !== null) {
             $files = [];
-            for ($i=0; $i < count( $request->Files ); $i++) { 
+            for ($i=0; $i < count( $request->Files ); $i++) {
                 $files[] = [
                     'path' => $request->Files[$i]->store('files'),
                     'name' => $request->Files[$i]->getClientOriginalName()
@@ -137,7 +140,7 @@ class BoardController extends Controller
         }
 
         if ($id == 0) $res = DB::select('uspSetStandingNoticeInsert ?,?,?,?,?,?,?,?', $parameter);
-        
+
         // $ID = $res[0]->computed; 이렇게하면 윈도우서버에서 오류납니다. 아래코드로 수정함
         $ID = getAffectedRows($res);
         if ($request->Files !== null) {
@@ -151,8 +154,8 @@ class BoardController extends Controller
             }
         }
 
-        if($request->CircuitID && (int)$request->ReceiveGroupID === (int)getItemID('봉사자전체' , 'ReceiveGroupID')) 
-        
+        if($request->CircuitID && (int)$request->ReceiveGroupID === (int)getItemID('봉사자전체' , 'ReceiveGroupID'))
+
         if ($id == 0) {
             $request->NoticeID = $ID; //PushService->sendToTopic에서 사용
             $PushService->newNotice(); //푸시발송
