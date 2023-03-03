@@ -7,7 +7,7 @@
         <tr>
             <td>
                 <div>
-                    <span class="text-muted font-size-80 mr-2">[{{ $Notice->MetroName }} / {{ $Notice->CircuitName }} / {{ $Notice->ReceiveGroup }}]</span>
+                    <span class="text-muted font-size-80 mr-2">[{{ $Notice->MetroName }} / {{ $Notice->CircuitName }} / {{ $Notice->targetGroup }}]</span>
                     <span class="notice-title">{{ $Notice->Title }}</span>
                 </div>
                 <div class="d-flex justify-content-end mt-3">

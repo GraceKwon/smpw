@@ -65,7 +65,11 @@
                         {{ $Notice->CircuitName }}
                     </td>
                     <td>
-                        {{ $Notice->ReceiveGroup }}
+                        @if($locale === 'kr')
+                            {{ $Notice->ReceiveGroup }}
+                        @else
+                            {{ $Notice->ReceiveGroupEng }}
+                        @endif
                     </td>
                     <td class="title">
                         <div class="d-flex">

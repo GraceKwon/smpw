@@ -11,14 +11,15 @@ use DB;
 
 class BoardController extends Controller
 {
+    protected string $locale;
     public function __construct()
     {
+        $this->locale = App::getLocale();
         $this->middleware('admin_auth')->except('fileDownload');
     }
 
     public function notices(Request $request, CommonService $CommonService)
     {
-        $locale = App::getLocale();
         $MetroList = $CommonService->getMetroList();
         $CircuitList = $CommonService->getCircuitList();
         $ReceiveGroupList = $CommonService->getReceiveGroupList('list');
@@ -43,7 +44,7 @@ class BoardController extends Controller
             'CircuitList' => $CircuitList,
             'ReceiveGroupList' => $ReceiveGroupList,
             'NoticeList' => $NoticeList,
-            'locale' => $locale,
+            'locale' => $this->locale,
         ]);
     }
 
@@ -71,6 +72,12 @@ class BoardController extends Controller
         if (session('auth.AdminRoleID') == 3 && $Notice[0]->ReceiveGroupID == 41) $modify = false;
         if (session('auth.AdminRoleID') == 5 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42)) $modify = false;
         if (session('auth.AdminRoleID') == 4 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42|| $Notice[0]->ReceiveGroupID == 50)) $modify = false;
+
+        if ($this->locale === 'kr') {
+            $Notice[0]->targetGroup = $Notice[0]->ReceiveGroup;
+        } else {
+            $Notice[0]->targetGroup = $Notice[0]->ReceiveGroupEng;
+        }
 
         return view('board.detailNotices', [
             'Files' => $Files,
