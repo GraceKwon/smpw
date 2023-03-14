@@ -9,7 +9,7 @@
                         {{ __('msg.PS') }}
                     </h3>
                     <div class="text-muted font-size-80">
-                        (2019년 08월 기준)
+                        <div id="current_date"></div>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -344,7 +344,12 @@
 @section('popup')
 @endsection
 
-{{-- @section('script')
-<script>
-</script>
-@endsection --}}
+@section('script')
+    <script>
+        date = new Date();
+        year = date.getFullYear();
+        month = date.getMonth() + 1;
+        day = date.getDate();
+        document.getElementById("current_date").innerHTML = '(' + month + '/' + day + '/' + year + ')';
+    </script>
+@endsection
