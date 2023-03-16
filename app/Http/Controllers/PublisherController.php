@@ -13,11 +13,13 @@ use App\Service\PushService;
 
 class PublisherController extends Controller
 {
+    protected string $locale;
     public function __construct(CommonService $CommonService, PushService $PushService)
     {
         $this->CommonService = $CommonService;
         $this->PushService = $PushService;
         $this->middleware('admin_auth');
+        $this->locale = App::getLocale();
     }
 
     public function publishers(Request $request)
@@ -29,7 +31,6 @@ class PublisherController extends Controller
 // dd(session('auth.AdminRoleID'));
         $paginate = 30;
         $page = $request->input('page', '1');
-        $getLocal = App::getLocale();
         $parameter = [
             ( session('auth.MetroID') ?? $request->MetroID ),
             ( session('auth.CircuitID') ?? $request->CircuitID ),
@@ -45,19 +46,19 @@ class PublisherController extends Controller
 
         $PublisherList = setPaginator($paginate, $page, $data, $count);
         // dd($PublisherList);
+
         return view( 'publisher.publishers', [
             'PublisherList' => $PublisherList,
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
-            'getLocal' => $getLocal,
+            'locale' => $this->locale,
         ]);
     }
 
     public function formPublishers(Request $request, PublisherService $PublisherService)
     {
-        $locale = App::getLocale();
         if( $request->PublisherID !== '0' ) {
             $res = DB::select( 'uspGetStandingPublisherDetail ?', [
                 $request->PublisherID
@@ -87,6 +88,7 @@ class PublisherController extends Controller
         $SetTimeCount = $PublisherService->getServiceYoilSetTimeCount();
 //         dd($ServiceTimeList);
 //        dd($Publisher);
+//        dd($EndTypeIDList);
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,
@@ -96,7 +98,7 @@ class PublisherController extends Controller
             'ServiceZoneList' => $ServiceZoneList,
             'ServiceTimeList' => $ServiceTimeList,
             'SetTimeCount' => $SetTimeCount,
-            'location' => $locale,
+            'locale' => $this->locale,
         ]);
     }
 
@@ -184,7 +186,7 @@ class PublisherController extends Controller
                     Log::error('봉사자 등록 문자 발송 에러');
                     Log::error('에러 메시지 ===== '. json_encode($result));
                 }
-                
+
             } else {
                 $res = DB::select('uspSetStandingPublisherUpdate ?,?,?,?,?,?,?,?,?,?,?,?,?', [
                     $request->PublisherID,
@@ -316,7 +318,7 @@ class PublisherController extends Controller
             // dd($arrayForPush);
             $this->PushService->PublisherServiceTimeSet($arrayForPush);
         }
-        // dd($request->all());
+//         dd($request->all());
         return back();
     }
 

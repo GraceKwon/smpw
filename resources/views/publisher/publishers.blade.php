@@ -121,10 +121,18 @@
                         @elseif($Publisher->Gender === 'F') {{ __('msg.SIS') }} @endif
                     </td>
                     <td>
-                        {{ $Publisher->ServantType }}
+                        @if($locale === 'kr')
+                            {{ $Publisher->ServantType }}
+                        @else
+                            {{ $Publisher->ServantTypeEng }}
+                        @endif
                     </td>
                     <td>
-                        {{ $Publisher->EndKind }}
+                        @if($locale === 'kr')
+                            {{ $Publisher->EndKind }}
+                        @else
+                            {{ $Publisher->EndKindEng }}
+                        @endif
                     </td>
                     <td>
                         {{ $Publisher->Mobile }}

@@ -156,7 +156,9 @@
                         v-model="ServantTypeID">
                         <option value="">{{ __('msg.SELECT') }}</option>
                         @foreach ($ServantTypeList as $ServantType)
-                            <option value="{{ $ServantType->ID }}">{{ $ServantType->Item }}</option>
+                            <option value="{{ $ServantType->ID }}">
+                                {{ $locale === 'kr' ? $ServantType->Item : $ServantType->ItemEng }}
+                            </option>
                         @endforeach
                     </select>
                     @error('ServantTypeID')
@@ -449,7 +451,7 @@
 
 @section('script')
 <script>
-    const locale = '{{ $location }}';
+    const locale = '{{ $locale }}';
 
     var app = new Vue({
         el:'#wrapper-body',
