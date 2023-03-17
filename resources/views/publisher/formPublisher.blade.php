@@ -157,7 +157,7 @@
                         <option value="">{{ __('msg.SELECT') }}</option>
                         @foreach ($ServantTypeList as $ServantType)
                             <option value="{{ $ServantType->ID }}">
-                                {{ $locale === 'kr' ? $ServantType->Item : $ServantType->ItemEng }}
+                                {{ $locale === 'ko' ? $ServantType->Item : $ServantType->ItemEng }}
                             </option>
                         @endforeach
                     </select>

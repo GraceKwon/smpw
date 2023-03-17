@@ -65,7 +65,7 @@
                         {{ $Notice->CircuitName }}
                     </td>
                     <td>
-                        @if($locale === 'kr')
+                        @if($locale === 'ko')
                             {{ $Notice->ReceiveGroup }}
                         @else
                             {{ $Notice->ReceiveGroupEng }}

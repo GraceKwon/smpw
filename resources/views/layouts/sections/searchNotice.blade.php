@@ -51,7 +51,7 @@
                 @foreach ($ReceiveGroupList as $ReceiveGroup)
                     <option @if(request()->ReceiveGroupID === $ReceiveGroup->ID ) selected @endif
                         value="{{ $ReceiveGroup->ID }}">
-                        @if($locale === 'kr')
+                        @if($locale === 'ko')
                             {{ $ReceiveGroup->Item }}
                         @else
                             {{ $ReceiveGroup->ItemEng }}
