@@ -420,8 +420,7 @@
                                             {{ __('msg.W') }}
                                         </option>
                                         <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>
-{{--                                            {{ __('msg.PUB') }}--}}
-                                            몰라몰라몰라
+                                            {{ __('msg.PUB') }}
                                         </option>
                                         @if($ServiceTime['ServiceSetType'] === '인도자' || $ServiceTime['LeaderCnt'] < 1)
                                             <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>
