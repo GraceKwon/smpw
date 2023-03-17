@@ -176,9 +176,15 @@
                         name="PioneerTypeID"
                         v-model="PioneerTypeID">
                         <option value="">{{ __('msg.SELECT') }}</option>
-                        @foreach ($PioneerTypeList as $PioneerType)
-                            <option value="{{ $PioneerType->ID }}">{{ $PioneerType->Item }}</option>
-                        @endforeach
+                        @if($locale === 'kr')
+                            @foreach ($PioneerTypeList as $PioneerType)
+                                <option value="{{ $PioneerType->ID }}">{{ $PioneerType->Item }}</option>
+                            @endforeach
+                        @else
+                            @foreach ($PioneerTypeList as $PioneerType)
+                                <option value="{{ $PioneerType->ID }}">{{ $PioneerType->ItemEng }}</option>
+                            @endforeach
+                        @endif
                     </select>
                     @error('PioneerTypeID')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -292,9 +298,15 @@
                         :disabled="StopYn === '0'"
                         v-model="EndTypeID">
                         <option value="">{{ __('msg.SELECT') }}</option>
-                        @foreach ($EndTypeIDList as $EndTypeID)
-                            <option value="{{ $EndTypeID->ID }}">{{ $EndTypeID->Item }}</option>
-                        @endforeach
+                        @if($locale === 'kr')
+                            @foreach ($EndTypeIDList as $EndTypeID)
+                                <option value="{{ $EndTypeID->ID }}">{{ $EndTypeID->Item }}</option>
+                            @endforeach
+                        @else
+                            @foreach ($EndTypeIDList as $EndTypeID)
+                                <option value="{{ $EndTypeID->ID }}">{{ $EndTypeID->ItemEng }}</option>
+                            @endforeach
+                        @endif
                     </select>
                     @error('EndTypeID')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -400,14 +412,17 @@
                             <div class="form-inline">
                                 <select class="custom-select mx-auto"
                                     name="ServiceSetType[{{ $ServiceTime['ServiceTimeID'] }}]">
-                                    <option value="미지정" @if( $ServiceTime['ServiceSetType'] === '미지정' ) selected @endif>
+                                    <option value="{{ __('msg.UNS') }}" @if( $ServiceTime['ServiceSetType'] === "{{ __('msg.UNS') }}" ) selected @endif>
                                         {{ __('msg.UNS') }}
                                     </option>
                                     @if($ServiceTime['PublisherCnt'] < session('auth.PublisherNumber') )
                                         <option value="대기" @if( $ServiceTime['ServiceSetType'] === '대기' ) selected @endif>
-                                            {{ __('msg.W') }}</option>
+                                            {{ __('msg.W') }}
+                                        </option>
                                         <option value="봉사자" @if( $ServiceTime['ServiceSetType'] === '봉사자' ) selected @endif>
-                                            {{ __('msg.PUB') }}</option>
+{{--                                            {{ __('msg.PUB') }}--}}
+                                            몰라몰라몰라
+                                        </option>
                                         @if($ServiceTime['ServiceSetType'] === '인도자' || $ServiceTime['LeaderCnt'] < 1)
                                             <option value="인도자" @if( $ServiceTime['ServiceSetType'] === '인도자' ) selected @endif>
                                                 {{ __('msg.CON') }}</option>
