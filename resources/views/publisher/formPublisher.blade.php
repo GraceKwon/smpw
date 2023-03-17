@@ -176,7 +176,7 @@
                         name="PioneerTypeID"
                         v-model="PioneerTypeID">
                         <option value="">{{ __('msg.SELECT') }}</option>
-                        @if($locale === 'kr')
+                        @if($locale === 'ko')
                             @foreach ($PioneerTypeList as $PioneerType)
                                 <option value="{{ $PioneerType->ID }}">{{ $PioneerType->Item }}</option>
                             @endforeach
@@ -298,7 +298,7 @@
                         :disabled="StopYn === '0'"
                         v-model="EndTypeID">
                         <option value="">{{ __('msg.SELECT') }}</option>
-                        @if($locale === 'kr')
+                        @if($locale === 'ko')
                             @foreach ($EndTypeIDList as $EndTypeID)
                                 <option value="{{ $EndTypeID->ID }}">{{ $EndTypeID->Item }}</option>
                             @endforeach
