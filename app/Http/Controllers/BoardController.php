@@ -73,7 +73,7 @@ class BoardController extends Controller
         if (session('auth.AdminRoleID') == 5 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42)) $modify = false;
         if (session('auth.AdminRoleID') == 4 && ($Notice[0]->ReceiveGroupID == 41 || $Notice[0]->ReceiveGroupID == 42|| $Notice[0]->ReceiveGroupID == 50)) $modify = false;
 
-        if ($this->locale === 'kr') {
+        if ($this->locale === 'ko') {
             $Notice[0]->targetGroup = $Notice[0]->ReceiveGroup;
         } else {
             $Notice[0]->targetGroup = $Notice[0]->ReceiveGroupEng;
