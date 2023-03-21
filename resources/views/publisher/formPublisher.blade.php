@@ -427,7 +427,15 @@
                                                 {{ __('msg.CON') }}</option>
                                         @endif
                                     @elseif($ServiceTime['ServiceSetType'] !== '미지정')
-                                        <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
+                                        @if($ServiceTime['ServiceSetType'] === '대기')
+                                            <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ __('msg.W') }}</option>
+                                        @endif
+                                        @if($ServiceTime['ServiceSetType'] === '봉사자')
+                                            <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ __('msg.PUB') }}</option>
+                                        @endif
+                                        @if($ServiceTime['ServiceSetType'] === '인도자')
+                                            <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ __('msg.CON') }}</option>
+                                        @endif
                                     @endif
                                 </select>
                             </div>
