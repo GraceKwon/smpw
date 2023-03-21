@@ -412,7 +412,7 @@
                             <div class="form-inline">
                                 <select class="custom-select mx-auto"
                                     name="ServiceSetType[{{ $ServiceTime['ServiceTimeID'] }}]">
-                                    <option value="{{ __('msg.UNS') }}" @if( $ServiceTime['ServiceSetType'] === "{{ __('msg.UNS') }}" ) selected @endif>
+                                    <option value="미지정" @if( $ServiceTime['ServiceSetType'] === '미지정' ) selected @endif>
                                         {{ __('msg.UNS') }}
                                     </option>
                                     @if($ServiceTime['PublisherCnt'] < session('auth.PublisherNumber') )

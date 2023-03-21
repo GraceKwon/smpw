@@ -283,14 +283,14 @@ class PublisherController extends Controller
                 $SetStartDate
             ]);
 
-            if ($ServiceSetType !== __('msg.UNS')) {
+            if ($ServiceSetType !== '미지정') {
                 $arrayForPush[$ServiceTimeID]["ServiceSetType"] = $ServiceSetType;
 
                 DB::statement('uspSetStandingServiceTimePublieherInsert ?,?,?,?,?', [
                     $PublisherID,
                     $ServiceTimeID,
-                    ($ServiceSetType === __('msg.CON')) ? 1 : 0,
-                    ($ServiceSetType === __('msg.W')) ? 1 : 0,
+                    ($ServiceSetType === '인도자') ? 1 : 0,
+                    ($ServiceSetType === '대기') ? 1 : 0,
                     $SetStartDate,
                 ]);
             }
