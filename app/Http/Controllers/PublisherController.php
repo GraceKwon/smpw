@@ -104,8 +104,7 @@ class PublisherController extends Controller
 
     public function putPublishers(Request $request)
     {
-        $locate = App::getLocale();
-        if ($locate === 'ko') {
+        if ($this->locale === 'ko') {
             $regex = 'required|regex:/^\d{2,3}-\d{3,4}-\d{4}$/';
         } else {
             $regex = 'required';
@@ -122,7 +121,6 @@ class PublisherController extends Controller
 //            'EndDate' => $request->StopYn === '1' ? 'required' : '' . '|date',
 //            'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
          ]);
-
 
 //        $client = new Client();
 //
@@ -164,7 +162,7 @@ class PublisherController extends Controller
                 $msg = __('msg.SMS_1').trim($res[0]->pId).
                     __('msg.SMS_2').$password;
 
-                if ($locate === 'ko') {
+                if ($this->locale === 'ko') {
                     $msg .= __('msg.SMS_3');
                     $result = $this->sendSms($request->Mobile, $msg);
                     $result->resultCode === 0 ? $smsCode = 200 : $smsCode = 500;

@@ -412,7 +412,7 @@
                             <div class="form-inline">
                                 <select class="custom-select mx-auto"
                                     name="ServiceSetType[{{ $ServiceTime['ServiceTimeID'] }}]">
-                                    <option value="{{ __('msg.UNS') }}" @if( $ServiceTime['ServiceSetType'] === "{{ __('msg.UNS') }}" ) selected @endif>
+                                    <option value="미지정" @if( $ServiceTime['ServiceSetType'] === '미지정' ) selected @endif>
                                         {{ __('msg.UNS') }}
                                     </option>
                                     @if($ServiceTime['PublisherCnt'] < session('auth.PublisherNumber') )
@@ -427,7 +427,15 @@
                                                 {{ __('msg.CON') }}</option>
                                         @endif
                                     @elseif($ServiceTime['ServiceSetType'] !== '미지정')
-                                        <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ $ServiceTime['ServiceSetType'] }}</option>
+                                        @if($ServiceTime['ServiceSetType'] === '대기')
+                                            <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ __('msg.W') }}</option>
+                                        @endif
+                                        @if($ServiceTime['ServiceSetType'] === '봉사자')
+                                            <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ __('msg.PUB') }}</option>
+                                        @endif
+                                        @if($ServiceTime['ServiceSetType'] === '인도자')
+                                            <option value="{{ $ServiceTime['ServiceSetType'] }}" selected>{{ __('msg.CON') }}</option>
+                                        @endif
                                     @endif
                                 </select>
                             </div>

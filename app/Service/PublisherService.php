@@ -82,7 +82,7 @@ class PublisherService
                         'ServiceTimeID' => $ServiceTime->ServiceTimeID,
                         'ServiceSetType' =>
                             $ArrayServiceTimePublisher[$ServiceZone->ServiceZoneID][$ServiceYoil][$key] ??
-                            __('msg.UNS'),
+                            '미지정',
                     ];
 
                 if( empty( $array[$key][$ServiceZone->ServiceZoneID] ) )
