@@ -2,7 +2,7 @@
 @section('content')
 @push('slot')
 <div class="search-form-item">
-        <label class="label" for="CreateDate">요청일자</label>
+        <label class="label" for="CreateDate">{{ __('msg.RDD') }}</label>
         <date-picker
             v-model="CreateDate"
             :input-id="'CreateDate'"
@@ -21,7 +21,7 @@
 @include('layouts.sections.search', [
     'inputTexts' => [
             [
-                'label' => __('ms   g.PLISH_NAME'),
+                'label' => __('msg.PLISH_NAME'),
                 'id' =>'PublisherName'
             ],
             [

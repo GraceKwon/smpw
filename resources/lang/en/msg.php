@@ -96,6 +96,7 @@ return [
     'CANCEL_SERVICE_DAY' => 'Day of the week service cancellation',
     'CANCEL_SERVICE' => 'service cancellation',
     'RS' => 'request support',
+    'RDD' => 'request date',
     'ST' => 'service time',
     'RA' => 'random assignment',
     'AC1' => 'A canceled time schedule cannot be restored,',
