@@ -29,7 +29,7 @@ class PushService
             'title' => $title,
             'body' => $msg,
             ]);
-        
+
         // $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
@@ -41,11 +41,11 @@ class PushService
             ->toArray();
         if( !empty($tokens) ){
             $downstreamResponse = FCM::sendTo($tokens, null, $notification, $data);
-            
+
             if( count($downstreamResponse->tokensToDelete()) ){
                 DB::table('Publishers')->whereIn('PushTokenValue', $downstreamResponse->tokensToDelete())->update(['PushTokenValue' => NULL]);
             }
-            
+
             if( count($downstreamResponse->tokensToModify()) ){
                 foreach ( $downstreamResponse->tokensToModify() as $oldToken => $newToken ){
                     DB::table('Publishers')
@@ -53,14 +53,14 @@ class PushService
                     ->update([ 'PushTokenValue' => $newToken ]);
                 }
             }
-            
+
             if( count($downstreamResponse->tokensToRetry()) ){
                 foreach ( $downstreamResponse->tokensToRetry() as $token ){
                     $downstreamResponse = FCM::sendTo($token, null, $notification, $data);
                 }
             }
         }
-        
+
         $insertArray = [];
         foreach ($PublisherIDs as $PublisherID) {
             $insertArray[] = [
@@ -73,7 +73,7 @@ class PushService
                 'CreateDate' => date('Y-m-d H:i:s')
             ];
         }
-        
+
         DB::table('Pushes')->insert($insertArray);
         if( !empty($tokens) ){
 
@@ -87,16 +87,16 @@ class PushService
             echo 'empty($tokens) === true';
         }
 
-        
+
         // return Array - you must remove all this tokens in your database
         // $downstreamResponse->tokensToDelete();
-        
+
         // return Array (key : oldToken, value : new token - you must change the token in your database)
         // $downstreamResponse->tokensToModify();
-        
+
         // return Array - you should try to resend the message to the tokens in the array
         // $downstreamResponse->tokensToRetry();
-        
+
         // return Array (key:token, value:error) - in production you should remove from your database the tokens present in this array
         // $downstreamResponse->tokensWithError();
 
@@ -109,7 +109,7 @@ class PushService
         $notificationBuilder = new PayloadNotificationBuilder($title);
         $notificationBuilder->setBody($msg)
                             ->setSound('default');
-        
+
         $dataBuilder = new PayloadDataBuilder();
 
         $addData = [
@@ -127,13 +127,13 @@ class PushService
 
         $topic = new Topics();
         $topic->topic($CircuitID);
-        
+
         $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
         if(!$topicResponse->isSuccess() && $topicResponse->shouldRetry()){
             echo('!$topicResponse->isSuccess() && $topicResponse->shouldRetry() === true');
             $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
-        } 
-        
+        }
+
         DB::table('Pushes')->insert([
             'AdminID' => session('auth.AdminID'),
             'PushTitle' => $title,
@@ -143,7 +143,7 @@ class PushService
             'SendDate' => date('Y-m-d H:i:s'),
             'CreateDate' => date('Y-m-d H:i:s')
         ]);
-            
+
         echo('isSuccess : ');
         var_dump($topicResponse->isSuccess());
         echo('shouldRetry : ');
@@ -156,14 +156,7 @@ class PushService
     public function PublisherCancel()
     {
         $PublisherIDs = [request()->PublisherID];
-        $title = '[봉사취소안내]';
-
-        $msg = request()->ServiceDate . "\r\n";
-        $msg .= getServiceZoneName() . "\r\n";
-        $msg .= sprintfServiceTime( getServiceTime() ). "\r\n";
-        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
-
-        $this->sendToToken($title, $msg, $PublisherIDs);
+        $this->extracted($PublisherIDs);
     }
 
     public function getPublisherIDsTimeCancel()
@@ -198,7 +191,7 @@ class PushService
             ])
             ->pluck('ServiceZoneID')
             ->toArray();
-      
+
         return DB::table('ServiceActs')->where([
                 ['ServiceDate' , request()->ServiceDate],
             ])
@@ -206,28 +199,23 @@ class PushService
             ->whereNull('CancelDate')
             ->groupBy('PublisherID')
             ->pluck('PublisherID')
-            ->toArray(); 
+            ->toArray();
 
     }
 
     public function TimeCancel($PublisherIDs = [])
     {
-        $title = '[봉사취소안내]';
-        $msg = request()->ServiceDate . "\r\n";
-        $msg .= getServiceZoneName() . "\r\n";
-        $msg .= sprintfServiceTime( getServiceTime() ). "\r\n";
-        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
-
-        $this->sendToToken($title, $msg, $PublisherIDs);
+        $this->extracted($PublisherIDs);
     }
 
     public function ZoneCancel($PublisherIDs = [])
     {
-        $title = '[봉사취소안내]';
+        $title = '[' . __('msg.CANCEL_SERVICE_NOTI') . ']';
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
-        $msg .= '전체시간'. "\r\n";
-        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
+        $msg .= __('msg.WHOLE_TIME'). "\r\n";
+        $msg .= __('msg.CANCEL_SERVICE_SCH') . ' ' . __('msg.CR') . ' ( ';
+        $msg .= getItem(request()->CancelTypeID, 'CancelTypeID') . ' )';
 
         $this->sendToToken($title, $msg, $PublisherIDs);
     }
@@ -235,11 +223,12 @@ class PushService
 
     public function DayCancel($PublisherIDs = [])
     {
-        $title = '[봉사취소안내]';
+        $title = '['.__('msg.CANCEL_SERVICE_NOTI').']';
         $msg = request()->ServiceDate . "\r\n";
-        $msg .= '전체구역' . "\r\n";
-        $msg .= '전체시간'. "\r\n";
-        $msg .= '봉사일정취소 사유( ' . getItem( request()->CancelTypeID, 'CancelTypeID' ) . ' )';
+        $msg .= __('msg.WHOLE_SECTION') . "\r\n";
+        $msg .= __('msg.WHOLE_TIME'). "\r\n";
+        $msg .= __('msg.CANCEL_SERVICE_SCH').' '.__('msg.CR').' ( ';
+        $msg .= getItem(request()->CancelTypeID, 'CancelTypeID').' )';
 
         $this->sendToToken($title, $msg, $PublisherIDs);
     }
@@ -263,7 +252,7 @@ class PushService
             ->whereNull('ServiceActs.CancelDate')
             ->groupBy(['ServiceActs.ServiceTimeID', 'ServiceTimes.ServiceTime'])
             ->get();
-       
+
     }
 
     public function RequestJoinTime()
@@ -299,7 +288,7 @@ class PushService
     public function RequestJoin()
     {
         $res = $this->getArrayForRequestJoin();
-       
+
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         foreach ($res as $row) {
@@ -308,7 +297,7 @@ class PushService
         // return $res;
         if( count($res) ) $this->sendToTopic('[봉사지원요청]' ,$msg);
     }
-    
+
     public function RequestJoinAllZones()
     {
         $ServiceZoneIDs = DB::table('ServiceZones')->where([
@@ -320,29 +309,30 @@ class PushService
         foreach( $ServiceZoneIDs as $ServiceZoneID ){
             request()->ServiceZoneID = $ServiceZoneID;
             $this->RequestJoin();
-        }          
-       
+        }
+
     }
 
     public function newNotice()
     {
-        $msg = '새로운 공지사항이 등록되었습니다.' . "\r\n";
-  
-        $this->sendToTopic('[공지사항]' ,$msg);
+        $msg = __('msg.NEW_NOTICE'). "\r\n";
+
+        $this->sendToTopic('['.__('msg.NOTICE').']', $msg);
     }
 
     public function PublisherServiceTimeSet($arrayForPush)
     {
         $PublisherIDs = [request()->PublisherID];
-        $title = '[봉사일정알림]';
-        $msg = "다음과 같이 봉사일정이 등록되었습니다.";
+        $title = '['.__('msg.SERVICE_SCH_NOTI').']';
+        $msg = __('msg.SERVICE_REG_SCH');
         foreach ($arrayForPush as $ServiceTimeID => $value) {
             $msg .= "\r\n".$value['ZoneName'];
             $msg .= " ".$value['ServiceYoil'];
             $msg .= " ".sprintfServiceTime($value['ServiceTime']);
             $msg .= " ".$value['ServiceSetType'];
         }
-        $msg .= "\r\n스케줄 변경 시작일: ".request()->SetStartDate;
+        $msg .= "\r\n";
+        $msg .= __('msg.START_CHANGE_SCH').' :'.request()->SetStartDate;
 
         $this->sendToToken($title, $msg, $PublisherIDs);
     }
@@ -355,7 +345,7 @@ class PushService
         $notificationBuilder = new PayloadNotificationBuilder($title);
         $notificationBuilder->setBody($msg)
                             ->setSound('default');
-        
+
         $dataBuilder = new PayloadDataBuilder();
 
         $addData = [
@@ -373,13 +363,13 @@ class PushService
 
         $topic = new Topics();
         $topic->topic(request()->topic);
-        
+
         $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
         if(!$topicResponse->isSuccess() && $topicResponse->shouldRetry()){
             echo('!$topicResponse->isSuccess() && $topicResponse->shouldRetry() === true');
             $topicResponse = FCM::sendToTopic($topic, null, $notification, $data);
-        } 
-        
+        }
+
         DB::table('Pushes')->insert([
             'AdminID' => 281,
             'PushTitle' => $title,
@@ -405,6 +395,22 @@ class PushService
         echo('<br>');
 
 
+    }
+
+    /**
+     * @param mixed $PublisherIDs
+     * @return void
+     */
+    public function extracted(mixed $PublisherIDs): void
+    {
+        $title = '['.__('msg.CANCEL_SERVICE_NOTI').']';
+        $msg = request()->ServiceDate . "\r\n";
+        $msg .= getServiceZoneName() . "\r\n";
+        $msg .= sprintfServiceTime(getServiceTime()) . "\r\n";
+        $msg .= __('msg.CANCEL_SERVICE_SCH') . ' ' . __('msg.CR') . ' ( ';
+        $msg .= getItem(request()->CancelTypeID, 'CancelTypeID') . ' )';
+
+        $this->sendToToken($title, $msg, $PublisherIDs);
     }
 
 }
