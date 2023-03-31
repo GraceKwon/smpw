@@ -102,6 +102,8 @@ return [
     'NEW_NOTICE' => 'A new announcement has been registered.',
     'SERVICE_SCH_NOTI' => 'service schedule notice',
     'SERVICE_REG_SCH' => 'The service schedule has been registered as follows.',
+    'REQUEST_SMPW' => 'Request for Metro Witnessing support',
+    'NEED_SMPW' => 'People needed',
     'RS' => 'request support',
     'RDD' => 'request date',
     'ST' => 'service time',

@@ -279,10 +279,11 @@ class PushService
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         foreach ($res as $row) {
-            $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
+            $msg .= sprintfServiceTime($row->ServiceTime).__('msg.NEED_SMPW').'(';
+            $msg .= ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
         }
         // return $msg;
-        if( count($res) ) $this->sendToTopic('[봉사지원요청]' ,$msg);
+        if( count($res) ) $this->sendToTopic('['.__('msg.REQUEST_SMPW').']' ,$msg);
     }
 
     public function RequestJoin()
@@ -292,10 +293,11 @@ class PushService
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         foreach ($res as $row) {
-            $msg .= sprintfServiceTime($row->ServiceTime) . ' 필요인원(' . ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
+            $msg .= sprintfServiceTime($row->ServiceTime).__('msg.NEED_SMPW').'(';
+            $msg .= ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
         }
         // return $res;
-        if( count($res) ) $this->sendToTopic('[봉사지원요청]' ,$msg);
+        if( count($res) ) $this->sendToTopic('['.__('msg.REQUEST_SMPW').']' ,$msg);
     }
 
     public function RequestJoinAllZones()

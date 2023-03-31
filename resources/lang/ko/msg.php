@@ -99,6 +99,8 @@ return [
     'CANCEL_SERVICE_SCH' => '봉사일정취소',
     'SERVICE_SCH_NOTI' => '봉사일정알림',
     'SERVICE_REG_SCH' => '다음과 같이 봉사일정이 등록되었습니다.',
+    'REQUEST_SMPW' => '봉사지원요청',
+    'NEED_SMPW' => '필요인원',
     'RS' => '지원요청하기',
     'RDD' => '요청일자',
     'ST' => '봉사타임',
