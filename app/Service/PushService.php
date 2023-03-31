@@ -279,7 +279,7 @@ class PushService
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         foreach ($res as $row) {
-            $msg .= sprintfServiceTime($row->ServiceTime).__('msg.NEED_SMPW').'(';
+            $msg .= sprintfServiceTime($row->ServiceTime).' '.__('msg.NEED_SMPW').'(';
             $msg .= ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
         }
         // return $msg;
@@ -293,7 +293,7 @@ class PushService
         $msg = request()->ServiceDate . "\r\n";
         $msg .= getServiceZoneName() . "\r\n";
         foreach ($res as $row) {
-            $msg .= sprintfServiceTime($row->ServiceTime).__('msg.NEED_SMPW').'(';
+            $msg .= sprintfServiceTime($row->ServiceTime).' '.__('msg.NEED_SMPW').'(';
             $msg .= ( session('auth.PublisherNumber') - $row->Cnt ) . ')' . "\r\n";
         }
         // return $res;
