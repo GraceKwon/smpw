@@ -31,11 +31,11 @@
                                             v-model="CancelTypeID">
                                             <!-- TODO 취소사유.. DB에서 한글로 내려주는 듯 -->
                                             @foreach ($CancelTypeList as $CancelType)
-                                                @if($CancelType->Item === '날씨'
-                                                || $CancelType->Item === '인원부족'
-                                                || $CancelType->Item === '구역문제'
+                                                @if($CancelType->Item === 'WEATHER'
+                                                || $CancelType->Item === 'UNDERSTAFFED'
+                                                || $CancelType->Item === 'ZONE PROBLEMS'
                                                 || $CancelType->Item === '신권활동'
-                                                || $CancelType->Item === '기타')
+                                                || $CancelType->Item === 'ETC')
                                                     <option value="{{$CancelType->ID}}">{{$CancelType->Item}}</option>
                                                 @endif
                                             @endforeach
