@@ -410,7 +410,8 @@ class PushService
         $msg .= getServiceZoneName() . "\r\n";
         $msg .= sprintfServiceTime(getServiceTime()) . "\r\n";
         $msg .= __('msg.CANCEL_SERVICE_SCH') . ' ' . __('msg.CR') . ' ( ';
-        $msg .= getItem(request()->CancelTypeID, 'CancelTypeID') . ' )';
+//        $msg .= getItem(request()->CancelTypeID, 'CancelTypeID') . ' )';
+        $msg .= getItemByLocale(request()->CancelTypeID, 'CancelTypeID', $this->locale) . ' )';
 
         $this->sendToToken($title, $msg, $PublisherIDs);
     }

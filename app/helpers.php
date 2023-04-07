@@ -2,19 +2,19 @@
 function setBreadcrumbArray($path_explode) {
 	$path = $path_explode[0];                    	//서브 path 제거
 	$path_count = count($path_explode);             // path 레벨 확인
-	
+
 	$subpage_index = 0;
 	if($path_count > 1){                           //서브페이지가 있으면
 		$subpage_index = $path_explode[1];
-			
+
 		if((int)$subpage_index){   // "0"아닌 숫자면 모두 1로 치환
 			$subpage_index = 1;
 		}
 	}
 
 	// $breadcrumb = [ ['path'=>null,'name'=>'메뉴'], ['path'=>'path','name'=>'서브메뉴'], ['path'=>null,'name'=>['서브페이지']]]
-	$breadcrumb = session('breadcrumb')[$path];    
-	$breadcrumb = array_splice($breadcrumb, 0, $path_count + 1); 
+	$breadcrumb = session('breadcrumb')[$path];
+	$breadcrumb = array_splice($breadcrumb, 0, $path_count + 1);
 	if( isset($breadcrumb[2]) ){
 
 		if( gettype( $breadcrumb[2]['name'] ) === 'array'){
@@ -26,21 +26,21 @@ function setBreadcrumbArray($path_explode) {
 
 function getTopPath() {
 	return explode('/', request()->path())[0];
-	
+
 }
 
 function getAffectedRows($res) {
 	foreach( reset($res) as $value){
 		return (int)$value;
 	}
-	
+
 }
 
 function getTotalCnt($res) {
 	// dd($res);
 	if(empty($res) )return 0;
 	return reset($res)->TotalCnt;
-	
+
 }
 
 function setPaginator($paginate, $page, $data, $count = null) {
@@ -51,14 +51,14 @@ function setPaginator($paginate, $page, $data, $count = null) {
 		$count = count($data);
 	}
 
-	// $offSet = ($page * $paginate) - $paginate;  
-	$offSet = 0;  
-	$itemsForCurrentPage = array_slice($data, $offSet, $paginate, true);  
-	$Collection = new Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, $count, $paginate, $page);  
+	// $offSet = ($page * $paginate) - $paginate;
+	$offSet = 0;
+	$itemsForCurrentPage = array_slice($data, $offSet, $paginate, true);
+	$Collection = new Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, $count, $paginate, $page);
 	$Collection->setPath(request()->path());
-	
+
 	return $Collection;
-	
+
 }
 
 function getMetroName($MetroID = null)
@@ -103,7 +103,7 @@ function getMobile()
 
 function sprintfServiceTime($ServiceTime)
 {
-	// ex) $ServiceTime = 9 
+	// ex) $ServiceTime = 9
 	//     return '09:00~10:00'
 	return  sprintf ('%02d', $ServiceTime ) . ':00~' . sprintf("%02d", ($ServiceTime+1) ) . ':00' ;
 }
@@ -120,9 +120,22 @@ function getItemID($Item, $Separate) {
 
  }
 
+ function getItemByLocale($ID, $Separate, $Locale)
+ {
+    if($Locale === 'ko'){
+        if($Separate === 'CancelTypeID') {
+            return DB::table('ItemCodes')->where([['ID', $ID],['Separate', $Separate]])->value('ItemKOR');
+        } else {
+            return DB::table('ItemCodes')->where([['ID', $ID],['Separate', $Separate]])->value('Item');
+        }
+    } else {
+        return DB::table('ItemCodes')->where([['ID', $ID],['Separate', $Separate]])->value('ItemEng');
+    }
+ }
+
  function getWeekName($w) {
 
-	$weeks = ['일', '월', '화', '수', '목', '금', '토'];  
+	$weeks = ['일', '월', '화', '수', '목', '금', '토'];
 	return $weeks[$w];
 
  }
