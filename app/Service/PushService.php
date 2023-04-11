@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use LaravelFCM\Message\OptionsBuilder;
@@ -13,6 +14,7 @@ class PushService
 {
     public function __construct(CommonService $CommonService)
     {
+        $this->locale = App::getLocale();
         $this->CommonService = $CommonService;
     }
 
