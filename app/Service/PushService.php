@@ -217,7 +217,7 @@ class PushService
         $msg .= getServiceZoneName() . "\r\n";
         $msg .= __('msg.WHOLE_TIME'). "\r\n";
         $msg .= __('msg.CANCEL_SERVICE_SCH') . ' ' . __('msg.CR') . ' ( ';
-        $msg .= getItem(request()->CancelTypeID, 'CancelTypeID') . ' )';
+        $msg .= getItemByLocale(request()->CancelTypeID, 'CancelTypeID', $this->locale) . ' )';
 
         $this->sendToToken($title, $msg, $PublisherIDs);
     }
@@ -230,7 +230,7 @@ class PushService
         $msg .= __('msg.WHOLE_SECTION') . "\r\n";
         $msg .= __('msg.WHOLE_TIME'). "\r\n";
         $msg .= __('msg.CANCEL_SERVICE_SCH').' '.__('msg.CR').' ( ';
-        $msg .= getItem(request()->CancelTypeID, 'CancelTypeID').' )';
+        $msg .= getItemByLocale(request()->CancelTypeID, 'CancelTypeID', $this->locale) . ' )';
 
         $this->sendToToken($title, $msg, $PublisherIDs);
     }
