@@ -12,6 +12,7 @@ use App\Service\PushService;
 
 class ActController extends Controller
 {
+    protected string $locale;
     public function __construct(CommonService $CommonService, ActService $ActService, PushService $PushService)
     {
         $this->CommonService = $CommonService;
