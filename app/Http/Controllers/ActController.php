@@ -64,6 +64,7 @@ class ActController extends Controller
             'ServiceTimeList' => $arrayServiceTime['ServiceTimeList'],
             'ServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
             'CancelTypeList' => $this->CommonService->getCancelTypeList(),
+            'locale' => $this->locale,
         ]);
     }
 
