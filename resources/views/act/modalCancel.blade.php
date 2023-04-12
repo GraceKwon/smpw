@@ -36,7 +36,9 @@
                                                 || $CancelType->Item === 'ZONE PROBLEMS'
                                                 || $CancelType->Item === '신권활동'
                                                 || $CancelType->Item === 'ETC')
-                                                    <option value="{{$CancelType->ID}}">{{$CancelType->Item}}</option>
+                                                    <option value="{{$CancelType->ID}}">
+                                                        {{ $locale==='ko'?$CancelType->ItemKOR:$CancelType->ItemEng }}
+                                                    </option>
                                                 @endif
                                             @endforeach
                                         </select>

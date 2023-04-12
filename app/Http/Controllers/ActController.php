@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Rules\AfterToday;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\ActService;
@@ -16,6 +17,7 @@ class ActController extends Controller
         $this->CommonService = $CommonService;
         $this->ActService = $ActService;
         $this->PushService = $PushService;
+        $this->locale = App::getLocale();
         $this->middleware('admin_auth')
             ->except(['modalPublisherCancel',
                 'modalTimeCancel',
@@ -47,6 +49,7 @@ class ActController extends Controller
             'dailyServicePlanCnt' => $this->ActService->getDailyServicePlanCnt(),
             'lastDay' => date('t', strtotime($request->SetMonth)),
             'firstWeek' => date('w', strtotime($request->SetMonth)),
+            'locale' => $this->locale,
         ]);
     }
 
