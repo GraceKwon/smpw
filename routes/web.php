@@ -20,12 +20,12 @@ Route::get('/phpinfo', function(){
 Route::get('/', 'DashBoardController@dashboard');
 
 //앱 다운로드 페이지
-Route::get('/home/appdownload', function(){
-    return view('login');
-});
-Route::get('/Home/AppDownload', function(){
-    return view('login');
-});
+// Route::get('/home/appdownload', function(){
+//     return view('login');
+// });
+// Route::get('/Home/AppDownload', function(){
+//     return view('login');
+// });
 
 Route::get('/policy', function () {
     return view('policy');
