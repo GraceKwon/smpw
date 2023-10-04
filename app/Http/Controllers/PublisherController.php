@@ -70,7 +70,7 @@ class PublisherController extends Controller
             }
 
          // For서울지역 조정장로 봉사자등록 대응
-        if(session('auth.MetroID') === 1){
+        if(session('auth.MetroID') === 1 && session('auth.AdminRoleID') === 5) {
             $CongregationList = $this->CommonService->getMetroCongregationList();
 
         } else {
