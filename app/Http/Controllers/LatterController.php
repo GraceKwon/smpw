@@ -103,7 +103,7 @@ class LatterController extends Controller
                 return $query->where('CircuitID', session('auth.CircuitID'))
                     ->orWhere('AdminRoleID', 2);
             })
-            ->where('UseYn', 1)
+            // ->where('UseYn', 1)
             ->orderBy('AdminRoleID', 'ASC')
             ->get();
 
