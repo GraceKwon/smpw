@@ -94,6 +94,7 @@ class LatterController extends Controller
             ->get();
 
         $ReceiveAdminID = DB::table('Admins')
+            ->where('UseYn', 1)
             ->when(session('auth.MetroID'), function ($query) {
                 return $query->where('MetroID', session('auth.MetroID'))
                     ->orWhere('AdminRoleID', 2);
