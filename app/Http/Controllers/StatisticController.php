@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\NoneUseStatisticPublisherExport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +46,7 @@ class StatisticController extends Controller
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList ?? NULL,
             'CongregationList' => $CongregationList ?? NULL,
-            'StatisticListList' => $StatisticListList ?? NULL
+            'StatisticListList' => $StatisticListList ?? NULL,
         ]);
     }
 
@@ -54,6 +55,13 @@ class StatisticController extends Controller
         $fileName = '봉사자통계.xlsx';
 
         return Excel::download(new StatisticPublisherExport, $fileName);
+    }
+
+    public function exportNonPublishers(Request $request)
+    {
+        $fileName = '1개월미참여자통계.xlsx';
+
+        return Excel::download(new NoneUseStatisticPublisherExport, $fileName);
     }
 
     public function monthlyPublishers(Request $request)

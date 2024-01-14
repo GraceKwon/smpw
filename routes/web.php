@@ -100,7 +100,8 @@ Route::view('/errors/auth', 'errors.auth');
     Route::put('create', 'ActController@putCreate');
     Route::get('fcm', 'ActController@fcm');
     Route::get('fcmtopic', 'ActController@fcmtopic');
-
+    // 봉사타임지정관리 24.01.01 원종원
+    Route::get('actsT', 'ActController@actsT');
 
 //봉사보고관리
     //봉사보고관리
@@ -153,6 +154,7 @@ Route::view('/errors/auth', 'errors.auth');
     //봉사자통계
     Route::get('statistic-publishers', 'StatisticController@publishers');
     Route::get('statistic-publishers/export', 'StatisticController@exportPublishers');
+    Route::get('statistic-publishers/noneExport', 'StatisticController@exportNonPublishers');
     //봉사자월별통계
     Route::get('statistic-monthly-publishers', 'StatisticController@monthlyPublishers');
     Route::get('statistic-monthly-publishers/export', 'StatisticController@monthlyExportPublishers');
