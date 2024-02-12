@@ -125,10 +125,6 @@
         >
             {{ __('msg.EXCEL_DOWN') }}
         </button>
-        <button type="button" class="btn btn-success"
-                @click="_noneExport">
-            1달 이내 미참여 봉사자 리스트
-        </button>
     </div>
     {{ $StatisticListList->appends( request()->all() )->links() }}
 
@@ -147,19 +143,11 @@
                     query += '&CircuitID={{ request()->CircuitID }}';
                     query += '&CongregationID={{ request()->CongregationID }}';
                 return query;
-            },
-            query1: function () {
-                var query1 = '?MetroID={{ request()->MetroID }}';
-                    query1 += '&CircuitID={{ request()->CircuitID }}';
-                return query1;
             }
         },
         methods:{
             _export:function () {
                 location.href = '/{{ request()->path() }}/export' + this.query;
-            },
-            _noneExport:function () {
-                location.href = '/{{ request()->path() }}/noneExport' + this.query;
             }
         }
     })

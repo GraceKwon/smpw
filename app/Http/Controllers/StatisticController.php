@@ -57,13 +57,6 @@ class StatisticController extends Controller
         return Excel::download(new StatisticPublisherExport, $fileName);
     }
 
-    public function exportNonPublishers(Request $request)
-    {
-        $fileName = '1개월미참여자통계.xlsx';
-
-        return Excel::download(new NoneUseStatisticPublisherExport, $fileName);
-    }
-
     public function monthlyPublishers(Request $request)
     {
         $sDate = Carbon::now()->subMonth()->format('Y-m');

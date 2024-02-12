@@ -87,6 +87,10 @@ Route::view('/errors/auth', 'errors.auth');
     Route::post('publishers/{PublisherID}', 'PublisherController@resetPwdPublishers')
         ->where('PublisherID', '[0-9]+');
 
+    //미참여 봉사자 관리
+    Route::get('nonPublishers', 'NonPublisherController@nonPublishers');
+    Route::get('nonPublishers/export', 'NonPublisherController@exportNonPublishers');
+
 //봉사일정관리
     //봉사일정관리
     // Route::get('acts', function(){
@@ -154,7 +158,7 @@ Route::view('/errors/auth', 'errors.auth');
     //봉사자통계
     Route::get('statistic-publishers', 'StatisticController@publishers');
     Route::get('statistic-publishers/export', 'StatisticController@exportPublishers');
-    Route::get('statistic-publishers/noneExport', 'StatisticController@exportNonPublishers');
+//    Route::get('statistic-publishers/noneExport', 'StatisticController@exportNonPublishers');
     //봉사자월별통계
     Route::get('statistic-monthly-publishers', 'StatisticController@monthlyPublishers');
     Route::get('statistic-monthly-publishers/export', 'StatisticController@monthlyExportPublishers');
