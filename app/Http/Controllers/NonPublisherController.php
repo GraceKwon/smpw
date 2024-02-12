@@ -41,7 +41,7 @@ class NonPublisherController extends Controller
 
         $NonPublisherList = setPaginator($paginate, $page, $data, $count);
 
-        return view( 'NonPublisher.nonpublisher', [
+        return view( 'nonPublisher.nonpublisher', [
             'PublisherList' => $NonPublisherList,
             'MetroList' => $MetroList,
             'CircuitList' => $CircuitList,
