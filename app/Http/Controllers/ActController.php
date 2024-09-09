@@ -91,29 +91,40 @@ class ActController extends Controller
 
     public function modalPublisherCancel()
     {
-        if($this->ActService->setPublisherServicePlanCancel())
-            return $this->PushService->PublisherCancel();
+        if($this->ActService->setPublisherServicePlanCancel()) {
+            \Log::info('modalPublisherCancel true');
+//            return $this->PushService->PublisherCancel();
+        }
     }
 
     public function modalTimeCancel()
     {
         $PublisherIDs = $this->PushService->getPublisherIDsTimeCancel();
-        if($this->ActService->setServiceTimeCancel())
-            return $this->PushService->TimeCancel($PublisherIDs);
+        if($this->ActService->setServiceTimeCancel()) {
+            \Log::info('modalTimeCancel true');
+//            return $this->PushService->TimeCancel($PublisherIDs);
+        }
     }
 
-    public function modalZoneCancel()
+    /**
+     * @return void
+     */
+    public function modalZoneCancel(): void
     {
         $PublisherIDs = $this->PushService->getPublisherIDsZoneCancel();
-        if($this->ActService->setServiceZoneCancel())
-            return $this->PushService->ZoneCancel($PublisherIDs);
+        if($this->ActService->setServiceZoneCancel()) {
+            \Log::info('modalZoneCancel true');
+//            return $this->PushService->ZoneCancel($PublisherIDs);
+        }
     }
 
-    public function modalDayCancel()
+    public function modalDayCancel(): void
     {
         $PublisherIDs = $this->PushService->getPublisherIDsDayCancel();
-        if($this->ActService->setServiceDayCancel())
-            return $this->PushService->DayCancel($PublisherIDs);
+        if($this->ActService->setServiceDayCancel()) {
+            \Log::info('modalDayCancel true');
+//            return $this->PushService->DayCancel($PublisherIDs);
+        }
 
     }
 
