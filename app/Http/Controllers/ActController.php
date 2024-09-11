@@ -54,6 +54,42 @@ class ActController extends Controller
         ]);
     }
 
+    // 봉사타임지정관리 24.01.01 원종원
+    public function actsT(Request $request)
+    {
+        // if($request->SetMonth === null) $request->SetMonth = date('Y-m');
+
+        if($request->MetroID === null
+            && session('auth.MetroID') == null){
+            $request->MetroID = $this->CommonService->getMetroList()[0]->MetroID ?? '';
+        }
+
+        if($request->CircuitID === null
+            && session('auth.CircuitID') === null){
+            $request->CircuitID = $this->CommonService->getCircuitList()[0]->CircuitID ?? '';
+        }
+
+        if($request->ServiceDate === null) $request->ServiceDate = date('Y-m-d');
+        
+        $date = \DateTime::createFromFormat('Y-m-d', $request->ServiceDate);
+        $dayOfWeek = $date->format('w');
+
+        $arrayServiceTime = $this->ActService->getArrayServiceTime();
+
+        return view('act.actsT', [
+            'MetroList' => $this->CommonService->getMetroList(),
+            'CircuitList' => $this->CommonService->getCircuitList(),
+            'days' => ['일','월','화','수','목','금','토'],
+            'yoil' => $dayOfWeek,
+            'max' => $arrayServiceTime['max'],
+            'min' => $arrayServiceTime['min'],
+            'ServiceTimeList' => $arrayServiceTime['ServiceTimeList'],
+            'ServicePlanDetail' => $this->ActService->getArrayServiceTimeSetList(),
+            // 'ServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
+            'locale' => $this->locale,
+        ]);
+    }
+
     public function detailActs(Request $request)
     {
         $arrayServiceTime = $this->ActService->getArrayServiceTime();
