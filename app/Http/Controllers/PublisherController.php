@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\DB;
 use App\Service\CommonService;
 use App\Service\PublisherService;
 use Illuminate\Support\Facades\Log;
-use App\Service\PushService;
+use App\Service\PushNewService;
 
 class PublisherController extends Controller
 {
     protected string $locale;
-    public function __construct(CommonService $CommonService, PushService $PushService)
+    private PushNewService $PushNewService;
+
+    public function __construct(CommonService $CommonService, PushNewService $PushNewService)
     {
         $this->CommonService = $CommonService;
-        $this->PushService = $PushService;
+        $this->PushNewService = $PushNewService;
         $this->middleware('admin_auth');
         $this->locale = App::getLocale();
     }
@@ -314,7 +316,7 @@ class PublisherController extends Controller
                 $arrayForPush[$ServiceTimeID]["ZoneName"] = $res->ZoneName;
             }
             // dd($arrayForPush);
-            $this->PushService->PublisherServiceTimeSet($arrayForPush);
+            $this->PushNewService->PublisherServiceTimeSet($arrayForPush);
         }
 //         dd($request->all());
         return back();

@@ -154,6 +154,27 @@ class PushNewService
         $this->subscribeToTopic('['.__('msg.NOTICE').']', $msg);
     }
 
+    /**
+     * @param array $arrayForPush
+     * @return void
+     */
+    public function PublisherServiceTimeSet(array $arrayForPush): void
+    {
+        $PublisherIDs = [request()->PublisherID];
+        $title = '['.__('msg.SERVICE_SCH_NOTI').']';
+        $msg = __('msg.SERVICE_REG_SCH');
+        foreach ($arrayForPush as $value) {
+            $msg .= "\r\n".$value['ZoneName'];
+            $msg .= " ".$value['ServiceYoil'];
+            $msg .= " ".sprintfServiceTime($value['ServiceTime']);
+            $msg .= " ".$value['ServiceSetType'];
+        }
+        $msg .= "\r\n";
+        $msg .= __('msg.START_CHANGE_SCH').' :'.request()->SetStartDate;
+
+        $this->sendToPush($title, $msg, $PublisherIDs);
+    }
+
 
     /**
      * @param array $PublisherIDs
