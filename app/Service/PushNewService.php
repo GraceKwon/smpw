@@ -144,6 +144,16 @@ class PushNewService
         if( count($res) ) $this->subscribeToTopic('['.__('msg.REQUEST_SMPW').']' ,$msg);
     }
 
+    /**
+     * @return void
+     */
+    public function newNotice(): void
+    {
+        $msg = __('msg.NEW_NOTICE'). "\r\n";
+
+        $this->subscribeToTopic('['.__('msg.NOTICE').']', $msg);
+    }
+
 
     /**
      * @param array $PublisherIDs

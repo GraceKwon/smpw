@@ -26,13 +26,13 @@ class ActService
 
     public function getArrayServiceTime()
     {
-        // $week = ['일', '월', '화', '수', '목', '금', '토'];  
-        
-        $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [ 
+        // $week = ['일', '월', '화', '수', '목', '금', '토'];
+
+        $res = DB::select( 'uspGetStandingServiceTimeList ?,?', [
             session('auth.CircuitID') ?? request()->CircuitID,
             request()->ServiceYoil ?? getWeekName(  date('w', strtotime( request()->ServiceDate ) ) ),
         ]);
-        
+
         foreach ($res as $object) {
             $arrayServiceTime[] = $object->ServiceTime;
             $ServiceTimeList[$object->ServiceZoneID]['ZoneName'] = $object->ZoneName;
@@ -40,12 +40,33 @@ class ActService
         }
         // dd($ServiceTimeList);
 
-        
+
         return [
             'min' => isset($arrayServiceTime) ? min($arrayServiceTime) : null,
             'max' => isset($arrayServiceTime) ? max($arrayServiceTime) : null,
             'ServiceTimeList' => $ServiceTimeList ?? [],
         ];
+    }
+
+    /**
+     * 봉사타임지정관리 24.01.01 원종원
+     * @return array
+     */
+    public function getArrayServiceTimeSetList(): array
+    {
+        // $week = ['일', '월', '화', '수', '목', '금', '토'];
+        $res = DB::select( 'uspGetStandingDailyServiceTimeSetList ?,?,?', [
+            session('auth.MetroID') ?? request()->MetroID,
+            session('auth.CircuitID') ?? request()->CircuitID,
+            request()->ServiceYoil ?? getWeekName(  date('w', strtotime( request()->ServiceDate ) ) ),
+        ]);
+        // return $res;
+        foreach($res as $object){
+            // ServiceZoneID
+            $ServicePlanDetail[$object->ServiceZoneID][$object->ServiceTime][] = $object;
+        }
+        // dd($ServicePlanDetail);
+        return $ServicePlanDetail ?? [];
     }
 
     public function getDailyServicePlanDetail()
@@ -71,7 +92,7 @@ class ActService
 
         if( request()->LeaderYn === '1' )
             if($this->checkServicePlanHasLeader()) return 'Already Leader';
-         
+
         DB::statement('uspSetPublisherServicePlanInsert ?,?,?,?,?,?', [
             request()->ServiceZoneID,
             request()->ServiceTimeID,
@@ -86,7 +107,7 @@ class ActService
     {
         if ( request()->PublisherName ) {
 
-            $paginate = 5;  
+            $paginate = 5;
             $page = request()->input('page', '1');
             $parameter = [
                 null,
@@ -98,20 +119,20 @@ class ActService
                 1,
             ];
 
-            $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?', 
+            $data = DB::select('uspGetStandingPublisherList ?,?,?,?,?,?,?,?,?',
                 array_merge( [$paginate, $page], $parameter ));
             $count = DB::select('uspGetStandingPublisherListCnt ?,?,?,?,?,?,?', $parameter);
             $count = getTotalCnt($count);
             $lastPage = ceil($count / $paginate);
-  
+
             return [
                 'data' => $data,
                 'lastPage' => $lastPage,
             ];
-        } 
+        }
         else
             return ['data' => []];
-    
+
     }
 
     public function checkServicePlanHasLeader()
@@ -192,7 +213,7 @@ class ActService
             }
         });
         return true;
-       
+
     }
 
 }

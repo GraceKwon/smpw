@@ -88,7 +88,7 @@ class ActController extends Controller
             'min' => $arrayServiceTime['min'],
             'ServiceTimeList' => $arrayServiceTime['ServiceTimeList'],
             'ServicePlanDetail' => $this->ActService->getArrayServiceTimeSetList(),
-            // 'ServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
+//             'ServicePlanDetail' => $this->ActService->getDailyServicePlanDetail(),
             'locale' => $this->locale,
         ]);
     }

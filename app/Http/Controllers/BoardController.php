@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Service\CommonService;
-use App\Service\PushService;
+use App\Service\PushNewService;
 use DB;
 
 class BoardController extends Controller
@@ -106,7 +106,7 @@ class BoardController extends Controller
         ]);
     }
 
-    public function putNotices($id, Request $request, PushService $PushService)
+    public function putNotices($id, Request $request, PushNewService $pushNewService)
     {
         $request->validate([
             'MetroID' => 'required',
@@ -165,7 +165,9 @@ class BoardController extends Controller
 
         if ($id == 0) {
             $request->NoticeID = $ID; //PushService->sendToTopic에서 사용
-            $PushService->newNotice(); //푸시발송
+            //topic 푸시발송
+            $pushNewService->newNotice();
+//            $PushService->newNotice();
         }
 
         return;
