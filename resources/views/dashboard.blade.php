@@ -311,7 +311,7 @@
                     <i class="fas fa-users"></i>
                     <span>{{ __('msg.PM') }}</span>
                 </a>
-                @if(session('auth.MetroID') === 1)
+                @if(session('auth.MetroID') === 27)
                     @if(session('auth.AdminRoleID') === 5)
                         <a href="/publishers/0">
                             <i class="fas fa-user"></i>

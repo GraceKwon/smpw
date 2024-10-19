@@ -47,7 +47,7 @@ class PublisherController extends Controller
         $count = DB::select('uspGetStandingPublisherListCnt ?,?,?,?,?,?,?', $parameter);
 
         $PublisherList = setPaginator($paginate, $page, $data, $count);
-        // dd($PublisherList);
+//        dd($PublisherList);
 
         return view( 'publisher.publishers', [
             'PublisherList' => $PublisherList,
@@ -72,7 +72,7 @@ class PublisherController extends Controller
             }
 
          // For서울지역 조정장로 봉사자등록 대응
-        if(session('auth.MetroID') === 1 && session('auth.AdminRoleID') === 5) {
+        if(session('auth.MetroID') === 27 && session('auth.AdminRoleID') === 5) {
             $CongregationList = $this->CommonService->getMetroCongregationList();
 
         } else {
@@ -88,9 +88,9 @@ class PublisherController extends Controller
         $ServiceTimeList = $PublisherService->getServiceTimeList();
 
         $SetTimeCount = $PublisherService->getServiceYoilSetTimeCount();
-//         dd($ServiceTimeList);
 //        dd($Publisher);
 //        dd($EndTypeIDList);
+//        dd(count($CongregationList));
         return view('publisher.formPublisher', [
             'CongregationList' => $CongregationList,
             'ServantTypeList' => $ServantTypeList,

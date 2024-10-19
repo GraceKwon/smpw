@@ -145,7 +145,7 @@
             </tbody>
         </table>
     </div>
-    @if(session('auth.MetroID') === 1)
+    @if(session('auth.MetroID') === 27)
         @if(session('auth.AdminRoleID') === 5)
             @include('layouts.sections.registrationButton', [
                 'label' => __('msg.REP'),
