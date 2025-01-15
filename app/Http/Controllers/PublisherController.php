@@ -28,7 +28,20 @@ class PublisherController extends Controller
     {
         $MetroList = $this->CommonService->getMetroList();
         $CircuitList = $this->CommonService->getCircuitList();
-        $CongregationList = $this->CommonService->getCongregationList();
+
+        if(session('auth.MetroID') === 26 && session('auth.AdminRoleID') === 5) {
+            $CongregationList = $this->CommonService->getMetroCongregationList();
+
+        }
+        elseif(session('auth.MetroID') === 27 && session('auth.AdminRoleID') === 5) {
+            $CongregationList = $this->CommonService->getMetroCongregationList();
+
+        }
+        else {
+            $CongregationList = $this->CommonService->getCongregationList();
+        }
+
+        //$CongregationList = $this->CommonService->getCongregationList();
         $ServantTypeList = $this->CommonService->getServantTypeList();
 // dd(session('auth.AdminRoleID'));
         $paginate = 30;
@@ -64,22 +77,23 @@ class PublisherController extends Controller
         if( $request->PublisherID !== '0' ) {
             $res = DB::select( 'uspGetStandingPublisherDetail ?', [
                 $request->PublisherID
-                ]);
-                $Publisher = reset($res); /* reset( [] ) === false */
-                if( empty($Publisher) ) abort(404); /* empty( false ) === true */
+            ]);
+            $Publisher = reset($res); /* reset( [] ) === false */
+            if( empty($Publisher) ) abort(404); /* empty( false ) === true */
 
-                $request->CircuitID = $Publisher->CircuitID;
-            }
+            $request->CircuitID = $Publisher->CircuitID;
+        }
 
-         // For서울지역 조정장로 봉사자등록 대응
-         if(session('auth.MetroID') === 26 && session('auth.AdminRoleID') === 5) {
-             $CongregationList = $this->CommonService->getMetroCongregationList();
- 
-         }
-         elseif(session('auth.MetroID') === 27 && session('auth.AdminRoleID') === 5) {
-             $CongregationList = $this->CommonService->getMetroCongregationList();
- 
-         } else {
+        // For서울지역 조정장로 봉사자등록 대응
+        if(session('auth.MetroID') === 26 && session('auth.AdminRoleID') === 5) {
+            $CongregationList = $this->CommonService->getMetroCongregationList();
+
+        }
+        elseif(session('auth.MetroID') === 27 && session('auth.AdminRoleID') === 5) {
+            $CongregationList = $this->CommonService->getMetroCongregationList();
+
+        }
+        else {
             $CongregationList = $this->CommonService->getCongregationList();
         }
         // For서울지역 조정장로 봉사자등록 대응
@@ -126,7 +140,7 @@ class PublisherController extends Controller
             'SupportYn' => 'required',
 //            'EndDate' => $request->StopYn === '1' ? 'required' : '' . '|date',
 //            'EndTypeID' => $request->StopYn === '1' ? 'required' : '',
-         ]);
+        ]);
 
 //        $client = new Client();
 //
@@ -226,9 +240,9 @@ class PublisherController extends Controller
     public function deletePublishers(Request $request)
     {
         $res = DB::select('uspSetStandingPublisherDelete ?,?', [
-                $request->PublisherID,
-                0,
-            ]);
+            $request->PublisherID,
+            0,
+        ]);
 
         if( getAffectedRows($res) === 0 )
             return back()->withErrors(['fail' => __('msg.DF')]);
@@ -425,7 +439,4 @@ class PublisherController extends Controller
 
         return json_decode($response);
     }
-
-
-
 }
