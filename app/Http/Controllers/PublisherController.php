@@ -72,10 +72,14 @@ class PublisherController extends Controller
             }
 
          // For서울지역 조정장로 봉사자등록 대응
-        if(session('auth.MetroID') === 27 && session('auth.AdminRoleID') === 5) {
-            $CongregationList = $this->CommonService->getMetroCongregationList();
-
-        } else {
+         if(session('auth.MetroID') === 26 && session('auth.AdminRoleID') === 5) {
+             $CongregationList = $this->CommonService->getMetroCongregationList();
+ 
+         }
+         elseif(session('auth.MetroID') === 27 && session('auth.AdminRoleID') === 5) {
+             $CongregationList = $this->CommonService->getMetroCongregationList();
+ 
+         } else {
             $CongregationList = $this->CommonService->getCongregationList();
         }
         // For서울지역 조정장로 봉사자등록 대응
