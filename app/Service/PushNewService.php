@@ -80,46 +80,90 @@ class PushNewService
     {
         try {
             $CircuitID = request()->CircuitID ?? session('auth.CircuitID');
+            $metroId = request()->MetroID ?? session('auth.MetroID');
+            $adminRoleId = session('auth.AdminRoleID');
 
-            $congID = DB::table('Congregations')->where('CircuitID', $CircuitID)
+            // CircuitID 또는 MetroID 기반으로 topic 설정
+            if ($adminRoleId === 5) {
+                $circuitIDs = DB::table('Circuits')
+                    ->where('MetroID', $metroId)
+                    ->pluck('CircuitID')
+                    ->toArray();
+                $topicArea = $metroId;
+            } else {
+                $circuitIDs = [$CircuitID];
+                $topicArea = $CircuitID;
+            }
+
+            // Congregation IDs 조회
+            $congID = DB::table('Congregations')
+                ->whereIn('CircuitID', $circuitIDs)
                 ->where('UseYn', 1)
                 ->pluck('CongregationID')
                 ->toArray();
 
+            // Firebase 초기화
             $firebase = (new Factory)
                 ->withServiceAccount(storage_path(env('FIREBASE_API_KEY')));
             $messaging = $firebase->createMessaging();
 
             if (!empty($congID) && count($congID) > 0) {
-                $deviceToken = DB::table('Publishers')->whereIn('CongregationID', $congID)
+                // Device 토큰 조회
+                $deviceToken = DB::table('Publishers')
+                    ->whereIn('CongregationID', $congID)
                     ->where('UseYn', 1)
-                    ->whereNotNull('PushTokenValue')
+                    ->where('PushTokenValue', '!=', '')  // 빈 문자열 제외
+                    ->where('PushTokenValue', '!=', 'null')  // 문자열 'null' 제외
+                    ->where('PushTokenValue', '!=', 'undefined')  // 문자열 'undefined' 제외
+                    ->whereRaw('PushTokenValue IS NOT NULL')  // NULL 값 제외
                     ->pluck('PushTokenValue')
                     ->toArray();
 
-                //create subscribeToTopic
-                $messaging->subscribeToTopic($CircuitID, $deviceToken);
+                if (!empty($deviceToken)) {
+                    // 토큰을 1000개씩 나누어 처리
+                    $tokenChunks = array_chunk($deviceToken, 1000);
 
-                //send topic
-                $notification = [
-                    'title' => $title,
-                    'body' => $msg,
-                ];
-                $message = CloudMessage::withTarget('topic', $CircuitID)
-                    ->withNotification($notification)
-                    ->withDefaultSounds();
+                    foreach ($tokenChunks as $index => $tokenGroup) {
+                        try {
+                            // Topic 구독 응답 확인 로그 추가
+                            $messaging->subscribeToTopic($topicArea, $tokenGroup);
+                        } catch (\Exception $e) {
+                            \Log::error('Failed to subscribe chunk ' . ($index + 1), [
+                                'error' => $e->getMessage()
+                            ]);
+                            continue;  // 실패해도 다음 청크 처리
+                        }
+                    }
 
-                $response = $messaging->send($message);
-                if (!empty($response['name'])) {
-                    DB::table('Pushes')->insert([
-                        'AdminID' => session('auth.AdminID'),
-                        'PushTitle' => $title,
-                        'PushMessage' => $msg,
-                        'PushKindID' => getItemID('지원요청', 'PushKindID'),
-                        'Topic' => $CircuitID,
-                        'SendDate' => date('Y-m-d H:i:s'),
-                        'CreateDate' => date('Y-m-d H:i:s')
-                    ]);
+                    // 알림 메시지 설정
+                    $notification = [
+                        'title' => $title,
+                        'body' => $msg,
+                    ];
+
+                    // 메시지 전송
+                    $message = CloudMessage::withTarget('topic', $topicArea)
+                        ->withNotification($notification)
+                        ->withDefaultSounds()
+                        ->withData([
+                            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                            'type' => 'notice'
+                        ]);
+
+                    $response = $messaging->send($message);
+
+                    // 푸시 기록 저장
+                    if (!empty($response['name'])) {
+                        DB::table('Pushes')->insert([
+                            'AdminID' => session('auth.AdminID'),
+                            'PushTitle' => $title,
+                            'PushMessage' => $msg,
+                            'PushKindID' => getItemID('지원요청', 'PushKindID'),
+                            'Topic' => $topicArea,
+                            'SendDate' => date('Y-m-d H:i:s'),
+                            'CreateDate' => date('Y-m-d H:i:s')
+                        ]);
+                    }
                 }
             }
         } catch (MessagingException|FirebaseException $e) {
