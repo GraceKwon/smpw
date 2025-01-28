@@ -89,7 +89,8 @@ class PushNewService
                     ->where('MetroID', $metroId)
                     ->pluck('CircuitID')
                     ->toArray();
-                $topicArea = $metroId;
+                //코드조합 지역 + adminRoleId
+                $topicArea = $metroId.$adminRoleId;
             } else {
                 $circuitIDs = [$CircuitID];
                 $topicArea = $CircuitID;
