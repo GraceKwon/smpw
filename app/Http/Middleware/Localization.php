@@ -27,8 +27,10 @@ class Localization
 
         if ($getLocation->countryCode === 'KR') {
             $locale = 'ko';
-        } else {
+        } else if ($getLocation->countryCode === 'EN') {
             $locale = 'en';
+        } else {
+            $locale = 'ko';
         }
 
 //        if ($request->expectsJson()) {

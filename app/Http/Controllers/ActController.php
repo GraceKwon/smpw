@@ -121,7 +121,7 @@ class ActController extends Controller
                 new AfterToday
             ],
         ]);
-        DB::statement('uspSetStandingServiceActReInsert ?,?', [
+            DB::statement('uspSetStandingServiceActReInsert ?,?', [
             session('auth.CircuitID'),
             $request->ReSetStartDate,
         ]);
